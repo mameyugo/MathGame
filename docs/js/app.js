@@ -10,6 +10,7 @@ const translations = {
         input_player_name: 'Nombre del jugador...',
         btn_add: '+ Añadir',
         btn_duel_mode: '🏆 MODO DUELO',
+        btn_open_store: '🏪 TIENDA',
         btn_help: '📚 Ayuda',
         hall_of_fame_title: '👑 Salón de la Fama',
         hall_of_fame_empty: '¡Nadie en el podio aún!',
@@ -21,6 +22,7 @@ const translations = {
         op_multiplication: 'Multiplicaciones',
         btn_play: '¡A JUGAR!',
         btn_change_user: '⬅ Cambiar de usuario',
+        btn_close_store: '⬅ Cerrar',
         label_level: 'Nivel',
         turn_of: '🏆 Turno de: ',
         btn_play_user: '▶️ Jugar',
@@ -29,13 +31,33 @@ const translations = {
         alert_min_users: 'Se necesitan al menos 2 usuarios',
         alert_duel_end: '🏁 FIN DEL DUELO\n',
         alert_good_job: '¡Buen trabajo! Ganaste ',
-        alert_coins: ' monedas.'
+        alert_coins: ' monedas.',
+        store_title: '🏪 Tienda de Objetos',
+        store_balance: 'Tu saldo:',
+        item_potion_name: 'Poción de Tiempo',
+        item_potion_desc: 'Añade +15 segundos al temporizador',
+        item_shield_name: 'Escudo Protector',
+        item_shield_desc: 'Evita la penalización al fallar una respuesta',
+        item_theme_space_name: 'Modo Espacial',
+        item_theme_space_desc: 'Tema visual con estrellas',
+        item_theme_jungle_name: 'Modo Selva',
+        item_theme_jungle_desc: 'Tema visual con plátanos',
+        item_owned: 'Tienes: ',
+        btn_buy: 'Comprar',
+        btn_equipped: 'Equipado',
+        btn_equip: 'Equipar',
+        alert_not_enough_coins: '¡No tienes suficientes monedas!',
+        alert_purchase_success: '¡Compra realizada! 🎉',
+        alert_shield_used: '¡Escudo usado! 🛡️',
+        alert_no_potions: '¡No tienes pociones!',
+        alert_potion_used: '¡Poción usada! +15s ⏰'
     },
     gl: {
         app_title: '🚀 MateAventura',
         input_player_name: 'Nome do xogador...',
         btn_add: '+ Engadir',
         btn_duel_mode: '🏆 MODO DUELO',
+        btn_open_store: '🏪 TENDA',
         btn_help: '📚 Axuda',
         hall_of_fame_title: '👑 Salón da Fama',
         hall_of_fame_empty: 'Ninguén no podio aínda!',
@@ -47,6 +69,7 @@ const translations = {
         op_multiplication: 'Multiplicacións',
         btn_play: '¡A XOGAR!',
         btn_change_user: '⬅ Cambiar de usuario',
+        btn_close_store: '⬅ Pechar',
         label_level: 'Nivel',
         turn_of: '🏆 Quenda de: ',
         btn_play_user: '▶️ Xogar',
@@ -55,7 +78,26 @@ const translations = {
         alert_min_users: 'Necesítanse polo menos 2 usuarios',
         alert_duel_end: '🏁 FIN DO DUELO\n',
         alert_good_job: 'Bo traballo! Gañaches ',
-        alert_coins: ' moedas.'
+        alert_coins: ' moedas.',
+        store_title: '🏪 Tenda de Obxectos',
+        store_balance: 'O teu saldo:',
+        item_potion_name: 'Poción de Tempo',
+        item_potion_desc: 'Engade +15 segundos ao temporizador',
+        item_shield_name: 'Escudo Protector',
+        item_shield_desc: 'Evita a penalización ao fallar unha resposta',
+        item_theme_space_name: 'Modo Espacial',
+        item_theme_space_desc: 'Tema visual con estrelas',
+        item_theme_jungle_name: 'Modo Selva',
+        item_theme_jungle_desc: 'Tema visual con plátanos',
+        item_owned: 'Tes: ',
+        btn_buy: 'Comprar',
+        btn_equipped: 'Equipado',
+        btn_equip: 'Equipar',
+        alert_not_enough_coins: '¡Non tes suficientes moedas!',
+        alert_purchase_success: '¡Compra realizada! 🎉',
+        alert_shield_used: '¡Escudo usado! 🛡️',
+        alert_no_potions: '¡Non tes pocións!',
+        alert_potion_used: '¡Poción usada! +15s ⏰'
     }
 };
 
@@ -68,6 +110,59 @@ let duelPlayers = [];
 let duelScores = {};
 let currentDuelIdx = 0;
 let gameCoins = 0, gameLevel = 1, timeLeft = 30, timerInterval, currentAnswer = 0;
+
+// Store items definition
+const storeItems = [
+    {
+        id: 'potion',
+        icon: '⏰',
+        nameKey: 'item_potion_name',
+        descKey: 'item_potion_desc',
+        price: 50,
+        type: 'consumable'
+    },
+    {
+        id: 'shield',
+        icon: '🛡️',
+        nameKey: 'item_shield_name',
+        descKey: 'item_shield_desc',
+        price: 100,
+        type: 'consumable'
+    },
+    {
+        id: 'theme_space',
+        icon: '🌟',
+        nameKey: 'item_theme_space_name',
+        descKey: 'item_theme_space_desc',
+        price: 200,
+        type: 'theme'
+    },
+    {
+        id: 'theme_jungle',
+        icon: '🍌',
+        nameKey: 'item_theme_jungle_name',
+        descKey: 'item_theme_jungle_desc',
+        price: 200,
+        type: 'theme'
+    }
+];
+
+/**
+ * Initialize user inventory if it doesn't exist
+ * @param {Object} user - User object
+ */
+function initInventory(user) {
+    if (!user.inventory) {
+        user.inventory = {
+            potions: 0,
+            shields: 0,
+            themes: []
+        };
+    }
+    if (!user.currentTheme) {
+        user.currentTheme = 'default';
+    }
+}
 
 /**
  * Obtiene el texto traducido según el idioma actual
@@ -167,7 +262,13 @@ function renderLeaderboard() {
 function createUser() {
     const name = document.getElementById('new-user-name').value.trim();
     if (!name || users[name]) return alert(t('alert_invalid_name'));
-    users[name] = { level: 1, totalCoins: 0, ops: ['+'] };
+    users[name] = {
+        level: 1,
+        totalCoins: 0,
+        ops: ['+'],
+        inventory: { potions: 0, shields: 0, themes: [] },
+        currentTheme: 'default'
+    };
     localStorage.setItem('math_users', JSON.stringify(users));
     document.getElementById('new-user-name').value = "";
     renderUserList();
@@ -233,6 +334,12 @@ function initGameSession(lvl, coins) {
     timeLeft = 30;
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-game').classList.add('active');
+
+    // Initialize power-ups display
+    initInventory(users[currentUser]);
+    updatePowerUpDisplay();
+    applyTheme();
+
     generateQuestion();
     clearInterval(timerInterval);
     timerInterval = setInterval(() => {
@@ -282,8 +389,19 @@ function renderVisual(num) {
     div.className = 'visual-box';
     const tens = Math.floor(num / 10);
     const units = num % 10;
+
+    // Get current theme
+    const theme = users[currentUser].currentTheme || 'default';
+    let unitIcon = '🍎';
+
+    if (theme === 'theme_space') {
+        unitIcon = '⭐';
+    } else if (theme === 'theme_jungle') {
+        unitIcon = '🍌';
+    }
+
     for (let i = 0; i < tens; i++) div.innerHTML += '<div class="ten-block">📦x10</div>';
-    for (let i = 0; i < units; i++) div.innerHTML += '<span class="unit">🍎</span>';
+    for (let i = 0; i < units; i++) div.innerHTML += `<span class="unit">${unitIcon}</span>`;
     return div;
 }
 
@@ -314,16 +432,63 @@ function check(val) {
     if (val === currentAnswer) {
         gameCoins += 10;
         timeLeft += 2;
-        confetti({ particleCount: 30, spread: 50 });
+        try {
+            confetti({ particleCount: 30, spread: 50 });
+        } catch (e) {
+            // Confetti library not loaded
+        }
         if (gameCoins % 50 === 0) gameLevel++;
         generateQuestion();
     } else {
+        // Check if user has shield active
+        initInventory(users[currentUser]);
+        if (users[currentUser].inventory.shields > 0) {
+            users[currentUser].inventory.shields--;
+            localStorage.setItem('math_users', JSON.stringify(users));
+            updatePowerUpDisplay();
+            // Show shield used message
+            showFeedbackMessage(t('alert_shield_used'));
+            return; // Shield protects, no penalty
+        }
+
         document.getElementById('app-container').classList.add('shake');
         setTimeout(() => document.getElementById('app-container').classList.remove('shake'), 400);
         timeLeft -= 4;
     }
     document.getElementById('game-level').innerText = gameLevel;
     document.getElementById('game-coins').innerText = gameCoins;
+}
+
+/**
+ * Shows a feedback message on screen
+ * @param {string} message - Message to display
+ */
+function showFeedbackMessage(message) {
+    // Outer container: responsible only for centering/positioning
+    const msgDiv = document.createElement('div');
+    msgDiv.style.position = 'fixed';
+    msgDiv.style.top = '50%';
+    msgDiv.style.left = '50%';
+    msgDiv.style.transform = 'translate(-50%, -50%)';
+    msgDiv.style.zIndex = '2000';
+    msgDiv.style.pointerEvents = 'none';
+
+    // Inner content: visual styles + animation
+    const msgContent = document.createElement('div');
+    msgContent.style.background = 'rgba(39, 174, 96, 0.95)';
+    msgContent.style.color = 'white';
+    msgContent.style.padding = '20px 40px';
+    msgContent.style.borderRadius = '15px';
+    msgContent.style.fontSize = '1.5rem';
+    msgContent.style.fontWeight = 'bold';
+    msgContent.style.animation = 'slideUp 0.3s';
+    msgContent.innerText = message;
+
+    msgDiv.appendChild(msgContent);
+    document.body.appendChild(msgDiv);
+    setTimeout(() => {
+        msgDiv.remove();
+    }, 2000);
 }
 
 /**
@@ -349,6 +514,240 @@ function endGameSession() {
     }
 }
 
+/**
+ * Opens the store modal
+ */
+function openStore() {
+    if (!currentUser) {
+        const userNames = Object.keys(users);
+        if (userNames.length === 0) {
+            // No users created: ask the player to create a profile before using the store
+            alert('Por favor, crea un jugador antes de entrar en la tienda.\nPor favor, crea un xogador antes de entrar na tenda.');
+            return;
+        }
+        // Users exist but none is selected: require explicit selection instead of defaulting
+        alert('Por favor, selecciona un jugador antes de entrar en la tienda.\nPor favor, selecciona un xogador antes de entrar na tenda.');
+        return;
+    }
+    initInventory(users[currentUser]);
+    document.getElementById('store-modal').classList.add('active');
+    renderStore();
+}
+
+/**
+ * Closes the store modal
+ */
+function closeStore() {
+    document.getElementById('store-modal').classList.remove('active');
+}
+
+/**
+ * Renders the store items
+ */
+function renderStore() {
+    const container = document.getElementById('store-items');
+    const balance = document.getElementById('store-balance');
+
+    balance.innerText = users[currentUser].totalCoins;
+    container.innerHTML = '';
+
+    storeItems.forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'store-item';
+
+        let owned = 0;
+        let isOwned = false;
+        let isEquipped = false;
+
+        if (item.type === 'consumable') {
+            if (item.id === 'potion') owned = users[currentUser].inventory.potions;
+            if (item.id === 'shield') owned = users[currentUser].inventory.shields;
+        } else if (item.type === 'theme') {
+            isOwned = users[currentUser].inventory.themes.includes(item.id);
+            isEquipped = users[currentUser].currentTheme === item.id;
+        }
+
+        const canBuy = users[currentUser].totalCoins >= item.price;
+        if (!canBuy && !isOwned) {
+            itemDiv.classList.add('locked');
+        }
+
+        itemDiv.innerHTML = `
+            <div class="item-info">
+                <div class="item-header">
+                    <span class="item-icon">${item.icon}</span>
+                    <span class="item-name">${t(item.nameKey)}</span>
+                </div>
+                <div class="item-description">${t(item.descKey)}</div>
+                ${item.type === 'consumable' ? `<div class="item-owned">${t('item_owned')}${owned}</div>` : ''}
+                ${isEquipped && item.type === 'theme' ? `<div class="item-owned">✓ ${t('btn_equipped')}</div>` : ''}
+            </div>
+            <div class="item-purchase">
+                <div class="item-price">💰 ${item.price}</div>
+                ${isEquipped ? `<button class="btn-buy" disabled>${t('btn_equipped')}</button>` :
+                isOwned && item.type === 'theme' ? `<button class="btn-buy" onclick="equipTheme('${item.id}')">${t('btn_equip')}</button>` :
+                    `<button class="btn-buy" onclick="buyItem('${item.id}')" ${!canBuy ? 'disabled' : ''}>${t('btn_buy')}</button>`}
+            </div>
+        `;
+
+        container.appendChild(itemDiv);
+    });
+}
+
+/**
+ * Buys an item from the store
+ * @param {string} itemId - ID of the item to buy
+ */
+function buyItem(itemId) {
+    const item = storeItems.find(i => i.id === itemId);
+    if (!item) return;
+
+    initInventory(users[currentUser]);
+
+    // Check if user has enough coins
+    if (users[currentUser].totalCoins < item.price) {
+        alert(t('alert_not_enough_coins'));
+        return;
+    }
+
+    // Deduct coins
+    users[currentUser].totalCoins -= item.price;
+
+    // Add item to inventory
+    if (item.type === 'consumable') {
+        if (item.id === 'potion') {
+            users[currentUser].inventory.potions++;
+        } else if (item.id === 'shield') {
+            users[currentUser].inventory.shields++;
+        }
+    } else if (item.type === 'theme') {
+        if (!users[currentUser].inventory.themes.includes(item.id)) {
+            users[currentUser].inventory.themes.push(item.id);
+        }
+    }
+
+    // Save to localStorage
+    localStorage.setItem('math_users', JSON.stringify(users));
+
+    // Visual feedback
+    const balance = document.getElementById('store-balance');
+    balance.parentElement.classList.add('coin-flash');
+    setTimeout(() => {
+        balance.parentElement.classList.remove('coin-flash');
+    }, 500);
+
+    // Play purchase sound (using confetti as substitute)
+    try {
+        confetti({ particleCount: 50, spread: 70, colors: ['#f1c40f', '#27ae60'] });
+    } catch (e) {
+        // Confetti library not loaded
+    }
+
+    // Show success message
+    showFeedbackMessage(t('alert_purchase_success'));
+
+    // Re-render store
+    renderStore();
+    renderUserList();
+}
+
+/**
+ * Equips a theme
+ * @param {string} themeId - ID of the theme to equip
+ */
+function equipTheme(themeId) {
+    initInventory(users[currentUser]);
+
+    const inventory = users[currentUser].inventory;
+
+    // Only allow equipping themes that the user owns
+    if (!inventory || !Array.isArray(inventory.themes) || !inventory.themes.includes(themeId)) {
+        return;
+    }
+    users[currentUser].currentTheme = themeId;
+    localStorage.setItem('math_users', JSON.stringify(users));
+    renderStore();
+}
+
+/**
+ * Uses a time potion during gameplay
+ */
+function usePotion() {
+    initInventory(users[currentUser]);
+
+    if (users[currentUser].inventory.potions <= 0) {
+        alert(t('alert_no_potions'));
+        return;
+    }
+
+    // Consume potion
+    users[currentUser].inventory.potions--;
+    localStorage.setItem('math_users', JSON.stringify(users));
+
+    // Add time
+    timeLeft += 15;
+    document.getElementById('game-timer').innerText = timeLeft + "s";
+
+    // Update display
+    updatePowerUpDisplay();
+
+    // Visual feedback
+    showFeedbackMessage(t('alert_potion_used'));
+    try {
+        confetti({ particleCount: 30, spread: 60, colors: ['#3498db', '#9b59b6'] });
+    } catch (e) {
+        // Confetti library not loaded
+    }
+}
+
+/**
+ * Updates the power-up display in game
+ */
+function updatePowerUpDisplay() {
+    initInventory(users[currentUser]);
+
+    const potionBtn = document.getElementById('btn-use-potion');
+    const potionCount = document.getElementById('potion-count');
+    const shieldIndicator = document.getElementById('shield-indicator');
+    const shieldCount = document.getElementById('shield-count');
+
+    potionCount.innerText = users[currentUser].inventory.potions;
+    shieldCount.innerText = users[currentUser].inventory.shields;
+
+    potionBtn.disabled = users[currentUser].inventory.potions <= 0;
+
+    if (users[currentUser].inventory.shields > 0) {
+        shieldIndicator.classList.add('active');
+    } else {
+        shieldIndicator.classList.remove('active');
+    }
+}
+
+/**
+ * Applies the current theme to visual elements
+ */
+function applyTheme() {
+    initInventory(users[currentUser]);
+    const theme = users[currentUser].currentTheme;
+
+    // Apply theme to the app container
+    const appContainer = document.getElementById('app-container');
+    if (theme === 'theme_space') {
+        appContainer.setAttribute('data-theme', 'space');
+    } else if (theme === 'theme_jungle') {
+        appContainer.setAttribute('data-theme', 'jungle');
+    } else {
+        appContainer.removeAttribute('data-theme');
+    }
+}
+
 // Inicializar idioma al cargar
 changeLanguage(currentLanguage);
+
+// Initialize inventory for all existing users
+Object.keys(users).forEach(userName => {
+    initInventory(users[userName]);
+});
+localStorage.setItem('math_users', JSON.stringify(users));
+
 showUsers();

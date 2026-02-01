@@ -25,6 +25,7 @@
                 <input type="text" id="new-user-name" class="user-input" data-i18n-placeholder="input_player_name">
                 <button onclick="createUser()" class="btn-add" data-i18n="btn_add">+ Añadir</button>
             </div>
+            <button class="main-btn btn-store" onclick="openStore()" data-i18n="btn_open_store">🏪 TIENDA</button>
             <button class="main-btn btn-duel" onclick="setupDuel()" data-i18n="btn_duel_mode">🏆 MODO DUELO</button>
             <button class="btn-help" onclick="window.location.href='help.html'" data-i18n="btn_help">📚 Ayuda</button>
 
@@ -57,8 +58,34 @@
                 <span id="game-timer" class="game-timer">30s</span>
                 <span class="stat-coins">💰 <span id="game-coins">0</span></span>
             </div>
+            <div class="game-power-ups">
+                <button id="btn-use-potion" class="power-up-btn" onclick="usePotion()">
+                    ⏰ <span id="potion-count">0</span>
+                </button>
+                <div id="shield-indicator" class="shield-indicator">
+                    🛡️ <span id="shield-count">0</span>
+                </div>
+            </div>
             <div id="question-area" class="question-area"></div>
             <div id="answers-area" class="options-grid"></div>
+        </div>
+
+        <!-- Store Modal -->
+        <div id="store-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 data-i18n="store_title">🏪 Tienda de Objetos</h2>
+                    <button class="modal-close" onclick="closeStore()">✖</button>
+                </div>
+                <div class="store-balance">
+                    <span data-i18n="store_balance">Tu saldo:</span>
+                    <span class="balance-amount">💰 <span id="store-balance">0</span></span>
+                </div>
+                <div class="store-items" id="store-items">
+                    <!-- Items will be rendered here -->
+                </div>
+                <button class="btn-back" onclick="closeStore()" data-i18n="btn_close_store">⬅ Cerrar</button>
+            </div>
         </div>
     </div>
 
