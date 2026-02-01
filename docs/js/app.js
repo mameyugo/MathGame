@@ -3,103 +3,8 @@
  * Juego educativo de matemáticas multiidioma (ES/GL)
  */
 
-// Sistema de traducciones
-const translations = {
-    es: {
-        app_title: '🚀 MateAventura',
-        input_player_name: 'Nombre del jugador...',
-        btn_add: '+ Añadir',
-        btn_duel_mode: '🏆 MODO DUELO',
-        btn_open_store: '🏪 TIENDA',
-        btn_help: '📚 Ayuda',
-        hall_of_fame_title: '👑 Salón de la Fama',
-        hall_of_fame_empty: '¡Nadie en el podio aún!',
-        config_title: 'Configuración',
-        config_title_user: 'Configuración: ',
-        choose_operations: 'Elige las operaciones:',
-        op_addition: 'Sumas',
-        op_subtraction: 'Restas',
-        op_multiplication: 'Multiplicaciones',
-        btn_play: '¡A JUGAR!',
-        btn_change_user: '⬅ Cambiar de usuario',
-        btn_close_store: '⬅ Cerrar',
-        label_level: 'Nivel',
-        turn_of: '🏆 Turno de: ',
-        btn_play_user: '▶️ Jugar',
-        alert_invalid_name: 'Nombre no válido o ya existe',
-        alert_choose_operation: 'Elige una operación',
-        alert_min_users: 'Se necesitan al menos 2 usuarios',
-        alert_duel_end: '🏁 FIN DEL DUELO\n',
-        alert_good_job: '¡Buen trabajo! Ganaste ',
-        alert_coins: ' monedas.',
-        store_title: '🏪 Tienda de Objetos',
-        store_balance: 'Tu saldo:',
-        item_potion_name: 'Poción de Tiempo',
-        item_potion_desc: 'Añade +15 segundos al temporizador',
-        item_shield_name: 'Escudo Protector',
-        item_shield_desc: 'Evita la penalización al fallar una respuesta',
-        item_theme_space_name: 'Modo Espacial',
-        item_theme_space_desc: 'Tema visual con estrellas',
-        item_theme_jungle_name: 'Modo Selva',
-        item_theme_jungle_desc: 'Tema visual con plátanos',
-        item_owned: 'Tienes: ',
-        btn_buy: 'Comprar',
-        btn_equipped: 'Equipado',
-        btn_equip: 'Equipar',
-        alert_not_enough_coins: '¡No tienes suficientes monedas!',
-        alert_purchase_success: '¡Compra realizada! 🎉',
-        alert_shield_used: '¡Escudo usado! 🛡️',
-        alert_no_potions: '¡No tienes pociones!',
-        alert_potion_used: '¡Poción usada! +15s ⏰'
-    },
-    gl: {
-        app_title: '🚀 MateAventura',
-        input_player_name: 'Nome do xogador...',
-        btn_add: '+ Engadir',
-        btn_duel_mode: '🏆 MODO DUELO',
-        btn_open_store: '🏪 TENDA',
-        btn_help: '📚 Axuda',
-        hall_of_fame_title: '👑 Salón da Fama',
-        hall_of_fame_empty: 'Ninguén no podio aínda!',
-        config_title: 'Configuración',
-        config_title_user: 'Configuración: ',
-        choose_operations: 'Escolle as operacións:',
-        op_addition: 'Sumas',
-        op_subtraction: 'Restas',
-        op_multiplication: 'Multiplicacións',
-        btn_play: '¡A XOGAR!',
-        btn_change_user: '⬅ Cambiar de usuario',
-        btn_close_store: '⬅ Pechar',
-        label_level: 'Nivel',
-        turn_of: '🏆 Quenda de: ',
-        btn_play_user: '▶️ Xogar',
-        alert_invalid_name: 'Nome non válido ou xa existe',
-        alert_choose_operation: 'Escolle unha operación',
-        alert_min_users: 'Necesítanse polo menos 2 usuarios',
-        alert_duel_end: '🏁 FIN DO DUELO\n',
-        alert_good_job: 'Bo traballo! Gañaches ',
-        alert_coins: ' moedas.',
-        store_title: '🏪 Tenda de Obxectos',
-        store_balance: 'O teu saldo:',
-        item_potion_name: 'Poción de Tempo',
-        item_potion_desc: 'Engade +15 segundos ao temporizador',
-        item_shield_name: 'Escudo Protector',
-        item_shield_desc: 'Evita a penalización ao fallar unha resposta',
-        item_theme_space_name: 'Modo Espacial',
-        item_theme_space_desc: 'Tema visual con estrelas',
-        item_theme_jungle_name: 'Modo Selva',
-        item_theme_jungle_desc: 'Tema visual con plátanos',
-        item_owned: 'Tes: ',
-        btn_buy: 'Comprar',
-        btn_equipped: 'Equipado',
-        btn_equip: 'Equipar',
-        alert_not_enough_coins: '¡Non tes suficientes moedas!',
-        alert_purchase_success: '¡Compra realizada! 🎉',
-        alert_shield_used: '¡Escudo usado! 🛡️',
-        alert_no_potions: '¡Non tes pocións!',
-        alert_potion_used: '¡Poción usada! +15s ⏰'
-    }
-};
+// Sistema de traducciones (se cargará desde archivos JSON)
+let translations = {};
 
 // Variables globales
 let currentLanguage = localStorage.getItem('math_lang') || 'es';
@@ -165,19 +70,43 @@ function initInventory(user) {
 }
 
 /**
+ * Carga las traducciones desde archivos JSON
+ * @param {string} lang - Código de idioma (es/gl)
+ * @returns {Promise} Promesa que se resuelve cuando las traducciones están cargadas
+ */
+async function loadTranslations(lang) {
+    try {
+        const response = await fetch(`./lang/${lang}.json`);
+        if (!response.ok) throw new Error(`Failed to load ${lang}.json`);
+        translations[lang] = await response.json();
+    } catch (error) {
+        console.error(`Error loading translations for ${lang}:`, error);
+        // Fallback a español si hay error
+        if (lang !== 'es') {
+            await loadTranslations('es');
+        }
+    }
+}
+
+/**
  * Obtiene el texto traducido según el idioma actual
  * @param {string} key - Clave de traducción
  * @returns {string} Texto traducido
  */
 function t(key) {
-    return translations[currentLanguage][key] || translations['es'][key] || key;
+    return translations[currentLanguage]?.[key] || translations['es']?.[key] || key;
 }
 
 /**
  * Cambia el idioma de la aplicación
  * @param {string} lang - Código de idioma (es/gl)
  */
-function changeLanguage(lang) {
+async function changeLanguage(lang) {
+    // Cargar traducciones si no están cargadas
+    if (!translations[lang]) {
+        await loadTranslations(lang);
+    }
+    
     currentLanguage = lang;
     localStorage.setItem('math_lang', lang);
     document.getElementById('html-root').setAttribute('lang', lang);
@@ -741,13 +670,24 @@ function applyTheme() {
     }
 }
 
-// Inicializar idioma al cargar
-changeLanguage(currentLanguage);
+/**
+ * Inicializa la aplicación cargando traducciones y configurando el idioma
+ */
+async function initApp() {
+    // Cargar traducciones del idioma actual
+    await loadTranslations(currentLanguage);
+    
+    // Inicializar idioma
+    await changeLanguage(currentLanguage);
 
-// Initialize inventory for all existing users
-Object.keys(users).forEach(userName => {
-    initInventory(users[userName]);
-});
-localStorage.setItem('math_users', JSON.stringify(users));
+    // Initialize inventory for all existing users
+    Object.keys(users).forEach(userName => {
+        initInventory(users[userName]);
+    });
+    localStorage.setItem('math_users', JSON.stringify(users));
 
-showUsers();
+    showUsers();
+}
+
+// Inicializar la aplicación
+initApp();
