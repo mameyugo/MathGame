@@ -571,7 +571,7 @@ function renderStore() {
                 </div>
                 <div class="item-description">${t(item.descKey)}</div>
                 ${item.type === 'consumable' ? `<div class="item-owned">${t('item_owned')}${owned}</div>` : ''}
-                ${isOwned && item.type === 'theme' ? `<div class="item-owned">✓ ${t('btn_equipped')}</div>` : ''}
+                ${isEquipped && item.type === 'theme' ? `<div class="item-owned">✓ ${t('btn_equipped')}</div>` : ''}
             </div>
             <div class="item-purchase">
                 <div class="item-price">💰 ${item.price}</div>
