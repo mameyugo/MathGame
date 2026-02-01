@@ -655,6 +655,13 @@ function buyItem(itemId) {
  */
 function equipTheme(themeId) {
     initInventory(users[currentUser]);
+
+    const inventory = users[currentUser].inventory;
+
+    // Only allow equipping themes that the user owns
+    if (!inventory || !Array.isArray(inventory.themes) || !inventory.themes.includes(themeId)) {
+        return;
+    }
     users[currentUser].currentTheme = themeId;
     localStorage.setItem('math_users', JSON.stringify(users));
     renderStore();
