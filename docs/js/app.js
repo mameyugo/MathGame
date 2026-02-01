@@ -213,9 +213,80 @@ function selectUser(name) {
     document.getElementById('cfg-sum').checked = users[name].ops.includes('+');
     document.getElementById('cfg-res').checked = users[name].ops.includes('-');
     document.getElementById('cfg-mul').checked = users[name].ops.includes('*');
+    // Reset edit name section
+    document.getElementById('username-edit-section').style.display = 'none';
+    document.getElementById('btn-edit-username').style.display = 'block';
+    document.getElementById('edit-user-name').value = '';
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-config').classList.add('active');
 }
+
+/**
+ * Muestra el formulario de edición de nombre
+ */
+function showEditName() {
+    document.getElementById('username-edit-section').style.display = 'block';
+    document.getElementById('btn-edit-username').style.display = 'none';
+    document.getElementById('edit-user-name').value = currentUser;
+    document.getElementById('edit-user-name').focus();
+}
+
+/**
+ * Cancela la edición del nombre
+ */
+function cancelEditName() {
+    document.getElementById('username-edit-section').style.display = 'none';
+    document.getElementById('btn-edit-username').style.display = 'block';
+    document.getElementById('edit-user-name').value = '';
+}
+
+/**
+ * Guarda el nuevo nombre del usuario
+ */
+function saveUserName() {
+    const newName = document.getElementById('edit-user-name').value.trim();
+    const oldName = currentUser;
+    
+    // Validar que el nombre no esté vacío
+    if (!newName) {
+        return alert(t('alert_invalid_name'));
+    }
+    
+    // Si el nombre no cambió, cancelar
+    if (newName === oldName) {
+        cancelEditName();
+        return;
+    }
+    
+    // Validar que el nombre no exista ya
+    if (users[newName]) {
+        return alert(t('alert_invalid_name'));
+    }
+    
+    // Copiar datos del usuario con el nuevo nombre
+    users[newName] = users[oldName];
+    
+    // Eliminar el usuario con el nombre antiguo
+    delete users[oldName];
+    
+    // Guardar en localStorage
+    localStorage.setItem('math_users', JSON.stringify(users));
+    
+    // Actualizar currentUser
+    currentUser = newName;
+    
+    // Actualizar la interfaz
+    document.getElementById('config-title').innerText = t('config_title_user') + newName;
+    cancelEditName();
+    
+    // Mostrar mensaje de confirmación
+    alert(t('alert_name_updated'));
+    
+    // Actualizar la lista de usuarios
+    renderUserList();
+    renderLeaderboard();
+}
+
 
 /**
  * Inicia una partida individual
