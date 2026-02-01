@@ -513,7 +513,7 @@ function openStore() {
         // If no user is selected, use the first available user or prompt to select
         const userNames = Object.keys(users);
         if (userNames.length === 0) {
-            alert(t('alert_invalid_name'));
+            alert(t('alert_choose_operation')); // Reuse existing translation for "choose something"
             return;
         }
         currentUser = userNames[0];
@@ -570,7 +570,7 @@ function renderStore() {
                 </div>
                 <div class="item-description">${t(item.descKey)}</div>
                 ${item.type === 'consumable' ? `<div class="item-owned">${t('item_owned')}${owned}</div>` : ''}
-                ${isOwned && item.type === 'theme' ? `<div class="item-owned">✓ ${t('item_owned')}</div>` : ''}
+                ${isOwned && item.type === 'theme' ? `<div class="item-owned">✓ ${t('btn_equipped')}</div>` : ''}
             </div>
             <div class="item-purchase">
                 <div class="item-price">💰 ${item.price}</div>
@@ -713,14 +713,14 @@ function applyTheme() {
     initInventory(users[currentUser]);
     const theme = users[currentUser].currentTheme;
     
-    // This function can be expanded to change visual elements based on theme
-    // For now, it's a placeholder for theme functionality
+    // Apply theme to the app container
+    const appContainer = document.getElementById('app-container');
     if (theme === 'theme_space') {
-        document.getElementById('html-root').setAttribute('data-theme', 'space');
+        appContainer.setAttribute('data-theme', 'space');
     } else if (theme === 'theme_jungle') {
-        document.getElementById('html-root').setAttribute('data-theme', 'jungle');
+        appContainer.setAttribute('data-theme', 'jungle');
     } else {
-        document.getElementById('html-root').removeAttribute('data-theme');
+        appContainer.removeAttribute('data-theme');
     }
 }
 
