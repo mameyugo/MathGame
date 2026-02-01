@@ -462,20 +462,27 @@ function check(val) {
  * @param {string} message - Message to display
  */
 function showFeedbackMessage(message) {
+    // Outer container: responsible only for centering/positioning
     const msgDiv = document.createElement('div');
     msgDiv.style.position = 'fixed';
     msgDiv.style.top = '50%';
     msgDiv.style.left = '50%';
     msgDiv.style.transform = 'translate(-50%, -50%)';
-    msgDiv.style.background = 'rgba(39, 174, 96, 0.95)';
-    msgDiv.style.color = 'white';
-    msgDiv.style.padding = '20px 40px';
-    msgDiv.style.borderRadius = '15px';
-    msgDiv.style.fontSize = '1.5rem';
-    msgDiv.style.fontWeight = 'bold';
     msgDiv.style.zIndex = '2000';
-    msgDiv.style.animation = 'slideUp 0.3s';
-    msgDiv.innerText = message;
+    msgDiv.style.pointerEvents = 'none';
+
+    // Inner content: visual styles + animation
+    const msgContent = document.createElement('div');
+    msgContent.style.background = 'rgba(39, 174, 96, 0.95)';
+    msgContent.style.color = 'white';
+    msgContent.style.padding = '20px 40px';
+    msgContent.style.borderRadius = '15px';
+    msgContent.style.fontSize = '1.5rem';
+    msgContent.style.fontWeight = 'bold';
+    msgContent.style.animation = 'slideUp 0.3s';
+    msgContent.innerText = message;
+
+    msgDiv.appendChild(msgContent);
     document.body.appendChild(msgDiv);
     setTimeout(() => {
         msgDiv.remove();
