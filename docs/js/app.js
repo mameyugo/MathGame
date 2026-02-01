@@ -22,6 +22,7 @@ const translations = {
         btn_change_user: '⬅ Cambiar de usuario',
         label_level: 'Nivel',
         turn_of: '🏆 Turno de: ',
+        btn_play_user: '▶️ Jugar',
         alert_invalid_name: 'Nombre no válido o ya existe',
         alert_choose_operation: 'Elige una operación',
         alert_min_users: 'Se necesitan al menos 2 usuarios',
@@ -46,6 +47,7 @@ const translations = {
         btn_change_user: '⬅ Cambiar de usuario',
         label_level: 'Nivel',
         turn_of: '🏆 Quenda de: ',
+        btn_play_user: '▶️ Xogar',
         alert_invalid_name: 'Nome non válido ou xa existe',
         alert_choose_operation: 'Escolle unha operación',
         alert_min_users: 'Necesítanse polo menos 2 usuarios',
@@ -130,11 +132,18 @@ function renderUserList() {
     list.innerHTML = "";
     for (let name in users) {
         list.innerHTML += `
-        <div class="user-card" onclick="selectUser('${name}')">
-            <span><strong>${name}</strong> (Lvl ${users[name].level})</span>
-            <span>💰 ${users[name].totalCoins}</span>
+        <div class="user-card">
+            <div class="user-info" onclick="selectUser('${name}')">
+                <span><strong>${name}</strong> (Lvl ${users[name].level})</span>
+                <span>💰 ${users[name].totalCoins}</span>
+            </div>
+            <button class="btn-play-user" onclick="event.stopPropagation(); selectUser('${name}')" data-i18n="btn_play_user">▶️ Jugar</button>
         </div>`;
     }
+    // Actualizar traducciones de los botones recién creados
+    document.querySelectorAll('[data-i18n="btn_play_user"]').forEach(el => {
+        el.innerHTML = t('btn_play_user');
+    });
 }
 
 /**

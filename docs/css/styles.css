@@ -57,6 +57,37 @@ body {
     transform: translateY(-2px);
 }
 
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    cursor: pointer;
+}
+
+.btn-play-user {
+    padding: 8px 15px;
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.btn-play-user:hover {
+    background: #219150;
+    transform: scale(1.05);
+}
+
+.btn-play-user:active {
+    transform: scale(0.95);
+}
+
 /* Hall of Fame */
 .leaderboard {
     background: #fff9e6;
