@@ -255,6 +255,24 @@ button.main-btn:active {
     box-shadow: 0 4px 0 #7d4591;
 }
 
+.btn-help {
+    background: none;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    cursor: pointer;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    width: 100%;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-help:hover {
+    background: var(--primary);
+    color: white;
+}
+
 .leaderboard-title {
     margin: 0 0 10px 0;
     color: #b8860b;
@@ -367,4 +385,66 @@ button.main-btn:active {
         font-size: 2rem;
         min-height: 150px;
     }
+}
+
+/* Estilos para la página de ayuda */
+.help-content {
+    padding: 20px 0;
+}
+
+.help-content h1 {
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.help-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 15px;
+    border-left: 4px solid var(--primary);
+}
+
+.help-section h2 {
+    color: var(--dark);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.help-section p {
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.help-item {
+    margin: 15px 0;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    border: 2px solid #eee;
+}
+
+.help-item h3 {
+    color: var(--accent);
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.help-item p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.help-list {
+    line-height: 1.8;
+    padding-left: 25px;
+}
+
+.help-list li {
+    margin: 10px 0;
+}
+
+.help-list strong {
+    color: var(--dark);
 }

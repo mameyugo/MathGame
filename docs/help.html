@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es" id="html-root">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayuda - MateAventura Pro 📚</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+    <div id="app-container">
+        <!-- Selector de idioma -->
+        <div class="lang-selector">
+            <button onclick="changeLanguage('es')" id="btn-lang-es" class="lang-btn">🇪🇸 ES</button>
+            <button onclick="changeLanguage('gl')" id="btn-lang-gl" class="lang-btn">🏴 GL</button>
+        </div>
+
+        <div class="help-content">
+            <h1 data-i18n="help_title">📚 Ayuda - MateAventura</h1>
+            
+            <section class="help-section">
+                <h2 data-i18n="help_how_to_play_title">🎮 ¿Cómo se juega?</h2>
+                <p data-i18n="help_how_to_play_desc">
+                    MateAventura es un juego educativo de matemáticas donde debes resolver operaciones 
+                    matemáticas contra el tiempo. ¡Gana monedas y sube de nivel mientras aprendes!
+                </p>
+            </section>
+
+            <section class="help-section">
+                <h2 data-i18n="help_game_types_title">🎲 Tipos de Juego</h2>
+                <div class="help-item">
+                    <h3 data-i18n="help_visual_mode">📦 Modo Visual</h3>
+                    <p data-i18n="help_visual_mode_desc">
+                        En este modo verás representaciones visuales con bloques de decenas (📦x10) 
+                        y unidades (🍎) para facilitar el conteo. Ideal para niveles iniciales.
+                    </p>
+                </div>
+                <div class="help-item">
+                    <h3 data-i18n="help_unknown_mode">❓ Modo Incógnita</h3>
+                    <p data-i18n="help_unknown_mode_desc">
+                        Debes encontrar el número que falta en la operación. Por ejemplo: 
+                        "? × 5 = 20". Este modo desarrolla el pensamiento inverso.
+                    </p>
+                </div>
+                <div class="help-item">
+                    <h3 data-i18n="help_standard_mode">➕ Modo Estándar</h3>
+                    <p data-i18n="help_standard_mode_desc">
+                        Operaciones matemáticas clásicas donde calculas el resultado. 
+                        Por ejemplo: "7 + 3 = ?"
+                    </p>
+                </div>
+            </section>
+
+            <section class="help-section">
+                <h2 data-i18n="help_operations_title">🔢 Operaciones Disponibles</h2>
+                <ul class="help-list">
+                    <li data-i18n="help_op_addition">➕ <strong>Sumas:</strong> Operaciones de adición para todos los niveles</li>
+                    <li data-i18n="help_op_subtraction">➖ <strong>Restas:</strong> Operaciones de sustracción (siempre con resultado positivo)</li>
+                    <li data-i18n="help_op_multiplication">✖️ <strong>Multiplicaciones:</strong> Tablas de multiplicar progresivas</li>
+                </ul>
+            </section>
+
+            <section class="help-section">
+                <h2 data-i18n="help_levels_title">📈 Sistema de Niveles</h2>
+                <p data-i18n="help_levels_desc">
+                    Empiezas en el <strong>Nivel 1</strong> y subes automáticamente cada vez que 
+                    consigues <strong>50 monedas</strong>. A medida que subes de nivel:
+                </p>
+                <ul class="help-list">
+                    <li data-i18n="help_levels_item1">Los números en las operaciones son más grandes</li>
+                    <li data-i18n="help_levels_item2">El modo visual aparece menos frecuentemente</li>
+                    <li data-i18n="help_levels_item3">Las operaciones se vuelven más desafiantes</li>
+                </ul>
+                <p data-i18n="help_coins_desc">
+                    <strong>💰 Monedas:</strong> Ganas 10 monedas por cada respuesta correcta. 
+                    Las monedas se acumulan en tu perfil y te ayudan a aparecer en el Salón de la Fama.
+                </p>
+            </section>
+
+            <section class="help-section">
+                <h2 data-i18n="help_players_title">👤 Crear Jugadores</h2>
+                <p data-i18n="help_players_desc">
+                    Para crear un nuevo jugador:
+                </p>
+                <ol class="help-list">
+                    <li data-i18n="help_players_step1">Escribe el nombre del jugador en el campo de texto</li>
+                    <li data-i18n="help_players_step2">Haz clic en el botón "+ Añadir"</li>
+                    <li data-i18n="help_players_step3">El nuevo jugador aparecerá en la lista con Nivel 1 y 0 monedas</li>
+                    <li data-i18n="help_players_step4">Haz clic en un jugador para configurar sus operaciones y jugar</li>
+                </ol>
+            </section>
+
+            <section class="help-section">
+                <h2 data-i18n="help_duel_title">🏆 Modo Duelo</h2>
+                <p data-i18n="help_duel_desc">
+                    El <strong>Modo Duelo</strong> permite que varios jugadores compitan entre sí:
+                </p>
+                <ul class="help-list">
+                    <li data-i18n="help_duel_req">Se necesitan al menos <strong>2 jugadores</strong> creados</li>
+                    <li data-i18n="help_duel_turns">Cada jugador juega un turno de 30 segundos con su nivel actual</li>
+                    <li data-i18n="help_duel_score">Las monedas ganadas en el duelo NO se acumulan al perfil</li>
+                    <li data-i18n="help_duel_winner">Al final se muestra quién ganó más monedas durante el duelo</li>
+                </ul>
+                <p data-i18n="help_duel_start">
+                    Para iniciar un duelo, simplemente haz clic en el botón <strong>"🏆 MODO DUELO"</strong> 
+                    desde la pantalla principal.
+                </p>
+            </section>
+
+            <section class="help-section">
+                <h2 data-i18n="help_tips_title">💡 Consejos</h2>
+                <ul class="help-list">
+                    <li data-i18n="help_tip1">⏱️ Cada respuesta correcta suma 2 segundos al cronómetro</li>
+                    <li data-i18n="help_tip2">❌ Una respuesta incorrecta resta 4 segundos</li>
+                    <li data-i18n="help_tip3">🎯 Practica con una operación a la vez si recién comienzas</li>
+                    <li data-i18n="help_tip4">🏅 Aparece en el Salón de la Fama siendo uno de los 3 mejores jugadores</li>
+                </ul>
+            </section>
+
+            <button class="main-btn" onclick="goBack()" data-i18n="btn_back_home">⬅ Volver al Inicio</button>
+        </div>
+    </div>
+
+    <script src="./js/help.js"></script>
+</body>
+
+</html>
