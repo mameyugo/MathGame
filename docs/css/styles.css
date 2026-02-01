@@ -309,3 +309,30 @@ button.main-btn:active {
     background: #fafafa;
     border-radius: 20px;
 }
+
+/* Responsive para móviles */
+@media (max-width: 600px) {
+    .user-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .user-input {
+        width: 100%;
+    }
+
+    .btn-add {
+        width: 100%;
+    }
+
+    .game-stats {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .question-area {
+        font-size: 2rem;
+        min-height: 150px;
+    }
+}
