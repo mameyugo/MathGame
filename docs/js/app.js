@@ -263,8 +263,8 @@ function saveUserName() {
         return alert(t('alert_invalid_name'));
     }
     
-    // Copiar datos del usuario con el nuevo nombre
-    users[newName] = users[oldName];
+    // Copiar datos del usuario con el nuevo nombre (copia profunda)
+    users[newName] = JSON.parse(JSON.stringify(users[oldName]));
     
     // Eliminar el usuario con el nombre antiguo
     delete users[oldName];
