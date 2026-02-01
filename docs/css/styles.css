@@ -34,7 +34,6 @@ body::before {
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1;
-    opacity: 1;
 }
 
 #app-container {

@@ -1,7 +1,0 @@
-PLACEHOLDER: Due to network restrictions, the actual background image from the GitHub issue could not be downloaded.
-The user should manually download the image from:
-https://github.com/user-attachments/assets/c2364b36-bc8e-4f1b-a654-3f9a1a82f3c4
-
-And save it as: docs/images/background.png
-
-The CSS has been configured to use this image as the background with proper responsive sizing.
