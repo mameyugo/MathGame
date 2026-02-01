@@ -14,20 +14,39 @@
 
 body {
     font-family: 'Comic Sans MS', sans-serif;
-    background: #eef2f3;
+    background: linear-gradient(180deg, #f5dda9 0%, #e8c77d 50%, #c9a86a 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
     padding: 10px;
     color: var(--dark);
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/background.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+    opacity: 1;
 }
 
 #app-container {
     max-width: 550px;
     margin: auto;
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
     padding: 25px;
     border-radius: 30px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     border: 5px solid #fff;
     position: relative;
+    backdrop-filter: blur(5px);
 }
 
 .screen {
@@ -312,6 +331,20 @@ button.main-btn:active {
 
 /* Responsive para móviles */
 @media (max-width: 600px) {
+    body {
+        padding: 5px;
+    }
+    
+    body::before {
+        background-size: cover;
+        background-position: center center;
+    }
+    
+    #app-container {
+        padding: 20px;
+        border: 3px solid #fff;
+    }
+    
     .user-input-group {
         display: flex;
         flex-direction: column;
