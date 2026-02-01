@@ -11,6 +11,7 @@ const translations = {
         btn_add: '+ Añadir',
         btn_duel_mode: '🏆 MODO DUELO',
         btn_open_store: '🏪 TIENDA',
+        btn_help: '📚 Ayuda',
         hall_of_fame_title: '👑 Salón de la Fama',
         hall_of_fame_empty: '¡Nadie en el podio aún!',
         config_title: 'Configuración',
@@ -57,6 +58,7 @@ const translations = {
         btn_add: '+ Engadir',
         btn_duel_mode: '🏆 MODO DUELO',
         btn_open_store: '🏪 TENDA',
+        btn_help: '📚 Axuda',
         hall_of_fame_title: '👑 Salón da Fama',
         hall_of_fame_empty: 'Ninguén no podio aínda!',
         config_title: 'Configuración',
@@ -260,9 +262,9 @@ function renderLeaderboard() {
 function createUser() {
     const name = document.getElementById('new-user-name').value.trim();
     if (!name || users[name]) return alert(t('alert_invalid_name'));
-    users[name] = { 
-        level: 1, 
-        totalCoins: 0, 
+    users[name] = {
+        level: 1,
+        totalCoins: 0,
         ops: ['+'],
         inventory: { potions: 0, shields: 0, themes: [] },
         currentTheme: 'default'
@@ -332,12 +334,12 @@ function initGameSession(lvl, coins) {
     timeLeft = 30;
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-game').classList.add('active');
-    
+
     // Initialize power-ups display
     initInventory(users[currentUser]);
     updatePowerUpDisplay();
     applyTheme();
-    
+
     generateQuestion();
     clearInterval(timerInterval);
     timerInterval = setInterval(() => {
@@ -387,17 +389,17 @@ function renderVisual(num) {
     div.className = 'visual-box';
     const tens = Math.floor(num / 10);
     const units = num % 10;
-    
+
     // Get current theme
     const theme = users[currentUser].currentTheme || 'default';
     let unitIcon = '🍎';
-    
+
     if (theme === 'theme_space') {
         unitIcon = '⭐';
     } else if (theme === 'theme_jungle') {
         unitIcon = '🍌';
     }
-    
+
     for (let i = 0; i < tens; i++) div.innerHTML += '<div class="ten-block">📦x10</div>';
     for (let i = 0; i < units; i++) div.innerHTML += `<span class="unit">${unitIcon}</span>`;
     return div;
@@ -448,7 +450,7 @@ function check(val) {
             showFeedbackMessage(t('alert_shield_used'));
             return; // Shield protects, no penalty
         }
-        
+
         document.getElementById('app-container').classList.add('shake');
         setTimeout(() => document.getElementById('app-container').classList.remove('shake'), 400);
         timeLeft -= 4;
@@ -545,18 +547,18 @@ function closeStore() {
 function renderStore() {
     const container = document.getElementById('store-items');
     const balance = document.getElementById('store-balance');
-    
+
     balance.innerText = users[currentUser].totalCoins;
     container.innerHTML = '';
-    
+
     storeItems.forEach(item => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'store-item';
-        
+
         let owned = 0;
         let isOwned = false;
         let isEquipped = false;
-        
+
         if (item.type === 'consumable') {
             if (item.id === 'potion') owned = users[currentUser].inventory.potions;
             if (item.id === 'shield') owned = users[currentUser].inventory.shields;
@@ -564,12 +566,12 @@ function renderStore() {
             isOwned = users[currentUser].inventory.themes.includes(item.id);
             isEquipped = users[currentUser].currentTheme === item.id;
         }
-        
+
         const canBuy = users[currentUser].totalCoins >= item.price;
         if (!canBuy && !isOwned) {
             itemDiv.classList.add('locked');
         }
-        
+
         itemDiv.innerHTML = `
             <div class="item-info">
                 <div class="item-header">
@@ -583,11 +585,11 @@ function renderStore() {
             <div class="item-purchase">
                 <div class="item-price">💰 ${item.price}</div>
                 ${isEquipped ? `<button class="btn-buy" disabled>${t('btn_equipped')}</button>` :
-                  isOwned && item.type === 'theme' ? `<button class="btn-buy" onclick="equipTheme('${item.id}')">${t('btn_equip')}</button>` :
-                  `<button class="btn-buy" onclick="buyItem('${item.id}')" ${!canBuy ? 'disabled' : ''}>${t('btn_buy')}</button>`}
+                isOwned && item.type === 'theme' ? `<button class="btn-buy" onclick="equipTheme('${item.id}')">${t('btn_equip')}</button>` :
+                    `<button class="btn-buy" onclick="buyItem('${item.id}')" ${!canBuy ? 'disabled' : ''}>${t('btn_buy')}</button>`}
             </div>
         `;
-        
+
         container.appendChild(itemDiv);
     });
 }
@@ -599,18 +601,18 @@ function renderStore() {
 function buyItem(itemId) {
     const item = storeItems.find(i => i.id === itemId);
     if (!item) return;
-    
+
     initInventory(users[currentUser]);
-    
+
     // Check if user has enough coins
     if (users[currentUser].totalCoins < item.price) {
         alert(t('alert_not_enough_coins'));
         return;
     }
-    
+
     // Deduct coins
     users[currentUser].totalCoins -= item.price;
-    
+
     // Add item to inventory
     if (item.type === 'consumable') {
         if (item.id === 'potion') {
@@ -623,27 +625,27 @@ function buyItem(itemId) {
             users[currentUser].inventory.themes.push(item.id);
         }
     }
-    
+
     // Save to localStorage
     localStorage.setItem('math_users', JSON.stringify(users));
-    
+
     // Visual feedback
     const balance = document.getElementById('store-balance');
     balance.parentElement.classList.add('coin-flash');
     setTimeout(() => {
         balance.parentElement.classList.remove('coin-flash');
     }, 500);
-    
+
     // Play purchase sound (using confetti as substitute)
     try {
         confetti({ particleCount: 50, spread: 70, colors: ['#f1c40f', '#27ae60'] });
     } catch (e) {
         // Confetti library not loaded
     }
-    
+
     // Show success message
     showFeedbackMessage(t('alert_purchase_success'));
-    
+
     // Re-render store
     renderStore();
     renderUserList();
@@ -672,23 +674,23 @@ function equipTheme(themeId) {
  */
 function usePotion() {
     initInventory(users[currentUser]);
-    
+
     if (users[currentUser].inventory.potions <= 0) {
         alert(t('alert_no_potions'));
         return;
     }
-    
+
     // Consume potion
     users[currentUser].inventory.potions--;
     localStorage.setItem('math_users', JSON.stringify(users));
-    
+
     // Add time
     timeLeft += 15;
     document.getElementById('game-timer').innerText = timeLeft + "s";
-    
+
     // Update display
     updatePowerUpDisplay();
-    
+
     // Visual feedback
     showFeedbackMessage(t('alert_potion_used'));
     try {
@@ -703,17 +705,17 @@ function usePotion() {
  */
 function updatePowerUpDisplay() {
     initInventory(users[currentUser]);
-    
+
     const potionBtn = document.getElementById('btn-use-potion');
     const potionCount = document.getElementById('potion-count');
     const shieldIndicator = document.getElementById('shield-indicator');
     const shieldCount = document.getElementById('shield-count');
-    
+
     potionCount.innerText = users[currentUser].inventory.potions;
     shieldCount.innerText = users[currentUser].inventory.shields;
-    
+
     potionBtn.disabled = users[currentUser].inventory.potions <= 0;
-    
+
     if (users[currentUser].inventory.shields > 0) {
         shieldIndicator.classList.add('active');
     } else {
@@ -727,7 +729,7 @@ function updatePowerUpDisplay() {
 function applyTheme() {
     initInventory(users[currentUser]);
     const theme = users[currentUser].currentTheme;
-    
+
     // Apply theme to the app container
     const appContainer = document.getElementById('app-container');
     if (theme === 'theme_space') {

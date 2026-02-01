@@ -14,20 +14,38 @@
 
 body {
     font-family: 'Comic Sans MS', sans-serif;
-    background: #eef2f3;
+    background: linear-gradient(180deg, #f5dda9 0%, #e8c77d 50%, #c9a86a 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
     padding: 10px;
     color: var(--dark);
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/background.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
 }
 
 #app-container {
     max-width: 550px;
     margin: auto;
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
     padding: 25px;
     border-radius: 30px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     border: 5px solid #fff;
     position: relative;
+    backdrop-filter: blur(5px);
 }
 
 .screen {
@@ -237,6 +255,24 @@ button.main-btn:active {
     box-shadow: 0 4px 0 #7d4591;
 }
 
+.btn-help {
+    background: none;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    cursor: pointer;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    width: 100%;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-help:hover {
+    background: var(--primary);
+    color: white;
+}
+
 .leaderboard-title {
     margin: 0 0 10px 0;
     color: #b8860b;
@@ -312,6 +348,20 @@ button.main-btn:active {
 
 /* Responsive para móviles */
 @media (max-width: 600px) {
+    body {
+        padding: 5px;
+    }
+    
+    body::before {
+        background-size: cover;
+        background-position: center center;
+    }
+    
+    #app-container {
+        padding: 20px;
+        border: 3px solid #fff;
+    }
+    
     .user-input-group {
         display: flex;
         flex-direction: column;
@@ -335,6 +385,68 @@ button.main-btn:active {
         font-size: 2rem;
         min-height: 150px;
     }
+}
+
+/* Estilos para la página de ayuda */
+.help-content {
+    padding: 20px 0;
+}
+
+.help-content h1 {
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.help-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 15px;
+    border-left: 4px solid var(--primary);
+}
+
+.help-section h2 {
+    color: var(--dark);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.help-section p {
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.help-item {
+    margin: 15px 0;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    border: 2px solid #eee;
+}
+
+.help-item h3 {
+    color: var(--accent);
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.help-item p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.help-list {
+    line-height: 1.8;
+    padding-left: 25px;
+}
+
+.help-list li {
+    margin: 10px 0;
+}
+
+.help-list strong {
+    color: var(--dark);
 }
 
 /* Store Modal */
