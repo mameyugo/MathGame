@@ -49,7 +49,7 @@ async function changeLanguage(lang) {
     if (!translations[lang]) {
         await loadTranslations(lang);
     }
-    
+
     currentLanguage = lang;
     localStorage.setItem('math_lang', lang);
     document.getElementById('html-root').setAttribute('lang', lang);
@@ -80,7 +80,7 @@ function goBack() {
 async function initHelp() {
     // Cargar traducciones del idioma actual
     await loadTranslations(currentLanguage);
-    
+
     // Inicializar idioma
     await changeLanguage(currentLanguage);
 }
