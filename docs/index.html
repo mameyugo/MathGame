@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" id="html-root">
 
 <head>
     <meta charset="UTF-8">
@@ -169,37 +169,52 @@
 <body>
 
     <div id="app-container">
+        <!-- Selector de idioma -->
+        <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 5px;">
+            <button onclick="changeLanguage('es')" id="btn-lang-es"
+                style="padding: 5px 10px; border-radius: 8px; border: 2px solid #ddd; background: white; cursor: pointer; font-weight: bold;">🇪🇸
+                ES</button>
+            <button onclick="changeLanguage('gl')" id="btn-lang-gl"
+                style="padding: 5px 10px; border-radius: 8px; border: 2px solid #ddd; background: white; cursor: pointer; font-weight: bold;">🏴
+                GL</button>
+        </div>
+
         <div id="screen-users" class="screen active">
-            <h1>🚀 MateAventura</h1>
+            <h1 data-i18n="app_title">🚀 MateAventura</h1>
             <div id="user-list"></div>
             <div style="margin-top:20px;">
-                <input type="text" id="new-user-name" placeholder="Nombre del niño..."
+                <input type="text" id="new-user-name" data-i18n-placeholder="input_player_name"
                     style="padding: 12px; width: 60%; border-radius: 10px; border: 2px solid #ddd;">
                 <button onclick="createUser()"
-                    style="padding: 12px; width: 30%; border-radius: 10px; cursor: pointer; background: var(--primary); color: white; border: none; font-weight: bold;">+
+                    style="padding: 12px; width: 30%; border-radius: 10px; cursor: pointer; background: var(--primary); color: white; border: none; font-weight: bold;"
+                    data-i18n="btn_add">+
                     Añadir</button>
             </div>
             <button class="main-btn" onclick="setupDuel()"
-                style="background: var(--accent); box-shadow: 0 4px 0 #7d4591;">🏆 MODO DUELO</button>
+                style="background: var(--accent); box-shadow: 0 4px 0 #7d4591;" data-i18n="btn_duel_mode">🏆 MODO
+                DUELO</button>
 
             <div class="leaderboard" id="hall-of-fame">
-                <h3 style="margin: 0 0 10px 0; color: #b8860b;">👑 Salón de la Fama</h3>
+                <h3 style="margin: 0 0 10px 0; color: #b8860b;" data-i18n="hall_of_fame_title">👑 Salón de la Fama</h3>
                 <div id="leader-list"></div>
             </div>
         </div>
 
         <div id="screen-config" class="screen">
-            <h2 id="config-title">Configuración</h2>
+            <h2 id="config-title" data-i18n="config_title">Configuración</h2>
             <div style="background: #f9f9f9; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
-                <p><strong>Elige las operaciones:</strong></p>
+                <p><strong data-i18n="choose_operations">Elige las operaciones:</strong></p>
                 <label style="margin: 10px; display: inline-block;"><input type="checkbox" id="cfg-sum" checked>
-                    Sumas</label>
-                <label style="margin: 10px; display: inline-block;"><input type="checkbox" id="cfg-res"> Restas</label>
-                <label style="margin: 10px; display: inline-block;"><input type="checkbox" id="cfg-mul"> Tablas</label>
+                    <span data-i18n="op_addition">Sumas</span></label>
+                <label style="margin: 10px; display: inline-block;"><input type="checkbox" id="cfg-res">
+                    <span data-i18n="op_subtraction">Restas</span></label>
+                <label style="margin: 10px; display: inline-block;"><input type="checkbox" id="cfg-mul">
+                    <span data-i18n="op_multiplication">Multiplicaciones</span></label>
             </div>
-            <button class="main-btn" onclick="startSingleGame()">¡A JUGAR!</button>
+            <button class="main-btn" onclick="startSingleGame()" data-i18n="btn_play">¡A JUGAR!</button>
             <button onclick="showUsers()"
-                style="background:none; border:none; color: gray; cursor:pointer; margin-top:15px; text-decoration: underline;">⬅
+                style="background:none; border:none; color: gray; cursor:pointer; margin-top:15px; text-decoration: underline;"
+                data-i18n="btn_change_user">⬅
                 Cambiar de usuario</button>
         </div>
 
@@ -207,8 +222,8 @@
             <div id="turn-indicator"
                 style="font-size: 1.2rem; color: var(--accent); font-weight: bold; margin-bottom: 5px;"></div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <span style="background: #eee; padding: 5px 10px; border-radius: 10px;">Nivel: <span
-                        id="game-level">1</span></span>
+                <span style="background: #eee; padding: 5px 10px; border-radius: 10px;"><span
+                        data-i18n="label_level">Nivel</span>: <span id="game-level">1</span></span>
                 <span id="game-timer" style="color: var(--error); font-size: 1.5rem; font-weight: bold;">30s</span>
                 <span
                     style="background: #fff9e6; padding: 5px 10px; border-radius: 10px; border: 1px solid var(--gold);">💰
@@ -222,6 +237,100 @@
     </div>
 
     <script>
+        // Sistema de traducciones
+        const translations = {
+            es: {
+                app_title: '🚀 MateAventura',
+                input_player_name: 'Nombre del jugador...',
+                btn_add: '+ Añadir',
+                btn_duel_mode: '🏆 MODO DUELO',
+                hall_of_fame_title: '👑 Salón de la Fama',
+                hall_of_fame_empty: '¡Nadie en el podio aún!',
+                config_title: 'Configuración',
+                config_title_user: 'Configuración: ',
+                choose_operations: 'Elige las operaciones:',
+                op_addition: 'Sumas',
+                op_subtraction: 'Restas',
+                op_multiplication: 'Multiplicaciones',
+                btn_play: '¡A JUGAR!',
+                btn_change_user: '⬅ Cambiar de usuario',
+                label_level: 'Nivel',
+                turn_of: '🏆 Turno de: ',
+                alert_invalid_name: 'Nombre no válido o ya existe',
+                alert_choose_operation: 'Elige una operación',
+                alert_min_users: 'Se necesitan al menos 2 usuarios',
+                alert_duel_end: '🏁 FIN DEL DUELO\n',
+                alert_good_job: '¡Buen trabajo! Ganaste ',
+                alert_coins: ' monedas.'
+            },
+            gl: {
+                app_title: '🚀 MateAventura',
+                input_player_name: 'Nome do xogador...',
+                btn_add: '+ Engadir',
+                btn_duel_mode: '🏆 MODO DUELO',
+                hall_of_fame_title: '👑 Salón da Fama',
+                hall_of_fame_empty: 'Ninguén no podio aínda!',
+                config_title: 'Configuración',
+                config_title_user: 'Configuración: ',
+                choose_operations: 'Escolle as operacións:',
+                op_addition: 'Sumas',
+                op_subtraction: 'Restas',
+                op_multiplication: 'Multiplicacións',
+                btn_play: '¡A XOGAR!',
+                btn_change_user: '⬅ Cambiar de usuario',
+                label_level: 'Nivel',
+                turn_of: '🏆 Quenda de: ',
+                alert_invalid_name: 'Nome non válido ou xa existe',
+                alert_choose_operation: 'Escolle unha operación',
+                alert_min_users: 'Necesítanse polo menos 2 usuarios',
+                alert_duel_end: '🏁 FIN DO DUELO\n',
+                alert_good_job: 'Bo traballo! Gañaches ',
+                alert_coins: ' moedas.'
+            }
+        };
+
+        let currentLanguage = localStorage.getItem('math_lang') || 'es';
+
+        // Función para obtener texto traducido
+        function t(key) {
+            return translations[currentLanguage][key] || translations['es'][key] || key;
+        }
+
+        // Función para cambiar idioma
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('math_lang', lang);
+            document.getElementById('html-root').setAttribute('lang', lang);
+
+            // Actualizar estilos de botones de idioma
+            document.getElementById('btn-lang-es').style.borderColor = lang === 'es' ? 'var(--primary)' : '#ddd';
+            document.getElementById('btn-lang-es').style.background = lang === 'es' ? '#f0f7ff' : 'white';
+            document.getElementById('btn-lang-gl').style.borderColor = lang === 'gl' ? 'var(--primary)' : '#ddd';
+            document.getElementById('btn-lang-gl').style.background = lang === 'gl' ? '#f0f7ff' : 'white';
+
+            // Actualizar todos los textos
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.innerHTML = t(key);
+            });
+
+            // Actualizar placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                el.placeholder = t(key);
+            });
+
+            // Actualizar título de configuración si hay usuario seleccionado
+            if (currentUser) {
+                document.getElementById('config-title').innerText = t('config_title_user') + currentUser;
+            }
+
+            // Actualizar leaderboard si está visible
+            if (document.getElementById('screen-users').classList.contains('active')) {
+                renderLeaderboard();
+            }
+        }
+
         let users = JSON.parse(localStorage.getItem('math_users')) || {};
         let currentUser = null;
         let duelMode = false;
@@ -252,7 +361,7 @@
         function renderLeaderboard() {
             const list = document.getElementById('leader-list');
             const sorted = Object.keys(users).sort((a, b) => users[b].totalCoins - users[a].totalCoins).slice(0, 3);
-            list.innerHTML = sorted.length ? "" : "<small>¡Nadie en el podio aún!</small>";
+            list.innerHTML = sorted.length ? "" : `<small>${t('hall_of_fame_empty')}</small>`;
             sorted.forEach((name, i) => {
                 const icons = ['🥇', '🥈', '🥉'];
                 list.innerHTML += `<div class="leader-item"><span>${icons[i]} ${name}</span><strong>${users[name].totalCoins}</strong></div>`;
@@ -261,7 +370,7 @@
 
         function createUser() {
             const name = document.getElementById('new-user-name').value.trim();
-            if (!name || users[name]) return alert("Nombre no válido o ya existe");
+            if (!name || users[name]) return alert(t('alert_invalid_name'));
             users[name] = { level: 1, totalCoins: 0, ops: ['+'] };
             localStorage.setItem('math_users', JSON.stringify(users));
             document.getElementById('new-user-name').value = "";
@@ -270,7 +379,7 @@
 
         function selectUser(name) {
             currentUser = name;
-            document.getElementById('config-title').innerText = "Configuración: " + name;
+            document.getElementById('config-title').innerText = t('config_title_user') + name;
             document.getElementById('cfg-sum').checked = users[name].ops.includes('+');
             document.getElementById('cfg-res').checked = users[name].ops.includes('-');
             document.getElementById('cfg-mul').checked = users[name].ops.includes('*');
@@ -284,21 +393,21 @@
             if (document.getElementById('cfg-sum').checked) users[currentUser].ops.push('+');
             if (document.getElementById('cfg-res').checked) users[currentUser].ops.push('-');
             if (document.getElementById('cfg-mul').checked) users[currentUser].ops.push('*');
-            if (!users[currentUser].ops.length) return alert("Elige una operación");
+            if (!users[currentUser].ops.length) return alert(t('alert_choose_operation'));
             localStorage.setItem('math_users', JSON.stringify(users));
             initGameSession(users[currentUser].level, 0);
         }
 
         function setupDuel() {
             duelPlayers = Object.keys(users);
-            if (duelPlayers.length < 2) return alert("Se necesitan al menos 2 usuarios");
+            if (duelPlayers.length < 2) return alert(t('alert_min_users'));
             duelMode = true; currentDuelIdx = 0; duelScores = {};
             startNextDuelTurn();
         }
 
         function startNextDuelTurn() {
             currentUser = duelPlayers[currentDuelIdx];
-            document.getElementById('turn-indicator').innerText = "🏆 Turno de: " + currentUser;
+            document.getElementById('turn-indicator').innerText = t('turn_of') + currentUser;
             initGameSession(users[currentUser].level, 0);
         }
 
@@ -380,14 +489,16 @@
             if (duelMode) {
                 duelScores[currentUser] = gameCoins; currentDuelIdx++;
                 if (currentDuelIdx < duelPlayers.length) startNextDuelTurn();
-                else { alert("🏁 FIN DEL DUELO\n" + Object.entries(duelScores).map(([p, s]) => `${p}: ${s}`).join("\n")); showUsers(); }
+                else { alert(t('alert_duel_end') + Object.entries(duelScores).map(([p, s]) => `${p}: ${s}`).join("\n")); showUsers(); }
             } else {
                 users[currentUser].totalCoins += gameCoins; users[currentUser].level = gameLevel;
                 localStorage.setItem('math_users', JSON.stringify(users));
-                alert("¡Buen trabajo! Ganaste " + gameCoins + " monedas."); showUsers();
+                alert(t('alert_good_job') + gameCoins + t('alert_coins')); showUsers();
             }
         }
 
+        // Inicializar idioma al cargar
+        changeLanguage(currentLanguage);
         showUsers();
     </script>
 </body>
