@@ -430,7 +430,11 @@ function check(val) {
     if (val === currentAnswer) {
         gameCoins += 10;
         timeLeft += 2;
-        confetti({ particleCount: 30, spread: 50 });
+        try {
+            confetti({ particleCount: 30, spread: 50 });
+        } catch (e) {
+            // Confetti library not loaded
+        }
         if (gameCoins % 50 === 0) gameLevel++;
         generateQuestion();
     } else {
@@ -623,7 +627,11 @@ function buyItem(itemId) {
     }, 500);
     
     // Play purchase sound (using confetti as substitute)
-    confetti({ particleCount: 50, spread: 70, colors: ['#f1c40f', '#27ae60'] });
+    try {
+        confetti({ particleCount: 50, spread: 70, colors: ['#f1c40f', '#27ae60'] });
+    } catch (e) {
+        // Confetti library not loaded
+    }
     
     // Show success message
     showFeedbackMessage(t('alert_purchase_success'));
@@ -668,7 +676,11 @@ function usePotion() {
     
     // Visual feedback
     showFeedbackMessage(t('alert_potion_used'));
-    confetti({ particleCount: 30, spread: 60, colors: ['#3498db', '#9b59b6'] });
+    try {
+        confetti({ particleCount: 30, spread: 60, colors: ['#3498db', '#9b59b6'] });
+    } catch (e) {
+        // Confetti library not loaded
+    }
 }
 
 /**
