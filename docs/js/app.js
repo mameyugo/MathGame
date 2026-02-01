@@ -513,7 +513,7 @@ function renderStore() {
             </div>
             <div class="item-purchase">
                 <div class="item-price">💰 ${item.price}</div>
-                ${isEquipped ? `<button class="btn-buy" disabled>${t('btn_equipped')}</button>` :
+                ${isEquipped ? `<button class="btn-buy" onclick="unequipTheme()">${t('btn_unequip')}</button>` :
                 isOwned && item.type === 'theme' ? `<button class="btn-buy" onclick="equipTheme('${item.id}')">${t('btn_equip')}</button>` :
                     `<button class="btn-buy" onclick="buyItem('${item.id}')" ${!canBuy ? 'disabled' : ''}>${t('btn_buy')}</button>`}
             </div>
@@ -594,6 +594,16 @@ function equipTheme(themeId) {
         return;
     }
     users[currentUser].currentTheme = themeId;
+    localStorage.setItem('math_users', JSON.stringify(users));
+    renderStore();
+}
+
+/**
+ * Unequips the current theme and reverts to default
+ */
+function unequipTheme() {
+    initInventory(users[currentUser]);
+    users[currentUser].currentTheme = 'default';
     localStorage.setItem('math_users', JSON.stringify(users));
     renderStore();
 }

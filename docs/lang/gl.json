@@ -39,6 +39,7 @@
   "btn_buy": "Comprar",
   "btn_equipped": "Equipado",
   "btn_equip": "Equipar",
+  "btn_unequip": "Desequipar",
   "alert_not_enough_coins": "¡Non tes suficientes moedas!",
   "alert_purchase_success": "¡Compra realizada! 🎉",
   "alert_shield_used": "¡Escudo usado! 🛡️",
