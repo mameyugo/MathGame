@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MateAventura Pro: Hall of Fame 🏆</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --dark: #2c3e50;
+            --accent: #9b59b6;
+            --gold: #f1c40f;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            background: #eef2f3;
+            padding: 10px;
+            color: var(--dark);
+        }
+
+        #app-container {
+            max-width: 550px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 5px solid #fff;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        /* Gestión de Usuarios */
+        .user-card {
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .user-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Hall of Fame */
+        .leaderboard {
+            background: #fff9e6;
+            border: 2px solid var(--gold);
+            border-radius: 15px;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .leader-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Estilos de Juego */
+        .visual-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            margin: 10px;
+            padding: 10px;
+            background: #fcfcfc;
+            border-radius: 15px;
+        }
+
+        .ten-block {
+            background: #ffe082;
+            padding: 5px 10px;
+            border-radius: 8px;
+            border: 2px solid #ffca28;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .unit {
+            font-size: 2rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            font-size: 1.5rem;
+            padding: 15px;
+            border: 3px solid #eee;
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: #f0f7ff;
+        }
+
+        button.main-btn {
+            font-size: 1.2rem;
+            padding: 15px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 10px;
+            box-shadow: 0 4px 0 #219150;
+        }
+
+        button.main-btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        .shake {
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app-container">
+        <div id="screen-users" class="screen active">
+            <h1>🚀 MateAventura</h1>
+            <div id="user-list"></div>
+            <div style="margin-top:20px;">
+                <input type="text" id="new-user-name" placeholder="Nombre del niño..."
+                    style="padding: 12px; width: 60%; border-radius: 10px; border: 2px solid #ddd;">
+                <button onclick="createUser()"
+                    style="padding: 12px; width: 30%; border-radius: 10px; cursor: pointer; background: var(--primary); color: white; border: none; font-weight: bold;">+
+                    Añadir</button>
+            </div>
+            <button class="main-btn" onclick="setupDuel()"
+                style="background: var(--accent); box-shadow: 0 4px 0 #7d4591;">🏆 MODO DUELO</button>
+
+            <div class="leaderboard" id="hall-of-fame">
+                <h3 style="margin: 0 0 10px 0; color: #b8860b;">👑 Salón de la Fama</h3>
+                <div id="leader-list"></div>
+            </div>
+        </div>
+
+        <div id="screen-config" class="screen">
+            <h2 id="config-title">Configuración</h2>
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                <p><strong>Elige las operaciones:</strong></p>
+                <label style="margin: 10px; display: inline-block;"><input type="checkbox" id="cfg-sum" checked>
+                    Sumas</label>
+                <label style="margin: 10px; display: inline-block;"><input type="checkbox" id="cfg-res"> Restas</label>
+                <label style="margin: 10px; display: inline-block;"><input type="checkbox" id="cfg-mul"> Tablas</label>
+            </div>
+            <button class="main-btn" onclick="startSingleGame()">¡A JUGAR!</button>
+            <button onclick="showUsers()"
+                style="background:none; border:none; color: gray; cursor:pointer; margin-top:15px; text-decoration: underline;">⬅
+                Cambiar de usuario</button>
+        </div>
+
+        <div id="screen-game" class="screen">
+            <div id="turn-indicator"
+                style="font-size: 1.2rem; color: var(--accent); font-weight: bold; margin-bottom: 5px;"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <span style="background: #eee; padding: 5px 10px; border-radius: 10px;">Nivel: <span
+                        id="game-level">1</span></span>
+                <span id="game-timer" style="color: var(--error); font-size: 1.5rem; font-weight: bold;">30s</span>
+                <span
+                    style="background: #fff9e6; padding: 5px 10px; border-radius: 10px; border: 1px solid var(--gold);">💰
+                    <span id="game-coins">0</span></span>
+            </div>
+            <div id="question-area"
+                style="min-height: 180px; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 2.5rem; font-weight: bold; background: #fafafa; border-radius: 20px;">
+            </div>
+            <div id="answers-area" class="options-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        let users = JSON.parse(localStorage.getItem('math_users')) || {};
+        let currentUser = null;
+        let duelMode = false;
+        let duelPlayers = [];
+        let duelScores = {};
+        let currentDuelIdx = 0;
+        let gameCoins = 0, gameLevel = 1, timeLeft = 30, timerInterval, currentAnswer = 0;
+
+        function showUsers() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-users').classList.add('active');
+            renderUserList();
+            renderLeaderboard();
+        }
+
+        function renderUserList() {
+            const list = document.getElementById('user-list');
+            list.innerHTML = "";
+            for (let name in users) {
+                list.innerHTML += `
+                <div class="user-card" onclick="selectUser('${name}')">
+                    <span><strong>${name}</strong> (Lvl ${users[name].level})</span>
+                    <span>💰 ${users[name].totalCoins}</span>
+                </div>`;
+            }
+        }
+
+        function renderLeaderboard() {
+            const list = document.getElementById('leader-list');
+            const sorted = Object.keys(users).sort((a, b) => users[b].totalCoins - users[a].totalCoins).slice(0, 3);
+            list.innerHTML = sorted.length ? "" : "<small>¡Nadie en el podio aún!</small>";
+            sorted.forEach((name, i) => {
+                const icons = ['🥇', '🥈', '🥉'];
+                list.innerHTML += `<div class="leader-item"><span>${icons[i]} ${name}</span><strong>${users[name].totalCoins}</strong></div>`;
+            });
+        }
+
+        function createUser() {
+            const name = document.getElementById('new-user-name').value.trim();
+            if (!name || users[name]) return alert("Nombre no válido o ya existe");
+            users[name] = { level: 1, totalCoins: 0, ops: ['+'] };
+            localStorage.setItem('math_users', JSON.stringify(users));
+            document.getElementById('new-user-name').value = "";
+            renderUserList();
+        }
+
+        function selectUser(name) {
+            currentUser = name;
+            document.getElementById('config-title').innerText = "Configuración: " + name;
+            document.getElementById('cfg-sum').checked = users[name].ops.includes('+');
+            document.getElementById('cfg-res').checked = users[name].ops.includes('-');
+            document.getElementById('cfg-mul').checked = users[name].ops.includes('*');
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-config').classList.add('active');
+        }
+
+        function startSingleGame() {
+            duelMode = false;
+            users[currentUser].ops = [];
+            if (document.getElementById('cfg-sum').checked) users[currentUser].ops.push('+');
+            if (document.getElementById('cfg-res').checked) users[currentUser].ops.push('-');
+            if (document.getElementById('cfg-mul').checked) users[currentUser].ops.push('*');
+            if (!users[currentUser].ops.length) return alert("Elige una operación");
+            localStorage.setItem('math_users', JSON.stringify(users));
+            initGameSession(users[currentUser].level, 0);
+        }
+
+        function setupDuel() {
+            duelPlayers = Object.keys(users);
+            if (duelPlayers.length < 2) return alert("Se necesitan al menos 2 usuarios");
+            duelMode = true; currentDuelIdx = 0; duelScores = {};
+            startNextDuelTurn();
+        }
+
+        function startNextDuelTurn() {
+            currentUser = duelPlayers[currentDuelIdx];
+            document.getElementById('turn-indicator').innerText = "🏆 Turno de: " + currentUser;
+            initGameSession(users[currentUser].level, 0);
+        }
+
+        function initGameSession(lvl, coins) {
+            gameLevel = lvl; gameCoins = coins; timeLeft = 30;
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-game').classList.add('active');
+            generateQuestion();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--; document.getElementById('game-timer').innerText = timeLeft + "s";
+                if (timeLeft <= 0) endGameSession();
+            }, 1000);
+        }
+
+        function generateQuestion() {
+            const ops = users[currentUser].ops;
+            const op = ops[Math.floor(Math.random() * ops.length)];
+            const mode = Math.random();
+            let n1 = Math.floor(Math.random() * (gameLevel + 5)) + 1;
+            let n2 = Math.floor(Math.random() * (gameLevel + 5)) + 1;
+            if (op === '-' && n1 < n2) [n1, n2] = [n2, n1];
+            currentAnswer = eval(`${n1}${op}${n2}`);
+
+            const area = document.getElementById('question-area');
+            area.innerHTML = "";
+
+            if (mode < 0.3 && gameLevel < 8) { // Modo Visual
+                area.appendChild(renderVisual(n1));
+                const s = document.createElement('div'); s.innerText = op.replace('*', '×');
+                area.appendChild(s);
+                area.appendChild(renderVisual(n2));
+            } else if (mode < 0.6) { // Modo Incógnita
+                area.innerText = `? ${op.replace('*', '×')} ${n2} = ${currentAnswer}`;
+                currentAnswer = n1;
+            } else { // Modo Estándar
+                area.innerText = `${n1} ${op.replace('*', '×')} ${n2} = ?`;
+            }
+            renderOptions();
+        }
+
+        function renderVisual(num) {
+            const div = document.createElement('div'); div.className = 'visual-box';
+            const tens = Math.floor(num / 10); const units = num % 10;
+            for (let i = 0; i < tens; i++) div.innerHTML += '<div class="ten-block">📦x10</div>';
+            for (let i = 0; i < units; i++) div.innerHTML += '<span class="unit">🍎</span>';
+            return div;
+        }
+
+        function renderOptions() {
+            const grid = document.getElementById('answers-area'); grid.innerHTML = "";
+            let opts = new Set([currentAnswer]);
+            while (opts.size < 4) opts.add(currentAnswer + (Math.floor(Math.random() * 10) - 5));
+            Array.from(opts).sort(() => Math.random() - 0.5).forEach(o => {
+                if (o >= 0) {
+                    const b = document.createElement('button'); b.className = 'option-btn';
+                    b.innerText = o; b.onclick = () => check(o); grid.appendChild(b);
+                }
+            });
+        }
+
+        function check(val) {
+            if (val === currentAnswer) {
+                gameCoins += 10; timeLeft += 2;
+                confetti({ particleCount: 30, spread: 50 });
+                if (gameCoins % 50 === 0) gameLevel++;
+                generateQuestion();
+            } else {
+                document.getElementById('app-container').classList.add('shake');
+                setTimeout(() => document.getElementById('app-container').classList.remove('shake'), 400);
+                timeLeft -= 4;
+            }
+            document.getElementById('game-level').innerText = gameLevel;
+            document.getElementById('game-coins').innerText = gameCoins;
+        }
+
+        function endGameSession() {
+            clearInterval(timerInterval);
+            if (duelMode) {
+                duelScores[currentUser] = gameCoins; currentDuelIdx++;
+                if (currentDuelIdx < duelPlayers.length) startNextDuelTurn();
+                else { alert("🏁 FIN DEL DUELO\n" + Object.entries(duelScores).map(([p, s]) => `${p}: ${s}`).join("\n")); showUsers(); }
+            } else {
+                users[currentUser].totalCoins += gameCoins; users[currentUser].level = gameLevel;
+                localStorage.setItem('math_users', JSON.stringify(users));
+                alert("¡Buen trabajo! Ganaste " + gameCoins + " monedas."); showUsers();
+            }
+        }
+
+        showUsers();
+    </script>
+</body>
+
+</html>
