@@ -1,0 +1,280 @@
+/**
+ * MateAventura - Estilos principales
+ * Juego educativo de matemáticas para niños
+ */
+
+:root {
+    --primary: #3498db;
+    --success: #27ae60;
+    --error: #e74c3c;
+    --dark: #2c3e50;
+    --accent: #9b59b6;
+    --gold: #f1c40f;
+}
+
+body {
+    font-family: 'Comic Sans MS', sans-serif;
+    background: #eef2f3;
+    padding: 10px;
+    color: var(--dark);
+}
+
+#app-container {
+    max-width: 550px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: 5px solid #fff;
+    position: relative;
+}
+
+.screen {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+/* Gestión de Usuarios */
+.user-card {
+    background: #f8f9fa;
+    border: 2px solid #ddd;
+    padding: 15px;
+    border-radius: 15px;
+    margin: 10px 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.user-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* Hall of Fame */
+.leaderboard {
+    background: #fff9e6;
+    border: 2px solid var(--gold);
+    border-radius: 15px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.leader-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Estilos de Juego */
+.visual-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin: 10px;
+    padding: 10px;
+    background: #fcfcfc;
+    border-radius: 15px;
+}
+
+.ten-block {
+    background: #ffe082;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 2px solid #ffca28;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.unit {
+    font-size: 2rem;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.option-btn {
+    font-size: 1.5rem;
+    padding: 15px;
+    border: 3px solid #eee;
+    border-radius: 15px;
+    background: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.option-btn:hover {
+    border-color: var(--primary);
+    background: #f0f7ff;
+}
+
+button.main-btn {
+    font-size: 1.2rem;
+    padding: 15px;
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    margin-top: 10px;
+    box-shadow: 0 4px 0 #219150;
+}
+
+button.main-btn:active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+.shake {
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+/* Selector de idioma */
+.lang-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.lang-btn {
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Pantalla de usuarios */
+.user-input-group {
+    margin-top: 20px;
+}
+
+.user-input {
+    padding: 12px;
+    width: 60%;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+}
+
+.btn-add {
+    padding: 12px;
+    width: 30%;
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.btn-duel {
+    background: var(--accent);
+    box-shadow: 0 4px 0 #7d4591;
+}
+
+.leaderboard-title {
+    margin: 0 0 10px 0;
+    color: #b8860b;
+}
+
+/* Pantalla de configuración */
+.config-box {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.config-label {
+    margin: 10px;
+    display: inline-block;
+}
+
+.btn-back {
+    background: none;
+    border: none;
+    color: gray;
+    cursor: pointer;
+    margin-top: 15px;
+    text-decoration: underline;
+}
+
+/* Pantalla de juego */
+.turn-indicator {
+    font-size: 1.2rem;
+    color: var(--accent);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.game-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.stat-level {
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+.game-timer {
+    color: var(--error);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.stat-coins {
+    background: #fff9e6;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--gold);
+}
+
+.question-area {
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: #fafafa;
+    border-radius: 20px;
+}
