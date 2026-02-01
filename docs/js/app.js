@@ -510,15 +510,16 @@ function endGameSession() {
  */
 function openStore() {
     if (!currentUser) {
-        // If no user is selected, use the first available user or prompt to select
         const userNames = Object.keys(users);
         if (userNames.length === 0) {
-            alert(t('alert_choose_operation')); // Reuse existing translation for "choose something"
+            // No users created: ask the player to create a profile before using the store
+            alert('Por favor, crea un jugador antes de entrar en la tienda.\nPor favor, crea un xogador antes de entrar na tenda.');
             return;
         }
-        currentUser = userNames[0];
+        // Users exist but none is selected: require explicit selection instead of defaulting
+        alert('Por favor, selecciona un jugador antes de entrar en la tienda.\nPor favor, selecciona un xogador antes de entrar na tenda.');
+        return;
     }
-    
     initInventory(users[currentUser]);
     document.getElementById('store-modal').classList.add('active');
     renderStore();
