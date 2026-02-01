@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1408 736" preserveAspectRatio="xMidYMid slice">
+  <!-- Warm yellow/beige background (classroom walls) -->
+  <rect width="1408" height="736" fill="#f5dda9"/>
+  
+  <!-- Clouds left -->
+  <ellipse cx="100" cy="80" rx="80" ry="60" fill="#ffffff" opacity="0.7"/>
+  <ellipse cx="150" cy="100" rx="60" ry="50" fill="#ffffff" opacity="0.7"/>
+  
+  <!-- Clouds right -->
+  <ellipse cx="1280" cy="80" rx="90" ry="65" fill="#ffffff" opacity="0.8"/>
+  <ellipse cx="1330" cy="100" rx="70" ry="55" fill="#ffffff" opacity="0.8"/>
+  
+  <!-- Clock -->
+  <circle cx="704" cy="60" r="35" fill="#e8a0a0"/>
+  <circle cx="704" cy="60" r="28" fill="#f5f5dc"/>
+  <line x1="704" y1="60" x2="704" y2="45" stroke="#666" stroke-width="2"/>
+  <line x1="704" y1="60" x2="715" y2="65" stroke="#666" stroke-width="2"/>
+  
+  <!-- Chalkboard frame (wood) -->
+  <rect x="300" y="100" width="808" height="380" fill="#c8915d" rx="10"/>
+  
+  <!-- Chalkboard (green) -->
+  <rect x="320" y="120" width="768" height="340" fill="#6ba896"/>
+  
+  <!-- Teacher's desk with books -->
+  <rect x="130" y="340" width="130" height="100" fill="#d4a574"/>
+  <rect x="130" y="335" width="130" height="10" fill="#c8915d"/>
+  
+  <!-- Books on desk -->
+  <rect x="150" y="310" width="35" height="25" fill="#8bc896" rx="2"/>
+  <rect x="155" y="290" width="35" height="20" fill="#e8a0a0" rx="2"/>
+  <rect x="145" y="270" width="40" height="20" fill="#a0b8e8" rx="2"/>
+  <rect x="155" y="295" width="20" height="3" fill="#ffffff" opacity="0.3"/>
+  
+  <!-- Bottom platform/floor pieces -->
+  <rect x="0" y="500" width="450" height="236" fill="#e8a877"/>
+  <rect x="450" y="520" width="508" height="216" fill="#c8e896"/>
+  <rect x="958" y="500" width="450" height="236" fill="#e8a877"/>
+  
+  <!-- Front platform shadow -->
+  <rect x="0" y="500" width="450" height="20" fill="#d49866"/>
+  <rect x="958" y="500" width="450" height="20" fill="#d49866"/>
+  <rect x="450" y="520" width="508" height="20" fill="#b8d886"/>
+  
+  <!-- Decorative bushes/plants left -->
+  <ellipse cx="50" cy="650" rx="80" ry="60" fill="#8bc896"/>
+  <ellipse cx="80" cy="670" rx="70" ry="50" fill="#9bd8a6"/>
+  <ellipse cx="30" cy="680" rx="60" ry="45" fill="#9bd8a6"/>
+  
+  <!-- Decorative bushes/plants right -->
+  <ellipse cx="1320" cy="620" rx="100" ry="80" fill="#8bc896"/>
+  <ellipse cx="1360" cy="650" rx="80" ry="65" fill="#9bd8a6"/>
+  <ellipse cx="1290" cy="660" rx="90" ry="70" fill="#9bd8a6"/>
+  
+  <!-- Sparkle star -->
+  <g transform="translate(1350, 680)">
+    <path d="M0,-15 L3,-3 L15,0 L3,3 L0,15 L-3,3 L-15,0 L-3,-3 Z" fill="#ffffff" opacity="0.9"/>
+  </g>
+</svg>
