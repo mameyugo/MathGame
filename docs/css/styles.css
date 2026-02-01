@@ -336,3 +336,276 @@ button.main-btn:active {
         min-height: 150px;
     }
 }
+
+/* Store Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s;
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 25px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: var(--primary);
+}
+
+.modal-close {
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-close:hover {
+    background: #d32f2f;
+    transform: scale(1.1);
+}
+
+.store-balance {
+    background: #fff9e6;
+    padding: 15px;
+    border-radius: 15px;
+    border: 2px solid var(--gold);
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.balance-amount {
+    color: var(--gold);
+    font-size: 1.5rem;
+}
+
+.store-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.store-item {
+    background: #f8f9fa;
+    border: 3px solid #ddd;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.store-item:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.store-item.locked {
+    opacity: 0.6;
+    background: #e8e8e8;
+}
+
+.store-item.locked .item-icon {
+    filter: grayscale(100%);
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.item-icon {
+    font-size: 2rem;
+}
+
+.item-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--dark);
+}
+
+.item-description {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.item-owned {
+    color: var(--success);
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.item-purchase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.item-price {
+    background: var(--gold);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.btn-buy {
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    font-size: 1rem;
+}
+
+.btn-buy:hover {
+    background: #219150;
+    transform: scale(1.05);
+}
+
+.btn-buy:active {
+    transform: scale(0.95);
+}
+
+.btn-buy:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-store {
+    background: var(--gold);
+    box-shadow: 0 4px 0 #d4a300;
+}
+
+/* Power-ups in game */
+.game-power-ups {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.power-up-btn, .shield-indicator {
+    background: white;
+    border: 3px solid #ddd;
+    border-radius: 12px;
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+.power-up-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: #f0f7ff;
+    transform: scale(1.05);
+}
+
+.power-up-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.power-up-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.shield-indicator {
+    background: #e8f5e9;
+    border-color: var(--success);
+    cursor: default;
+}
+
+.shield-indicator.active {
+    animation: pulse 1.5s infinite;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.coin-flash {
+    animation: coinFlash 0.5s;
+}
+
+@keyframes coinFlash {
+    0%, 100% { background: #fff9e6; }
+    50% { background: #27ae60; color: white; }
+}
+
+.purchase-success {
+    animation: purchaseSuccess 0.5s;
+}
+
+@keyframes purchaseSuccess {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(0.9) rotate(-5deg); }
+    75% { transform: scale(1.1) rotate(5deg); }
+}
+
