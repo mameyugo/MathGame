@@ -13,7 +13,7 @@
 }
 
 body {
-    font-family: 'Comic Sans MS', sans-serif;
+    font-family: "Comic Sans MS", sans-serif;
     background: linear-gradient(180deg, #f5dda9 0%, #e8c77d 50%, #c9a86a 100%);
     background-attachment: fixed;
     min-height: 100vh;
@@ -23,13 +23,13 @@ body {
 }
 
 body::before {
-    content: '';
+    content: "";
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('../images/background.svg');
+    background-image: url("../images/background.svg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -194,7 +194,6 @@ button.main-btn:active {
 }
 
 @keyframes shake {
-
     0%,
     100% {
         transform: translateX(0);
@@ -245,7 +244,7 @@ button.main-btn:active {
     border: 2px solid #6a4c93;
     border-radius: 10px;
     font-size: 16px;
-    font-family: 'Comic Sans MS', cursive;
+    font-family: "Comic Sans MS", cursive;
 }
 
 .btn-add {
@@ -360,17 +359,17 @@ button.main-btn:active {
     body {
         padding: 5px;
     }
-    
+
     body::before {
         background-size: cover;
         background-position: center center;
     }
-    
+
     #app-container {
         padding: 20px;
         border: 3px solid #fff;
     }
-    
+
     .user-input-group {
         display: flex;
         flex-direction: column;
@@ -656,7 +655,8 @@ button.main-btn:active {
     justify-content: center;
 }
 
-.power-up-btn, .shield-indicator {
+.power-up-btn,
+.shield-indicator {
     background: white;
     border: 3px solid #ddd;
     border-radius: 12px;
@@ -697,18 +697,33 @@ button.main-btn:active {
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 .coin-flash {
@@ -716,8 +731,14 @@ button.main-btn:active {
 }
 
 @keyframes coinFlash {
-    0%, 100% { background: #fff9e6; }
-    50% { background: #27ae60; color: white; }
+    0%,
+    100% {
+        background: #fff9e6;
+    }
+    50% {
+        background: #27ae60;
+        color: white;
+    }
 }
 
 .purchase-success {
@@ -725,8 +746,92 @@ button.main-btn:active {
 }
 
 @keyframes purchaseSuccess {
-    0%, 100% { transform: scale(1); }
-    25% { transform: scale(0.9) rotate(-5deg); }
-    75% { transform: scale(1.1) rotate(5deg); }
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(0.9) rotate(-5deg);
+    }
+    75% {
+        transform: scale(1.1) rotate(5deg);
+    }
 }
 
+/* Footer Styles */
+.app-footer {
+    margin-top: 30px;
+    padding: 20px 0;
+    border-top: 2px solid #e8c77d;
+    text-align: center;
+}
+
+.footer-content {
+    font-size: 13px;
+    color: #555;
+}
+
+.footer-text {
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.freedom-icon {
+    font-size: 16px;
+    margin-right: 4px;
+}
+
+.footer-text strong {
+    color: var(--dark);
+    font-weight: bold;
+}
+
+.footer-links {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.footer-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.github-link {
+    background: linear-gradient(135deg, #333 0%, #555 100%);
+}
+
+.github-link:hover {
+    background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+}
+
+.contribute-link {
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+}
+
+.contribute-link:hover {
+    background: linear-gradient(135deg, #1e8449 0%, #196f3d 100%);
+}
+
+.footer-link span:first-child {
+    font-size: 14px;
+}

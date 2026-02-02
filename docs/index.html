@@ -39,11 +39,14 @@
             <h2 id="config-title" data-i18n="config_title">Configuración</h2>
             <div class="config-box">
                 <div id="username-edit-section" style="display: none; margin-bottom: 20px;">
-                    <input type="text" id="edit-user-name" class="edit-name-input" placeholder="Nuevo nombre..." data-i18n-placeholder="input_edit_name" aria-label="Edit username">
-                    <button class="main-btn" onclick="saveUserName()" data-i18n="btn_save_name" style="margin: 10px 5px;">💾 Guardar nombre</button>
+                    <input type="text" id="edit-user-name" class="edit-name-input" placeholder="Nuevo nombre..."
+                        data-i18n-placeholder="input_edit_name" aria-label="Edit username">
+                    <button class="main-btn" onclick="saveUserName()" data-i18n="btn_save_name"
+                        style="margin: 10px 5px;">💾 Guardar nombre</button>
                     <button class="btn-back" onclick="cancelEditName()" data-i18n="btn_cancel_edit">❌ Cancelar</button>
                 </div>
-                <button id="btn-edit-username" class="main-btn" onclick="showEditName()" data-i18n="btn_edit_name" style="margin-bottom: 20px;"></button>
+                <button id="btn-edit-username" class="main-btn" onclick="showEditName()" data-i18n="btn_edit_name"
+                    style="margin-bottom: 20px;"></button>
                 <p><strong data-i18n="choose_operations">Elige las operaciones:</strong></p>
                 <label class="config-label"><input type="checkbox" id="cfg-sum" checked>
                     <span data-i18n="op_addition">Sumas</span></label>
@@ -94,6 +97,27 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="footer-content">
+            <p class="footer-text">
+                <span class="freedom-icon">🔓</span>
+                <strong data-i18n="footer_free_software">Software Libre</strong> -
+                <span data-i18n="footer_support_text">Apoya el proyecto:</span>
+            </p>
+            <div class="footer-links">
+                <a href="https://github.com/mameyugo/MathGame" target="_blank" rel="noopener noreferrer"
+                    class="footer-link github-link">
+                    <span>⭐</span> <span data-i18n="footer_star_repo">Dale una estrella</span>
+                </a>
+                <a href="https://github.com/mameyugo/MathGame" target="_blank" rel="noopener noreferrer"
+                    class="footer-link contribute-link">
+                    <span>🤝</span> <span data-i18n="footer_contribute">Colabora</span>
+                </a>
+            </div>
+        </div>
+    </footer>
 
     <script src="./js/app.js"></script>
 </body>
