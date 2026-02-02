@@ -153,6 +153,16 @@ class GameEngine {
             this.updatePowerUpDisplay();
         }
 
+        // Update game display with initial values
+        const levelElement = document.getElementById('game-level');
+        const coinsElement = document.getElementById('game-coins');
+        if (levelElement) {
+            levelElement.innerText = this.gameLevel;
+        }
+        if (coinsElement) {
+            coinsElement.innerText = this.gameCoins;
+        }
+
         this.userManager.updateRecordDisplay(this.gameLevel);
         this.applyTheme();
 

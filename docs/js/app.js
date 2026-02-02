@@ -137,7 +137,7 @@ function startSingleGame() {
         mul: document.getElementById('cfg-mul').checked
     };
     gameEngine.startSingleGame(checkboxes);
-    
+
     // Sincronizar estado global después de iniciar
     users = userManager.getUsers();
     gameLevel = gameEngine.gameLevel;
@@ -154,7 +154,7 @@ function startProblemGame(type) {
     problemType = type;
     gameEngine.problemType = type;
     gameEngine.startProblemGame(type);
-    
+
     // Sincronizar estado global después de iniciar
     gameLevel = gameEngine.gameLevel;
     gameCoins = gameEngine.gameCoins;
