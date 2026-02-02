@@ -910,5 +910,7 @@ window.addEventListener('beforeunload', function () {
     localStorage.setItem('math_users', JSON.stringify(users));
     localStorage.setItem('math_lang', currentLanguage);
 });
-// Inicializar la aplicación
-initApp();
+// Inicializar la aplicación (evitar auto-init en tests)
+if (typeof window !== 'undefined' && !window.__TEST__) {
+    initApp();
+}

@@ -4,6 +4,17 @@ const path = require('path');
 // Cargar el archivo app.js
 const appCode = fs.readFileSync(path.join(__dirname, '../docs/js/app.js'), 'utf8');
 
+beforeAll(() => {
+    // Evitar auto-init en tests
+    window.__TEST__ = true;
+    // Evitar JSON.parse(undefined) durante la carga de app.js
+    if (localStorage && localStorage.getItem && localStorage.getItem.mockReturnValue) {
+        localStorage.getItem.mockReturnValue(null);
+    }
+    // Ejecutar el script en el contexto del window
+    window.eval(appCode);
+});
+
 describe('MateAventura - Tests Unitarios', () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -225,11 +236,45 @@ describe('MateAventura - Tests Unitarios', () => {
                 }
             };
 
-            localStorage.getItem.mockReturnValue(JSON.stringify(mockUserData));
+            localStorage.getItem.mockImplementation((key) => {
+                if (key === 'math_users') return JSON.stringify(mockUserData);
+                if (key === 'math_lang') return 'es';
+                return null;
+            });
+
+            window.syncStateFromStorage();
+
             const restored = JSON.parse(localStorage.getItem('math_users'));
 
             expect(restored['TestPlayer'].level).toBe(5);
             expect(restored['TestPlayer'].totalCoins).toBe(500);
+        });
+
+        test('normalizeUsers añade freezes si no existe', () => {
+            const legacyUserData = {
+                'LegacyPlayer': {
+                    level: 2,
+                    totalCoins: 80,
+                    ops: ['+'],
+                    inventory: { potions: 1, shields: 0, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            localStorage.getItem.mockImplementation((key) => {
+                if (key === 'math_users') return JSON.stringify(legacyUserData);
+                if (key === 'math_lang') return 'es';
+                return null;
+            });
+
+            window.syncStateFromStorage();
+
+            const setCalls = localStorage.setItem.mock.calls;
+            const usersCall = setCalls.find(call => call[0] === 'math_users');
+            expect(usersCall).toBeTruthy();
+
+            const migrated = JSON.parse(usersCall[1]);
+            expect(migrated['LegacyPlayer'].inventory.freezes).toBe(0);
         });
     });
 });
