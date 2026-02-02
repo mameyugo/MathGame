@@ -1,6 +1,7 @@
 /**
  * TranslationManager - Gestión del sistema de traducciones multiidioma
- * Responsable de cargar, almacenar y proporcionar traducciones ES/GL
+ * Responsable de cargar, almacenar y proporcionar traducciones en 7 idiomas:
+ * ES (Español), GL (Galego), EN (English), FR (Français), CA (Català), PT (Português), DE (Deutsch)
  */
 class TranslationManager {
     constructor() {
@@ -10,7 +11,7 @@ class TranslationManager {
 
     /**
      * Carga las traducciones desde archivos JSON
-     * @param {string} lang - Código de idioma (es/gl)
+     * @param {string} lang - Código de idioma (es/gl/en/fr/ca/pt/de)
      * @returns {Promise<void>}
      */
     async loadTranslations(lang) {
@@ -40,7 +41,7 @@ class TranslationManager {
 
     /**
      * Cambia el idioma de la aplicación
-     * @param {string} lang - Código de idioma (es/gl)
+     * @param {string} lang - Código de idioma (es/gl/en/fr/ca/pt/de)
      * @returns {Promise<void>}
      */
     async changeLanguage(lang) {
@@ -54,18 +55,15 @@ class TranslationManager {
         document.getElementById('html-root')?.setAttribute('lang', lang);
 
         // Actualizar estilos de botones de idioma
-        const btnEs = document.getElementById('btn-lang-es');
-        const btnGl = document.getElementById('btn-lang-gl');
-
-        if (btnEs) {
-            btnEs.style.borderColor = lang === 'es' ? 'var(--primary)' : '#ddd';
-            btnEs.style.background = lang === 'es' ? '#f0f7ff' : 'white';
-        }
-
-        if (btnGl) {
-            btnGl.style.borderColor = lang === 'gl' ? 'var(--primary)' : '#ddd';
-            btnGl.style.background = lang === 'gl' ? '#f0f7ff' : 'white';
-        }
+        const languages = ['es', 'gl', 'en', 'fr', 'ca', 'pt', 'de'];
+        languages.forEach(l => {
+            const btn = document.getElementById(`btn-lang-${l}`);
+            if (btn) {
+                btn.style.borderColor = lang === l ? 'var(--primary)' : '#ddd';
+                btn.style.background = lang === l ? '#f0f7ff' : 'white';
+                btn.style.fontWeight = lang === l ? 'bold' : 'normal';
+            }
+        });
 
         // Actualizar todos los textos con data-i18n
         this.updateTranslatedElements();
