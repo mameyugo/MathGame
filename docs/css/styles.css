@@ -50,6 +50,7 @@ body::before {
 
 .screen {
     display: none;
+    padding-top: 50px;
 }
 
 .active {
@@ -219,6 +220,8 @@ button.main-btn:active {
     flex-wrap: wrap;
     max-width: 400px;
     justify-content: flex-end;
+    z-index: 100;
+    margin-bottom: 60px;
 }
 
 .lang-btn {
