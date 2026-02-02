@@ -5,193 +5,193 @@ const path = require('path');
 const appCode = fs.readFileSync(path.join(__dirname, '../docs/js/app.js'), 'utf8');
 
 describe('MateAventura - Tests Unitarios', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    localStorage.getItem.mockReturnValue(null);
-    localStorage.setItem.mockClear();
-  });
-
-  describe('Gestión de Usuarios', () => {
-    test('createUser debe crear un nuevo usuario con datos correctos', () => {
-      // Simular el estado inicial
-      window.users = {};
-      
-      const mockName = 'TestPlayer';
-      window.users[mockName] = {
-        level: 1,
-        totalCoins: 0,
-        ops: ['+'],
-        inventory: { potions: 0, shields: 0, themes: [] },
-        currentTheme: 'default'
-      };
-
-      expect(window.users[mockName]).toBeDefined();
-      expect(window.users[mockName].level).toBe(1);
-      expect(window.users[mockName].totalCoins).toBe(0);
+    beforeEach(() => {
+        jest.clearAllMocks();
+        localStorage.getItem.mockReturnValue(null);
+        localStorage.setItem.mockClear();
     });
 
-    test('initInventory debe inicializar inventario vacío', () => {
-      const user = { level: 1 };
-      
-      if (!user.inventory) {
-        user.inventory = {
-          potions: 0,
-          shields: 0,
-          themes: []
-        };
-      }
+    describe('Gestión de Usuarios', () => {
+        test('createUser debe crear un nuevo usuario con datos correctos', () => {
+            // Simular el estado inicial
+            window.users = {};
 
-      expect(user.inventory.potions).toBe(0);
-      expect(user.inventory.shields).toBe(0);
-      expect(Array.isArray(user.inventory.themes)).toBe(true);
-    });
-  });
+            const mockName = 'TestPlayer';
+            window.users[mockName] = {
+                level: 1,
+                totalCoins: 0,
+                ops: ['+'],
+                inventory: { potions: 0, shields: 0, themes: [] },
+                currentTheme: 'default'
+            };
 
-  describe('Sistema de Juego', () => {
-    test('check() debe sumar monedas en respuesta correcta', () => {
-      window.gameCoins = 0;
-      window.gameLevel = 1;
-      window.currentAnswer = 5;
-      window.gameCoins += 10;
+            expect(window.users[mockName]).toBeDefined();
+            expect(window.users[mockName].level).toBe(1);
+            expect(window.users[mockName].totalCoins).toBe(0);
+        });
 
-      expect(window.gameCoins).toBe(10);
-    });
+        test('initInventory debe inicializar inventario vacío', () => {
+            const user = { level: 1 };
 
-    test('check() debe aplicar penalización en respuesta incorrecta', () => {
-      window.timeLeft = 30;
-      const initialTime = window.timeLeft;
-      window.timeLeft -= 4;
+            if (!user.inventory) {
+                user.inventory = {
+                    potions: 0,
+                    shields: 0,
+                    themes: []
+                };
+            }
 
-      expect(window.timeLeft).toBe(initialTime - 4);
-    });
-
-    test('nivel debe aumentar cada 50 monedas', () => {
-      window.gameCoins = 50;
-      window.gameLevel = 1;
-      
-      if (window.gameCoins % 50 === 0) {
-        window.gameLevel++;
-      }
-
-      expect(window.gameLevel).toBe(2);
-    });
-  });
-
-  describe('Sistema de Tienda', () => {
-    test('buyItem debe descontar monedas', () => {
-      const user = {
-        totalCoins: 200,
-        inventory: { potions: 0, shields: 0, themes: [] }
-      };
-
-      const itemPrice = 50;
-      if (user.totalCoins >= itemPrice) {
-        user.totalCoins -= itemPrice;
-        user.inventory.potions++;
-      }
-
-      expect(user.totalCoins).toBe(150);
-      expect(user.inventory.potions).toBe(1);
+            expect(user.inventory.potions).toBe(0);
+            expect(user.inventory.shields).toBe(0);
+            expect(Array.isArray(user.inventory.themes)).toBe(true);
+        });
     });
 
-    test('equipTheme debe cambiar tema actual', () => {
-      const user = {
-        inventory: { themes: ['theme_space'] },
-        currentTheme: 'default'
-      };
+    describe('Sistema de Juego', () => {
+        test('check() debe sumar monedas en respuesta correcta', () => {
+            window.gameCoins = 0;
+            window.gameLevel = 1;
+            window.currentAnswer = 5;
+            window.gameCoins += 10;
 
-      user.currentTheme = 'theme_space';
+            expect(window.gameCoins).toBe(10);
+        });
 
-      expect(user.currentTheme).toBe('theme_space');
+        test('check() debe aplicar penalización en respuesta incorrecta', () => {
+            window.timeLeft = 30;
+            const initialTime = window.timeLeft;
+            window.timeLeft -= 4;
+
+            expect(window.timeLeft).toBe(initialTime - 4);
+        });
+
+        test('nivel debe aumentar cada 50 monedas', () => {
+            window.gameCoins = 50;
+            window.gameLevel = 1;
+
+            if (window.gameCoins % 50 === 0) {
+                window.gameLevel++;
+            }
+
+            expect(window.gameLevel).toBe(2);
+        });
     });
 
-    test('unequipTheme debe revertir a tema default', () => {
-      const user = {
-        currentTheme: 'theme_jungle'
-      };
+    describe('Sistema de Tienda', () => {
+        test('buyItem debe descontar monedas', () => {
+            const user = {
+                totalCoins: 200,
+                inventory: { potions: 0, shields: 0, themes: [] }
+            };
 
-      user.currentTheme = 'default';
+            const itemPrice = 50;
+            if (user.totalCoins >= itemPrice) {
+                user.totalCoins -= itemPrice;
+                user.inventory.potions++;
+            }
 
-      expect(user.currentTheme).toBe('default');
-    });
-  });
+            expect(user.totalCoins).toBe(150);
+            expect(user.inventory.potions).toBe(1);
+        });
 
-  describe('Sistema de Escudos', () => {
-    test('shield debe proteger contra respuesta incorrecta', () => {
-      const user = {
-        inventory: { shields: 1 }
-      };
+        test('equipTheme debe cambiar tema actual', () => {
+            const user = {
+                inventory: { themes: ['theme_space'] },
+                currentTheme: 'default'
+            };
 
-      const initialShields = user.inventory.shields;
-      user.inventory.shields--;
+            user.currentTheme = 'theme_space';
 
-      expect(user.inventory.shields).toBe(initialShields - 1);
-    });
+            expect(user.currentTheme).toBe('theme_space');
+        });
 
-    test('sin escudo debe aplicar penalización de tiempo', () => {
-      const user = { inventory: { shields: 0 } };
-      let timeLeft = 30;
+        test('unequipTheme debe revertir a tema default', () => {
+            const user = {
+                currentTheme: 'theme_jungle'
+            };
 
-      if (user.inventory.shields === 0) {
-        timeLeft -= 4;
-      }
+            user.currentTheme = 'default';
 
-      expect(timeLeft).toBe(26);
-    });
-  });
-
-  describe('Sistema de Pociones', () => {
-    test('usePotion debe consumir poción y añadir tiempo', () => {
-      const user = { inventory: { potions: 2 } };
-      let timeLeft = 30;
-
-      if (user.inventory.potions > 0) {
-        user.inventory.potions--;
-        timeLeft += 15;
-      }
-
-      expect(user.inventory.potions).toBe(1);
-      expect(timeLeft).toBe(45);
+            expect(user.currentTheme).toBe('default');
+        });
     });
 
-    test('no debe permitir usar poción sin tener', () => {
-      const user = { inventory: { potions: 0 } };
+    describe('Sistema de Escudos', () => {
+        test('shield debe proteger contra respuesta incorrecta', () => {
+            const user = {
+                inventory: { shields: 1 }
+            };
 
-      const canUse = user.inventory.potions > 0;
+            const initialShields = user.inventory.shields;
+            user.inventory.shields--;
 
-      expect(canUse).toBe(false);
+            expect(user.inventory.shields).toBe(initialShields - 1);
+        });
+
+        test('sin escudo debe aplicar penalización de tiempo', () => {
+            const user = { inventory: { shields: 0 } };
+            let timeLeft = 30;
+
+            if (user.inventory.shields === 0) {
+                timeLeft -= 4;
+            }
+
+            expect(timeLeft).toBe(26);
+        });
     });
-  });
 
-  describe('Modo Duelo', () => {
-    test('duelScores debe registrar puntos de cada jugador', () => {
-      window.duelScores = {
-        'Player1': 150,
-        'Player2': 200
-      };
+    describe('Sistema de Pociones', () => {
+        test('usePotion debe consumir poción y añadir tiempo', () => {
+            const user = { inventory: { potions: 2 } };
+            let timeLeft = 30;
 
-      expect(window.duelScores['Player1']).toBe(150);
-      expect(window.duelScores['Player2']).toBe(200);
+            if (user.inventory.potions > 0) {
+                user.inventory.potions--;
+                timeLeft += 15;
+            }
+
+            expect(user.inventory.potions).toBe(1);
+            expect(timeLeft).toBe(45);
+        });
+
+        test('no debe permitir usar poción sin tener', () => {
+            const user = { inventory: { potions: 0 } };
+
+            const canUse = user.inventory.potions > 0;
+
+            expect(canUse).toBe(false);
+        });
     });
-  });
 
-  describe('Sincronización con localStorage', () => {
-    test('syncStateFromStorage debe restaurar datos', () => {
-      const mockUserData = {
-        'TestPlayer': {
-          level: 5,
-          totalCoins: 500,
-          ops: ['+', '-'],
-          inventory: { potions: 2, shields: 1, themes: [] },
-          currentTheme: 'default'
-        }
-      };
+    describe('Modo Duelo', () => {
+        test('duelScores debe registrar puntos de cada jugador', () => {
+            window.duelScores = {
+                'Player1': 150,
+                'Player2': 200
+            };
 
-      localStorage.getItem.mockReturnValue(JSON.stringify(mockUserData));
-      const restored = JSON.parse(localStorage.getItem('math_users'));
-
-      expect(restored['TestPlayer'].level).toBe(5);
-      expect(restored['TestPlayer'].totalCoins).toBe(500);
+            expect(window.duelScores['Player1']).toBe(150);
+            expect(window.duelScores['Player2']).toBe(200);
+        });
     });
-  });
+
+    describe('Sincronización con localStorage', () => {
+        test('syncStateFromStorage debe restaurar datos', () => {
+            const mockUserData = {
+                'TestPlayer': {
+                    level: 5,
+                    totalCoins: 500,
+                    ops: ['+', '-'],
+                    inventory: { potions: 2, shields: 1, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            localStorage.getItem.mockReturnValue(JSON.stringify(mockUserData));
+            const restored = JSON.parse(localStorage.getItem('math_users'));
+
+            expect(restored['TestPlayer'].level).toBe(5);
+            expect(restored['TestPlayer'].totalCoins).toBe(500);
+        });
+    });
 });
