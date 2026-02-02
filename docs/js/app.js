@@ -14,7 +14,8 @@ let duelMode = false;
 let duelPlayers = [];
 let duelScores = {};
 let currentDuelIdx = 0;
-let gameCoins = 0, gameLevel = 1, timeLeft = 30, timerInterval, currentAnswer = 0;
+let gameCoins = 0, gameLevel = 1, timeLeft = 30, timerInterval = null, currentAnswer = 0;
+let freezeTimeout = null;
 
 // Store items definition
 const storeItems = [
@@ -75,10 +76,6 @@ function initInventory(user) {
     }
     if (!user.currentTheme) {
         user.currentTheme = 'default';
-    }
-    // Add freezes field if missing
-    if (user.inventory.freezes === undefined) {
-        user.inventory.freezes = 0;
     }
 }
 
@@ -354,6 +351,19 @@ function initGameSession(lvl, coins) {
     applyTheme();
 
     generateQuestion();
+    startTimer();
+}
+
+/**
+ * Starts or restarts the game timer
+ */
+function startTimer() {
+    // Don't start timer if time has already run out
+    if (timeLeft <= 0) {
+        endGameSession();
+        return;
+    }
+    
     clearInterval(timerInterval);
     timerInterval = setInterval(() => {
         timeLeft--;
@@ -742,7 +752,14 @@ function useFreezeTime() {
     localStorage.setItem('math_users', JSON.stringify(users));
 
     // Pause timer for 5 seconds
-    clearInterval(timerInterval);
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+    
+    // Clear any pending freeze timeout
+    if (freezeTimeout) {
+        clearTimeout(freezeTimeout);
+    }
     
     // Visual feedback
     showFeedbackMessage(t('alert_freeze_used'));
@@ -756,12 +773,9 @@ function useFreezeTime() {
     updatePowerUpDisplay();
 
     // Resume timer after 5 seconds
-    setTimeout(() => {
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            document.getElementById('game-timer').innerText = timeLeft + "s";
-            if (timeLeft <= 0) endGameSession();
-        }, 1000);
+    freezeTimeout = setTimeout(() => {
+        freezeTimeout = null;
+        startTimer();
     }, 5000);
 }
 
