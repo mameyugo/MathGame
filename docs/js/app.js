@@ -27,6 +27,14 @@ const storeItems = [
         type: 'consumable'
     },
     {
+        id: 'freeze',
+        icon: '❄️',
+        nameKey: 'item_freeze_name',
+        descKey: 'item_freeze_desc',
+        price: 20,
+        type: 'consumable'
+    },
+    {
         id: 'shield',
         icon: '🛡️',
         nameKey: 'item_shield_name',
@@ -60,12 +68,17 @@ function initInventory(user) {
     if (!user.inventory) {
         user.inventory = {
             potions: 0,
+            freezes: 0,
             shields: 0,
             themes: []
         };
     }
     if (!user.currentTheme) {
         user.currentTheme = 'default';
+    }
+    // Add freezes field if missing
+    if (user.inventory.freezes === undefined) {
+        user.inventory.freezes = 0;
     }
 }
 
@@ -561,6 +574,7 @@ function renderStore() {
 
         if (item.type === 'consumable') {
             if (item.id === 'potion') owned = users[currentUser].inventory.potions;
+            if (item.id === 'freeze') owned = users[currentUser].inventory.freezes;
             if (item.id === 'shield') owned = users[currentUser].inventory.shields;
         } else if (item.type === 'theme') {
             isOwned = users[currentUser].inventory.themes.includes(item.id);
@@ -617,6 +631,8 @@ function buyItem(itemId) {
     if (item.type === 'consumable') {
         if (item.id === 'potion') {
             users[currentUser].inventory.potions++;
+        } else if (item.id === 'freeze') {
+            users[currentUser].inventory.freezes++;
         } else if (item.id === 'shield') {
             users[currentUser].inventory.shields++;
         }
@@ -711,6 +727,45 @@ function usePotion() {
 }
 
 /**
+ * Uses a freeze time power-up during gameplay
+ */
+function useFreezeTime() {
+    initInventory(users[currentUser]);
+
+    if (users[currentUser].inventory.freezes <= 0) {
+        alert(t('alert_no_freezes'));
+        return;
+    }
+
+    // Consume freeze
+    users[currentUser].inventory.freezes--;
+    localStorage.setItem('math_users', JSON.stringify(users));
+
+    // Pause timer for 5 seconds
+    clearInterval(timerInterval);
+    
+    // Visual feedback
+    showFeedbackMessage(t('alert_freeze_used'));
+    try {
+        confetti({ particleCount: 40, spread: 80, colors: ['#00d4ff', '#ffffff', '#a8e6ff'] });
+    } catch (e) {
+        // Confetti library not loaded
+    }
+
+    // Update display
+    updatePowerUpDisplay();
+
+    // Resume timer after 5 seconds
+    setTimeout(() => {
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById('game-timer').innerText = timeLeft + "s";
+            if (timeLeft <= 0) endGameSession();
+        }, 1000);
+    }, 5000);
+}
+
+/**
  * Updates the power-up display in game
  */
 function updatePowerUpDisplay() {
@@ -718,13 +773,17 @@ function updatePowerUpDisplay() {
 
     const potionBtn = document.getElementById('btn-use-potion');
     const potionCount = document.getElementById('potion-count');
+    const freezeBtn = document.getElementById('btn-use-freeze');
+    const freezeCount = document.getElementById('freeze-count');
     const shieldIndicator = document.getElementById('shield-indicator');
     const shieldCount = document.getElementById('shield-count');
 
     potionCount.innerText = users[currentUser].inventory.potions;
+    freezeCount.innerText = users[currentUser].inventory.freezes;
     shieldCount.innerText = users[currentUser].inventory.shields;
 
     potionBtn.disabled = users[currentUser].inventory.potions <= 0;
+    freezeBtn.disabled = users[currentUser].inventory.freezes <= 0;
 
     if (users[currentUser].inventory.shields > 0) {
         shieldIndicator.classList.add('active');

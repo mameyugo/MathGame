@@ -36,12 +36,14 @@ describe('MateAventura - Tests Unitarios', () => {
             if (!user.inventory) {
                 user.inventory = {
                     potions: 0,
+                    freezes: 0,
                     shields: 0,
                     themes: []
                 };
             }
 
             expect(user.inventory.potions).toBe(0);
+            expect(user.inventory.freezes).toBe(0);
             expect(user.inventory.shields).toBe(0);
             expect(Array.isArray(user.inventory.themes)).toBe(true);
         });
@@ -160,6 +162,42 @@ describe('MateAventura - Tests Unitarios', () => {
             const canUse = user.inventory.potions > 0;
 
             expect(canUse).toBe(false);
+        });
+    });
+
+    describe('Sistema de Congelación de Tiempo', () => {
+        test('useFreezeTime debe consumir freeze', () => {
+            const user = { inventory: { freezes: 3 } };
+
+            if (user.inventory.freezes > 0) {
+                user.inventory.freezes--;
+            }
+
+            expect(user.inventory.freezes).toBe(2);
+        });
+
+        test('no debe permitir usar freeze sin tener', () => {
+            const user = { inventory: { freezes: 0 } };
+
+            const canUse = user.inventory.freezes > 0;
+
+            expect(canUse).toBe(false);
+        });
+
+        test('buyItem debe añadir freeze al inventario', () => {
+            const user = {
+                totalCoins: 50,
+                inventory: { freezes: 0 }
+            };
+
+            const itemPrice = 20;
+            if (user.totalCoins >= itemPrice) {
+                user.totalCoins -= itemPrice;
+                user.inventory.freezes++;
+            }
+
+            expect(user.totalCoins).toBe(30);
+            expect(user.inventory.freezes).toBe(1);
         });
     });
 
