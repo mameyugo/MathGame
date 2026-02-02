@@ -21,6 +21,7 @@
     "input_edit_name": "Nuevo nombre...",
     "btn_close_store": "⬅ Cerrar",
     "label_level": "Nivel",
+    "label_record": "Récord",
     "turn_of": "🏆 Turno de: ",
     "btn_play_user": "▶️ Jugar",
     "alert_invalid_name": "Nombre no válido o ya existe",

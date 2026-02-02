@@ -329,6 +329,13 @@ button.main-btn:active {
     border-radius: 10px;
 }
 
+.stat-record {
+    background: #f0f7ff;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #dbe9ff;
+}
+
 .game-timer {
     color: var(--error);
     font-size: 1.5rem;

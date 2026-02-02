@@ -321,7 +321,7 @@ function startSingleGame() {
     if (document.getElementById('cfg-mul').checked) users[currentUser].ops.push('*');
     if (!users[currentUser].ops.length) return alert(t('alert_choose_operation'));
     localStorage.setItem('math_users', JSON.stringify(users));
-    initGameSession(users[currentUser].level, 0);
+    initGameSession(1, 0);
 }
 
 /**
@@ -342,7 +342,7 @@ function setupDuel() {
 function startNextDuelTurn() {
     currentUser = duelPlayers[currentDuelIdx];
     document.getElementById('turn-indicator').innerText = t('turn_of') + currentUser;
-    initGameSession(users[currentUser].level, 0);
+    initGameSession(1, 0);
 }
 
 /**
@@ -360,6 +360,7 @@ function initGameSession(lvl, coins) {
     // Initialize power-ups display
     initInventory(users[currentUser]);
     updatePowerUpDisplay();
+    updateRecordDisplay();
     applyTheme();
 
     generateQuestion();
@@ -492,6 +493,7 @@ function check(val) {
     }
     document.getElementById('game-level').innerText = gameLevel;
     document.getElementById('game-coins').innerText = gameCoins;
+    updateRecordDisplay();
 }
 
 /**
@@ -542,7 +544,7 @@ function endGameSession() {
         }
     } else {
         users[currentUser].totalCoins += gameCoins;
-        users[currentUser].level = gameLevel;
+        users[currentUser].level = Math.max(users[currentUser].level || 1, gameLevel);
         localStorage.setItem('math_users', JSON.stringify(users));
         alert(t('alert_good_job') + gameCoins + t('alert_coins'));
         showUsers();
@@ -837,6 +839,18 @@ function applyTheme() {
 }
 
 /**
+ * Actualiza la visualización del récord del jugador
+ */
+function updateRecordDisplay() {
+    const recordEl = document.getElementById('game-record');
+    if (!recordEl || !currentUser) return;
+
+    const userRecord = typeof users[currentUser].level === 'number' ? users[currentUser].level : 1;
+    const displayRecord = Math.max(userRecord, gameLevel);
+    recordEl.innerText = displayRecord;
+}
+
+/**
  * Normaliza la estructura de usuarios guardados (migraciones de localStorage)
  */
 function normalizeUsers() {
@@ -846,6 +860,11 @@ function normalizeUsers() {
         const user = users[userName];
         const beforeInventory = user.inventory ? JSON.stringify(user.inventory) : null;
         const beforeTheme = user.currentTheme;
+
+        if (typeof user.level !== 'number' || Number.isNaN(user.level)) {
+            user.level = 1;
+            changed = true;
+        }
 
         initInventory(user);
 
