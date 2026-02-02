@@ -115,7 +115,7 @@ window.bancoProblemas = [
         nivelMin: 2,
         generar: () => {
             const respuesta = 12;
-            
+
             return {
                 texto: `Si en un año hay meses que tienen 30 días y otros tienen 31, ¿cuántos meses tienen 28 días?`,
                 respuestaCorrecta: respuesta,
@@ -135,7 +135,7 @@ window.bancoProblemas = [
             const velocidad_tren = Math.floor(Math.random() * 50) + 80; // 80-130 km/h
             const velocidad_viento = Math.floor(Math.random() * 40) + 30; // 30-70 km/h
             const respuesta = 0;
-            
+
             return {
                 texto: `Un tren eléctrico viaja hacia el Norte a ${velocidad_tren} km/h. Si el viento sopla hacia el Sur a ${velocidad_viento} km/h, ¿cuánto humo echa el tren?`,
                 respuestaCorrecta: respuesta,
@@ -143,6 +143,66 @@ window.bancoProblemas = [
                 ecuacion: `Humo del tren = __`,
                 ecuacionValores: [respuesta],
                 opciones: [respuesta, velocidad_tren, velocidad_viento, velocidad_tren - velocidad_viento]
+            };
+        }
+    },
+    {
+        id: "biblioteca",
+        tipo: "matematico",
+        nivelMin: 2,
+        generar: () => {
+            const X = Math.floor(Math.random() * 51) + 50; // 50-100 libros iniciales
+            const Y = Math.floor(Math.random() * 21) + 10; // 10-30 libros prestados
+            const Z = Math.floor(Math.random() * 11) + 5;  // 5-15 libros devueltos
+            const respuesta = X - Y + Z;
+
+            return {
+                texto: `En la biblioteca de clase hay ${X} libros. El lunes se prestaron ${Y} libros, pero el viernes se devolvieron ${Z}. ¿Cuántos libros hay ahora?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Tienes que restar los prestados y sumar los devueltos: ${X} - ${Y} + ${Z} = ${respuesta}.`,
+                ecuacion: `${X} - ${Y} + ${Z} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, X - Y, X + Z - Y, X - Y - Z]
+            };
+        }
+    },
+    {
+        id: "huerto_manzanas",
+        tipo: "matematico",
+        nivelMin: 4,
+        generar: () => {
+            const F = Math.floor(Math.random() * 7) + 3; // 3-9 filas
+            const A = Math.floor(Math.random() * 7) + 4; // 4-10 árboles por fila
+            const respuesta = F * A;
+
+            return {
+                texto: `Don Tomás ha plantado un huerto con ${F} filas de manzanos. Si en cada fila hay ${A} árboles, ¿cuántos árboles tiene en total?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Tienes que multiplicar el número de filas por los árboles en cada fila: ${F} × ${A} = ${respuesta}.`,
+                ecuacion: `${F} × ${A} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, F + A, (F + A) * 2, F * (A - 1)]
+            };
+        }
+    },
+    {
+        id: "vuelta_compra",
+        tipo: "matematico",
+        nivelMin: 1,
+        generar: () => {
+            const articulos = ["Libreta", "Goma", "Lápiz", "Cuaderno", "Bolígrafo"];
+            const articulo = articulos[Math.floor(Math.random() * articulos.length)];
+            const precio = Math.floor(Math.random() * 5) + 1; // 1-5€
+            const billete = Math.random() > 0.5 ? 10 : 20; // 10€ o 20€
+            const respuesta = billete - precio;
+
+            return {
+                texto: `Vas a la papelería y compras ${articulo.toLowerCase()} que cuesta ${precio}€. Si pagas con un billete de ${billete}€, ¿cuánto dinero te tienen que devolver?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Tienes que restar el precio del billete: ${billete} - ${precio} = ${respuesta}€.`,
+                ecuacion: `${billete} - ${precio} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, precio, billete, billete + precio]
             };
         }
     }
