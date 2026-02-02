@@ -239,6 +239,15 @@ button.main-btn:active {
     border: 2px solid #ddd;
 }
 
+.edit-name-input {
+    width: 80%;
+    padding: 10px;
+    border: 2px solid #6a4c93;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'Comic Sans MS', cursive;
+}
+
 .btn-add {
     padding: 12px;
     width: 30%;
