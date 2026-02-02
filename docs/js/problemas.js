@@ -108,5 +108,42 @@ window.bancoProblemas = [
                 opciones: [respuesta, peso_ladrillo, opcion_trampa, respuesta + 1.5]
             };
         }
+    },
+    {
+        id: "meses_ano",
+        tipo: "logica",
+        nivelMin: 2,
+        generar: () => {
+            const respuesta = 12;
+            
+            return {
+                texto: `Si en un año hay meses que tienen 30 días y otros tienen 31, ¿cuántos meses tienen 28 días?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Trampa desactivada! La pregunta no es cuántos meses tienen SOLO 28 días, sino cuántos meses TIENEN 28 días (entre otros). Todos los meses del año tienen al menos 28 días, incluso febrero. La respuesta es 12.`,
+                ecuacion: `Meses con 28+ días = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 1, 11, 2]
+            };
+        }
+    },
+    {
+        id: "tren_electrico",
+        tipo: "logica",
+        nivelMin: 3,
+        generar: () => {
+            // Números aleatorios para hacer más realista, pero la respuesta siempre es 0
+            const velocidad_tren = Math.floor(Math.random() * 50) + 80; // 80-130 km/h
+            const velocidad_viento = Math.floor(Math.random() * 40) + 30; // 30-70 km/h
+            const respuesta = 0;
+            
+            return {
+                texto: `Un tren eléctrico viaja hacia el Norte a ${velocidad_tren} km/h. Si el viento sopla hacia el Sur a ${velocidad_viento} km/h, ¿cuánto humo echa el tren?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Trampa desactivada! Es un tren ELÉCTRICO, no a vapor o diesel. Los trenes eléctricos no echan humo, alimentados directamente por electricidad. Todas esas velocidades son distractores. La respuesta es 0.`,
+                ecuacion: `Humo del tren = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, velocidad_tren, velocidad_viento, velocidad_tren - velocidad_viento]
+            };
+        }
     }
 ];
