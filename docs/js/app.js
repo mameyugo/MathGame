@@ -448,7 +448,33 @@ function renderOptions() {
     const grid = document.getElementById('answers-area');
     grid.innerHTML = "";
     let opts = new Set([currentAnswer]);
-    while (opts.size < 4) opts.add(currentAnswer + (Math.floor(Math.random() * 10) - 5));
+
+    const addOption = (val) => {
+        if (typeof val !== 'number' || Number.isNaN(val)) return;
+        if (val < 0) return;
+        opts.add(val);
+    };
+
+    // 15%: añadir opción errónea con resultado correcto ±10
+    if (Math.random() < 0.15) {
+        const delta = Math.random() < 0.5 ? -10 : 10;
+        addOption(currentAnswer + delta);
+    }
+
+    // 10%: añadir opción errónea invirtiendo los dígitos (14 -> 41)
+    if (Math.random() < 0.10) {
+        const reversed = parseInt(String(Math.abs(currentAnswer)).split('').reverse().join(''), 10);
+        if (!Number.isNaN(reversed) && reversed !== currentAnswer) {
+            addOption(reversed);
+        }
+    }
+
+    // Completar opciones con valores cercanos
+    let guard = 0;
+    while (opts.size < 4 && guard < 100) {
+        guard++;
+        addOption(currentAnswer + (Math.floor(Math.random() * 10) - 5));
+    }
     Array.from(opts).sort(() => Math.random() - 0.5).forEach(o => {
         if (o >= 0) {
             const b = document.createElement('button');
