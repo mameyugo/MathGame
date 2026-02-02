@@ -205,5 +205,103 @@ window.bancoProblemas = [
                 opciones: [respuesta, precio, billete, billete + precio]
             };
         }
+    },
+    {
+        id: "despertador_antiguo",
+        tipo: "logica",
+        nivelMin: 3,
+        generar: () => {
+            const respuesta = 1;
+
+            return {
+                texto: `Te vas a la cama a las 8 de la noche y pones un despertador de agujas (analógico) para que suene a las 9 de la mañana. ¿Cuántas horas habrás dormido cuando suene la alarma?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Trampa! Los despertadores analógicos no distinguen entre AM y PM. Cuando la aguja llegue al 9, sonará a las 9 de la noche (1 hora después), no a las 9 de la mañana.`,
+                ecuacion: `9 - 8 = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 13, 12, 14]
+            };
+        }
+    },
+    {
+        id: "reloj_espejo",
+        tipo: "logica",
+        nivelMin: 4,
+        generar: () => {
+            const hora_espejo = 9;
+            const respuesta = 12 - hora_espejo; // 3
+
+            return {
+                texto: `Miras un reloj de agujas a través de un espejo. Las agujas marcan las ${hora_espejo} en punto. ¿Qué hora es en realidad?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `El espejo invierte horizontalmente. La posición del 9 se convierte en la del 3. La hora real es las ${respuesta} en punto.`,
+                ecuacion: `12 - ${hora_espejo} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, hora_espejo, 6, 12]
+            };
+        }
+    },
+    {
+        id: "tarta_horno",
+        tipo: "matematico",
+        nivelMin: 1,
+        generar: () => {
+            const hora_inicio = Math.floor(Math.random() * 9) + 10; // 10-18
+            const duracion = [15, 30, 45, 60][Math.floor(Math.random() * 4)];
+            const hora_fin = hora_inicio + Math.floor(duracion / 60);
+            const minutos_fin = duracion % 60;
+            const respuesta = minutos_fin === 0 ? hora_fin : `${hora_fin}:${minutos_fin.toString().padStart(2, '0')}`;
+
+            return {
+                texto: `Mamá ha metido una tarta al horno a las ${hora_inicio}:00. Si la tarta tarda ${duracion} minutos en hacerse, ¿a qué hora debemos sacarla?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Sumamos ${duracion} minutos a las ${hora_inicio}:00. Resultado: ${respuesta}.`,
+                ecuacion: minutos_fin === 0 
+                    ? `${hora_inicio} + ${duracion / 60} hora(s) = __`
+                    : `${hora_inicio}:00 + ${duracion} min = __ : __`,
+                ecuacionValores: minutos_fin === 0 ? [hora_fin] : [hora_fin, minutos_fin],
+                opciones: minutos_fin === 0 
+                    ? [hora_fin, hora_fin + 1, hora_inicio, hora_fin - 1]
+                    : [respuesta, `${hora_fin + 1}:00`, `${hora_inicio}:${duracion}`, `${hora_fin}:00`]
+            };
+        }
+    },
+    {
+        id: "viaje_autobus",
+        tipo: "matematico",
+        nivelMin: 2,
+        generar: () => {
+            const hora_salida = Math.floor(Math.random() * 4) + 8; // 8-11
+            const hora_llegada = Math.floor(Math.random() * 9) + 12; // 12-20
+            const horas_viaje = hora_llegada - hora_salida;
+            const respuesta = `${horas_viaje}:30`;
+
+            return {
+                texto: `Un autobús sale de la ciudad a las ${hora_salida}:00 y llega a su destino a las ${hora_llegada}:30. ¿Cuánto tiempo ha durado el viaje?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Desde las ${hora_salida}:00 hasta las ${hora_llegada}:30 hay ${horas_viaje} horas y 30 minutos.`,
+                ecuacion: `${hora_llegada}:30 - ${hora_salida}:00 = __ : __`,
+                ecuacionValores: [horas_viaje, 30],
+                opciones: [respuesta, `${horas_viaje}:00`, `${horas_viaje + 1}:00`, `${horas_viaje}:15`]
+            };
+        }
+    },
+    {
+        id: "entrenamiento_batman",
+        tipo: "matematico",
+        nivelMin: 4,
+        generar: () => {
+            const horas = Math.floor(Math.random() * 4) + 2; // 2-5 horas
+            const respuesta = horas * 60;
+
+            return {
+                texto: `Batman ha entrenado durante ${horas} horas hoy. ¿Cuántos minutos ha estado entrenando en total?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Para convertir horas a minutos multiplicamos por 60: ${horas} × 60 = ${respuesta} minutos.`,
+                ecuacion: `${horas} × 60 = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, horas * 30, horas * 100, respuesta + 60]
+            };
+        }
     }
 ];
