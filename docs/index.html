@@ -73,6 +73,12 @@
                 </label>
             </div>
 
+            <button class="main-btn" onclick="startSingleGame()" data-i18n="btn_play">¡A JUGAR!</button>
+            <button class="main-btn btn-problem" onclick="startProblemGame('matematico')"
+                data-i18n="btn_problem_math">🧮 Problemas matemáticos</button>
+            <button class="main-btn btn-problem" onclick="startProblemGame('logica')" data-i18n="btn_problem_logic">🧠
+                Problemas de lógica</button>
+
             <!-- Sección de Sacos de Problemas -->
             <div class="config-section">
                 <h4 data-i18n="config_problem_bags">🎒 Sacos de Problemas</h4>
@@ -83,11 +89,6 @@
                     <!-- Las tarjetas se renderizan dinámicamente -->
                 </div>
             </div>
-
-            <button class="main-btn" onclick="startSingleGame()" data-i18n="btn_play">¡A JUGAR!</button>
-            <button class="main-btn btn-problem" onclick="startProblemGame('matematico')"
-                data-i18n="btn_problem_math">🧮 Problemas matemáticos</button>
-            <button class="main-btn btn-problem" onclick="startProblemGame('logica')" data-i18n="btn_problem_logic">🧠
                 Problemas de lógica</button>
             <button class="main-btn btn-store" onclick="openStore()" data-i18n="btn_open_store">🏪 TIENDA</button>
             <button class="btn-back" onclick="showUsers()" data-i18n="btn_change_user">⬅ Cambiar de usuario</button>
