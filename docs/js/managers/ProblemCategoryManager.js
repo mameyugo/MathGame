@@ -126,7 +126,7 @@ class ProblemCategoryManager {
 
             container.appendChild(card);
         });
-        
+
         console.log(`Rendered ${this.getCategories().length} category cards`);
     }
 

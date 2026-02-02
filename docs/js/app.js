@@ -469,12 +469,24 @@ async function initApp() {
  * Renderiza las tarjetas de categorías de problemas en la configuración del usuario
  */
 function renderProblemCategories() {
+    console.log('=== renderProblemCategories called ===');
+    
+    const container = document.getElementById('problem-categories-area');
+    console.log('Container element:', container);
+    
+    if (!container) {
+        console.error('ERROR: problem-categories-area not found in DOM!');
+        return;
+    }
+    
     const selectedCategories = userManager.getProblemCategories();
+    console.log('Selected categories from user:', selectedCategories);
 
     problemCategoryManager.renderCategoryCards(
         'problem-categories-area',
         selectedCategories,
         (categoryId) => {
+            console.log('Category toggled:', categoryId);
             // Callback cuando se hace clic en una categoría
             userManager.toggleProblemCategory(categoryId);
             // Re-renderizar para actualizar visualización
