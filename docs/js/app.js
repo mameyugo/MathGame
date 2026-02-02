@@ -74,6 +74,18 @@ function initInventory(user) {
             themes: []
         };
     }
+    if (typeof user.inventory.potions !== 'number' || Number.isNaN(user.inventory.potions)) {
+        user.inventory.potions = 0;
+    }
+    if (typeof user.inventory.freezes !== 'number' || Number.isNaN(user.inventory.freezes)) {
+        user.inventory.freezes = 0;
+    }
+    if (typeof user.inventory.shields !== 'number' || Number.isNaN(user.inventory.shields)) {
+        user.inventory.shields = 0;
+    }
+    if (!Array.isArray(user.inventory.themes)) {
+        user.inventory.themes = [];
+    }
     if (!user.currentTheme) {
         user.currentTheme = 'default';
     }
@@ -825,6 +837,30 @@ function applyTheme() {
 }
 
 /**
+ * Normaliza la estructura de usuarios guardados (migraciones de localStorage)
+ */
+function normalizeUsers() {
+    let changed = false;
+
+    Object.keys(users).forEach(userName => {
+        const user = users[userName];
+        const beforeInventory = user.inventory ? JSON.stringify(user.inventory) : null;
+        const beforeTheme = user.currentTheme;
+
+        initInventory(user);
+
+        const afterInventory = JSON.stringify(user.inventory);
+        if (beforeInventory !== afterInventory || beforeTheme !== user.currentTheme) {
+            changed = true;
+        }
+    });
+
+    if (changed) {
+        localStorage.setItem('math_users', JSON.stringify(users));
+    }
+}
+
+/**
  * Sincroniza el estado desde localStorage (útil cuando vuelves atrás en navegador)
  */
 function syncStateFromStorage() {
@@ -832,10 +868,8 @@ function syncStateFromStorage() {
     const storedUsers = localStorage.getItem('math_users');
     if (storedUsers) {
         users = JSON.parse(storedUsers);
-        // Reinicializar inventarios si es necesario
-        Object.keys(users).forEach(userName => {
-            initInventory(users[userName]);
-        });
+        // Migrar/normalizar estructura antigua de usuarios
+        normalizeUsers();
     }
 
     currentLanguage = localStorage.getItem('math_lang') || 'es';
@@ -851,11 +885,8 @@ async function initApp() {
     // Inicializar idioma
     await changeLanguage(currentLanguage);
 
-    // Initialize inventory for all existing users
-    Object.keys(users).forEach(userName => {
-        initInventory(users[userName]);
-    });
-    localStorage.setItem('math_users', JSON.stringify(users));
+    // Migrar/normalizar estructura antigua de usuarios
+    normalizeUsers();
 
     showUsers();
 }
