@@ -1,0 +1,213 @@
+{
+  "project": {
+    "name": "MathGame",
+    "description": "Juego educativo interactivo de matemáticas para niños",
+    "repository": "https://github.com/mameyugo/MathGame.git",
+    "branch": "master",
+    "version": "1.0-alpha",
+    "status": "active-development"
+  },
+  "stack": {
+    "frontend": ["HTML5", "CSS3", "JavaScript ES6+"],
+    "architecture": "Managers Pattern (No frameworks)",
+    "styling": "CSS Flexbox + CSS Grid",
+    "state": "localStorage",
+    "versionControl": "Git"
+  },
+  "languages": [
+    { "code": "es", "name": "Español", "flag": "🇪🇸", "priority": "primary" },
+    { "code": "gl", "name": "Gallego", "flag": "🇬🇱", "priority": "primary" },
+    { "code": "en", "name": "English", "flag": "🇬🇧", "priority": "secondary" },
+    { "code": "fr", "name": "Français", "flag": "🇫🇷", "priority": "secondary" },
+    { "code": "ca", "name": "Català", "flag": "🇨🇦", "priority": "secondary" },
+    { "code": "pt", "name": "Português", "flag": "🇵🇹", "priority": "secondary" },
+    { "code": "de", "name": "Deutsch", "flag": "🇩🇪", "priority": "secondary" }
+  ],
+  "features": {
+    "operations": [
+      { "symbol": "+", "name": "Addition", "id": "sum" },
+      { "symbol": "-", "name": "Subtraction", "id": "res" },
+      { "symbol": "*", "name": "Multiplication", "id": "mul" },
+      { "symbol": "/", "name": "Division", "id": "div", "note": "Always exact results" }
+    ],
+    "categories": [
+      {
+        "id": "explorador",
+        "name": "🧭 Explorador",
+        "difficulty": "easy",
+        "ageRange": "6-9",
+        "color": "#27ae60",
+        "problemCount": 7
+      },
+      {
+        "id": "arquitecto",
+        "name": "🏗️ Arquitecto",
+        "difficulty": "medium",
+        "ageRange": "10-12",
+        "color": "#f39c12",
+        "problemCount": 10
+      },
+      {
+        "id": "cientifico",
+        "name": "🔬 Científico",
+        "difficulty": "hard",
+        "ageRange": "12-14",
+        "color": "#e74c3c",
+        "problemCount": 6
+      }
+    ],
+    "gameModes": [
+      { "id": "single", "name": "Juego Individual", "type": "math" },
+      { "id": "math-problems", "name": "Problemas Matemáticos", "type": "problem" },
+      { "id": "logic-problems", "name": "Problemas de Lógica", "type": "problem" },
+      { "id": "duel", "name": "Modo Duelo", "type": "competitive" }
+    ],
+    "powerups": [
+      { "id": "potion", "name": "Poción", "effect": "+30 segundos", "cost": "coins" },
+      { "id": "freeze", "name": "Congelación", "effect": "Pausa tiempo", "cost": "coins" },
+      { "id": "shield", "name": "Escudo", "effect": "-1 vida", "cost": "coins" }
+    ]
+  },
+  "fileStructure": {
+    "root": "/var/www/html/MathGame/",
+    "main": "docs/index.html",
+    "managers": "docs/js/managers/",
+    "styles": "docs/css/styles.css",
+    "translations": "docs/lang/",
+    "problems": "docs/js/problemas.js"
+  },
+  "managers": [
+    {
+      "name": "UserManager",
+      "lines": 402,
+      "role": "User CRUD and persistence",
+      "key_methods": [
+        "createUser", "selectUser", "getUser", "getProblemCategories",
+        "setProblemCategories", "toggleProblemCategory"
+      ],
+      "file": "docs/js/managers/UserManager.js"
+    },
+    {
+      "name": "GameEngine",
+      "lines": 379,
+      "role": "Game flow and scoring",
+      "key_methods": [
+        "startSingleGame", "startProblemGame", "checkAnswer", "endGame",
+        "addCoins", "spendCoins", "initGameSession"
+      ],
+      "file": "docs/js/managers/GameEngine.js"
+    },
+    {
+      "name": "QuestionGenerator",
+      "lines": 293,
+      "role": "Question generation with filtering",
+      "key_methods": [
+        "generateQuestion", "selectProblem", "renderVisual", "renderOptions"
+      ],
+      "key_features": [
+        "Operation-based filtering",
+        "Category-based filtering",
+        "Level scaling",
+        "Visual, standard, and unknown modes"
+      ],
+      "file": "docs/js/managers/QuestionGenerator.js"
+    },
+    {
+      "name": "ProblemCategoryManager",
+      "lines": 178,
+      "role": "Problem categorization",
+      "key_methods": [
+        "getCategories", "renderCategoryCards", "filterProblemsByCategories"
+      ],
+      "file": "docs/js/managers/ProblemCategoryManager.js"
+    },
+    {
+      "name": "TranslationManager",
+      "lines": 95,
+      "role": "i18n system",
+      "key_methods": [
+        "t", "changeLanguage", "loadTranslations", "getCurrentLanguage"
+      ],
+      "supported_languages": 7,
+      "file": "docs/js/managers/TranslationManager.js"
+    }
+  ],
+  "colors": {
+    "primary": "#3498db",
+    "success": "#27ae60",
+    "error": "#e74c3c",
+    "dark": "#2c3e50",
+    "accent": "#9b59b6",
+    "gold": "#f1c40f",
+    "switch_off": "#e74c3c",
+    "switch_on": "#27ae60"
+  },
+  "ui": {
+    "breakpoints": {
+      "mobile": "max-width: 600px",
+      "tablet": "max-width: 768px"
+    },
+    "padding": {
+      "screen_top": "30px",
+      "screen_horizontal": "10px"
+    },
+    "switch": {
+      "width": "50px",
+      "height": "26px",
+      "knob_size": "20px",
+      "transition": "0.3s ease",
+      "off_color": "#e74c3c",
+      "on_color": "#27ae60"
+    }
+  },
+  "development_rules": {
+    "naming": {
+      "variables": "camelCase en inglés",
+      "classes": "PascalCase",
+      "constants": "UPPER_SNAKE_CASE",
+      "comments": "Español"
+    },
+    "architecture": {
+      "managers_independence": true,
+      "app_coordination_only": true,
+      "dependency_injection": true,
+      "localstorage_via_manager": true
+    },
+    "css": {
+      "use_css_variables": true,
+      "important_only_for_switches": true,
+      "vendor_prefixes_required": ["-webkit-", "-moz-", "-ms-"],
+      "responsive_first": true
+    },
+    "i18n": {
+      "required_languages": 7,
+      "key_format": "snake_case",
+      "sync_all_files": true
+    }
+  },
+  "recent_commits": [
+    { "hash": "c757b59", "message": "Improve switch visual contrast - red when off, green when on" },
+    { "hash": "699104c", "message": "Replace large edit button with small pencil icon next to title" },
+    { "hash": "1dee997", "message": "Reduce screen padding-top from 50px to 30px" },
+    { "hash": "97a7a27", "message": "Add margin to prevent language buttons from overlapping game timer" },
+    { "hash": "92e33d1", "message": "Update help.js for 7 languages" },
+    { "hash": "3ca75de", "message": "Reorder UI - move play buttons above category selector" },
+    { "hash": "3e124b8", "message": "Add division operation with exact integer results and 7-language support" }
+  ],
+  "performance_targets": {
+    "screen_render": "<100ms",
+    "question_generation": "<50ms",
+    "language_switch": "<200ms",
+    "animations": "60fps"
+  },
+  "testing": {
+    "critical_cases": [
+      "No negative numbers in subtraction",
+      "Exact integer results in division",
+      "Real-time language switching",
+      "User persistence in localStorage",
+      "Correct scoring and coin calculation",
+      "Category filtering efficiency"
+    ]
+  }
+}
