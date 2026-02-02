@@ -277,16 +277,29 @@ function submitProblem() {
     const isCorrect = parsed.length === expected.length && parsed.every((v, i) => v === expected[i]);
 
     if (isCorrect) {
-        gameCoins += 10;
-        timeLeft += 2;
+        // Actualizar GameEngine
+        gameEngine.gameCoins += 10;
+        gameEngine.timeLeft += 2;
+
         try {
             confetti({ particleCount: 30, spread: 50 });
         } catch (e) {
             // Confetti library not loaded
         }
-        if (gameCoins % 50 === 0) gameLevel++;
+
+        if (gameEngine.gameCoins % 50 === 0) {
+            gameEngine.gameLevel++;
+        }
+
+        // Sincronizar variables locales
+        gameCoins = gameEngine.gameCoins;
+        gameLevel = gameEngine.gameLevel;
+        timeLeft = gameEngine.timeLeft;
+
         document.getElementById('game-level').innerText = gameLevel;
         document.getElementById('game-coins').innerText = gameCoins;
+        document.getElementById('game-timer').innerText = timeLeft + 's';
+
         updateRecordDisplay();
         generateProblem();
     } else {
@@ -301,7 +314,12 @@ function submitProblem() {
 
         document.getElementById('app-container').classList.add('shake');
         setTimeout(() => document.getElementById('app-container').classList.remove('shake'), 400);
-        timeLeft -= 4;
+
+        // Actualizar GameEngine
+        gameEngine.timeLeft -= 4;
+        timeLeft = gameEngine.timeLeft;
+        document.getElementById('game-timer').innerText = timeLeft + 's';
+
         if (currentProblem.explicacion) {
             showFeedbackMessage(currentProblem.explicacion);
         }
