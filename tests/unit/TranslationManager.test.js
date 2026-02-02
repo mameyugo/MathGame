@@ -79,7 +79,7 @@ describe('TranslationManager', () => {
 
             expect(fetch).toHaveBeenCalledTimes(1);
             expect(consoleErrorSpy).toHaveBeenCalled();
-            
+
             consoleErrorSpy.mockRestore();
         });
     });
@@ -117,12 +117,12 @@ describe('TranslationManager', () => {
             manager.translations = {
                 es: { test: 'Prueba' }
             };
-            
+
             const mockElement = {
                 style: {},
                 setAttribute: jest.fn()
             };
-            
+
             global.document.getElementById = jest.fn(() => mockElement);
             manager.updateTranslatedElements = jest.fn();
         });
@@ -139,7 +139,7 @@ describe('TranslationManager', () => {
 
         test('should update html lang attribute', async () => {
             const mockRoot = { setAttribute: jest.fn() };
-            global.document.getElementById = jest.fn((id) => 
+            global.document.getElementById = jest.fn((id) =>
                 id === 'html-root' ? mockRoot : { style: {} }
             );
 
@@ -161,7 +161,7 @@ describe('TranslationManager', () => {
 
         test('should not reload if language already loaded', async () => {
             manager.translations.gl = { test: 'Proba' };
-            
+
             await manager.changeLanguage('gl');
 
             expect(fetch).not.toHaveBeenCalled();
@@ -179,7 +179,7 @@ describe('TranslationManager', () => {
                 { getAttribute: jest.fn(() => 'hello'), innerHTML: '' },
                 { getAttribute: jest.fn(() => 'goodbye'), innerHTML: '' }
             ];
-            
+
             global.document.querySelectorAll = jest.fn((selector) => {
                 if (selector === '[data-i18n]') return mockElements;
                 return [];
@@ -198,7 +198,7 @@ describe('TranslationManager', () => {
             const mockInputs = [
                 { getAttribute: jest.fn(() => 'input_name'), placeholder: '' }
             ];
-            
+
             global.document.querySelectorAll = jest.fn((selector) => {
                 if (selector === '[data-i18n-placeholder]') return mockInputs;
                 return [];

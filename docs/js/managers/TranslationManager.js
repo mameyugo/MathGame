@@ -33,9 +33,9 @@ class TranslationManager {
      * @returns {string} Texto traducido
      */
     t(key) {
-        return this.translations[this.currentLanguage]?.[key] || 
-               this.translations['es']?.[key] || 
-               key;
+        return this.translations[this.currentLanguage]?.[key] ||
+            this.translations['es']?.[key] ||
+            key;
     }
 
     /**
@@ -56,12 +56,12 @@ class TranslationManager {
         // Actualizar estilos de botones de idioma
         const btnEs = document.getElementById('btn-lang-es');
         const btnGl = document.getElementById('btn-lang-gl');
-        
+
         if (btnEs) {
             btnEs.style.borderColor = lang === 'es' ? 'var(--primary)' : '#ddd';
             btnEs.style.background = lang === 'es' ? '#f0f7ff' : 'white';
         }
-        
+
         if (btnGl) {
             btnGl.style.borderColor = lang === 'gl' ? 'var(--primary)' : '#ddd';
             btnGl.style.background = lang === 'gl' ? '#f0f7ff' : 'white';
