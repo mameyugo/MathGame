@@ -535,12 +535,14 @@ button.main-btn:active {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     animation: fadeIn 0.3s;
+    overflow: auto;
 }
 
 .modal.active {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    padding: 20px 0;
 }
 
 .modal-content {
@@ -549,10 +551,11 @@ button.main-btn:active {
     border-radius: 25px;
     max-width: 500px;
     width: 90%;
-    max-height: 90vh;
+    max-height: calc(100vh - 40px);
     overflow-y: auto;
     box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
     animation: slideUp 0.3s;
+    margin-top: 20px;
 }
 
 .modal-header {
@@ -562,6 +565,10 @@ button.main-btn:active {
     margin-bottom: 20px;
     border-bottom: 2px solid #eee;
     padding-bottom: 10px;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
 }
 
 .modal-header h2 {
@@ -826,7 +833,8 @@ button.main-btn:active {
 }
 
 @keyframes pulse {
-    0%, 100% {
+    0%,
+    100% {
         opacity: 1;
     }
     50% {
