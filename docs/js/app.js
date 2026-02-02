@@ -470,15 +470,15 @@ async function initApp() {
  */
 function renderProblemCategories() {
     console.log('=== renderProblemCategories called ===');
-    
+
     const container = document.getElementById('problem-categories-area');
     console.log('Container element:', container);
-    
+
     if (!container) {
         console.error('ERROR: problem-categories-area not found in DOM!');
         return;
     }
-    
+
     const selectedCategories = userManager.getProblemCategories();
     console.log('Selected categories from user:', selectedCategories);
 
