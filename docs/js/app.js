@@ -16,6 +16,9 @@ let duelScores = {};
 let currentDuelIdx = 0;
 let gameCoins = 0, gameLevel = 1, timeLeft = 30, timerInterval = null, currentAnswer = 0;
 let freezeTimeout = null;
+let problemMode = false;
+let problemType = 'matematico';
+let currentProblem = null;
 
 // Store items definition
 const storeItems = [
@@ -315,12 +318,24 @@ function saveUserName() {
  */
 function startSingleGame() {
     duelMode = false;
+    problemMode = false;
     users[currentUser].ops = [];
     if (document.getElementById('cfg-sum').checked) users[currentUser].ops.push('+');
     if (document.getElementById('cfg-res').checked) users[currentUser].ops.push('-');
     if (document.getElementById('cfg-mul').checked) users[currentUser].ops.push('*');
     if (!users[currentUser].ops.length) return alert(t('alert_choose_operation'));
     localStorage.setItem('math_users', JSON.stringify(users));
+    initGameSession(1, 0);
+}
+
+/**
+ * Inicia una partida de problemas
+ * @param {string} type - 'logica' o 'matematico'
+ */
+function startProblemGame(type) {
+    duelMode = false;
+    problemMode = true;
+    problemType = type;
     initGameSession(1, 0);
 }
 
@@ -363,7 +378,13 @@ function initGameSession(lvl, coins) {
     updateRecordDisplay();
     applyTheme();
 
-    generateQuestion();
+    if (problemMode) {
+        toggleProblemUI(true);
+        generateProblem();
+    } else {
+        toggleProblemUI(false);
+        generateQuestion();
+    }
     startTimer();
 }
 
@@ -484,6 +505,135 @@ function renderOptions() {
             grid.appendChild(b);
         }
     });
+}
+
+/**
+ * Activa/desactiva UI de modo problemas
+ * @param {boolean} enabled
+ */
+function toggleProblemUI(enabled) {
+    const answersArea = document.getElementById('answers-area');
+    const equationArea = document.getElementById('equation-area');
+    const submitBtn = document.getElementById('btn-submit-problem');
+
+    if (!answersArea || !equationArea || !submitBtn) return;
+
+    answersArea.style.display = enabled ? 'none' : 'grid';
+    equationArea.style.display = enabled ? 'block' : 'none';
+    submitBtn.style.display = enabled ? 'block' : 'none';
+}
+
+/**
+ * Selecciona un problema según nivel y tipo
+ */
+function selectProblem() {
+    if (typeof window.bancoProblemas === 'undefined' || !Array.isArray(window.bancoProblemas)) {
+        return null;
+    }
+
+    const candidates = window.bancoProblemas.filter(p => p.tipo === problemType && p.nivelMin <= gameLevel);
+    const pool = candidates.length ? candidates : window.bancoProblemas;
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    return pick?.generar ? pick.generar() : null;
+}
+
+/**
+ * Renderiza la ecuación con inputs vacíos
+ * @param {string} equation
+ */
+function renderEquation(equation) {
+    const equationArea = document.getElementById('equation-area');
+    if (!equationArea) return;
+
+    equationArea.innerHTML = '';
+    const lines = String(equation).split('\n');
+
+    lines.forEach(line => {
+        const row = document.createElement('div');
+        row.className = 'equation-row';
+
+        const parts = line.split('__');
+        parts.forEach((part, idx) => {
+            row.insertAdjacentText('beforeend', part);
+            if (idx < parts.length - 1) {
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.className = 'eq-input';
+                input.setAttribute('data-eq', '1');
+                row.appendChild(input);
+            }
+        });
+
+        equationArea.appendChild(row);
+    });
+}
+
+/**
+ * Genera un problema
+ */
+function generateProblem() {
+    currentProblem = selectProblem();
+    if (!currentProblem) {
+        showFeedbackMessage('No hay problemas disponibles');
+        return;
+    }
+
+    const area = document.getElementById('question-area');
+    area.innerText = currentProblem.texto;
+
+    renderEquation(currentProblem.ecuacion);
+}
+
+/**
+ * Valida respuesta del problema
+ */
+function submitProblem() {
+    if (!currentProblem) return;
+
+    const equationArea = document.getElementById('equation-area');
+    const inputs = Array.from(equationArea.querySelectorAll('input.eq-input'));
+    const values = inputs.map(i => i.value.trim());
+
+    if (values.some(v => v === '')) {
+        alert(t('alert_fill_equation'));
+        return;
+    }
+
+    const parsed = values.map(v => Number(v));
+    const expected = currentProblem.ecuacionValores || [];
+
+    const isCorrect = parsed.length === expected.length && parsed.every((v, i) => v === expected[i]);
+
+    if (isCorrect) {
+        gameCoins += 10;
+        timeLeft += 2;
+        try {
+            confetti({ particleCount: 30, spread: 50 });
+        } catch (e) {
+            // Confetti library not loaded
+        }
+        if (gameCoins % 50 === 0) gameLevel++;
+        document.getElementById('game-level').innerText = gameLevel;
+        document.getElementById('game-coins').innerText = gameCoins;
+        updateRecordDisplay();
+        generateProblem();
+    } else {
+        initInventory(users[currentUser]);
+        if (users[currentUser].inventory.shields > 0) {
+            users[currentUser].inventory.shields--;
+            localStorage.setItem('math_users', JSON.stringify(users));
+            updatePowerUpDisplay();
+            showFeedbackMessage(t('alert_shield_used'));
+            return;
+        }
+
+        document.getElementById('app-container').classList.add('shake');
+        setTimeout(() => document.getElementById('app-container').classList.remove('shake'), 400);
+        timeLeft -= 4;
+        if (currentProblem.explicacion) {
+            showFeedbackMessage(currentProblem.explicacion);
+        }
+    }
 }
 
 /**

@@ -56,6 +56,10 @@
                     <span data-i18n="op_multiplication">Multiplicaciones</span></label>
             </div>
             <button class="main-btn" onclick="startSingleGame()" data-i18n="btn_play">¡A JUGAR!</button>
+            <button class="main-btn btn-problem" onclick="startProblemGame('matematico')"
+                data-i18n="btn_problem_math">🧮 Problemas matemáticos</button>
+            <button class="main-btn btn-problem" onclick="startProblemGame('logica')" data-i18n="btn_problem_logic">🧠
+                Problemas de lógica</button>
             <button class="btn-back" onclick="showUsers()" data-i18n="btn_change_user">⬅ Cambiar de usuario</button>
         </div>
 
@@ -81,6 +85,9 @@
                 </div>
             </div>
             <div id="question-area" class="question-area"></div>
+            <div id="equation-area" class="equation-area" style="display: none;"></div>
+            <button id="btn-submit-problem" class="main-btn btn-problem-submit" onclick="submitProblem()"
+                style="display: none;" data-i18n="btn_submit_answer">✅ Responder</button>
             <div id="answers-area" class="options-grid"></div>
         </div>
 
@@ -124,6 +131,7 @@
         </div>
     </footer>
 
+    <script src="./js/problemas.js"></script>
     <script src="./js/app.js"></script>
 </body>
 

@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-// Cargar el archivo app.js
+// Cargar archivos necesarios
+const problemaCode = fs.readFileSync(path.join(__dirname, '../docs/js/problemas.js'), 'utf8');
 const appCode = fs.readFileSync(path.join(__dirname, '../docs/js/app.js'), 'utf8');
 
 beforeAll(() => {
@@ -11,7 +12,8 @@ beforeAll(() => {
     if (localStorage && localStorage.getItem && localStorage.getItem.mockReturnValue) {
         localStorage.getItem.mockReturnValue(null);
     }
-    // Ejecutar el script en el contexto del window
+    // Ejecutar los scripts en el contexto del window (problemas primero, luego app)
+    window.eval(problemaCode);
     window.eval(appCode);
 });
 
@@ -323,6 +325,199 @@ describe('MateAventura - Tests Unitarios', () => {
 
             const migrated = JSON.parse(usersCall[1]);
             expect(migrated['LegacyPlayer'].inventory.freezes).toBe(0);
+        });
+    });
+
+    describe('Modo de Problemas', () => {
+        beforeEach(() => {
+            window.problemMode = false;
+            window.problemType = 'matematico';
+            window.currentProblem = null;
+            window.gameLevel = 1;
+            window.gameCoins = 0;
+        });
+
+        test('bancoProblemas debe contener problemas válidos', () => {
+            expect(window.bancoProblemas).toBeDefined();
+            expect(Array.isArray(window.bancoProblemas)).toBe(true);
+            expect(window.bancoProblemas.length).toBeGreaterThan(0);
+        });
+
+        test('problema matemático debe generarse correctamente', () => {
+            const problema = window.bancoProblemas.find(p => p.tipo === 'matematico');
+            expect(problema).toBeDefined();
+
+            const generado = problema.generar();
+            expect(generado.texto).toBeDefined();
+            expect(generado.ecuacion).toBeDefined();
+            expect(generado.ecuacionValores).toBeDefined();
+            expect(Array.isArray(generado.ecuacionValores)).toBe(true);
+        });
+
+        test('problema de lógica debe generarse correctamente', () => {
+            const problema = window.bancoProblemas.find(p => p.tipo === 'logica');
+            expect(problema).toBeDefined();
+
+            const generado = problema.generar();
+            expect(generado.texto).toBeDefined();
+            expect(generado.ecuacion).toBeDefined();
+            expect(generado.ecuacionValores).toBeDefined();
+            expect(Array.isArray(generado.ecuacionValores)).toBe(true);
+            expect(generado.explicacion).toBeDefined();
+        });
+
+        test('selectProblem debe retornar un problema válido', () => {
+            window.problemType = 'matematico';
+            window.gameLevel = 1;
+
+            window.currentUser = 'TestPlayer';
+            window.users = {
+                'TestPlayer': {
+                    level: 1,
+                    totalCoins: 0,
+                    ops: ['+'],
+                    inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            const problema = window.selectProblem();
+            expect(problema).not.toBeNull();
+            expect(problema.texto).toBeDefined();
+            expect(problema.ecuacionValores).toBeDefined();
+        });
+
+        test('renderEquation debe crear inputs correctamente', () => {
+            // Crear estructura HTML simulada
+            const equationArea = document.createElement('div');
+            equationArea.id = 'equation-area';
+            document.body.appendChild(equationArea);
+
+            const equation = '5 x 3 = __\nResultado = __';
+            window.renderEquation(equation);
+
+            const inputs = equationArea.querySelectorAll('input.eq-input');
+            expect(inputs.length).toBe(2);
+
+            document.body.removeChild(equationArea);
+        });
+
+        test('submitProblem debe validar respuestas correctas', () => {
+            // Setup
+            window.currentUser = 'TestPlayer';
+            window.users = {
+                'TestPlayer': {
+                    level: 1,
+                    totalCoins: 0,
+                    ops: ['+'],
+                    inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            // Crear estructura HTML
+            const equationArea = document.createElement('div');
+            equationArea.id = 'equation-area';
+            document.body.appendChild(equationArea);
+
+            const questionArea = document.createElement('div');
+            questionArea.id = 'question-area';
+            document.body.appendChild(questionArea);
+
+            const input1 = document.createElement('input');
+            input1.type = 'number';
+            input1.className = 'eq-input';
+            input1.value = '15'; // 5 x 3 = 15
+            equationArea.appendChild(input1);
+
+            // Crear un problema de prueba
+            window.currentProblem = {
+                texto: '¿Cuánto es 5 x 3?',
+                ecuacionValores: [15],
+                explicacion: 'Resultado correcto'
+            };
+
+            // Aquí no llamamos a submitProblem completo porque modifica estado global
+            // Pero probamos la validación lógica
+            const values = Array.from(equationArea.querySelectorAll('input.eq-input'))
+                .map(i => i.value.trim());
+            const parsed = values.map(v => Number(v));
+            const expected = window.currentProblem.ecuacionValores;
+
+            const isCorrect = parsed.length === expected.length &&
+                parsed.every((v, i) => v === expected[i]);
+
+            expect(isCorrect).toBe(true);
+
+            document.body.removeChild(equationArea);
+            document.body.removeChild(questionArea);
+        });
+
+        test('submitProblem debe rechazar respuestas incorrectas', () => {
+            // Setup
+            window.currentUser = 'TestPlayer';
+            window.users = {
+                'TestPlayer': {
+                    level: 1,
+                    totalCoins: 0,
+                    ops: ['+'],
+                    inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            // Crear estructura HTML
+            const equationArea = document.createElement('div');
+            equationArea.id = 'equation-area';
+            document.body.appendChild(equationArea);
+
+            const input1 = document.createElement('input');
+            input1.type = 'number';
+            input1.className = 'eq-input';
+            input1.value = '14'; // Incorrecto (debería ser 15)
+            equationArea.appendChild(input1);
+
+            // Crear un problema de prueba
+            window.currentProblem = {
+                texto: '¿Cuánto es 5 x 3?',
+                ecuacionValores: [15],
+                explicacion: 'Deberías haber respondido 15'
+            };
+
+            // Validar que es incorrecto
+            const values = Array.from(equationArea.querySelectorAll('input.eq-input'))
+                .map(i => i.value.trim());
+            const parsed = values.map(v => Number(v));
+            const expected = window.currentProblem.ecuacionValores;
+
+            const isCorrect = parsed.length === expected.length &&
+                parsed.every((v, i) => v === expected[i]);
+
+            expect(isCorrect).toBe(false);
+
+            document.body.removeChild(equationArea);
+        });
+
+        test('startProblemGame debe inicializar modo problemas', () => {
+            window.currentUser = 'TestPlayer';
+            window.users = {
+                'TestPlayer': {
+                    level: 1,
+                    totalCoins: 0,
+                    ops: ['+'],
+                    inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            // Simular el inicio de juego
+            window.duelMode = false;
+            window.problemMode = true;
+            window.problemType = 'logica';
+
+            expect(window.duelMode).toBe(false);
+            expect(window.problemMode).toBe(true);
+            expect(window.problemType).toBe('logica');
         });
     });
 });

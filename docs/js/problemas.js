@@ -1,4 +1,4 @@
-const bancoProblemas = [
+window.bancoProblemas = [
     {
         id: "manzanas_rotas_logica",
         tipo: "logica",
@@ -16,7 +16,8 @@ const bancoProblemas = [
                 texto: `${p1} tiene ${n1} manzanas. ${p2} tropieza con él, ${p1} cae y se le rompen ${n2}. Si cada manzana cuesta ${precio}€, ¿cuánto dinero le debe ${p1} a ${p2}?`,
                 respuestaCorrecta: 0,
                 explicacion: `¡Cuidado! Las manzanas son de ${p1}. Es ${p2} quien debería pagarle ${n2 * precio}€ a ${p1}.`,
-                ecuacion: `0 = 0`, // En lógica la ecuación es conceptual
+                ecuacion: `${n2} x ${precio} = __\nDeuda de ${p1} = __`,
+                ecuacionValores: [n2 * precio, 0],
                 opciones: [0, n2 * precio, n1 * precio, (n1 - n2) * precio]
             };
         }
@@ -32,7 +33,8 @@ const bancoProblemas = [
             return {
                 texto: `Compramos ${cantidad} gomas de borrar. Cada una cuesta ${precio}€. ¿Cuánto pagamos en total?`,
                 respuestaCorrecta: total,
-                ecuacion: `${cantidad} x ${precio} = ${total}`,
+                ecuacion: `${cantidad} x ${precio} = __`,
+                ecuacionValores: [total],
                 opciones: [total, total + 2, cantidad + precio, total - 1]
             };
         }

@@ -359,6 +359,41 @@ button.main-btn:active {
     font-weight: bold;
     background: #fafafa;
     border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+}
+
+.btn-problem {
+    background: #3498db;
+    box-shadow: 0 4px 0 #2c80b4;
+}
+
+.btn-problem-submit {
+    margin-top: 12px;
+}
+
+.equation-area {
+    margin-top: 15px;
+    padding: 12px;
+    background: #f7fbff;
+    border-radius: 12px;
+    border: 2px dashed #cfe4ff;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.equation-row {
+    margin: 6px 0;
+}
+
+.eq-input {
+    width: 60px;
+    padding: 6px;
+    margin: 0 6px;
+    border: 2px solid #cfe4ff;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    text-align: center;
 }
 
 /* Responsive para móviles */
