@@ -91,9 +91,11 @@ function selectUser(name) {
     userManager.selectUser(name);
     currentUser = userManager.getCurrentUserName();
     users = userManager.getUsers();
-    
-    // Renderizar las tarjetas de categorías de problemas
-    renderProblemCategories();
+
+    // Renderizar las tarjetas de categorías de problemas después de que el DOM esté listo
+    setTimeout(() => {
+        renderProblemCategories();
+    }, 0);
 }
 
 function showEditName() {
@@ -161,7 +163,7 @@ function startProblemGame(type) {
         alert(t('no_problems_selected'));
         return;
     }
-    
+
     problemType = type;
     gameEngine.problemType = type;
     gameEngine.startProblemGame(type);
@@ -468,7 +470,7 @@ async function initApp() {
  */
 function renderProblemCategories() {
     const selectedCategories = userManager.getProblemCategories();
-    
+
     problemCategoryManager.renderCategoryCards(
         'problem-categories-area',
         selectedCategories,

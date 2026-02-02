@@ -162,7 +162,7 @@ class QuestionGenerator {
 
         // Obtener categorías seleccionadas por el usuario
         const selectedCategories = this.userManager.getProblemCategories();
-        
+
         // Validar que hay al menos una categoría seleccionada
         if (!this.problemCategoryManager.hasValidSelection(selectedCategories)) {
             console.warn('No problem categories selected');
@@ -173,21 +173,21 @@ class QuestionGenerator {
         const candidates = window.bancoProblemas.filter(
             p => p.tipo === this.problemType && p.nivelMin <= this.gameLevel
         );
-        
+
         // Filtrar por categorías seleccionadas
         const filteredByCategory = this.problemCategoryManager.filterProblemsByCategories(
             candidates,
             selectedCategories
         );
-        
+
         // Si no hay problemas después de filtrar por categorías, usar todos los candidatos
         const pool = filteredByCategory.length ? filteredByCategory : candidates;
-        
+
         if (pool.length === 0) {
             console.warn('No problems available for selected criteria');
             return null;
         }
-        
+
         const pick = pool[Math.floor(Math.random() * pool.length)];
         return pick?.generar ? pick.generar() : null;
     }

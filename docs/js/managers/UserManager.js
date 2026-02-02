@@ -321,8 +321,8 @@ class UserManager {
             return ['explorador']; // Default
         }
         const categories = this.users[this.currentUser].problemCategories;
-        return Array.isArray(categories) && categories.length > 0 
-            ? categories 
+        return Array.isArray(categories) && categories.length > 0
+            ? categories
             : ['explorador'];
     }
 
@@ -332,9 +332,9 @@ class UserManager {
      */
     setProblemCategories(categories) {
         if (!this.currentUser || !this.users[this.currentUser]) return;
-        
-        this.users[this.currentUser].problemCategories = Array.isArray(categories) 
-            ? categories 
+
+        this.users[this.currentUser].problemCategories = Array.isArray(categories)
+            ? categories
             : [];
         this.saveToStorage();
     }
@@ -345,10 +345,10 @@ class UserManager {
      */
     toggleProblemCategory(categoryId) {
         if (!this.currentUser || !this.users[this.currentUser]) return;
-        
+
         const categories = this.getProblemCategories();
         const index = categories.indexOf(categoryId);
-        
+
         if (index > -1) {
             // Quitar categoría
             categories.splice(index, 1);
@@ -356,7 +356,7 @@ class UserManager {
             // Añadir categoría
             categories.push(categoryId);
         }
-        
+
         this.setProblemCategories(categories);
     }
 

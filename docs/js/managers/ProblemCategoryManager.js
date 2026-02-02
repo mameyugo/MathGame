@@ -8,7 +8,7 @@ class ProblemCategoryManager {
      */
     constructor(translationManager) {
         this.translationManager = translationManager;
-        
+
         // Definición de las 3 categorías de problemas
         this.categories = {
             explorador: {
@@ -66,15 +66,15 @@ class ProblemCategoryManager {
         if (!selectedCategories || selectedCategories.length === 0) {
             return [];
         }
-        
+
         return problems.filter(problem => {
             // Los problemas sin categoría no se muestran
             if (!problem.categorias || problem.categorias.length === 0) {
                 return false;
             }
-            
+
             // El problema debe estar en al menos una categoría seleccionada
-            return problem.categorias.some(cat => 
+            return problem.categorias.some(cat =>
                 selectedCategories.includes(cat)
             );
         });
@@ -93,11 +93,13 @@ class ProblemCategoryManager {
             return;
         }
 
+        console.log('Rendering problem categories:', selectedCategories);
         container.innerHTML = '';
 
         this.getCategories().forEach(category => {
             const isSelected = selectedCategories.includes(category.id);
-            
+            console.log(`Category ${category.id}: ${isSelected ? 'selected' : 'not selected'}`);
+
             const card = document.createElement('div');
             card.className = `category-card difficulty-${category.difficulty} ${isSelected ? 'selected' : ''}`;
             card.onclick = () => {
@@ -124,6 +126,8 @@ class ProblemCategoryManager {
 
             container.appendChild(card);
         });
+        
+        console.log(`Rendered ${this.getCategories().length} category cards`);
     }
 
     /**
