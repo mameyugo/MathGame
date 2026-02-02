@@ -446,6 +446,7 @@ button.main-btn:active {
 
     .user-input {
         width: 100%;
+        max-width: none;
     }
 
     .btn-add {
