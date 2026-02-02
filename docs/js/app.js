@@ -3,11 +3,11 @@
  * Juego educativo de matemáticas multiidioma (ES/GL)
  */
 
-// Sistema de traducciones (se cargará desde archivos JSON)
-let translations = {};
+// Importar TranslationManager (se debe cargar antes en el HTML)
+const translationManager = new TranslationManager();
 
 // Variables globales
-let currentLanguage = localStorage.getItem('math_lang') || 'es';
+let currentLanguage = translationManager.getCurrentLanguage();
 let users = JSON.parse(localStorage.getItem('math_users')) || {};
 let currentUser = null;
 let duelMode = false;
@@ -95,31 +95,12 @@ function initInventory(user) {
 }
 
 /**
- * Carga las traducciones desde archivos JSON
- * @param {string} lang - Código de idioma (es/gl)
- * @returns {Promise} Promesa que se resuelve cuando las traducciones están cargadas
- */
-async function loadTranslations(lang) {
-    try {
-        const response = await fetch(`./lang/${lang}.json`);
-        if (!response.ok) throw new Error(`Failed to load ${lang}.json`);
-        translations[lang] = await response.json();
-    } catch (error) {
-        console.error(`Error loading translations for ${lang}:`, error);
-        // Fallback a español si hay error
-        if (lang !== 'es') {
-            await loadTranslations('es');
-        }
-    }
-}
-
-/**
  * Obtiene el texto traducido según el idioma actual
  * @param {string} key - Clave de traducción
  * @returns {string} Texto traducido
  */
 function t(key) {
-    return translations[currentLanguage]?.[key] || translations['es']?.[key] || key;
+    return translationManager.t(key);
 }
 
 /**
@@ -127,32 +108,14 @@ function t(key) {
  * @param {string} lang - Código de idioma (es/gl)
  */
 async function changeLanguage(lang) {
-    // Cargar traducciones si no están cargadas
-    if (!translations[lang]) {
-        await loadTranslations(lang);
-    }
-
-    currentLanguage = lang;
-    localStorage.setItem('math_lang', lang);
-    document.getElementById('html-root').setAttribute('lang', lang);
+    await translationManager.changeLanguage(lang);
+    currentLanguage = translationManager.getCurrentLanguage();
 
     // Actualizar estilos de botones de idioma
     document.getElementById('btn-lang-es').style.borderColor = lang === 'es' ? 'var(--primary)' : '#ddd';
     document.getElementById('btn-lang-es').style.background = lang === 'es' ? '#f0f7ff' : 'white';
     document.getElementById('btn-lang-gl').style.borderColor = lang === 'gl' ? 'var(--primary)' : '#ddd';
     document.getElementById('btn-lang-gl').style.background = lang === 'gl' ? '#f0f7ff' : 'white';
-
-    // Actualizar todos los textos
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        el.innerHTML = t(key);
-    });
-
-    // Actualizar placeholders
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        el.placeholder = t(key);
-    });
 
     // Actualizar título de configuración si hay usuario seleccionado
     if (currentUser) {
@@ -1081,7 +1044,7 @@ function syncStateFromStorage() {
  */
 async function initApp() {
     // Cargar traducciones del idioma actual
-    await loadTranslations(currentLanguage);
+    await translationManager.loadTranslations(currentLanguage);
 
     // Inicializar idioma
     await changeLanguage(currentLanguage);

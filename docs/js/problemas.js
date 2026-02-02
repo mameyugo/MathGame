@@ -256,11 +256,11 @@ window.bancoProblemas = [
                 texto: `Mamá ha metido una tarta al horno a las ${hora_inicio}:00. Si la tarta tarda ${duracion} minutos en hacerse, ¿a qué hora debemos sacarla?`,
                 respuestaCorrecta: respuesta,
                 explicacion: `Sumamos ${duracion} minutos a las ${hora_inicio}:00. Resultado: ${respuesta}.`,
-                ecuacion: minutos_fin === 0 
+                ecuacion: minutos_fin === 0
                     ? `${hora_inicio} + ${duracion / 60} hora(s) = __`
                     : `${hora_inicio}:00 + ${duracion} min = __ : __`,
                 ecuacionValores: minutos_fin === 0 ? [hora_fin] : [hora_fin, minutos_fin],
-                opciones: minutos_fin === 0 
+                opciones: minutos_fin === 0
                     ? [hora_fin, hora_fin + 1, hora_inicio, hora_fin - 1]
                     : [respuesta, `${hora_fin + 1}:00`, `${hora_inicio}:${duracion}`, `${hora_fin}:00`]
             };
