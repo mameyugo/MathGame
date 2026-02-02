@@ -44,7 +44,11 @@
         </div>
 
         <div id="screen-config" class="screen">
-            <h2 id="config-title" data-i18n="config_title">Configuración</h2>
+            <h2 id="config-title" data-i18n="config_title">
+                Configuración
+                <button id="btn-edit-username" class="btn-edit-icon" onclick="showEditName()" title="Editar nombre"
+                    aria-label="Edit username">✏️</button>
+            </h2>
             <div class="config-box">
                 <div id="username-edit-section" style="display: none; margin-bottom: 20px;">
                     <input type="text" id="edit-user-name" class="edit-name-input" placeholder="Nuevo nombre..."
@@ -53,8 +57,6 @@
                         style="margin: 10px 5px;">💾 Guardar nombre</button>
                     <button class="btn-back" onclick="cancelEditName()" data-i18n="btn_cancel_edit">❌ Cancelar</button>
                 </div>
-                <button id="btn-edit-username" class="main-btn" onclick="showEditName()" data-i18n="btn_edit_name"
-                    style="margin-bottom: 20px;"></button>
                 <p><strong data-i18n="choose_operations">Elige las operaciones:</strong></p>
                 <label class="switch-label">
                     <input type="checkbox" id="cfg-sum" class="switch-input" checked>
