@@ -12,6 +12,14 @@ const storeManager = new StoreManager(userManager, translationManager);
 let currentLanguage = translationManager.getCurrentLanguage();
 let users = userManager.getUsers();
 let currentUser = userManager.getCurrentUserName();
+
+// Store items (mantenido para compatibilidad)
+const storeItems = storeManager.getStoreItems();
+
+// GameEngine will be initialized after functions are defined
+let gameEngine = null;
+
+// Variables que serán gestionadas por GameEngine (mantenerlas para sincronización)
 let duelMode = false;
 let duelPlayers = [];
 let duelScores = {};
@@ -21,9 +29,6 @@ let freezeTimeout = null;
 let problemMode = false;
 let problemType = 'matematico';
 let currentProblem = null;
-
-// Store items (mantenido para compatibilidad, pero storeManager tiene su propia copia)
-const storeItems = storeManager.getStoreItems();
 
 /**
  * Initialize user inventory if it doesn't exist
@@ -125,15 +130,14 @@ function syncStateFromStorage() {
  * Inicia una partida individual
  */
 function startSingleGame() {
-    duelMode = false;
-    problemMode = false;
-    users[currentUser].ops = [];
-    if (document.getElementById('cfg-sum').checked) users[currentUser].ops.push('+');
-    if (document.getElementById('cfg-res').checked) users[currentUser].ops.push('-');
-    if (document.getElementById('cfg-mul').checked) users[currentUser].ops.push('*');
-    if (!users[currentUser].ops.length) return alert(t('alert_choose_operation'));
-    localStorage.setItem('math_users', JSON.stringify(users));
-    initGameSession(1, 0);
+    const checkboxes = {
+        sum: document.getElementById('cfg-sum').checked,
+        res: document.getElementById('cfg-res').checked,
+        mul: document.getElementById('cfg-mul').checked
+    };
+    gameEngine.startSingleGame(checkboxes);
+    // Sincronizar estado global
+    users = userManager.getUsers();
 }
 
 /**
@@ -141,31 +145,27 @@ function startSingleGame() {
  * @param {string} type - 'logica' o 'matematico'
  */
 function startProblemGame(type) {
-    duelMode = false;
-    problemMode = true;
     problemType = type;
-    initGameSession(1, 0);
+    gameEngine.problemType = type;
+    gameEngine.startProblemGame(type);
 }
 
 /**
  * Configura el modo duelo
  */
 function setupDuel() {
-    duelPlayers = Object.keys(users);
-    if (duelPlayers.length < 2) return alert(t('alert_min_users'));
-    duelMode = true;
-    currentDuelIdx = 0;
-    duelScores = {};
-    startNextDuelTurn();
+    gameEngine.setupDuel();
+    // Sincronizar estado global
+    currentUser = userManager.getCurrentUserName();
 }
 
 /**
  * Inicia el siguiente turno en modo duelo
  */
 function startNextDuelTurn() {
-    currentUser = duelPlayers[currentDuelIdx];
-    document.getElementById('turn-indicator').innerText = t('turn_of') + currentUser;
-    initGameSession(1, 0);
+    gameEngine.startNextDuelTurn();
+    // Sincronizar estado global
+    currentUser = userManager.getCurrentUserName();
 }
 
 /**
@@ -174,44 +174,21 @@ function startNextDuelTurn() {
  * @param {number} coins - Monedas iniciales
  */
 function initGameSession(lvl, coins) {
-    gameLevel = lvl;
-    gameCoins = coins;
-    timeLeft = 30;
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('screen-game').classList.add('active');
-
-    // Initialize power-ups display
-    initInventory(users[currentUser]);
-    updatePowerUpDisplay();
-    updateRecordDisplay();
-    applyTheme();
-
-    if (problemMode) {
-        toggleProblemUI(true);
-        generateProblem();
-    } else {
-        toggleProblemUI(false);
-        generateQuestion();
-    }
-    startTimer();
+    gameEngine.initGameSession(lvl, coins);
+    // Sincronizar estado global
+    gameLevel = gameEngine.gameLevel;
+    gameCoins = gameEngine.gameCoins;
+    timeLeft = gameEngine.timeLeft;
+    problemMode = gameEngine.problemMode;
 }
 
 /**
  * Starts or restarts the game timer
  */
 function startTimer() {
-    // Don't start timer if time has already run out
-    if (timeLeft <= 0) {
-        endGameSession();
-        return;
-    }
-
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        document.getElementById('game-timer').innerText = timeLeft + "s";
-        if (timeLeft <= 0) endGameSession();
-    }, 1000);
+    gameEngine.startTimer();
+    // Sincronizar estado global
+    timerInterval = gameEngine.timerInterval;
 }
 
 /**
@@ -330,6 +307,18 @@ function toggleProblemUI(enabled) {
     equationArea.style.display = enabled ? 'block' : 'none';
     submitBtn.style.display = enabled ? 'block' : 'none';
 }
+
+// Inicializar GameEngine después de definir las funciones auxiliares
+gameEngine = new GameEngine(
+    userManager,
+    translationManager,
+    () => generateQuestion(),
+    () => generateProblem(),
+    (enabled) => toggleProblemUI(enabled),
+    () => updatePowerUpDisplay(),
+    () => applyTheme(),
+    () => showUsers()
+);
 
 /**
  * Selecciona un problema según nivel y tipo
@@ -455,58 +444,25 @@ function submitProblem() {
  * @param {number} val - Valor seleccionado por el usuario
  */
 function check(val) {
-    if (val === currentAnswer) {
-        gameCoins += 10;
-        timeLeft += 2;
-        try {
-            confetti({ particleCount: 30, spread: 50 });
-        } catch (e) {
-            // Confetti library not loaded
-        }
-        if (gameCoins % 50 === 0) gameLevel++;
-        generateQuestion();
-    } else {
-        // Check if user has shield active
-        initInventory(users[currentUser]);
-        if (users[currentUser].inventory.shields > 0) {
-            users[currentUser].inventory.shields--;
-            localStorage.setItem('math_users', JSON.stringify(users));
-            updatePowerUpDisplay();
-            // Show shield used message
-            showFeedbackMessage(t('alert_shield_used'));
-            return; // Shield protects, no penalty
-        }
-
-        document.getElementById('app-container').classList.add('shake');
-        setTimeout(() => document.getElementById('app-container').classList.remove('shake'), 400);
-        timeLeft -= 4;
-    }
-    document.getElementById('game-level').innerText = gameLevel;
-    document.getElementById('game-coins').innerText = gameCoins;
-    updateRecordDisplay();
+    // Sincronizar currentAnswer con gameEngine
+    gameEngine.currentAnswer = currentAnswer;
+    gameEngine.check(val);
+    
+    // Sincronizar estado global de vuelta
+    gameCoins = gameEngine.gameCoins;
+    gameLevel = gameEngine.gameLevel;
+    timeLeft = gameEngine.timeLeft;
+    users = userManager.getUsers();
 }
 
 /**
  * Finaliza la sesión de juego actual
  */
 function endGameSession() {
-    clearInterval(timerInterval);
-    if (duelMode) {
-        duelScores[currentUser] = gameCoins;
-        currentDuelIdx++;
-        if (currentDuelIdx < duelPlayers.length) {
-            startNextDuelTurn();
-        } else {
-            alert(t('alert_duel_end') + Object.entries(duelScores).map(([p, s]) => `${p}: ${s}`).join("\n"));
-            showUsers();
-        }
-    } else {
-        users[currentUser].totalCoins += gameCoins;
-        users[currentUser].level = Math.max(users[currentUser].level || 1, gameLevel);
-        localStorage.setItem('math_users', JSON.stringify(users));
-        alert(t('alert_good_job') + gameCoins + t('alert_coins'));
-        showUsers();
-    }
+    gameEngine.endGameSession();
+    // Sincronizar estado global
+    users = userManager.getUsers();
+    currentUser = userManager.getCurrentUserName();
 }
 
 /**

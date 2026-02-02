@@ -5,6 +5,7 @@ const path = require('path');
 const translationManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/TranslationManager.js'), 'utf8');
 const userManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/UserManager.js'), 'utf8');
 const storeManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/StoreManager.js'), 'utf8');
+const gameEngineCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/GameEngine.js'), 'utf8');
 const problemaCode = fs.readFileSync(path.join(__dirname, '../docs/js/problemas.js'), 'utf8');
 const appCode = fs.readFileSync(path.join(__dirname, '../docs/js/app.js'), 'utf8');
 
@@ -19,6 +20,7 @@ beforeAll(() => {
     window.eval(translationManagerCode);
     window.eval(userManagerCode);
     window.eval(storeManagerCode);
+    window.eval(gameEngineCode);
     window.eval(problemaCode);
     window.eval(appCode);
 });
