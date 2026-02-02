@@ -3,13 +3,14 @@
  * Juego educativo de matemáticas multiidioma (ES/GL)
  */
 
-// Importar TranslationManager (se debe cargar antes en el HTML)
+// Importar managers (se deben cargar antes en el HTML)
 const translationManager = new TranslationManager();
+const userManager = new UserManager(translationManager);
 
 // Variables globales
 let currentLanguage = translationManager.getCurrentLanguage();
-let users = JSON.parse(localStorage.getItem('math_users')) || {};
-let currentUser = null;
+let users = userManager.getUsers();
+let currentUser = userManager.getCurrentUserName();
 let duelMode = false;
 let duelPlayers = [];
 let duelScores = {};
@@ -68,32 +69,6 @@ const storeItems = [
  * Initialize user inventory if it doesn't exist
  * @param {Object} user - User object
  */
-function initInventory(user) {
-    if (!user.inventory) {
-        user.inventory = {
-            potions: 0,
-            freezes: 0,
-            shields: 0,
-            themes: []
-        };
-    }
-    if (typeof user.inventory.potions !== 'number' || Number.isNaN(user.inventory.potions)) {
-        user.inventory.potions = 0;
-    }
-    if (typeof user.inventory.freezes !== 'number' || Number.isNaN(user.inventory.freezes)) {
-        user.inventory.freezes = 0;
-    }
-    if (typeof user.inventory.shields !== 'number' || Number.isNaN(user.inventory.shields)) {
-        user.inventory.shields = 0;
-    }
-    if (!Array.isArray(user.inventory.themes)) {
-        user.inventory.themes = [];
-    }
-    if (!user.currentTheme) {
-        user.currentTheme = 'default';
-    }
-}
-
 /**
  * Obtiene el texto traducido según el idioma actual
  * @param {string} key - Clave de traducción
@@ -124,155 +99,65 @@ async function changeLanguage(lang) {
 
     // Actualizar leaderboard si está visible
     if (document.getElementById('screen-users').classList.contains('active')) {
-        renderLeaderboard();
+        userManager.renderLeaderboard();
     }
 }
 
-/**
- * Muestra la pantalla de usuarios
- */
+// Wrapper functions para mantener compatibilidad con HTML onclick handlers
 function showUsers() {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('screen-users').classList.add('active');
-    renderUserList();
-    renderLeaderboard();
+    userManager.showUsers();
 }
 
-/**
- * Renderiza la lista de usuarios
- */
 function renderUserList() {
-    const list = document.getElementById('user-list');
-    list.innerHTML = "";
-    for (let name in users) {
-        list.innerHTML += `
-        <div class="user-card">
-            <div class="user-info" onclick="selectUser('${name}')">
-                <span><strong>${name}</strong> (Lvl ${users[name].level})</span>
-                <span>💰 ${users[name].totalCoins}</span>
-            </div>
-            <button class="btn-play-user" onclick="event.stopPropagation(); selectUser('${name}')" data-i18n="btn_play_user">▶️ Jugar</button>
-        </div>`;
-    }
-    // Actualizar traducciones de los botones recién creados
-    document.querySelectorAll('[data-i18n="btn_play_user"]').forEach(el => {
-        el.innerHTML = t('btn_play_user');
-    });
+    userManager.renderUserList();
 }
 
-/**
- * Renderiza el salón de la fama (top 3 usuarios)
- */
 function renderLeaderboard() {
-    const list = document.getElementById('leader-list');
-    const sorted = Object.keys(users).sort((a, b) => users[b].totalCoins - users[a].totalCoins).slice(0, 3);
-    list.innerHTML = sorted.length ? "" : `<small>${t('hall_of_fame_empty')}</small>`;
-    sorted.forEach((name, i) => {
-        const icons = ['🥇', '🥈', '🥉'];
-        list.innerHTML += `<div class="leader-item"><span>${icons[i]} ${name}</span><strong>${users[name].totalCoins}</strong></div>`;
-    });
+    userManager.renderLeaderboard();
 }
 
-/**
- * Crea un nuevo usuario
- */
 function createUser() {
-    const name = document.getElementById('new-user-name').value.trim();
-    if (!name || users[name]) return alert(t('alert_invalid_name'));
-    users[name] = {
-        level: 1,
-        totalCoins: 0,
-        ops: ['+'],
-        inventory: { potions: 0, shields: 0, themes: [] },
-        currentTheme: 'default'
-    };
-    localStorage.setItem('math_users', JSON.stringify(users));
-    document.getElementById('new-user-name').value = "";
-    renderUserList();
+    userManager.createUser();
 }
 
-/**
- * Selecciona un usuario y muestra su configuración
- * @param {string} name - Nombre del usuario
- */
 function selectUser(name) {
-    currentUser = name;
-    document.getElementById('config-title').innerText = t('config_title_user') + name;
-    document.getElementById('cfg-sum').checked = users[name].ops.includes('+');
-    document.getElementById('cfg-res').checked = users[name].ops.includes('-');
-    document.getElementById('cfg-mul').checked = users[name].ops.includes('*');
-    // Reset edit name section
-    document.getElementById('username-edit-section').style.display = 'none';
-    document.getElementById('btn-edit-username').style.display = 'block';
-    document.getElementById('edit-user-name').value = '';
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('screen-config').classList.add('active');
+    userManager.selectUser(name);
+    currentUser = userManager.getCurrentUserName();
+    users = userManager.getUsers();
 }
 
-/**
- * Muestra el formulario de edición de nombre
- */
 function showEditName() {
-    document.getElementById('username-edit-section').style.display = 'block';
-    document.getElementById('btn-edit-username').style.display = 'none';
-    document.getElementById('edit-user-name').value = currentUser;
-    document.getElementById('edit-user-name').focus();
+    userManager.showEditName();
 }
 
-/**
- * Cancela la edición del nombre
- */
 function cancelEditName() {
-    document.getElementById('username-edit-section').style.display = 'none';
-    document.getElementById('btn-edit-username').style.display = 'block';
-    document.getElementById('edit-user-name').value = '';
+    userManager.cancelEditName();
 }
 
-/**
- * Guarda el nuevo nombre del usuario
- */
 function saveUserName() {
-    const newName = document.getElementById('edit-user-name').value.trim();
-    const oldName = currentUser;
+    userManager.saveUserName();
+    currentUser = userManager.getCurrentUserName();
+    users = userManager.getUsers();
+}
 
-    // Validar que el nombre no esté vacío
-    if (!newName) {
-        return alert(t('alert_invalid_name'));
-    }
+function initInventory(user) {
+    userManager.initInventory(user);
+}
 
-    // Si el nombre no cambió, cancelar
-    if (newName === oldName) {
-        cancelEditName();
-        return;
-    }
+function updateRecordDisplay() {
+    userManager.updateRecordDisplay(gameLevel);
+}
 
-    // Validar que el nombre no exista ya
-    if (users[newName]) {
-        return alert(t('alert_invalid_name'));
-    }
+function normalizeUsers() {
+    userManager.normalizeUsers();
+    users = userManager.getUsers();
+}
 
-    // Copiar datos del usuario con el nuevo nombre (copia profunda)
-    users[newName] = JSON.parse(JSON.stringify(users[oldName]));
-
-    // Eliminar el usuario con el nombre antiguo
-    delete users[oldName];
-
-    // Guardar en localStorage
-    localStorage.setItem('math_users', JSON.stringify(users));
-
-    // Actualizar currentUser
-    currentUser = newName;
-
-    // Actualizar la interfaz
-    document.getElementById('config-title').innerText = t('config_title_user') + newName;
-    cancelEditName();
-
-    // Mostrar mensaje de confirmación
-    alert(t('alert_name_updated'));
-
-    // Actualizar la lista de usuarios
-    renderUserList();
-    renderLeaderboard();
+function syncStateFromStorage() {
+    userManager.syncStateFromStorage();
+    users = userManager.getUsers();
+    currentUser = userManager.getCurrentUserName();
+    currentLanguage = localStorage.getItem('math_lang') || 'es';
 }
 
 
@@ -981,62 +866,6 @@ function applyTheme() {
     } else {
         appContainer.removeAttribute('data-theme');
     }
-}
-
-/**
- * Actualiza la visualización del récord del jugador
- */
-function updateRecordDisplay() {
-    const recordEl = document.getElementById('game-record');
-    if (!recordEl || !currentUser) return;
-
-    const userRecord = typeof users[currentUser].level === 'number' ? users[currentUser].level : 1;
-    const displayRecord = Math.max(userRecord, gameLevel);
-    recordEl.innerText = displayRecord;
-}
-
-/**
- * Normaliza la estructura de usuarios guardados (migraciones de localStorage)
- */
-function normalizeUsers() {
-    let changed = false;
-
-    Object.keys(users).forEach(userName => {
-        const user = users[userName];
-        const beforeInventory = user.inventory ? JSON.stringify(user.inventory) : null;
-        const beforeTheme = user.currentTheme;
-
-        if (typeof user.level !== 'number' || Number.isNaN(user.level)) {
-            user.level = 1;
-            changed = true;
-        }
-
-        initInventory(user);
-
-        const afterInventory = JSON.stringify(user.inventory);
-        if (beforeInventory !== afterInventory || beforeTheme !== user.currentTheme) {
-            changed = true;
-        }
-    });
-
-    if (changed) {
-        localStorage.setItem('math_users', JSON.stringify(users));
-    }
-}
-
-/**
- * Sincroniza el estado desde localStorage (útil cuando vuelves atrás en navegador)
- */
-function syncStateFromStorage() {
-    // Recargar datos desde localStorage
-    const storedUsers = localStorage.getItem('math_users');
-    if (storedUsers) {
-        users = JSON.parse(storedUsers);
-        // Migrar/normalizar estructura antigua de usuarios
-        normalizeUsers();
-    }
-
-    currentLanguage = localStorage.getItem('math_lang') || 'es';
 }
 
 /**
