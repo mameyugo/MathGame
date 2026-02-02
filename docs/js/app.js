@@ -375,7 +375,7 @@ function startTimer() {
         endGameSession();
         return;
     }
-    
+
     clearInterval(timerInterval);
     timerInterval = setInterval(() => {
         timeLeft--;
@@ -767,12 +767,12 @@ function useFreezeTime() {
     if (timerInterval) {
         clearInterval(timerInterval);
     }
-    
+
     // Clear any pending freeze timeout
     if (freezeTimeout) {
         clearTimeout(freezeTimeout);
     }
-    
+
     // Visual feedback
     showFeedbackMessage(t('alert_freeze_used'));
     try {

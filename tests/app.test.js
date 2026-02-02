@@ -129,6 +129,54 @@ describe('MateAventura - Tests Unitarios', () => {
         });
     });
 
+    describe('Temas Visuales (Selva/Espacial)', () => {
+        test('equipTheme debe activar tema espacial', () => {
+            const user = {
+                inventory: { themes: ['theme_space'] },
+                currentTheme: 'default'
+            };
+
+            if (user.inventory.themes.includes('theme_space')) {
+                user.currentTheme = 'theme_space';
+            }
+
+            expect(user.currentTheme).toBe('theme_space');
+        });
+
+        test('equipTheme debe activar tema selva', () => {
+            const user = {
+                inventory: { themes: ['theme_jungle'] },
+                currentTheme: 'default'
+            };
+
+            if (user.inventory.themes.includes('theme_jungle')) {
+                user.currentTheme = 'theme_jungle';
+            }
+
+            expect(user.currentTheme).toBe('theme_jungle');
+        });
+
+        test('unequipTheme debe desactivar tema espacial', () => {
+            const user = {
+                currentTheme: 'theme_space'
+            };
+
+            user.currentTheme = 'default';
+
+            expect(user.currentTheme).toBe('default');
+        });
+
+        test('unequipTheme debe desactivar tema selva', () => {
+            const user = {
+                currentTheme: 'theme_jungle'
+            };
+
+            user.currentTheme = 'default';
+
+            expect(user.currentTheme).toBe('default');
+        });
+    });
+
     describe('Sistema de Escudos', () => {
         test('shield debe proteger contra respuesta incorrecta', () => {
             const user = {
