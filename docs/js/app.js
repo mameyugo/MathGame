@@ -582,6 +582,12 @@ function generateProblem() {
     area.innerText = currentProblem.texto;
 
     renderEquation(currentProblem.ecuacion);
+    
+    // Enfocar el primer input para responder más rápido
+    setTimeout(() => {
+        const firstInput = document.querySelector('#equation-area .eq-input');
+        if (firstInput) firstInput.focus();
+    }, 0);
 }
 
 /**
