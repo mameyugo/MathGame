@@ -6,6 +6,7 @@ const translationManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/
 const userManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/UserManager.js'), 'utf8');
 const storeManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/StoreManager.js'), 'utf8');
 const gameEngineCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/GameEngine.js'), 'utf8');
+const questionGeneratorCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/QuestionGenerator.js'), 'utf8');
 const problemaCode = fs.readFileSync(path.join(__dirname, '../docs/js/problemas.js'), 'utf8');
 const appCode = fs.readFileSync(path.join(__dirname, '../docs/js/app.js'), 'utf8');
 
@@ -21,6 +22,7 @@ beforeAll(() => {
     window.eval(userManagerCode);
     window.eval(storeManagerCode);
     window.eval(gameEngineCode);
+    window.eval(questionGeneratorCode);
     window.eval(problemaCode);
     window.eval(appCode);
 });

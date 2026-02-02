@@ -35,7 +35,7 @@ describe('StoreManager', () => {
             innerText: '',
             remove: jest.fn()
         };
-        
+
         global.document = {
             getElementById: jest.fn(),
             createElement: jest.fn(() => mockElement),
@@ -261,7 +261,7 @@ describe('StoreManager', () => {
                 inventory: { potions: 2, freezes: 1, shields: 0, themes: [] }
             };
             mockUserManager.getCurrentUser.mockReturnValue(user);
-            
+
             const gameState = {
                 timeLeft: 30,
                 timerElement: { innerText: '' },
@@ -297,7 +297,7 @@ describe('StoreManager', () => {
                 inventory: { potions: 2, freezes: 1, shields: 0, themes: [] }
             };
             mockUserManager.getCurrentUser.mockReturnValue(user);
-            
+
             const mockInterval = 123;
             const gameState = {
                 timerInterval: mockInterval,
@@ -325,7 +325,7 @@ describe('StoreManager', () => {
             expect(result.timerInterval).toBeNull();
             expect(result.freezeTimeout).toBe(456);
             expect(mockUserManager.saveToStorage).toHaveBeenCalled();
-            
+
             global.setTimeout = originalSetTimeout;
         });
 
@@ -434,7 +434,7 @@ describe('StoreManager', () => {
 
             expect(createElementSpy).toHaveBeenCalled();
             expect(appendChildSpy).toHaveBeenCalled();
-            
+
             appendChildSpy.mockRestore();
             createElementSpy.mockRestore();
         });

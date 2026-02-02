@@ -120,12 +120,12 @@ class GameEngine {
     startNextDuelTurn() {
         const currentUser = this.duelPlayers[this.currentDuelIdx];
         this.userManager.selectUser(currentUser);
-        
+
         const turnIndicator = document.getElementById('turn-indicator');
         if (turnIndicator) {
             turnIndicator.innerText = this.t('turn_of') + currentUser;
         }
-        
+
         this.initGameSession(1, 0);
     }
 
@@ -217,18 +217,18 @@ class GameEngine {
             const user = this.userManager.getCurrentUser();
             if (user) {
                 this.userManager.initInventory(user);
-                
+
                 if (user.inventory.shields > 0) {
                     user.inventory.shields--;
                     this.userManager.saveToStorage();
                     this.updatePowerUpDisplay();
-                    
+
                     // Show shield message
                     const showFeedbackMessage = window.showFeedbackMessage;
                     if (typeof showFeedbackMessage === 'function') {
                         showFeedbackMessage(this.t('alert_shield_used'));
                     }
-                    
+
                     // Update display and return (no penalty)
                     this.updateGameDisplay();
                     return;
@@ -241,7 +241,7 @@ class GameEngine {
                 appContainer.classList.add('shake');
                 setTimeout(() => appContainer.classList.remove('shake'), 400);
             }
-            
+
             this.timeLeft -= 4;
         }
 
@@ -254,14 +254,14 @@ class GameEngine {
     updateGameDisplay() {
         const levelElement = document.getElementById('game-level');
         const coinsElement = document.getElementById('game-coins');
-        
+
         if (levelElement) {
             levelElement.innerText = this.gameLevel;
         }
         if (coinsElement) {
             coinsElement.innerText = this.gameCoins;
         }
-        
+
         this.userManager.updateRecordDisplay(this.gameLevel);
     }
 

@@ -131,7 +131,7 @@ describe('GameEngine', () => {
                 level: 5,
                 inventory: { potions: 2, freezes: 1, shields: 3 }
             });
-            
+
             gameEngine.startSingleGame({ sum: true, res: true, mul: false });
             const user = mockUserManager.getCurrentUser();
 
@@ -170,7 +170,7 @@ describe('GameEngine', () => {
 
         test('should alert and return false if less than 2 users', () => {
             mockUserManager.getUsers.mockReturnValue({ 'Player1': {} });
-            
+
             const result = gameEngine.setupDuel();
 
             expect(result).toBe(false);
@@ -299,7 +299,7 @@ describe('GameEngine', () => {
         test('should use shield on wrong answer if available', () => {
             gameEngine.currentAnswer = 42;
             gameEngine.timeLeft = 30;
-            
+
             const userWithShields = {
                 ops: ['+'],
                 totalCoins: 100,
@@ -321,7 +321,7 @@ describe('GameEngine', () => {
         test('should apply time penalty for wrong answer without shield', () => {
             gameEngine.currentAnswer = 42;
             gameEngine.timeLeft = 30;
-            
+
             const userNoShields = {
                 ops: ['+'],
                 totalCoins: 100,
@@ -337,7 +337,7 @@ describe('GameEngine', () => {
 
         test('should add shake animation for wrong answer', () => {
             gameEngine.currentAnswer = 42;
-            
+
             const userNoShields = {
                 ops: ['+'],
                 totalCoins: 100,
@@ -361,7 +361,7 @@ describe('GameEngine', () => {
             gameEngine.duelMode = false;
             gameEngine.gameCoins = 50;
             gameEngine.gameLevel = 3;
-            
+
             const userForSaving = {
                 ops: ['+'],
                 totalCoins: 100,

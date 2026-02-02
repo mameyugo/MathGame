@@ -16,10 +16,11 @@ let currentUser = userManager.getCurrentUserName();
 // Store items (mantenido para compatibilidad)
 const storeItems = storeManager.getStoreItems();
 
-// GameEngine will be initialized after functions are defined
+// GameEngine and QuestionGenerator will be initialized after functions are defined
 let gameEngine = null;
+let questionGenerator = null;
 
-// Variables que serán gestionadas por GameEngine (mantenerlas para sincronización)
+// Variables que serán gestionadas por managers (mantenerlas para sincronización)
 let duelMode = false;
 let duelPlayers = [];
 let duelScores = {};
@@ -192,107 +193,6 @@ function startTimer() {
 }
 
 /**
- * Genera una pregunta matemática aleatoria
- */
-function generateQuestion() {
-    const ops = users[currentUser].ops;
-    const op = ops[Math.floor(Math.random() * ops.length)];
-    const mode = Math.random();
-    let n1 = Math.floor(Math.random() * (gameLevel + 5)) + 1;
-    let n2 = Math.floor(Math.random() * (gameLevel + 5)) + 1;
-    if (op === '-' && n1 < n2) [n1, n2] = [n2, n1];
-    currentAnswer = eval(`${n1}${op}${n2}`);
-
-    const area = document.getElementById('question-area');
-    area.innerHTML = "";
-
-    if (mode < 0.3 && gameLevel < 8) { // Modo Visual
-        area.appendChild(renderVisual(n1));
-        const s = document.createElement('div');
-        s.innerText = op.replace('*', '×');
-        area.appendChild(s);
-        area.appendChild(renderVisual(n2));
-    } else if (mode < 0.6) { // Modo Incógnita
-        area.innerText = `? ${op.replace('*', '×')} ${n2} = ${currentAnswer}`;
-        currentAnswer = n1;
-    } else { // Modo Estándar
-        area.innerText = `${n1} ${op.replace('*', '×')} ${n2} = ?`;
-    }
-    renderOptions();
-}
-
-/**
- * Renderiza representación visual de un número (decenas y unidades)
- * @param {number} num - Número a representar
- * @returns {HTMLElement} Elemento div con la representación visual
- */
-function renderVisual(num) {
-    const div = document.createElement('div');
-    div.className = 'visual-box';
-    const tens = Math.floor(num / 10);
-    const units = num % 10;
-
-    // Get current theme
-    const theme = users[currentUser].currentTheme || 'default';
-    let unitIcon = '🍎';
-
-    if (theme === 'theme_space') {
-        unitIcon = '⭐';
-    } else if (theme === 'theme_jungle') {
-        unitIcon = '🍌';
-    }
-
-    for (let i = 0; i < tens; i++) div.innerHTML += '<div class="ten-block">📦x10</div>';
-    for (let i = 0; i < units; i++) div.innerHTML += `<span class="unit">${unitIcon}</span>`;
-    return div;
-}
-
-/**
- * Renderiza las opciones de respuesta
- */
-function renderOptions() {
-    const grid = document.getElementById('answers-area');
-    grid.innerHTML = "";
-    let opts = new Set([currentAnswer]);
-
-    const addOption = (val) => {
-        if (typeof val !== 'number' || Number.isNaN(val)) return;
-        if (val < 0) return;
-        opts.add(val);
-    };
-
-    // 15%: añadir opción errónea con resultado correcto ±10
-    if (Math.random() < 0.15) {
-        const delta = Math.random() < 0.5 ? -10 : 10;
-        addOption(currentAnswer + delta);
-    }
-
-    // 10%: añadir opción errónea invirtiendo los dígitos (14 -> 41)
-    if (Math.random() < 0.10) {
-        const reversed = parseInt(String(Math.abs(currentAnswer)).split('').reverse().join(''), 10);
-        if (!Number.isNaN(reversed) && reversed !== currentAnswer) {
-            addOption(reversed);
-        }
-    }
-
-    // Completar opciones con valores cercanos
-    let guard = 0;
-    while (opts.size < 4 && guard < 100) {
-        guard++;
-        addOption(currentAnswer + (Math.floor(Math.random() * 10) - 5));
-    }
-    Array.from(opts).sort(() => Math.random() - 0.5).forEach(o => {
-        if (o >= 0) {
-            const b = document.createElement('button');
-            b.className = 'option-btn';
-            b.innerText = o;
-            b.onclick = () => check(o);
-            grid.appendChild(b);
-        }
-    });
-}
-
-/**
  * Activa/desactiva UI de modo problemas
  * @param {boolean} enabled
  */
@@ -308,6 +208,9 @@ function toggleProblemUI(enabled) {
     submitBtn.style.display = enabled ? 'block' : 'none';
 }
 
+// Inicializar QuestionGenerator antes de GameEngine
+questionGenerator = new QuestionGenerator(userManager, (val) => check(val));
+
 // Inicializar GameEngine después de definir las funciones auxiliares
 gameEngine = new GameEngine(
     userManager,
@@ -320,71 +223,37 @@ gameEngine = new GameEngine(
     () => showUsers()
 );
 
-/**
- * Selecciona un problema según nivel y tipo
- */
+// Wrapper functions para QuestionGenerator
+function generateQuestion() {
+    questionGenerator.setGameLevel(gameLevel);
+    questionGenerator.generateQuestion();
+    currentAnswer = questionGenerator.getCurrentAnswer();
+    gameEngine.setCurrentAnswer(currentAnswer);
+}
+
+function renderVisual(num) {
+    return questionGenerator.renderVisual(num);
+}
+
+function renderOptions() {
+    questionGenerator.renderOptions();
+}
+
 function selectProblem() {
-    if (typeof window.bancoProblemas === 'undefined' || !Array.isArray(window.bancoProblemas)) {
-        return null;
-    }
-
-    const candidates = window.bancoProblemas.filter(p => p.tipo === problemType && p.nivelMin <= gameLevel);
-    const pool = candidates.length ? candidates : window.bancoProblemas;
-    const pick = pool[Math.floor(Math.random() * pool.length)];
-    return pick?.generar ? pick.generar() : null;
+    questionGenerator.setProblemType(problemType);
+    questionGenerator.setGameLevel(gameLevel);
+    return questionGenerator.selectProblem();
 }
 
-/**
- * Renderiza la ecuación con inputs vacíos
- * @param {string} equation
- */
 function renderEquation(equation) {
-    const equationArea = document.getElementById('equation-area');
-    if (!equationArea) return;
-
-    equationArea.innerHTML = '';
-    const lines = String(equation).split('\n');
-
-    lines.forEach(line => {
-        const row = document.createElement('div');
-        row.className = 'equation-row';
-
-        const parts = line.split('__');
-        parts.forEach((part, idx) => {
-            row.insertAdjacentText('beforeend', part);
-            if (idx < parts.length - 1) {
-                const input = document.createElement('input');
-                input.type = 'number';
-                input.className = 'eq-input';
-                input.setAttribute('data-eq', '1');
-                row.appendChild(input);
-            }
-        });
-
-        equationArea.appendChild(row);
-    });
+    questionGenerator.renderEquation(equation);
 }
 
-/**
- * Genera un problema
- */
 function generateProblem() {
-    currentProblem = selectProblem();
-    if (!currentProblem) {
-        showFeedbackMessage('No hay problemas disponibles');
-        return;
-    }
-
-    const area = document.getElementById('question-area');
-    area.innerText = currentProblem.texto;
-
-    renderEquation(currentProblem.ecuacion);
-
-    // Enfocar el primer input para responder más rápido
-    setTimeout(() => {
-        const firstInput = document.querySelector('#equation-area .eq-input');
-        if (firstInput) firstInput.focus();
-    }, 0);
+    questionGenerator.setProblemType(problemType);
+    questionGenerator.setGameLevel(gameLevel);
+    questionGenerator.generateProblem();
+    currentProblem = questionGenerator.getCurrentProblem();
 }
 
 /**
@@ -447,7 +316,7 @@ function check(val) {
     // Sincronizar currentAnswer con gameEngine
     gameEngine.currentAnswer = currentAnswer;
     gameEngine.check(val);
-    
+
     // Sincronizar estado global de vuelta
     gameCoins = gameEngine.gameCoins;
     gameLevel = gameEngine.gameLevel;
@@ -499,13 +368,13 @@ function unequipTheme() {
 function usePotion() {
     const timerElement = document.getElementById('game-timer');
     const initialTime = timeLeft;
-    
+
     storeManager.usePotion({
         timeLeft: timeLeft,
         timerElement: timerElement,
         updateDisplay: updatePowerUpDisplay
     });
-    
+
     // Si la operación fue exitosa, timeLeft se incrementó en 15
     timeLeft = initialTime + 15;
     users = userManager.getUsers();
