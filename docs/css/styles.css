@@ -249,6 +249,7 @@ button.main-btn:active {
     font-weight: 500;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+    box-sizing: border-box;
 }
 
 .user-input:focus {
