@@ -1,6 +1,7 @@
 {
   "app_title": "🚀 MateAventura",
   "intro_create_player": "👋 Crea tu primer jugador:",
+  "intro_create_new_player": "➕ Crea un nuevo jugador:",
   "input_player_name": "Nombre del jugador...",
   "btn_add": "+ Añadir",
   "btn_duel_mode": "🏆 MODO DUELO",

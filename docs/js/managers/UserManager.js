@@ -103,6 +103,19 @@ class UserManager {
         const list = document.getElementById('user-list');
         if (!list) return;
 
+        // Actualizar el texto del título según si hay usuarios o no
+        const introText = document.querySelector('.intro-text[data-i18n]');
+        if (introText) {
+            const userCount = Object.keys(this.users).length;
+            if (userCount === 0) {
+                introText.setAttribute('data-i18n', 'intro_create_player');
+                introText.innerText = this.translationManager.t('intro_create_player');
+            } else {
+                introText.setAttribute('data-i18n', 'intro_create_new_player');
+                introText.innerText = this.translationManager.t('intro_create_new_player');
+            }
+        }
+
         list.innerHTML = "";
         for (let name in this.users) {
             list.innerHTML += `
