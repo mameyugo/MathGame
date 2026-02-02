@@ -16,8 +16,8 @@ window.bancoProblemas = [
                 texto: `${p1} tiene ${n1} manzanas. ${p2} tropieza con él, ${p1} cae y se le rompen ${n2}. Si cada manzana cuesta ${precio}€, ¿cuánto dinero le debe ${p1} a ${p2}?`,
                 respuestaCorrecta: 0,
                 explicacion: `¡Cuidado! Las manzanas son de ${p1}. Es ${p2} quien debería pagarle ${n2 * precio}€ a ${p1}.`,
-                ecuacion: `${n2} x ${precio} = __\nDeuda de ${p1} = __`,
-                ecuacionValores: [n2 * precio, 0],
+                ecuacion: `${n2} x ${precio} = __`,
+                ecuacionValores: [n2 * precio],
                 opciones: [0, n2 * precio, n1 * precio, (n1 - n2) * precio]
             };
         }
