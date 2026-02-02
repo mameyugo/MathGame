@@ -6,6 +6,7 @@
 // Importar managers (se deben cargar antes en el HTML)
 const translationManager = new TranslationManager();
 const userManager = new UserManager(translationManager);
+const storeManager = new StoreManager(userManager, translationManager);
 
 // Variables globales
 let currentLanguage = translationManager.getCurrentLanguage();
@@ -21,49 +22,8 @@ let problemMode = false;
 let problemType = 'matematico';
 let currentProblem = null;
 
-// Store items definition
-const storeItems = [
-    {
-        id: 'potion',
-        icon: '⏰',
-        nameKey: 'item_potion_name',
-        descKey: 'item_potion_desc',
-        price: 50,
-        type: 'consumable'
-    },
-    {
-        id: 'freeze',
-        icon: '❄️',
-        nameKey: 'item_freeze_name',
-        descKey: 'item_freeze_desc',
-        price: 20,
-        type: 'consumable'
-    },
-    {
-        id: 'shield',
-        icon: '🛡️',
-        nameKey: 'item_shield_name',
-        descKey: 'item_shield_desc',
-        price: 100,
-        type: 'consumable'
-    },
-    {
-        id: 'theme_space',
-        icon: '🌟',
-        nameKey: 'item_theme_space_name',
-        descKey: 'item_theme_space_desc',
-        price: 200,
-        type: 'theme'
-    },
-    {
-        id: 'theme_jungle',
-        icon: '🍌',
-        nameKey: 'item_theme_jungle_name',
-        descKey: 'item_theme_jungle_desc',
-        price: 200,
-        type: 'theme'
-    }
-];
+// Store items (mantenido para compatibilidad, pero storeManager tiene su propia copia)
+const storeItems = storeManager.getStoreItems();
 
 /**
  * Initialize user inventory if it doesn't exist
@@ -527,38 +487,6 @@ function check(val) {
 }
 
 /**
- * Shows a feedback message on screen
- * @param {string} message - Message to display
- */
-function showFeedbackMessage(message) {
-    // Outer container: responsible only for centering/positioning
-    const msgDiv = document.createElement('div');
-    msgDiv.style.position = 'fixed';
-    msgDiv.style.top = '50%';
-    msgDiv.style.left = '50%';
-    msgDiv.style.transform = 'translate(-50%, -50%)';
-    msgDiv.style.zIndex = '2000';
-    msgDiv.style.pointerEvents = 'none';
-
-    // Inner content: visual styles + animation
-    const msgContent = document.createElement('div');
-    msgContent.style.background = 'rgba(39, 174, 96, 0.95)';
-    msgContent.style.color = 'white';
-    msgContent.style.padding = '20px 40px';
-    msgContent.style.borderRadius = '15px';
-    msgContent.style.fontSize = '1.5rem';
-    msgContent.style.fontWeight = 'bold';
-    msgContent.style.animation = 'slideUp 0.3s';
-    msgContent.innerText = message;
-
-    msgDiv.appendChild(msgContent);
-    document.body.appendChild(msgDiv);
-    setTimeout(() => {
-        msgDiv.remove();
-    }, 2000);
-}
-
-/**
  * Finaliza la sesión de juego actual
  */
 function endGameSession() {
@@ -584,288 +512,74 @@ function endGameSession() {
 /**
  * Opens the store modal
  */
+// Wrapper functions para mantener compatibilidad con HTML onclick handlers
 function openStore() {
-    if (!currentUser) {
-        const userNames = Object.keys(users);
-        if (userNames.length === 0) {
-            // No users created: ask the player to create a profile before using the store
-            alert('Por favor, crea un jugador antes de entrar en la tienda.\nPor favor, crea un xogador antes de entrar na tenda.');
-            return;
-        }
-        // Users exist but none is selected: require explicit selection instead of defaulting
-        alert('Por favor, selecciona un jugador antes de entrar en la tienda.\nPor favor, selecciona un xogador antes de entrar na tenda.');
-        return;
-    }
-    initInventory(users[currentUser]);
-    document.getElementById('store-modal').classList.add('active');
-    renderStore();
+    storeManager.openStore();
 }
 
-/**
- * Closes the store modal
- */
 function closeStore() {
-    document.getElementById('store-modal').classList.remove('active');
+    storeManager.closeStore();
 }
 
-/**
- * Renders the store items
- */
 function renderStore() {
-    const container = document.getElementById('store-items');
-    const balance = document.getElementById('store-balance');
-
-    balance.innerText = users[currentUser].totalCoins;
-    container.innerHTML = '';
-
-    storeItems.forEach(item => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'store-item';
-
-        let owned = 0;
-        let isOwned = false;
-        let isEquipped = false;
-
-        if (item.type === 'consumable') {
-            if (item.id === 'potion') owned = users[currentUser].inventory.potions;
-            if (item.id === 'freeze') owned = users[currentUser].inventory.freezes;
-            if (item.id === 'shield') owned = users[currentUser].inventory.shields;
-        } else if (item.type === 'theme') {
-            isOwned = users[currentUser].inventory.themes.includes(item.id);
-            isEquipped = users[currentUser].currentTheme === item.id;
-        }
-
-        const canBuy = users[currentUser].totalCoins >= item.price;
-        if (!canBuy && !isOwned) {
-            itemDiv.classList.add('locked');
-        }
-
-        itemDiv.innerHTML = `
-            <div class="item-info">
-                <div class="item-header">
-                    <span class="item-icon">${item.icon}</span>
-                    <span class="item-name">${t(item.nameKey)}</span>
-                </div>
-                <div class="item-description">${t(item.descKey)}</div>
-                ${item.type === 'consumable' ? `<div class="item-owned">${t('item_owned')}${owned}</div>` : ''}
-                ${isEquipped && item.type === 'theme' ? `<div class="item-owned">✓ ${t('btn_equipped')}</div>` : ''}
-            </div>
-            <div class="item-purchase">
-                <div class="item-price">💰 ${item.price}</div>
-                ${isEquipped ? `<button class="btn-buy" onclick="unequipTheme()">${t('btn_unequip')}</button>` :
-                isOwned && item.type === 'theme' ? `<button class="btn-buy" onclick="equipTheme('${item.id}')">${t('btn_equip')}</button>` :
-                    `<button class="btn-buy" onclick="buyItem('${item.id}')" ${!canBuy ? 'disabled' : ''}>${t('btn_buy')}</button>`}
-            </div>
-        `;
-
-        container.appendChild(itemDiv);
-    });
+    storeManager.renderStore();
 }
 
-/**
- * Buys an item from the store
- * @param {string} itemId - ID of the item to buy
- */
 function buyItem(itemId) {
-    const item = storeItems.find(i => i.id === itemId);
-    if (!item) return;
-
-    initInventory(users[currentUser]);
-
-    // Check if user has enough coins
-    if (users[currentUser].totalCoins < item.price) {
-        alert(t('alert_not_enough_coins'));
-        return;
-    }
-
-    // Deduct coins
-    users[currentUser].totalCoins -= item.price;
-
-    // Add item to inventory
-    if (item.type === 'consumable') {
-        if (item.id === 'potion') {
-            users[currentUser].inventory.potions++;
-        } else if (item.id === 'freeze') {
-            users[currentUser].inventory.freezes++;
-        } else if (item.id === 'shield') {
-            users[currentUser].inventory.shields++;
-        }
-    } else if (item.type === 'theme') {
-        if (!users[currentUser].inventory.themes.includes(item.id)) {
-            users[currentUser].inventory.themes.push(item.id);
-        }
-    }
-
-    // Save to localStorage
-    localStorage.setItem('math_users', JSON.stringify(users));
-
-    // Visual feedback
-    const balance = document.getElementById('store-balance');
-    balance.parentElement.classList.add('coin-flash');
-    setTimeout(() => {
-        balance.parentElement.classList.remove('coin-flash');
-    }, 500);
-
-    // Play purchase sound (using confetti as substitute)
-    try {
-        confetti({ particleCount: 50, spread: 70, colors: ['#f1c40f', '#27ae60'] });
-    } catch (e) {
-        // Confetti library not loaded
-    }
-
-    // Show success message
-    showFeedbackMessage(t('alert_purchase_success'));
-
-    // Re-render store
-    renderStore();
-    renderUserList();
+    storeManager.buyItem(itemId);
+    users = userManager.getUsers();
 }
 
-/**
- * Equips a theme
- * @param {string} themeId - ID of the theme to equip
- */
 function equipTheme(themeId) {
-    initInventory(users[currentUser]);
-
-    const inventory = users[currentUser].inventory;
-
-    // Only allow equipping themes that the user owns
-    if (!inventory || !Array.isArray(inventory.themes) || !inventory.themes.includes(themeId)) {
-        return;
-    }
-    users[currentUser].currentTheme = themeId;
-    localStorage.setItem('math_users', JSON.stringify(users));
-    renderStore();
+    storeManager.equipTheme(themeId);
+    users = userManager.getUsers();
 }
 
-/**
- * Unequips the current theme and reverts to default
- */
 function unequipTheme() {
-    initInventory(users[currentUser]);
-    users[currentUser].currentTheme = 'default';
-    localStorage.setItem('math_users', JSON.stringify(users));
-    renderStore();
+    storeManager.unequipTheme();
+    users = userManager.getUsers();
 }
 
-/**
- * Uses a time potion during gameplay
- */
 function usePotion() {
-    initInventory(users[currentUser]);
-
-    if (users[currentUser].inventory.potions <= 0) {
-        alert(t('alert_no_potions'));
-        return;
-    }
-
-    // Consume potion
-    users[currentUser].inventory.potions--;
-    localStorage.setItem('math_users', JSON.stringify(users));
-
-    // Add time
-    timeLeft += 15;
-    document.getElementById('game-timer').innerText = timeLeft + "s";
-
-    // Update display
-    updatePowerUpDisplay();
-
-    // Visual feedback
-    showFeedbackMessage(t('alert_potion_used'));
-    try {
-        confetti({ particleCount: 30, spread: 60, colors: ['#3498db', '#9b59b6'] });
-    } catch (e) {
-        // Confetti library not loaded
-    }
+    const timerElement = document.getElementById('game-timer');
+    const initialTime = timeLeft;
+    
+    storeManager.usePotion({
+        timeLeft: timeLeft,
+        timerElement: timerElement,
+        updateDisplay: updatePowerUpDisplay
+    });
+    
+    // Si la operación fue exitosa, timeLeft se incrementó en 15
+    timeLeft = initialTime + 15;
+    users = userManager.getUsers();
 }
 
-/**
- * Uses a freeze time power-up during gameplay
- */
 function useFreezeTime() {
-    initInventory(users[currentUser]);
-
-    if (users[currentUser].inventory.freezes <= 0) {
-        alert(t('alert_no_freezes'));
-        return;
-    }
-
-    // Consume freeze
-    users[currentUser].inventory.freezes--;
-    localStorage.setItem('math_users', JSON.stringify(users));
-
-    // Pause timer for 5 seconds
-    if (timerInterval) {
-        clearInterval(timerInterval);
-    }
-
-    // Clear any pending freeze timeout
-    if (freezeTimeout) {
-        clearTimeout(freezeTimeout);
-    }
-
-    // Visual feedback
-    showFeedbackMessage(t('alert_freeze_used'));
-    try {
-        confetti({ particleCount: 40, spread: 80, colors: ['#00d4ff', '#ffffff', '#a8e6ff'] });
-    } catch (e) {
-        // Confetti library not loaded
-    }
-
-    // Update display
-    updatePowerUpDisplay();
-
-    // Resume timer after 5 seconds
-    freezeTimeout = setTimeout(() => {
-        freezeTimeout = null;
-        startTimer();
-    }, 5000);
+    const newState = storeManager.useFreezeTime({
+        timerInterval: timerInterval,
+        freezeTimeout: freezeTimeout,
+        startTimer: startTimer
+    });
+    timerInterval = newState.timerInterval;
+    freezeTimeout = newState.freezeTimeout;
+    users = userManager.getUsers();
 }
 
-/**
- * Updates the power-up display in game
- */
 function updatePowerUpDisplay() {
-    initInventory(users[currentUser]);
+    storeManager.updatePowerUpDisplay();
+}
 
-    const potionBtn = document.getElementById('btn-use-potion');
-    const potionCount = document.getElementById('potion-count');
-    const freezeBtn = document.getElementById('btn-use-freeze');
-    const freezeCount = document.getElementById('freeze-count');
-    const shieldIndicator = document.getElementById('shield-indicator');
-    const shieldCount = document.getElementById('shield-count');
-
-    potionCount.innerText = users[currentUser].inventory.potions;
-    freezeCount.innerText = users[currentUser].inventory.freezes;
-    shieldCount.innerText = users[currentUser].inventory.shields;
-
-    potionBtn.disabled = users[currentUser].inventory.potions <= 0;
-    freezeBtn.disabled = users[currentUser].inventory.freezes <= 0;
-
-    if (users[currentUser].inventory.shields > 0) {
-        shieldIndicator.classList.add('active');
-    } else {
-        shieldIndicator.classList.remove('active');
-    }
+function applyTheme() {
+    storeManager.applyTheme();
 }
 
 /**
- * Applies the current theme to visual elements
+ * Shows a feedback message on screen
+ * @param {string} message - Message to display
  */
-function applyTheme() {
-    initInventory(users[currentUser]);
-    const theme = users[currentUser].currentTheme;
-
-    // Apply theme to the app container
-    const appContainer = document.getElementById('app-container');
-    if (theme === 'theme_space') {
-        appContainer.setAttribute('data-theme', 'space');
-    } else if (theme === 'theme_jungle') {
-        appContainer.setAttribute('data-theme', 'jungle');
-    } else {
-        appContainer.removeAttribute('data-theme');
-    }
+function showFeedbackMessage(message) {
+    storeManager.showFeedbackMessage(message);
 }
 
 /**

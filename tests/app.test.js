@@ -4,6 +4,7 @@ const path = require('path');
 // Cargar archivos necesarios
 const translationManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/TranslationManager.js'), 'utf8');
 const userManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/UserManager.js'), 'utf8');
+const storeManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/StoreManager.js'), 'utf8');
 const problemaCode = fs.readFileSync(path.join(__dirname, '../docs/js/problemas.js'), 'utf8');
 const appCode = fs.readFileSync(path.join(__dirname, '../docs/js/app.js'), 'utf8');
 
@@ -17,6 +18,7 @@ beforeAll(() => {
     // Ejecutar los scripts en el contexto del window (managers, problemas, luego app)
     window.eval(translationManagerCode);
     window.eval(userManagerCode);
+    window.eval(storeManagerCode);
     window.eval(problemaCode);
     window.eval(appCode);
 });
