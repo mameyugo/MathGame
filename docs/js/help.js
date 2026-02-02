@@ -85,5 +85,17 @@ async function initHelp() {
     await changeLanguage(currentLanguage);
 }
 
-// Inicializar la página
-initHelp();
+// Sincronizar idioma cuando el usuario vuelve a la página
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+        // La página fue restaurada del bfcache
+        currentLanguage = localStorage.getItem('math_lang') || 'es';
+        changeLanguage(currentLanguage);
+    }
+});
+
+// Guardar preferencias antes de descargar
+window.addEventListener('beforeunload', function() {
+    localStorage.setItem('math_lang', currentLanguage);
+});
+

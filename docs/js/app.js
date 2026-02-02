@@ -752,6 +752,23 @@ function applyTheme() {
 }
 
 /**
+ * Sincroniza el estado desde localStorage (útil cuando vuelves atrás en navegador)
+ */
+function syncStateFromStorage() {
+    // Recargar datos desde localStorage
+    const storedUsers = localStorage.getItem('math_users');
+    if (storedUsers) {
+        users = JSON.parse(storedUsers);
+        // Reinicializar inventarios si es necesario
+        Object.keys(users).forEach(userName => {
+            initInventory(users[userName]);
+        });
+    }
+    
+    currentLanguage = localStorage.getItem('math_lang') || 'es';
+}
+
+/**
  * Inicializa la aplicación cargando traducciones y configurando el idioma
  */
 async function initApp() {
@@ -770,5 +787,24 @@ async function initApp() {
     showUsers();
 }
 
+// Sincronizar estado cuando el usuario vuelve a la página (después de presionar atrás)
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+        // La página fue restaurada del bfcache (back/forward cache)
+        syncStateFromStorage();
+        // Re-renderizar la UI
+        if (currentUser) {
+            selectUser(currentUser);
+        } else {
+            showUsers();
+        }
+    }
+});
+
+// Guardar estado antes de descargar la página
+window.addEventListener('beforeunload', function() {
+    localStorage.setItem('math_users', JSON.stringify(users));
+    localStorage.setItem('math_lang', currentLanguage);
+});
 // Inicializar la aplicación
 initApp();
