@@ -246,42 +246,42 @@ function cancelEditName() {
 function saveUserName() {
     const newName = document.getElementById('edit-user-name').value.trim();
     const oldName = currentUser;
-    
+
     // Validar que el nombre no esté vacío
     if (!newName) {
         return alert(t('alert_invalid_name'));
     }
-    
+
     // Si el nombre no cambió, cancelar
     if (newName === oldName) {
         cancelEditName();
         return;
     }
-    
+
     // Validar que el nombre no exista ya
     if (users[newName]) {
         return alert(t('alert_invalid_name'));
     }
-    
+
     // Copiar datos del usuario con el nuevo nombre (copia profunda)
     users[newName] = JSON.parse(JSON.stringify(users[oldName]));
-    
+
     // Eliminar el usuario con el nombre antiguo
     delete users[oldName];
-    
+
     // Guardar en localStorage
     localStorage.setItem('math_users', JSON.stringify(users));
-    
+
     // Actualizar currentUser
     currentUser = newName;
-    
+
     // Actualizar la interfaz
     document.getElementById('config-title').innerText = t('config_title_user') + newName;
     cancelEditName();
-    
+
     // Mostrar mensaje de confirmación
     alert(t('alert_name_updated'));
-    
+
     // Actualizar la lista de usuarios
     renderUserList();
     renderLeaderboard();
@@ -764,7 +764,7 @@ function syncStateFromStorage() {
             initInventory(users[userName]);
         });
     }
-    
+
     currentLanguage = localStorage.getItem('math_lang') || 'es';
 }
 
@@ -788,7 +788,7 @@ async function initApp() {
 }
 
 // Sincronizar estado cuando el usuario vuelve a la página (después de presionar atrás)
-window.addEventListener('pageshow', function(event) {
+window.addEventListener('pageshow', function (event) {
     if (event.persisted) {
         // La página fue restaurada del bfcache (back/forward cache)
         syncStateFromStorage();
@@ -802,7 +802,7 @@ window.addEventListener('pageshow', function(event) {
 });
 
 // Guardar estado antes de descargar la página
-window.addEventListener('beforeunload', function() {
+window.addEventListener('beforeunload', function () {
     localStorage.setItem('math_users', JSON.stringify(users));
     localStorage.setItem('math_lang', currentLanguage);
 });

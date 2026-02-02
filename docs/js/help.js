@@ -86,7 +86,7 @@ async function initHelp() {
 }
 
 // Sincronizar idioma cuando el usuario vuelve a la página
-window.addEventListener('pageshow', function(event) {
+window.addEventListener('pageshow', function (event) {
     if (event.persisted) {
         // La página fue restaurada del bfcache
         currentLanguage = localStorage.getItem('math_lang') || 'es';
@@ -95,7 +95,7 @@ window.addEventListener('pageshow', function(event) {
 });
 
 // Guardar preferencias antes de descargar
-window.addEventListener('beforeunload', function() {
+window.addEventListener('beforeunload', function () {
     localStorage.setItem('math_lang', currentLanguage);
 });
 
