@@ -203,6 +203,8 @@ class UserManager {
         if (cfgSum) cfgSum.checked = this.users[name].ops.includes('+');
         if (cfgRes) cfgRes.checked = this.users[name].ops.includes('-');
         if (cfgMul) cfgMul.checked = this.users[name].ops.includes('*');
+        const cfgDiv = document.getElementById('cfg-div');
+        if (cfgDiv) cfgDiv.checked = this.users[name].ops.includes('/');
 
         // Reset edit name section
         if (editSection) editSection.style.display = 'none';

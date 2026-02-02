@@ -140,7 +140,8 @@ function startSingleGame() {
     const checkboxes = {
         sum: document.getElementById('cfg-sum').checked,
         res: document.getElementById('cfg-res').checked,
-        mul: document.getElementById('cfg-mul').checked
+        mul: document.getElementById('cfg-mul').checked,
+        div: document.getElementById('cfg-div').checked
     };
     gameEngine.startSingleGame(checkboxes);
 

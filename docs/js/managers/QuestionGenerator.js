@@ -39,6 +39,13 @@ class QuestionGenerator {
             [n1, n2] = [n2, n1];
         }
 
+        // Ensure division results in an integer (n1 must be divisible by n2)
+        if (op === '/') {
+            n2 = Math.max(1, Math.floor(Math.random() * (this.gameLevel + 3)) + 1);
+            const quotient = Math.floor(Math.random() * (this.gameLevel + 3)) + 1;
+            n1 = n2 * quotient; // Ensure exact division
+        }
+
         this.currentAnswer = eval(`${n1}${op}${n2}`);
 
         const area = document.getElementById('question-area');
@@ -46,8 +53,8 @@ class QuestionGenerator {
 
         area.innerHTML = "";
 
-        if (mode < 0.3 && this.gameLevel < 8) {
-            // Visual mode
+        if (mode < 0.3 && this.gameLevel < 8 && op !== '/') {
+            // Visual mode (not for division)
             area.appendChild(this.renderVisual(n1));
             const s = document.createElement('div');
             s.innerText = op.replace('*', '×');
@@ -55,11 +62,13 @@ class QuestionGenerator {
             area.appendChild(this.renderVisual(n2));
         } else if (mode < 0.6) {
             // Unknown mode (find first operand)
-            area.innerText = `? ${op.replace('*', '×')} ${n2} = ${this.currentAnswer}`;
+            const opSymbol = op.replace('*', '×').replace('/', '÷');
+            area.innerText = `? ${opSymbol} ${n2} = ${this.currentAnswer}`;
             this.currentAnswer = n1;
         } else {
             // Standard mode
-            area.innerText = `${n1} ${op.replace('*', '×')} ${n2} = ?`;
+            const opSymbol = op.replace('*', '×').replace('/', '÷');
+            area.innerText = `${n1} ${opSymbol} ${n2} = ?`;
         }
 
         this.renderOptions();

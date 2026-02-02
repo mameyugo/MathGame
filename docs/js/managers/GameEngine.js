@@ -72,6 +72,7 @@ class GameEngine {
         if (checkboxes.sum) user.ops.push('+');
         if (checkboxes.res) user.ops.push('-');
         if (checkboxes.mul) user.ops.push('*');
+        if (checkboxes.div) user.ops.push('/');
 
         if (!user.ops.length) {
             alert(this.t('alert_choose_operation'));
