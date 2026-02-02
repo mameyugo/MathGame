@@ -419,12 +419,13 @@ button.main-btn:active {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc !important;
+    background-color: #e74c3c !important;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
     border-radius: 28px !important;
     display: block !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .category-switch-slider:before {
@@ -439,11 +440,12 @@ button.main-btn:active {
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
     border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .category-switch-input:checked + .category-switch-slider {
-    background-color: #4CAF50;
+    background-color: #27ae60 !important;
+    box-shadow: 0 0 8px rgba(39, 174, 96, 0.4);
 }
 
 .category-switch-input:focus + .category-switch-slider {
@@ -587,12 +589,13 @@ button.main-btn:active {
     transform: translateY(-50%);
     width: 50px !important;
     height: 26px !important;
-    background-color: #ccc !important;
+    background-color: #e74c3c !important;
     border-radius: 26px !important;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
     display: block !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .switch-slider:before {
@@ -607,11 +610,12 @@ button.main-btn:active {
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .switch-input:checked + .switch-slider {
-    background-color: #4CAF50;
+    background-color: #27ae60 !important;
+    box-shadow: 0 0 8px rgba(39, 174, 96, 0.4);
 }
 
 .switch-input:focus + .switch-slider {
