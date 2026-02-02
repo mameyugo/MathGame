@@ -212,7 +212,7 @@ class UserManager {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         const configScreen = document.getElementById('screen-config');
         if (configScreen) configScreen.classList.add('active');
-        
+
         // Renderizar categorías de problemas después de cambiar de pantalla
         if (typeof renderProblemCategories === 'function') {
             setTimeout(() => renderProblemCategories(), 0);

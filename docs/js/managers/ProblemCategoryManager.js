@@ -102,7 +102,7 @@ class ProblemCategoryManager {
 
             const card = document.createElement('div');
             card.className = `category-card difficulty-${category.difficulty} ${isSelected ? 'selected' : ''}`;
-            
+
             // Estilos inline de respaldo
             card.style.cssText = `
                 padding: 15px;
@@ -118,7 +118,7 @@ class ProblemCategoryManager {
                 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                 ${isSelected ? 'background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); box-shadow: 0 4px 12px rgba(0,0,0,0.15);' : ''}
             `;
-            
+
             card.onclick = () => {
                 if (onToggle) {
                     onToggle(category.id);
@@ -135,10 +135,12 @@ class ProblemCategoryManager {
                         ${this.translationManager.t(`category_${category.id}_desc`)}
                     </p>
                 </div>
-                <input type="checkbox" 
-                       class="category-checkbox" 
-                       ${isSelected ? 'checked' : ''}
-                       onclick="event.stopPropagation()">
+                <label class="category-switch" onclick="event.stopPropagation()">
+                    <input type="checkbox" 
+                           class="category-switch-input" 
+                           ${isSelected ? 'checked' : ''}>
+                    <span class="category-switch-slider"></span>
+                </label>
             `;
 
             container.appendChild(card);
