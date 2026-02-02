@@ -5,10 +5,12 @@
 class QuestionGenerator {
     /**
      * @param {UserManager} userManager - User management instance
+     * @param {ProblemCategoryManager} problemCategoryManager - Problem category management instance
      * @param {Function} checkFn - Function to check answers
      */
-    constructor(userManager, checkFn) {
+    constructor(userManager, problemCategoryManager, checkFn) {
         this.userManager = userManager;
+        this.problemCategoryManager = problemCategoryManager;
         this.check = checkFn;
         this.currentAnswer = 0;
         this.currentProblem = null;
@@ -150,7 +152,7 @@ class QuestionGenerator {
     }
 
     /**
-     * Selects a problem based on level and type
+     * Selects a problem based on level, type and selected categories
      * @returns {Object|null} Selected problem
      */
     selectProblem() {
@@ -158,10 +160,34 @@ class QuestionGenerator {
             return null;
         }
 
+        // Obtener categorías seleccionadas por el usuario
+        const selectedCategories = this.userManager.getProblemCategories();
+        
+        // Validar que hay al menos una categoría seleccionada
+        if (!this.problemCategoryManager.hasValidSelection(selectedCategories)) {
+            console.warn('No problem categories selected');
+            return null;
+        }
+
+        // Filtrar problemas por tipo y nivel
         const candidates = window.bancoProblemas.filter(
             p => p.tipo === this.problemType && p.nivelMin <= this.gameLevel
         );
-        const pool = candidates.length ? candidates : window.bancoProblemas;
+        
+        // Filtrar por categorías seleccionadas
+        const filteredByCategory = this.problemCategoryManager.filterProblemsByCategories(
+            candidates,
+            selectedCategories
+        );
+        
+        // Si no hay problemas después de filtrar por categorías, usar todos los candidatos
+        const pool = filteredByCategory.length ? filteredByCategory : candidates;
+        
+        if (pool.length === 0) {
+            console.warn('No problems available for selected criteria');
+            return null;
+        }
+        
         const pick = pool[Math.floor(Math.random() * pool.length)];
         return pick?.generar ? pick.generar() : null;
     }

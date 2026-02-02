@@ -113,5 +113,14 @@
   "footer_free_software": "Logiciel Libre",
   "footer_support_text": "Soutenez le projet :",
   "footer_star_repo": "Donnez-lui une étoile",
-  "footer_contribute": "Contribuez"
+  "footer_contribute": "Contribuez",
+  "config_problem_bags": "🎒 Sacs de Problèmes",
+  "config_problem_bags_hint": "Sélectionnez les types de problèmes que vous voulez résoudre",
+  "category_explorador_name": "Explorateur",
+  "category_explorador_desc": "Mesures, comptage et problèmes simples",
+  "category_arquitecto_name": "Architecte",
+  "category_arquitecto_desc": "Aires, périmètres et fractions",
+  "category_cientifico_name": "Scientifique",
+  "category_cientifico_desc": "Algèbre, probabilité et logique avancée",
+  "no_problems_selected": "⚠️ Sélectionnez au moins un sac de problèmes pour jouer"
 }

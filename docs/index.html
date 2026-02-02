@@ -63,6 +63,18 @@
                 <label class="config-label"><input type="checkbox" id="cfg-mul">
                     <span data-i18n="op_multiplication">Multiplicaciones</span></label>
             </div>
+
+            <!-- Sección de Sacos de Problemas -->
+            <div class="config-section">
+                <h4 data-i18n="config_problem_bags">🎒 Sacos de Problemas</h4>
+                <p class="hint" data-i18n="config_problem_bags_hint">
+                    Selecciona los tipos de problemas que quieres resolver
+                </p>
+                <div id="problem-categories-area" class="problem-categories">
+                    <!-- Las tarjetas se renderizan dinámicamente -->
+                </div>
+            </div>
+
             <button class="main-btn" onclick="startSingleGame()" data-i18n="btn_play">¡A JUGAR!</button>
             <button class="main-btn btn-problem" onclick="startProblemGame('matematico')"
                 data-i18n="btn_problem_math">🧮 Problemas matemáticos</button>
@@ -145,6 +157,7 @@
     <script src="./js/managers/StoreManager.js"></script>
     <script src="./js/managers/GameEngine.js"></script>
     <script src="./js/managers/QuestionGenerator.js"></script>
+    <script src="./js/managers/ProblemCategoryManager.js"></script>
     <script src="./js/problemas.js"></script>
     <script src="./js/app.js"></script>
 </body>

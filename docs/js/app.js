@@ -7,6 +7,7 @@
 const translationManager = new TranslationManager();
 const userManager = new UserManager(translationManager);
 const storeManager = new StoreManager(userManager, translationManager);
+const problemCategoryManager = new ProblemCategoryManager(translationManager);
 
 // Variables globales
 let currentLanguage = translationManager.getCurrentLanguage();
@@ -90,6 +91,9 @@ function selectUser(name) {
     userManager.selectUser(name);
     currentUser = userManager.getCurrentUserName();
     users = userManager.getUsers();
+    
+    // Renderizar las tarjetas de categorías de problemas
+    renderProblemCategories();
 }
 
 function showEditName() {
@@ -151,6 +155,13 @@ function startSingleGame() {
  * @param {string} type - 'logica' o 'matematico'
  */
 function startProblemGame(type) {
+    // Validar que hay categorías seleccionadas
+    const selectedCategories = userManager.getProblemCategories();
+    if (!problemCategoryManager.hasValidSelection(selectedCategories)) {
+        alert(t('no_problems_selected'));
+        return;
+    }
+    
     problemType = type;
     gameEngine.problemType = type;
     gameEngine.startProblemGame(type);
@@ -220,7 +231,7 @@ function toggleProblemUI(enabled) {
 }
 
 // Inicializar QuestionGenerator antes de GameEngine
-questionGenerator = new QuestionGenerator(userManager, (val) => check(val));
+questionGenerator = new QuestionGenerator(userManager, problemCategoryManager, (val) => check(val));
 
 // Inicializar GameEngine después de definir las funciones auxiliares
 gameEngine = new GameEngine(
@@ -450,6 +461,24 @@ async function initApp() {
     normalizeUsers();
 
     showUsers();
+}
+
+/**
+ * Renderiza las tarjetas de categorías de problemas en la configuración del usuario
+ */
+function renderProblemCategories() {
+    const selectedCategories = userManager.getProblemCategories();
+    
+    problemCategoryManager.renderCategoryCards(
+        'problem-categories-area',
+        selectedCategories,
+        (categoryId) => {
+            // Callback cuando se hace clic en una categoría
+            userManager.toggleProblemCategory(categoryId);
+            // Re-renderizar para actualizar visualización
+            renderProblemCategories();
+        }
+    );
 }
 
 // Sincronizar estado cuando el usuario vuelve a la página (después de presionar atrás)

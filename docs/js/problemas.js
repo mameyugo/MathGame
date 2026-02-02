@@ -3,6 +3,7 @@ window.bancoProblemas = [
         id: "manzanas_rotas_logica",
         tipo: "logica",
         nivelMin: 3,
+        categorias: ['arquitecto', 'cientifico'],
         // Usamos variables que se rellenan al azar
         generar: () => {
             const n1 = Math.floor(Math.random() * 10) + 5; // Manzanas iniciales
@@ -26,6 +27,7 @@ window.bancoProblemas = [
         id: "compra_estandar",
         tipo: "matematico",
         nivelMin: 1,
+        categorias: ['explorador'],
         generar: () => {
             const cantidad = Math.floor(Math.random() * 5) + 2;
             const precio = Math.floor(Math.random() * 3) + 1;
@@ -43,6 +45,7 @@ window.bancoProblemas = [
         id: "pastor_ovejas",
         tipo: "logica",
         nivelMin: 2,
+        categorias: ['explorador', 'arquitecto'],
         generar: () => {
             // Números aleatorios coherentes: entre 10-30 ovejas totales
             const ovejas_totales = Math.floor(Math.random() * 21) + 10; // 10-30
@@ -64,6 +67,7 @@ window.bancoProblemas = [
         id: "patas_mesa",
         tipo: "matematico",
         nivelMin: 4,
+        categorias: ['arquitecto'],
         generar: () => {
             // Números aleatorios coherentes
             const mesas = Math.floor(Math.random() * 3) + 2; // 2-4 mesas
@@ -89,6 +93,7 @@ window.bancoProblemas = [
         id: "peso_ladrillo",
         tipo: "logica",
         nivelMin: 5,
+        categorias: ['cientifico'],
         generar: () => {
             // X = peso_extra + X/2
             // X - X/2 = peso_extra
@@ -113,6 +118,7 @@ window.bancoProblemas = [
         id: "meses_ano",
         tipo: "logica",
         nivelMin: 2,
+        categorias: ['explorador', 'arquitecto'],
         generar: () => {
             const respuesta = 12;
 
@@ -130,6 +136,7 @@ window.bancoProblemas = [
         id: "tren_electrico",
         tipo: "logica",
         nivelMin: 3,
+        categorias: ['arquitecto', 'cientifico'],
         generar: () => {
             // Números aleatorios para hacer más realista, pero la respuesta siempre es 0
             const velocidad_tren = Math.floor(Math.random() * 50) + 80; // 80-130 km/h
@@ -150,6 +157,7 @@ window.bancoProblemas = [
         id: "biblioteca",
         tipo: "matematico",
         nivelMin: 2,
+        categorias: ['explorador'],
         generar: () => {
             const X = Math.floor(Math.random() * 51) + 50; // 50-100 libros iniciales
             const Y = Math.floor(Math.random() * 21) + 10; // 10-30 libros prestados
@@ -170,6 +178,7 @@ window.bancoProblemas = [
         id: "huerto_manzanas",
         tipo: "matematico",
         nivelMin: 4,
+        categorias: ['explorador', 'arquitecto'],
         generar: () => {
             const F = Math.floor(Math.random() * 7) + 3; // 3-9 filas
             const A = Math.floor(Math.random() * 7) + 4; // 4-10 árboles por fila
@@ -189,6 +198,7 @@ window.bancoProblemas = [
         id: "vuelta_compra",
         tipo: "matematico",
         nivelMin: 1,
+        categorias: ['explorador'],
         generar: () => {
             const articulos = ["Libreta", "Goma", "Lápiz", "Cuaderno", "Bolígrafo"];
             const articulo = articulos[Math.floor(Math.random() * articulos.length)];
@@ -210,6 +220,7 @@ window.bancoProblemas = [
         id: "despertador_antiguo",
         tipo: "logica",
         nivelMin: 3,
+        categorias: ['arquitecto', 'cientifico'],
         generar: () => {
             const respuesta = 1;
 
@@ -227,6 +238,7 @@ window.bancoProblemas = [
         id: "reloj_espejo",
         tipo: "logica",
         nivelMin: 4,
+        categorias: ['cientifico'],
         generar: () => {
             const hora_espejo = 9;
             const respuesta = 12 - hora_espejo; // 3
@@ -245,6 +257,7 @@ window.bancoProblemas = [
         id: "tarta_horno",
         tipo: "matematico",
         nivelMin: 1,
+        categorias: ['explorador'],
         generar: () => {
             const hora_inicio = Math.floor(Math.random() * 9) + 10; // 10-18
             const duracion = [15, 30, 45, 60][Math.floor(Math.random() * 4)];
@@ -270,6 +283,7 @@ window.bancoProblemas = [
         id: "viaje_autobus",
         tipo: "matematico",
         nivelMin: 2,
+        categorias: ['explorador', 'arquitecto'],
         generar: () => {
             const hora_salida = Math.floor(Math.random() * 4) + 8; // 8-11
             const hora_llegada = Math.floor(Math.random() * 9) + 12; // 12-20
@@ -290,6 +304,7 @@ window.bancoProblemas = [
         id: "entrenamiento_batman",
         tipo: "matematico",
         nivelMin: 4,
+        categorias: ['arquitecto'],
         generar: () => {
             const horas = Math.floor(Math.random() * 4) + 2; // 2-5 horas
             const respuesta = horas * 60;

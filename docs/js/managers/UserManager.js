@@ -37,6 +37,10 @@ class UserManager {
         if (!user.currentTheme) {
             user.currentTheme = 'default';
         }
+        // Inicializar categorías de problemas (por defecto solo Explorador)
+        if (!user.problemCategories || !Array.isArray(user.problemCategories)) {
+            user.problemCategories = ['explorador'];
+        }
     }
 
     /**
@@ -168,7 +172,8 @@ class UserManager {
             totalCoins: 0,
             ops: ['+'],
             inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
-            currentTheme: 'default'
+            currentTheme: 'default',
+            problemCategories: ['explorador'] // Por defecto nivel fácil
         };
 
         this.saveToStorage();
@@ -305,6 +310,54 @@ class UserManager {
             : 1;
         const displayRecord = Math.max(userRecord, gameLevel);
         recordEl.innerText = displayRecord;
+    }
+
+    /**
+     * Obtiene las categorías de problemas del usuario actual
+     * @returns {Array<string>}
+     */
+    getProblemCategories() {
+        if (!this.currentUser || !this.users[this.currentUser]) {
+            return ['explorador']; // Default
+        }
+        const categories = this.users[this.currentUser].problemCategories;
+        return Array.isArray(categories) && categories.length > 0 
+            ? categories 
+            : ['explorador'];
+    }
+
+    /**
+     * Actualiza las categorías de problemas del usuario actual
+     * @param {Array<string>} categories - Array de IDs de categorías
+     */
+    setProblemCategories(categories) {
+        if (!this.currentUser || !this.users[this.currentUser]) return;
+        
+        this.users[this.currentUser].problemCategories = Array.isArray(categories) 
+            ? categories 
+            : [];
+        this.saveToStorage();
+    }
+
+    /**
+     * Alterna una categoría de problemas (añadir/quitar)
+     * @param {string} categoryId - ID de la categoría
+     */
+    toggleProblemCategory(categoryId) {
+        if (!this.currentUser || !this.users[this.currentUser]) return;
+        
+        const categories = this.getProblemCategories();
+        const index = categories.indexOf(categoryId);
+        
+        if (index > -1) {
+            // Quitar categoría
+            categories.splice(index, 1);
+        } else {
+            // Añadir categoría
+            categories.push(categoryId);
+        }
+        
+        this.setProblemCategories(categories);
     }
 
     /**

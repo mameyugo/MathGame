@@ -113,5 +113,14 @@
   "footer_free_software": "Programari Lliure",
   "footer_support_text": "Dona suport al projecte:",
   "footer_star_repo": "Dona-li una estrella",
-  "footer_contribute": "Col·labora"
+  "footer_contribute": "Col·labora",
+  "config_problem_bags": "🎒 Sacs de Problemes",
+  "config_problem_bags_hint": "Selecciona els tipus de problemes que vols resoldre",
+  "category_explorador_name": "Explorador",
+  "category_explorador_desc": "Mesures, recompte i problemes senzills",
+  "category_arquitecto_name": "Arquitecte",
+  "category_arquitecto_desc": "Àrees, perímetres i fraccions",
+  "category_cientifico_name": "Científic",
+  "category_cientifico_desc": "Àlgebra, probabilitat i lògica avançada",
+  "no_problems_selected": "⚠️ Selecciona almenys un sac de problemes per jugar"
 }
