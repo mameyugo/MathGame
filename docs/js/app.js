@@ -92,10 +92,10 @@ function selectUser(name) {
     currentUser = userManager.getCurrentUserName();
     users = userManager.getUsers();
 
-    // Renderizar las tarjetas de categorías de problemas después de que el DOM esté listo
-    setTimeout(() => {
-        renderProblemCategories();
-    }, 0);
+    // Renderizar las tarjetas de categorías de problemas inmediatamente
+    console.log('selectUser: about to render categories');
+    renderProblemCategories();
+    console.log('selectUser: categories rendered');
 }
 
 function showEditName() {

@@ -102,6 +102,23 @@ class ProblemCategoryManager {
 
             const card = document.createElement('div');
             card.className = `category-card difficulty-${category.difficulty} ${isSelected ? 'selected' : ''}`;
+            
+            // Estilos inline de respaldo
+            card.style.cssText = `
+                padding: 15px;
+                margin-bottom: 10px;
+                border: 3px solid ${category.difficulty === 'easy' ? '#27ae60' : category.difficulty === 'medium' ? '#f39c12' : '#e74c3c'};
+                border-radius: 12px;
+                background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                min-height: 80px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                ${isSelected ? 'background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); box-shadow: 0 4px 12px rgba(0,0,0,0.15);' : ''}
+            `;
+            
             card.onclick = () => {
                 if (onToggle) {
                     onToggle(category.id);
