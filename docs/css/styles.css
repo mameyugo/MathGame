@@ -229,13 +229,38 @@ button.main-btn:active {
 /* Pantalla de usuarios */
 .user-input-group {
     margin-top: 20px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.intro-text {
+    text-align: center;
+    animation: pulse 2s ease-in-out infinite;
 }
 
 .user-input {
-    padding: 12px;
-    width: 60%;
-    border-radius: 10px;
-    border: 2px solid #ddd;
+    padding: 14px 16px;
+    width: 70%;
+    max-width: 300px;
+    border-radius: 12px;
+    border: 3px solid #3498db;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.user-input:focus {
+    outline: none;
+    border-color: #2980b9;
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+    transform: scale(1.02);
+}
+
+.user-input::placeholder {
+    color: #95a5a6;
+    font-weight: 400;
 }
 
 .edit-name-input {
@@ -797,6 +822,15 @@ button.main-btn:active {
     }
     75% {
         transform: scale(1.1) rotate(5deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
     }
 }
 
