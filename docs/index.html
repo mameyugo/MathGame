@@ -56,12 +56,21 @@
                 <button id="btn-edit-username" class="main-btn" onclick="showEditName()" data-i18n="btn_edit_name"
                     style="margin-bottom: 20px;"></button>
                 <p><strong data-i18n="choose_operations">Elige las operaciones:</strong></p>
-                <label class="config-label"><input type="checkbox" id="cfg-sum" checked>
-                    <span data-i18n="op_addition">Sumas</span></label>
-                <label class="config-label"><input type="checkbox" id="cfg-res">
-                    <span data-i18n="op_subtraction">Restas</span></label>
-                <label class="config-label"><input type="checkbox" id="cfg-mul">
-                    <span data-i18n="op_multiplication">Multiplicaciones</span></label>
+                <label class="switch-label">
+                    <input type="checkbox" id="cfg-sum" class="switch-input" checked>
+                    <span class="switch-slider"></span>
+                    <span class="switch-text" data-i18n="op_addition">Sumas</span>
+                </label>
+                <label class="switch-label">
+                    <input type="checkbox" id="cfg-res" class="switch-input">
+                    <span class="switch-slider"></span>
+                    <span class="switch-text" data-i18n="op_subtraction">Restas</span>
+                </label>
+                <label class="switch-label">
+                    <input type="checkbox" id="cfg-mul" class="switch-input">
+                    <span class="switch-slider"></span>
+                    <span class="switch-text" data-i18n="op_multiplication">Multiplicaciones</span>
+                </label>
             </div>
 
             <!-- Sección de Sacos de Problemas -->
@@ -70,10 +79,6 @@
                 <p class="hint" data-i18n="config_problem_bags_hint">
                     Selecciona los tipos de problemas que quieres resolver
                 </p>
-                <button onclick="renderProblemCategories()"
-                    style="margin-bottom: 10px; background: red; color: white; padding: 10px;">
-                    🔧 DEBUG: Forzar renderizado
-                </button>
                 <div id="problem-categories-area" class="problem-categories">
                     <!-- Las tarjetas se renderizan dinámicamente -->
                 </div>
