@@ -63,7 +63,7 @@ export function getProblemsByLevel(nivel) {
  * @returns {Array} Problemas de la categoría
  */
 export function getProblemsByCategory(categoria) {
-    return allProblems.filter(p => 
+    return allProblems.filter(p =>
         p.categorias && p.categorias.includes(categoria)
     );
 }
