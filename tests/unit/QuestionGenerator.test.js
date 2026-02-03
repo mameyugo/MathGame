@@ -19,13 +19,16 @@ describe('QuestionGenerator', () => {
             getCurrentUser: jest.fn(() => ({
                 ops: ['+', '-', '*'],
                 currentTheme: 'default'
-            }))
+            })),
+            getProblemCategories: jest.fn(() => ['explorador'])
         };
 
         // Mock ProblemCategoryManager
         mockProblemCategoryManager = {
             getProblemCategory: jest.fn(() => 'explorador'),
-            categorizeProblems: jest.fn()
+            categorizeProblems: jest.fn(),
+            hasValidSelection: jest.fn(() => true),
+            filterProblemsByCategories: jest.fn((problems) => problems)
         };
 
         // Mock check function
@@ -219,6 +222,8 @@ describe('QuestionGenerator', () => {
             questionGenerator.problemType = 'matematico';
             questionGenerator.gameLevel = 5;
 
+            mockProblemCategoryManager.filterProblemsByCategories.mockImplementation((problems) => problems);
+
             const problem = questionGenerator.selectProblem();
 
             expect(problem).toBeDefined();
@@ -233,13 +238,15 @@ describe('QuestionGenerator', () => {
             expect(problem).toBeNull();
         });
 
-        test('should fallback to all problems if no candidates match', () => {
+        test('should fallback to all problems if category filter yields empty', () => {
             window.bancoProblemas = [
-                { tipo: 'logica', nivelMin: 10, generar: () => ({ texto: 'Hard', ecuacion: '10+10=__' }) }
+                { tipo: 'matematico', nivelMin: 1, generar: () => ({ texto: 'Easy', ecuacion: '1+1=__' }) }
             ];
 
             questionGenerator.problemType = 'matematico';
             questionGenerator.gameLevel = 1;
+
+            mockProblemCategoryManager.filterProblemsByCategories.mockImplementation(() => []);
 
             const problem = questionGenerator.selectProblem();
 

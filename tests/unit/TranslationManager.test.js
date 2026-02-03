@@ -16,8 +16,11 @@ describe('TranslationManager', () => {
             querySelectorAll: jest.fn(() => [])
         };
 
-        // Mock fetch
-        global.fetch = jest.fn();
+        // Mock fetch (default OK to avoid console noise)
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            json: async () => ({})
+        });
 
         manager = new TranslationManager();
     });
@@ -57,6 +60,7 @@ describe('TranslationManager', () => {
         });
 
         test('should handle fetch errors and fallback to Spanish', async () => {
+            const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
             global.fetch
                 .mockRejectedValueOnce(new Error('Network error'))
                 .mockResolvedValueOnce({
@@ -69,6 +73,8 @@ describe('TranslationManager', () => {
             expect(fetch).toHaveBeenCalledTimes(2);
             expect(fetch).toHaveBeenNthCalledWith(1, './lang/gl.json');
             expect(fetch).toHaveBeenNthCalledWith(2, './lang/es.json');
+
+            consoleErrorSpy.mockRestore();
         });
 
         test('should not recurse if Spanish fails', async () => {

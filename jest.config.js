@@ -5,6 +5,6 @@ module.exports = {
     testMatch: ['**/tests/**/*.test.js'],
     collectCoverageFrom: ['docs/js/**/*.js'],
     transform: {
-        '^.+\\.js$': 'babel-jest',
+        '^.+\\.js$': ['babel-jest', { sourceMaps: false }],
     },
 };
