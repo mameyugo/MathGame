@@ -603,5 +603,114 @@ window.bancoProblemas = [
                 ]
             };
         }
+    },
+    {
+        id: "hermanos_juan",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['explorador', 'arquitecto'],
+        generar: () => {
+            return {
+                texto: `Juan tiene 3 hermanas. Cada una de sus hermanas tiene un solo hermano varón. ¿Cuántos hermanos varones tiene Juan en total?`,
+                respuestaCorrecta: 0,
+                explicacion: `¡Truco activado! El cerebro quiere sumar, pero la respuesta es 0. El "único hermano varón" de todas sus hermanas es Juan mismo. Juan no tiene más hermanos varones.`,
+                ecuacion: `Hermanos de Juan = __`,
+                ecuacionValores: [0],
+                tipoRespuesta: "numero",
+                opciones: [0, 3, 1, 4]
+            };
+        }
+    },
+    {
+        id: "avion_frontera",
+        tipo: "logica",
+        nivelMin: 4,
+        categorias: ['cientifico'],
+        generar: () => {
+            const paises = [
+                { pais1: "España", pais2: "Portugal" },
+                { pais1: "Francia", pais2: "Italia" },
+                { pais1: "Brasil", pais2: "Argentina" },
+                { pais1: "USA", pais2: "Canada" },
+                { pais1: "Mexico", pais2: "Guatemala" }
+            ];
+            const loc = paises[Math.floor(Math.random() * paises.length)];
+            
+            return {
+                texto: `Un avión se estrella justo en la frontera entre ${loc.pais1} y ${loc.pais2}. ¿En qué país entierran a los supervivientes?`,
+                respuestaCorrecta: 0,
+                explicacion: `¡Trampa del lenguaje! ¡A los supervivientes NO se les entierra! El problema menciona "frontera" para distraerte, pero la clave es que son supervivientes.`,
+                ecuacion: `Entierros = __`,
+                ecuacionValores: [0],
+                tipoRespuesta: "numero",
+                opciones: [0, 1, 2, -1]
+            };
+        }
+    },
+    {
+        id: "velas_viento",
+        tipo: "logica",
+        nivelMin: 4,
+        categorias: ['cientifico'],
+        generar: () => {
+            const velas_iniciales = 10;
+            const velas_apagadas = 3;
+            const velas_encendidas = velas_iniciales - velas_apagadas;
+            const respuesta = velas_apagadas; // Las encendidas se consumen completamente
+            
+            return {
+                texto: `Hay ${velas_iniciales} velas encendidas en una mesa. Una corriente de aire apaga ${velas_apagadas} de ellas. Si nadie las vuelve a encender, ¿cuántas velas quedan al día siguiente?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Pensamiento temporal! Las ${velas_encendidas} velas que se quedaron encendidas se consumirán completamente durante la noche. Solo quedarán las ${velas_apagadas} velas apagadas, que se mantienen intactas.`,
+                ecuacion: `Velas restantes = __`,
+                ecuacionValores: [respuesta],
+                tipoRespuesta: "numero",
+                opciones: [respuesta, velas_encendidas, velas_iniciales, velas_encendidas + velas_apagadas]
+            };
+        }
+    },
+    {
+        id: "peso_manzanas",
+        tipo: "logica",
+        nivelMin: 4,
+        categorias: ['arquitecto', 'cientifico'],
+        generar: () => {
+            const peso_llena = 15;
+            const peso_caja = 2;
+            const peso_manzanas = peso_llena - peso_caja; // 13 kg
+            const peso_manzanas_mitad = peso_manzanas / 2; // 6.5 kg
+            const respuesta = peso_manzanas_mitad + peso_caja; // 8.5 kg
+            
+            return {
+                texto: `Una caja llena de manzanas pesa ${peso_llena} kg. La caja vacía pesa ${peso_caja} kg. Si te comes la mitad de las manzanas, ¿cuánto pesa la caja ahora?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Paso 1: Peso de las manzanas = ${peso_llena} - ${peso_caja} = ${peso_manzanas} kg. Paso 2: Mitad de manzanas = ${peso_manzanas} ÷ 2 = ${peso_manzanas_mitad} kg. Paso 3: Caja + manzanas restantes = ${peso_caja} + ${peso_manzanas_mitad} = ${respuesta} kg`,
+                ecuacion: `((${peso_llena} - ${peso_caja}) ÷ 2) + ${peso_caja} = __`,
+                ecuacionValores: [respuesta],
+                tipoRespuesta: "numero",
+                opciones: [respuesta, peso_manzanas_mitad, peso_llena / 2, peso_manzanas]
+            };
+        }
+    },
+    {
+        id: "pajaro_cazador",
+        tipo: "logica",
+        nivelMin: 4,
+        categorias: ['explorador', 'cientifico'],
+        generar: () => {
+            const pajaro_inicial = 5;
+            const pajaro_herido = 1;
+            const respuesta = 0; // El herido cae y los otros salen volando
+            
+            return {
+                texto: `Hay ${pajaro_inicial} pájaros en una rama. Un cazador dispara y acierta a uno. ¿Cuántos pájaros quedan en la rama?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Realismo lógico! El pájaro herido cae al suelo y los otros ${pajaro_inicial - pajaro_herido} pájaros salen volando asustados por el disparo. Resultado: 0 pájaros en la rama.`,
+                ecuacion: `Pájaros en rama = __`,
+                ecuacionValores: [respuesta],
+                tipoRespuesta: "numero",
+                opciones: [respuesta, pajaro_inicial - pajaro_herido, pajaro_herido, pajaro_inicial]
+            };
+        }
     }
 ];
