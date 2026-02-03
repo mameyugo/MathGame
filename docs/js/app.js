@@ -339,9 +339,9 @@ function submitProblem() {
 
     if (isCorrect) {
         // Actualizar GameEngine
-        gameEngine.gameCoins += 10;
-        gameEngine.timeLeft += 2;
-        showTimeDelta(2);
+        gameEngine.gameCoins += 20;
+        gameEngine.timeLeft += 10;
+        showTimeDelta(10);
 
         try {
             confetti({ particleCount: 30, spread: 50 });

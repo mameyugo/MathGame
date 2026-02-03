@@ -138,7 +138,7 @@ class GameEngine {
     initGameSession(lvl, coins) {
         this.gameLevel = lvl;
         this.gameCoins = coins;
-        this.timeLeft = 30;
+        this.timeLeft = this.problemMode ? 60 : 30;
 
         // Switch to game screen
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));

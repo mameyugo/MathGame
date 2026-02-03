@@ -250,13 +250,24 @@ class QuestionGenerator {
             area.innerText = this.currentProblem.texto;
         }
 
+        // Ocultar ecuación inicialmente
+        const equationArea = document.getElementById('equation-area');
+        if (equationArea) {
+            equationArea.style.opacity = '0';
+        }
+
         this.renderEquation(this.currentProblem.ecuacion);
 
-        // Focus first input for faster answering
+        // Mostrar ecuación después de 10 segundos
         setTimeout(() => {
+            if (equationArea) {
+                equationArea.style.transition = 'opacity 0.5s ease';
+                equationArea.style.opacity = '1';
+            }
+            // Focus first input
             const firstInput = document.querySelector('#equation-area .eq-input');
             if (firstInput) firstInput.focus();
-        }, 0);
+        }, 10000);
     }
 
     /**
