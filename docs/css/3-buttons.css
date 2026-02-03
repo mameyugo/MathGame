@@ -1,0 +1,153 @@
+/**
+ * MateAventura - Botones
+ * Estilos para todos los tipos de botones
+ */
+
+button.main-btn {
+    font-size: 1.2rem;
+    padding: 15px;
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    margin-top: 10px;
+    box-shadow: 0 4px 0 #219150;
+}
+
+button.main-btn:active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+.btn-play-user {
+    padding: 8px 15px;
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.btn-play-user:hover {
+    background: #219150;
+    transform: scale(1.05);
+}
+
+.btn-play-user:active {
+    transform: scale(0.95);
+}
+
+.btn-add {
+    padding: 12px;
+    width: 30%;
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.btn-duel {
+    background: var(--accent);
+    box-shadow: 0 4px 0 #7d4591;
+}
+
+.btn-help {
+    background: none;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    cursor: pointer;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    width: 100%;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-help:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-back {
+    background: none;
+    border: none;
+    color: gray;
+    cursor: pointer;
+    margin-top: 15px;
+    text-decoration: underline;
+}
+
+.btn-buy {
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    font-size: 1rem;
+}
+
+.btn-buy:hover {
+    background: #219150;
+    transform: scale(1.05);
+}
+
+.btn-buy:active {
+    transform: scale(0.95);
+}
+
+.btn-buy:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-store {
+    background: var(--gold);
+    box-shadow: 0 4px 0 #d4a300;
+}
+
+.btn-edit-icon {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.btn-edit-icon:hover {
+    background: rgba(52, 152, 219, 0.1);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.option-btn {
+    font-size: 1.5rem;
+    padding: 15px;
+    border: 3px solid #eee;
+    border-radius: 15px;
+    background: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.option-btn:hover {
+    border-color: var(--primary);
+    background: #f0f7ff;
+}

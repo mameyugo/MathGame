@@ -1,0 +1,142 @@
+/**
+ * MateAventura - Idiomas y Responsive
+ * Estilos para selector de idiomas y queries de responsive
+ */
+
+/* Selector de idioma */
+.lang-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    max-width: 400px;
+    justify-content: flex-end;
+    z-index: 100;
+    margin-bottom: 60px;
+}
+
+.lang-btn {
+    padding: 5px 8px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-weight: normal;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive para tablets */
+@media (max-width: 768px) {
+    .lang-selector {
+        position: relative;
+        top: 0;
+        right: 0;
+        justify-content: center;
+        margin-bottom: 15px;
+        max-width: 100%;
+    }
+
+    .lang-btn {
+        font-size: 0.75rem;
+        padding: 4px 6px;
+    }
+
+    .config-section {
+        padding: 15px;
+    }
+
+    .category-card {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .category-icon {
+        font-size: 2rem;
+    }
+
+    .category-name {
+        font-size: 1rem;
+    }
+
+    .category-description {
+        font-size: 0.85rem;
+    }
+
+    .category-switch {
+        width: 48px;
+        height: 24px;
+    }
+
+    .category-switch-slider:before {
+        height: 18px;
+        width: 18px;
+    }
+
+    .category-switch-input:checked + .category-switch-slider:before {
+        transform: translateX(22px);
+    }
+
+    .category-checkbox {
+        width: 20px;
+        height: 20px;
+    }
+
+    .category-checkbox:checked::after {
+        font-size: 14px;
+    }
+}
+
+/* Responsive para móviles */
+@media (max-width: 600px) {
+    body {
+        padding: 5px;
+    }
+
+    body::before {
+        background-size: cover;
+        background-position: center center;
+    }
+
+    #app-container {
+        padding: 20px;
+        border: 3px solid #fff;
+    }
+
+    .user-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .user-input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #new-user-name:focus-visible {
+        width: 98%;
+        margin-left: 1%;
+    }
+
+    .btn-add {
+        width: 100%;
+    }
+
+    .game-stats {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .question-area {
+        font-size: 2rem;
+        min-height: 150px;
+    }
+}

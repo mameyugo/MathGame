@@ -1,0 +1,164 @@
+/**
+ * MateAventura - Juego
+ * Estilos de gameplay, preguntas, opciones
+ */
+
+.visual-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin: 10px;
+    padding: 10px;
+    background: #fcfcfc;
+    border-radius: 15px;
+}
+
+.ten-block {
+    background: #ffe082;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 2px solid #ffca28;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.unit {
+    font-size: 2rem;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.question-area {
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: #fafafa;
+    border-radius: 20px;
+}
+
+/* Game Stats */
+.turn-indicator {
+    font-size: 1.2rem;
+    color: var(--accent);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.game-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.stat-level {
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+.game-timer {
+    color: var(--error);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.timer-wrap {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+}
+
+.timer-delta {
+    margin-left: 6px;
+    font-size: 1rem;
+    font-weight: 700;
+    opacity: 0;
+    transform: translateY(4px);
+    transition:
+        opacity 1s ease,
+        transform 1s ease;
+    pointer-events: none;
+}
+
+.timer-delta.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timer-delta.positive {
+    color: #2ecc71;
+}
+
+.timer-delta.negative {
+    color: #e74c3c;
+}
+
+.timer-delta.neutral {
+    color: #3498db;
+}
+
+.stat-coins {
+    background: #fff9e6;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--gold);
+}
+
+/* Power-ups */
+.game-power-ups {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.power-up-btn,
+.shield-indicator {
+    background: white;
+    border: 3px solid #ddd;
+    border-radius: 12px;
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+.power-up-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: #f0f7ff;
+    transform: scale(1.05);
+}
+
+.power-up-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.power-up-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.shield-indicator {
+    background: #e8f5e9;
+    border-color: var(--success);
+    cursor: default;
+}
+
+.shield-indicator.active {
+    animation: pulse 1.5s infinite;
+}

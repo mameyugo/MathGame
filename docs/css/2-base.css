@@ -1,0 +1,68 @@
+/**
+ * MateAventura - Base & Layout
+ * Estilos globales, body, contenedor principal
+ */
+
+body {
+    font-family: "Comic Sans MS", sans-serif;
+    background: linear-gradient(180deg, #f5dda9 0%, #e8c77d 50%, #c9a86a 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 10px;
+    color: var(--dark);
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("../images/background.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
+#app-container {
+    max-width: 550px;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 25px;
+    border-radius: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border: 5px solid #fff;
+    position: relative;
+    backdrop-filter: blur(5px);
+}
+
+.screen {
+    display: none;
+    padding-top: 30px;
+}
+
+.active {
+    display: block;
+}
+
+.shake {
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+}

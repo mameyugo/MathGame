@@ -1,0 +1,62 @@
+/**
+ * MateAventura - Usuarios y Cards
+ * Gestión de usuarios, cards y leaderboard
+ */
+
+.user-card {
+    background: #f8f9fa;
+    border: 2px solid #ddd;
+    padding: 15px;
+    border-radius: 15px;
+    margin: 10px 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.user-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    cursor: pointer;
+}
+
+.user-input-group {
+    margin-top: 20px;
+}
+
+.user-input {
+    padding: 12px;
+    width: 60%;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+}
+
+/* Hall of Fame */
+.leaderboard {
+    background: #fff9e6;
+    border: 2px solid var(--gold);
+    border-radius: 15px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.leaderboard-title {
+    margin: 0 0 10px 0;
+    color: #b8860b;
+}
+
+.leader-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+    border-bottom: 1px solid #eee;
+}
