@@ -1163,3 +1163,52 @@ button.main-btn:active {
         transform: scale(1.1) rotate(5deg);
     }
 }
+
+/* Estilos para ecuaciones en problemas */
+#equation-area {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0;
+}
+
+.equation-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px 0;
+    font-size: 1.3rem;
+    flex-wrap: wrap;
+}
+
+.eq-text {
+    font-weight: bold;
+    color: #2c3e50;
+    transition: opacity 0.5s ease;
+}
+
+.eq-input {
+    width: 60px;
+    padding: 10px 8px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    background: white;
+    color: #2c3e50;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.eq-input:hover {
+    border-color: #2980b9;
+    box-shadow: 0 2px 6px rgba(52, 152, 219, 0.2);
+}
+
+.eq-input:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    background: #f0f8ff;
+}

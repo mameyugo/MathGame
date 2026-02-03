@@ -218,7 +218,16 @@ class QuestionGenerator {
 
             const parts = line.split('__');
             parts.forEach((part, idx) => {
-                row.insertAdjacentText('beforeend', part);
+                // Envolver el texto en un span para poder ocultarlo independientemente
+                if (part.trim()) {
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'eq-text';
+                    textSpan.textContent = part;
+                    row.appendChild(textSpan);
+                } else if (part) {
+                    row.insertAdjacentText('beforeend', part);
+                }
+
                 if (idx < parts.length - 1) {
                     const input = document.createElement('input');
                     input.type = 'number';
@@ -250,23 +259,24 @@ class QuestionGenerator {
             area.innerText = this.currentProblem.texto;
         }
 
-        // Ocultar ecuación inicialmente
-        const equationArea = document.getElementById('equation-area');
-        if (equationArea) {
-            equationArea.style.opacity = '0';
-        }
-
         this.renderEquation(this.currentProblem.ecuacion);
 
-        // Mostrar ecuación después de 10 segundos
+        // Ocultar solo el texto de la ecuación inicialmente, no los inputs
+        const equationTexts = document.querySelectorAll('#equation-area .eq-text');
+        equationTexts.forEach(text => {
+            text.style.opacity = '0';
+        });
+
+        // Focus first input inmediatamente
+        const firstInput = document.querySelector('#equation-area .eq-input');
+        if (firstInput) firstInput.focus();
+
+        // Mostrar texto de la ecuación después de 10 segundos
         setTimeout(() => {
-            if (equationArea) {
-                equationArea.style.transition = 'opacity 0.5s ease';
-                equationArea.style.opacity = '1';
-            }
-            // Focus first input
-            const firstInput = document.querySelector('#equation-area .eq-input');
-            if (firstInput) firstInput.focus();
+            equationTexts.forEach(text => {
+                text.style.transition = 'opacity 0.5s ease';
+                text.style.opacity = '1';
+            });
         }, 10000);
     }
 
