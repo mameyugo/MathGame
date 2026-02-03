@@ -83,6 +83,26 @@ export const problemsCA = {
         texto: () => `Qué pesa més? Un quilogra de ferro o un quilogra de cotó?`,
         explicacion: () => `Pesen el mateix! Un quilogra és un quilogra, sigui quin sigui el material. La confusió ve del fet que el ferro és més dens, però estem parlant del mateix pes.`
     },
+    ovejas_granjero: {
+        texto: (total, quedan) => `Un granger té ${total} ovelles. Un dia ve un llop i fúgeixen-se totes excepte ${quedan}. Quantes ovelles li queden al granger?`,
+        explicacion: (total, quedan) => `Trampa desactivada! La frase diu "totes excepte ${quedan}", així que la resposta està literalment en el problema. Li en queden exactament ${quedan}. No és ${total} − ${quedan} = ${total - quedan}.`
+    },
+    pastillas_medico: {
+        texto: (pastillas, intervalo) => `Estàs malalt i el metge te dóna ${pastillas} pastilles. Te diu que en prenguis una cada ${intervalo} minuts. Quant temps tardaran a prendre-les totes?`,
+        explicacion: (pastillas, intervalo) => `Visualitza el temps! L'error comú és fer ${pastillas}×${intervalo}=${pastillas * intervalo}. Però: la primera la prens en el minut 0, la segona als ${intervalo} minuts, i la tercera als ${intervalo * (pastillas - 1)} minuts. Total: ${intervalo * (pastillas - 1)} minuts.`
+    },
+    hermano_tio: {
+        texto: () => `El germà del meu oncle ve a visitar-me, però resulta que no és meu oncle. Qui és?`,
+        explicacion: () => `Lógica familiar! El germà del meu oncle és meu pare. Si l'oncle del meu pare té un germà, i aquest germà no és meu oncle, llavors ha de ser meu pare. La confusió ve de buscar un parent "distant".`
+    },
+    reparto_cesta: {
+        texto: () => `En una cesta hi ha 5 pomes. Has de repartir-les entre 5 amics de manera que cadascun en tingui una, però que al final en quedi una a la cesta. Com ho fas?`,
+        explicacion: () => `Pensament lateral! La solució és: al últim amic li dónes la cesta AMB la poma dins. Així cadascun té una poma, i una segueix a la cesta. La trampa és suposar que "repartir" significa treure l'objecte del recipient.`
+    },
+    pescadores_familia: {
+        texto: () => `Dos pares i dos fills van a pescar. Pesquen 3 peixos i cadascun n'obté un sense que en sobri cap. Quantes persones hi ha en total?`,
+        explicacion: () => `Només hi ha 3 persones! L'avi i el pare són "dos pares", i el pare i el fill són "dos fills". En total: avi + pare + fill = 3 persones. L'error comú és sumar 2+2=4 persones.`
+    },
 
     // LEVEL 3
     manzanas_rotas_logica: {

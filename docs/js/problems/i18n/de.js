@@ -83,6 +83,26 @@ export const problemsDE = {
         texto: () => `Was wiegt mehr? Ein Kilogramm Eisen oder ein Kilogramm Baumwolle?`,
         explicacion: () => `Sie wiegen das Gleiche! Ein Kilogramm ist ein Kilogramm, unabhängig vom Material. Die Verwirrung kommt daher, dass Eisen dichter ist, aber wir sprechen vom gleichen Gewicht.`
     },
+    ovejas_granjero: {
+        texto: (total, quedan) => `Ein Landwirt hat ${total} Schafe. Eines Tages kommt ein Wolf und alle fliehen außer ${quedan}. Wie viele Schafe hat der Landwirt?`,
+        explicacion: (total, quedan) => `Falle entschärft! Der Satz sagt "alle außer ${quedan}", also ist die Antwort wörtlich im Problem. Er hat genau ${quedan} Schafe. Es ist nicht ${total} − ${quedan} = ${total - quedan}.`
+    },
+    pastillas_medico: {
+        texto: (pastillas, intervalo) => `Du bist krank und der Arzt gibt dir ${pastillas} Pillen. Er sagt dir, dass du alle ${intervalo} Minuten eine nehmen sollst. Wie lange dauert es, bis du alle nimmst?`,
+        explicacion: (pastillas, intervalo) => `Visualisiere die Zeit! Der häufige Fehler ist ${pastillas}×${intervalo}=${pastillas * intervalo}. Aber: Die erste nimmst du in Minute 0, die zweite nach ${intervalo} Minuten, und die dritte nach ${intervalo * (pastillas - 1)} Minuten. Gesamt: ${intervalo * (pastillas - 1)} Minuten.`
+    },
+    hermano_tio: {
+        texto: () => `Der Bruder meines Onkels kommt mich besuchen, aber es stellt sich heraus, dass er nicht mein Onkel ist. Wer ist er?`,
+        explicacion: () => `Familienlogik! Der Bruder meines Onkels ist mein Vater. Wenn der Onkel meines Vaters einen Bruder hat, und dieser Bruder ist nicht mein Onkel, dann muss es mein Vater sein. Die Verwirrung kommt daher, dass man nach einem "entfernten" Verwandten sucht.`
+    },
+    reparto_cesta: {
+        texto: () => `In einem Korb sind 5 Äpfel. Du musst sie unter 5 Freunden so verteilen, dass jeder einen Apfel hat, aber am Ende bleibt ein Apfel im Korb. Wie machst du das?`,
+        explicacion: () => `Laterales Denken! Die Lösung ist: Du gibst dem letzten Freund den Korb MIT dem Apfel darin. So hat jeder einen Apfel, und einer bleibt im Korb. Die Falle ist anzunehmen, dass "verteilen" bedeutet, das Objekt aus dem Behälter zu nehmen.`
+    },
+    pescadores_familia: {
+        texto: () => `Zwei Väter und zwei Söhne gehen angeln. Sie fangen 3 Fische und jeder bekommt einen ohne Reste. Wie viele Personen gibt es insgesamt?`,
+        explicacion: () => `Es gibt nur 3 Personen! Der Großvater und der Vater sind "zwei Väter", und der Vater und der Sohn sind "zwei Söhne". Insgesamt: Großvater + Vater + Sohn = 3 Personen. Der häufige Fehler ist, 2+2=4 Personen zu addieren.`
+    },
 
     // LEVEL 3
     manzanas_rotas_logica: {

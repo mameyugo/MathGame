@@ -83,6 +83,26 @@ export const problemsFR = {
         texto: () => `Qu'est-ce qui pèse plus? Un kilogramme de fer ou un kilogramme de coton?`,
         explicacion: () => `Ils pèsent la même chose! Un kilogramme est un kilogramme, peu importe le matériau. La confusion vient du fait que le fer est plus dense, mais nous parlons du même poids.`
     },
+    ovejas_granjero: {
+        texto: (total, quedan) => `Un fermier a ${total} moutons. Un jour un loup arrive et tous s'échappent sauf ${quedan}. Combien de moutons le fermier a-t-il?`,
+        explicacion: (total, quedan) => `Piège désactivé! La phrase dit "tous sauf ${quedan}", donc la réponse est littéralement dans le problème. Il lui en reste exactement ${quedan}. Ce n'est pas ${total} − ${quedan} = ${total - quedan}.`
+    },
+    pastillas_medico: {
+        texto: (pastillas, intervalo) => `Tu es malade et le médecin te donne ${pastillas} comprimés. Il te dit de prendre un chaque ${intervalo} minutes. Combien de temps te faudra-t-il pour les prendre tous?`,
+        explicacion: (pastillas, intervalo) => `Visualise le temps! L'erreur commune est de faire ${pastillas}×${intervalo}=${pastillas * intervalo}. Mais: tu prends le premier à la minute 0, le second à ${intervalo} minutes, et le troisième à ${intervalo * (pastillas - 1)} minutes. Total: ${intervalo * (pastillas - 1)} minutes.`
+    },
+    hermano_tio: {
+        texto: () => `Le frère de mon oncle vient me visiter, mais il s'avère que ce n'est pas mon oncle. Qui est-ce?`,
+        explicacion: () => `Logique familiale! Le frère de mon oncle est mon père. Si l'oncle de mon père a un frère, et ce frère n'est pas mon oncle, alors c'est mon père. La confusion vient de chercher un parent "éloigné".`
+    },
+    reparto_cesta: {
+        texto: () => `Il y a 5 pommes dans un panier. Tu dois les distribuer parmi 5 amis afin que chacun en ait une, mais à la fin il en reste une dans le panier. Comment fais-tu?`,
+        explicacion: () => `Pensée latérale! La solution est: tu donnes le panier AU dernier ami AVEC la pomme dedans. Ainsi chacun a une pomme, et une reste dans le panier. Le piège est de supposer que "distribuer" signifie sortir l'objet du récipient.`
+    },
+    pescadores_familia: {
+        texto: () => `Deux pères et deux fils vont à la pêche. Ils attrapent 3 poissons et chacun en reçoit un sans reste. Combien de personnes y a-t-il en total?`,
+        explicacion: () => `Il n'y a que 3 personnes! Le grand-père et le père sont "deux pères", et le père et le fils sont "deux fils". Au total: grand-père + père + fils = 3 personnes. L'erreur commune est d'ajouter 2+2=4 personnes.`
+    },
 
     // LEVEL 3
     manzanas_rotas_logica: {

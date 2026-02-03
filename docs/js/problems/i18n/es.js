@@ -213,6 +213,26 @@ export const problemsES = {
     monos_platanos: {
         texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Si ${monos_ini} monos tardan ${tiempo_ini} minutos en comerse ${platanos_ini} plátanos, ¿cuánto tiempo tardarán ${monos_fin} monos en comerse ${platanos_fin} plátanos?`,
         explicacion: (tiempo_ini) => `¡La trampa de la regla de tres! Se intenta aplicar proporción directa. Pero el ritmo es de 1 mono por plátano cada ${tiempo_ini} minutos. Si todos empiezan a comer a la vez, terminan a la vez. La relación monos:plátanos es la misma (1:1), así que el tiempo permanece constante: ${tiempo_ini} minutos.`
+    },
+    ovejas_granjero: {
+        texto: (total, quedan) => `Un granjero tiene ${total} ovejas. Un día viene un lobo y se escapan todas menos ${quedan}. ¿Cuántas ovejas le quedan al granjero?`,
+        explicacion: (total, quedan) => `¡Trampa desactivada! La frase dice "todas menos ${quedan}", así que la respuesta está literalmente en el problema. Le quedan exactamente ${quedan} ovejas. No es ${total} − ${quedan} = ${total - quedan}.`
+    },
+    pastillas_medico: {
+        texto: (pastillas, intervalo) => `Estás malito y el médico te da ${pastillas} pastillas. Te dice que te tomes una cada ${intervalo} minutos. ¿Cuánto tiempo tardarás en tomártelas todas?`,
+        explicacion: (pastillas, intervalo) => `¡Visualiza el tiempo! El error común es hacer ${pastillas}×${intervalo}=${pastillas * intervalo}. Pero: la primera la tomas en el minuto 0, la segunda a los ${intervalo} min, y la tercera a los ${intervalo * (pastillas - 1)} min. Total: ${intervalo * (pastillas - 1)} minutos.`
+    },
+    hermano_tio: {
+        texto: () => `El hermano de mi tío ha venido a visitarme, pero resulta que no es mi tío. ¿Quién es?`,
+        explicacion: () => `¡Lógica familiar! El hermano de mi tío es mi padre. Si el tío de mi padre tiene un hermano, y ese hermano no es mi tío, entonces debe ser mi padre. La confusión viene de buscar un pariente "lejano".`
+    },
+    reparto_cesta: {
+        texto: () => `En una cesta hay 5 manzanas. Tienes que repartirlas entre 5 amigos de modo que cada uno tenga una manzana, pero que al final quede una manzana en la cesta. ¿Cómo lo haces?`,
+        explicacion: () => `¡Pensamiento lateral! La solución es: al último amigo le das la cesta CON la manzana dentro. Así cada uno tiene una manzana, y una sigue en la cesta. La trampa es asumir que "repartir" significa sacar el objeto del recipiente.`
+    },
+    pescadores_familia: {
+        texto: () => `Dos padres y dos hijos van de pesca. Pescan 3 peces y se reparten uno para cada uno sin que sobre ninguno. ¿Cuántas personas hay en total?`,
+        explicacion: () => `¡Solo hay 3 personas! El abuelo y el padre son "dos padres", y el padre y el hijo son "dos hijos". En total: abuelo + padre + hijo = 3 personas. El error común es sumar 2+2=4 personas.`
     }
 };
 

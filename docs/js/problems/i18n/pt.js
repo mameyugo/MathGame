@@ -83,6 +83,26 @@ export const problemsPT = {
         texto: () => `O que pesa mais? Um quilo de ferro ou um quilo de algodão?`,
         explicacion: () => `Pesam a mesma coisa! Um quilo é um quilo, independentemente do material. A confusão vem do ferro ser mais denso, mas estamos falando do mesmo peso.`
     },
+    ovejas_granjero: {
+        texto: (total, quedan) => `Um agricultor tem ${total} ovelhas. Um dia um lobo vem e todas fogem exceto ${quedan}. Quantas ovelhas o agricultor tem?`,
+        explicacion: (total, quedan) => `Armadilha desativada! A frase diz "todas exceto ${quedan}", então a resposta está literalmente no problema. Ele tem exatamente ${quedan} ovelhas. Não é ${total} − ${quedan} = ${total - quedan}.`
+    },
+    pastillas_medico: {
+        texto: (pastillas, intervalo) => `Você está doente e o médico lhe dá ${pastillas} comprimidos. Ele diz que você deve tomar um a cada ${intervalo} minutos. Quanto tempo levará para tomar todos?`,
+        explicacion: (pastillas, intervalo) => `Visualize o tempo! O erro comum é fazer ${pastillas}×${intervalo}=${pastillas * intervalo}. Mas: você toma o primeiro no minuto 0, o segundo aos ${intervalo} minutos, e o terceiro aos ${intervalo * (pastillas - 1)} minutos. Total: ${intervalo * (pastillas - 1)} minutos.`
+    },
+    hermano_tio: {
+        texto: () => `O irmão do meu tio vem me visitar, mas é descoberto que não é meu tio. Quem é?`,
+        explicacion: () => `Lógica familiar! O irmão do meu tio é meu pai. Se o tio do meu pai tem um irmão, e esse irmão não é meu tio, então deve ser meu pai. A confusão vem de procurar um parente "distante".`
+    },
+    reparto_cesta: {
+        texto: () => `Em um cesto há 5 maçãs. Você deve distribuí-las entre 5 amigos para que cada um tenha uma maçã, mas no final uma maçã fica no cesto. Como você faz?`,
+        explicacion: () => `Pensamento lateral! A solução é: você dá ao último amigo o cesto COM a maçã dentro. Assim cada um tem uma maçã, e uma permanece no cesto. A armadilha é assumir que "distribuir" significa tirar o objeto do recipiente.`
+    },
+    pescadores_familia: {
+        texto: () => `Dois pais e dois filhos vão pescar. Eles pegam 3 peixes e cada um recebe um sem sobras. Quantas pessoas há no total?`,
+        explicacion: () => `Há apenas 3 pessoas! O avô e o pai são "dois pais", e o pai e o filho são "dois filhos". No total: avô + pai + filho = 3 pessoas. O erro comum é somar 2+2=4 pessoas.`
+    },
 
     // LEVEL 3
     manzanas_rotas_logica: {

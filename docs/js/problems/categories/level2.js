@@ -127,6 +127,106 @@ export const level2Problems = [
                 opciones: [0, peso, peso * 2, peso / 2]
             };
         }
+    },
+    {
+        id: "ovejas_granjero",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "ovejas_granjero",
+        generar: () => {
+            const ovejas_total = 17;
+            const respuesta = 9;
+
+            return {
+                texto: `Un granjero tiene ${ovejas_total} ovejas. Un día viene un lobo y se escapan todas menos ${respuesta}. ¿Cuántas ovejas le quedan al granjero?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Trampa desactivada! La frase dice "todas menos ${respuesta}", así que la respuesta está literalmente en el problema. Le quedan exactamente ${respuesta} ovejas. No es ${ovejas_total} − 9 = ${ovejas_total - respuesta}.`,
+                ecuacion: `Ovejas restantes = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, ovejas_total - respuesta, ovejas_total, 1]
+            };
+        }
+    },
+    {
+        id: "pastillas_medico",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "pastillas_medico",
+        generar: () => {
+            const pastillas = 3;
+            const minutos_intervalo = 30;
+            const respuesta = 60;
+
+            return {
+                texto: `Estás malito y el médico te da ${pastillas} pastillas. Te dice que te tomes una cada ${minutos_intervalo} minutos. ¿Cuánto tiempo tardarás en tomártelas todas?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Visualiza el tiempo! El error común es hacer ${pastillas}×${minutos_intervalo}=${pastillas * minutos_intervalo}. Pero: la primera la tomas en el minuto 0, la segunda a los ${minutos_intervalo} min, y la tercera a los ${respuesta} min. Total: ${respuesta} minutos.`,
+                ecuacion: `Tiempo total = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, pastillas * minutos_intervalo, minutos_intervalo, 90]
+            };
+        }
+    },
+    {
+        id: "hermano_tio",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "hermano_tio",
+        generar: () => {
+            const respuesta = 1; // 1=padre, 2=primo, 3=tío, 4=abuelo
+
+            return {
+                texto: `El hermano de mi tío ha venido a visitarme, pero resulta que no es mi tío. ¿Quién es? (1=Padre, 2=Primo, 3=Tío, 4=Abuelo)`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Lógica familiar! El hermano de mi tío es mi padre. Si el tío de mi padre tiene un hermano, y ese hermano no es mi tío, entonces debe ser mi padre. La confusión viene de buscar un pariente "lejano".`,
+                ecuacion: `Respuesta = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 2, 3, 4]
+            };
+        }
+    },
+    {
+        id: "reparto_cesta",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "reparto_cesta",
+        generar: () => {
+            const respuesta = 1; // 1=Con cesta, 2=Partir manzanas, 3=Compartir, 4=Imposible
+
+            return {
+                texto: `En una cesta hay 5 manzanas. Tienes que repartirlas entre 5 amigos de modo que cada uno tenga una manzana, pero que al final quede una manzana en la cesta. ¿Cómo lo haces? (1=Al último le das la cesta con la manzana, 2=Partir las manzanas, 3=Cada uno comparte, 4=Es imposible)`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Pensamiento lateral! La solución es: al último amigo le das la cesta CON la manzana dentro. Así cada uno tiene una manzana, y una sigue en la cesta. La trampa es asumir que "repartir" significa sacar el objeto del recipiente.`,
+                ecuacion: `Respuesta = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 2, 3, 4]
+            };
+        }
+    },
+    {
+        id: "pescadores_familia",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "pescadores_familia",
+        generar: () => {
+            const peces = 3;
+            const personas = 3;
+            const respuesta = personas;
+
+            return {
+                texto: `Dos padres y dos hijos van de pesca. Pescan ${peces} peces y se reparten uno para cada uno sin que sobre ninguno. ¿Cuántas personas hay? (Respuesta: número de personas)`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Solo hay ${personas} personas! El abuelo y el padre son "dos padres", y el padre y el hijo son "dos hijos". En total: abuelo + padre + hijo = ${personas} personas. El error común es sumar 2+2=4 personas.`,
+                ecuacion: `Total de personas = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 4, 5, 6]
+            };
+        }
     }
 ];
 

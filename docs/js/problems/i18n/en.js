@@ -83,6 +83,26 @@ export const problemsEN = {
         texto: () => `What weighs more? A kilogram of iron or a kilogram of cotton?`,
         explicacion: () => `They weigh the same! A kilogram is a kilogram, regardless of the material. The confusion comes from iron being denser, but we're talking about the same weight.`
     },
+    ovejas_granjero: {
+        texto: (total, quedan) => `A farmer has ${total} sheep. One day a wolf comes and all escape except ${quedan}. How many sheep does the farmer have left?`,
+        explicacion: (total, quedan) => `Trap deactivated! The sentence says "all except ${quedan}", so the answer is literally in the problem. He has exactly ${quedan} sheep left. It's not ${total} − ${quedan} = ${total - quedan}.`
+    },
+    pastillas_medico: {
+        texto: (pastillas, intervalo) => `You're sick and the doctor gives you ${pastillas} pills. He tells you to take one every ${intervalo} minutes. How long will it take you to take them all?`,
+        explicacion: (pastillas, intervalo) => `Visualize the time! The common error is doing ${pastillas}×${intervalo}=${pastillas * intervalo}. But: you take the first at minute 0, the second at ${intervalo} minutes, and the third at ${intervalo * (pastillas - 1)} minutes. Total: ${intervalo * (pastillas - 1)} minutes.`
+    },
+    hermano_tio: {
+        texto: () => `My uncle's brother comes to visit me, but it turns out he's not my uncle. Who is he?`,
+        explicacion: () => `Family logic! My uncle's brother is my father. If my father's uncle has a brother, and that brother is not my uncle, then he must be my father. The confusion comes from looking for a "distant" relative.`
+    },
+    reparto_cesta: {
+        texto: () => `In a basket there are 5 apples. You have to distribute them among 5 friends so that each one has an apple, but at the end one apple remains in the basket. How do you do it?`,
+        explicacion: () => `Lateral thinking! The solution is: give the last friend the basket WITH the apple inside. This way each one has an apple, and one remains in the basket. The trap is assuming that "distribute" means taking the object out of the container.`
+    },
+    pescadores_familia: {
+        texto: () => `Two fathers and two sons go fishing. They catch 3 fish and each gets one with nothing left over. How many people are there in total?`,
+        explicacion: () => `There are only 3 people! The grandfather and the father are "two fathers", and the father and the son are "two sons". In total: grandfather + father + son = 3 people. The common mistake is adding 2+2=4 people.`
+    },
 
     // LEVEL 3
     manzanas_rotas_logica: {

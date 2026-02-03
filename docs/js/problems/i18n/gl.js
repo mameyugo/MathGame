@@ -83,6 +83,26 @@ export const problemsGL = {
         texto: () => `¿Que pesa máis? ¿Un kilo de ferro ou un kilo de algodón?`,
         explicacion: () => `¡Pesan o mesmo! Un kilo é un kilo, sen importar o material. A confusión vén de que o ferro é máis denso, pero estamos a falar do mesmo peso.`
     },
+    ovejas_granjero: {
+        texto: (total, quedan) => `Un granxeiro ten ${total} ovejas. Un día ven un lobo e fúxenselle todas menos ${quedan}. ¿Cantas ovejas lle quedan ao granxeiro?`,
+        explicacion: (total, quedan) => `¡Trampa desactivada! A frase di "todas menos ${quedan}", así que a resposta está literalmente no problema. Quédanlle exactamente ${quedan} ovejas. Non é ${total} − ${quedan} = ${total - quedan}.`
+    },
+    pastillas_medico: {
+        texto: (pastillas, intervalo) => `Estás enfermo e o médico che da ${pastillas} pastillas. Díche que te tome unha cada ${intervalo} minutos. ¿Canto tempo tardarás en tomálas todas?`,
+        explicacion: (pastillas, intervalo) => `¡Visualiza o tempo! O erro común é facer ${pastillas}×${intervalo}=${pastillas * intervalo}. Pero: a primeira a tomas no minuto 0, a segunda aos ${intervalo} min, e a terceira aos ${intervalo * (pastillas - 1)} min. Total: ${intervalo * (pastillas - 1)} minutos.`
+    },
+    hermano_tio: {
+        texto: () => `O irmán do meu tío ven a visitarme, pero resulta que non é meu tío. ¿Quen é?`,
+        explicacion: () => `¡Lóxica familiar! O irmán do meu tío é meu pai. Se o tío do meu pai ten un irmán, e ese irmán non é meu tío, entón debe ser meu pai. A confusión vén de buscar un parente "afastado".`
+    },
+    reparto_cesta: {
+        texto: () => `Nunha cesta hai 5 mazás. Tes que repartilas entre 5 amigos de forma que cada un teña unha mazá, pero que ao final quede unha mazá na cesta. ¿Como o fas?`,
+        explicacion: () => `¡Pensamento lateral! A solución é: ao último amigo che das a cesta CO mazá dentro. Así cada un ten unha mazá, e unha segue na cesta. A trampa é asumir que "repartir" significa sacar o obxeto do recipiente.`
+    },
+    pescadores_familia: {
+        texto: () => `Dous pais e dous fillos van de pesca. Pescano 3 peixes e repártenseo un para cada un sen que sobre ningún. ¿Cantas persoas hai en total?`,
+        explicacion: () => `¡Só hai 3 persoas! O avó e o pai son "dous pais", e o pai e o fillo son "dous fillos". En total: avó + pai + fillo = 3 persoas. O erro común é sumar 2+2=4 persoas.`
+    },
 
     // LEVEL 3
     manzanas_rotas_logica: {
