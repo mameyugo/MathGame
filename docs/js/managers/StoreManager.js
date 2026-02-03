@@ -411,7 +411,7 @@ class StoreManager {
         msgDiv.style.pointerEvents = 'none';
 
         const msgContent = document.createElement('div');
-        msgContent.style.background = 'rgba(39, 174, 96, 0.95)';
+        msgContent.style.background = 'rgba(39, 174, 96, 0.85)';
         msgContent.style.color = 'white';
         msgContent.style.padding = '20px 40px';
         msgContent.style.borderRadius = '15px';
