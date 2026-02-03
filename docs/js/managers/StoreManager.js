@@ -253,13 +253,13 @@ class StoreManager {
      */
     usePotion(gameState) {
         const user = this.userManager.getCurrentUser();
-        if (!user) return;
+        if (!user) return false;
 
         this.userManager.initInventory(user);
 
         if (user.inventory.potions <= 0) {
             alert(this.translationManager.t('alert_no_potions'));
-            return;
+            return false;
         }
 
         // Consumir poción
@@ -284,6 +284,8 @@ class StoreManager {
         } catch (e) {
             // Confetti no cargado
         }
+
+        return true;
     }
 
     /**
@@ -293,13 +295,13 @@ class StoreManager {
      */
     useFreezeTime(gameState) {
         const user = this.userManager.getCurrentUser();
-        if (!user) return gameState;
+        if (!user) return { ...(gameState || {}), used: false };
 
         this.userManager.initInventory(user);
 
         if (user.inventory.freezes <= 0) {
             alert(this.translationManager.t('alert_no_freezes'));
-            return gameState;
+            return { ...(gameState || {}), used: false };
         }
 
         // Consumir freeze
@@ -336,7 +338,8 @@ class StoreManager {
 
         return {
             timerInterval: null,
-            freezeTimeout: newFreezeTimeout
+            freezeTimeout: newFreezeTimeout,
+            used: true
         };
     }
 

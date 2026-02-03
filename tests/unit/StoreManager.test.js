@@ -268,13 +268,14 @@ describe('StoreManager', () => {
                 updateDisplay: jest.fn()
             };
 
-            manager.usePotion(gameState);
+            const used = manager.usePotion(gameState);
 
             expect(user.inventory.potions).toBe(1); // 2 - 1
             expect(gameState.timeLeft).toBe(45); // 30 + 15
             expect(gameState.timerElement.innerText).toBe('45s');
             expect(gameState.updateDisplay).toHaveBeenCalled();
             expect(mockUserManager.saveToStorage).toHaveBeenCalled();
+            expect(used).toBe(true);
         });
 
         test('should not use potion if none available', () => {
@@ -283,10 +284,11 @@ describe('StoreManager', () => {
             });
 
             const gameState = { timeLeft: 30 };
-            manager.usePotion(gameState);
+            const used = manager.usePotion(gameState);
 
             expect(alert).toHaveBeenCalled();
             expect(mockUserManager.saveToStorage).not.toHaveBeenCalled();
+            expect(used).toBe(false);
         });
     });
 
@@ -325,6 +327,7 @@ describe('StoreManager', () => {
             expect(result.timerInterval).toBeNull();
             expect(result.freezeTimeout).toBe(456);
             expect(mockUserManager.saveToStorage).toHaveBeenCalled();
+            expect(result.used).toBe(true);
 
             global.setTimeout = originalSetTimeout;
         });
@@ -335,10 +338,11 @@ describe('StoreManager', () => {
             });
 
             const gameState = {};
-            manager.useFreezeTime(gameState);
+            const result = manager.useFreezeTime(gameState);
 
             expect(alert).toHaveBeenCalled();
             expect(mockUserManager.saveToStorage).not.toHaveBeenCalled();
+            expect(result.used).toBe(false);
         });
     });
 

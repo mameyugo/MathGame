@@ -240,6 +240,10 @@ class GameEngine {
                         showFeedbackMessage(this.t('alert_shield_used'));
                     }
 
+                    if (typeof window !== 'undefined' && typeof window.showTimeEffect === 'function') {
+                        window.showTimeEffect('🛡️', 'neutral');
+                    }
+
                     // Update display and return (no penalty)
                     this.updateGameDisplay();
                     return;

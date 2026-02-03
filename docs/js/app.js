@@ -233,6 +233,42 @@ function toggleProblemUI(enabled) {
     submitBtn.style.display = enabled ? 'block' : 'none';
 }
 
+/**
+ * Muestra animación de delta de tiempo (+x / -x)
+ * @param {number} delta
+ */
+function showTimeEffect(text, tone) {
+    const el = document.getElementById('game-timer-delta');
+    if (!el) return;
+
+    el.textContent = text;
+    el.classList.remove('positive', 'negative', 'neutral', 'show');
+    if (tone) {
+        el.classList.add(tone);
+    }
+
+    requestAnimationFrame(() => {
+        el.classList.add('show');
+    });
+
+    clearTimeout(showTimeEffect._timer);
+    showTimeEffect._timer = setTimeout(() => {
+        el.classList.remove('show');
+        el.textContent = '';
+    }, 1000);
+}
+
+function showTimeDelta(delta) {
+    if (!delta) return;
+    const sign = delta > 0 ? '+' : '';
+    showTimeEffect(`${sign}${delta}`, delta > 0 ? 'positive' : 'negative');
+}
+
+// Hacer disponible para GameEngine
+if (typeof window !== 'undefined') {
+    window.showTimeEffect = showTimeEffect;
+}
+
 // Inicializar QuestionGenerator antes de GameEngine
 questionGenerator = new QuestionGenerator(userManager, problemCategoryManager, (val) => check(val));
 
@@ -305,6 +341,7 @@ function submitProblem() {
         // Actualizar GameEngine
         gameEngine.gameCoins += 10;
         gameEngine.timeLeft += 2;
+        showTimeDelta(2);
 
         try {
             confetti({ particleCount: 30, spread: 50 });
@@ -334,6 +371,7 @@ function submitProblem() {
             localStorage.setItem('math_users', JSON.stringify(users));
             updatePowerUpDisplay();
             showFeedbackMessage(t('alert_shield_used'));
+            showTimeEffect('🛡️', 'neutral');
             return;
         }
 
@@ -342,6 +380,7 @@ function submitProblem() {
 
         // Actualizar GameEngine
         gameEngine.timeLeft -= 4;
+        showTimeDelta(-4);
         timeLeft = gameEngine.timeLeft;
         document.getElementById('game-timer').innerText = timeLeft + 's';
 
@@ -357,8 +396,11 @@ function submitProblem() {
  */
 function check(val) {
     // Sincronizar currentAnswer con gameEngine
+    const prevTime = gameEngine.timeLeft;
     gameEngine.currentAnswer = currentAnswer;
     gameEngine.check(val);
+    const delta = gameEngine.timeLeft - prevTime;
+    showTimeDelta(delta);
 
     // Sincronizar estado global de vuelta
     gameCoins = gameEngine.gameCoins;
@@ -410,16 +452,20 @@ function unequipTheme() {
 
 function usePotion() {
     const timerElement = document.getElementById('game-timer');
-    const initialTime = timeLeft;
+    const initialTime = gameEngine.timeLeft;
 
-    storeManager.usePotion({
-        timeLeft: timeLeft,
+    const gameState = {
+        timeLeft: gameEngine.timeLeft,
         timerElement: timerElement,
         updateDisplay: updatePowerUpDisplay
-    });
+    };
 
-    // Si la operación fue exitosa, timeLeft se incrementó en 15
-    timeLeft = initialTime + 15;
+    const used = storeManager.usePotion(gameState);
+    if (used) {
+        gameEngine.timeLeft = gameState.timeLeft;
+        timeLeft = gameEngine.timeLeft;
+        showTimeDelta(timeLeft - initialTime);
+    }
     users = userManager.getUsers();
 }
 
@@ -431,6 +477,11 @@ function useFreezeTime() {
     });
     timerInterval = newState.timerInterval;
     freezeTimeout = newState.freezeTimeout;
+    gameEngine.timerInterval = newState.timerInterval;
+    gameEngine.freezeTimeout = newState.freezeTimeout;
+    if (newState.used) {
+        showTimeEffect('❄️', 'neutral');
+    }
     users = userManager.getUsers();
 }
 

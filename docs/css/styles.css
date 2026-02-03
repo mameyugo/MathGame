@@ -701,6 +701,41 @@ button.main-btn:active {
     font-weight: bold;
 }
 
+.timer-wrap {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+}
+
+.timer-delta {
+    margin-left: 6px;
+    font-size: 1rem;
+    font-weight: 700;
+    opacity: 0;
+    transform: translateY(4px);
+    transition:
+        opacity 1s ease,
+        transform 1s ease;
+    pointer-events: none;
+}
+
+.timer-delta.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timer-delta.positive {
+    color: #2ecc71;
+}
+
+.timer-delta.negative {
+    color: #e74c3c;
+}
+
+.timer-delta.neutral {
+    color: #3498db;
+}
+
 .stat-coins {
     background: #fff9e6;
     padding: 5px 10px;
