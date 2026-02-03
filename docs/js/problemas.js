@@ -318,5 +318,194 @@ window.bancoProblemas = [
                 opciones: [respuesta, horas * 30, horas * 100, respuesta + 60]
             };
         }
+    },
+    // Problemas de lógica y pensamiento lateral - Nivel 1
+    {
+        id: "dedos_manos_logica",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const manos = Math.floor(Math.random() * 5) + 2; // 2-6 manos
+            const respuesta = manos * 5;
+
+            return {
+                texto: `Si en una mano tengo 5 dedos y en dos manos tengo 10 dedos, ¿cuántos dedos hay en ${manos} manos?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Piensa bien! Cada mano tiene 5 dedos. Por lo tanto: 5 × ${manos} = ${respuesta} dedos en total.`,
+                ecuacion: `5 × ${manos} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, manos * manos, manos * 10, respuesta - 5]
+            };
+        }
+    },
+    {
+        id: "carrera_posicion",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const respuesta = 2;
+
+            return {
+                texto: `Estás en una carrera y adelantas al que va segundo. ¿En qué posición estás ahora?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Trampa desactivada! Si adelantas al segundo, tú ocupas su lugar y pasas a ir segundo. El primero sigue siendo el primero.`,
+                ecuacion: `Posición = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 1, 3, 0]
+            };
+        }
+    },
+    // Problemas de lógica y pensamiento lateral - Nivel 2
+    {
+        id: "la_cerilla",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador', 'arquitecto'],
+        generar: () => {
+            const respuesta = 1;
+
+            return {
+                texto: `Entras en una habitación oscura y fría. Solo tienes una cerilla. Hay una estufa de carbón, una lámpara de aceite y una vela. ¿Qué enciendes primero?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡La cerilla, por supuesto! Sin encender la cerilla no puedes encender nada más.`,
+                ecuacion: `Primero enciendes = __ (1=cerilla, 2=estufa, 3=lámpara)`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 2, 3, 0]
+            };
+        }
+    },
+    {
+        id: "peso_algodón",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        generar: () => {
+            const peso = Math.floor(Math.random() * 3) + 1; // 1-3 kilos
+            const respuesta = peso;
+
+            return {
+                texto: `¿Qué pesa más? ¿Un kilo de hierro o un kilo de paja?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Pesan lo mismo! Un kilo es un kilo, sin importar el material. La confusión viene de que el hierro es más denso, pero estamos hablando del mismo peso.`,
+                ecuacion: `Diferencia de peso = __`,
+                ecuacionValores: [0],
+                opciones: [0, peso, peso * 2, peso / 2]
+            };
+        }
+    },
+    // Problemas de lógica y pensamiento lateral - Nivel 3
+    {
+        id: "padre_rosa",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['arquitecto'],
+        generar: () => {
+            const respuesta = 5;
+
+            return {
+                texto: `El padre de Rosa tiene 5 hijas: Lala, Lele, Lili, Lolo y... ¿cuál es el nombre de la quinta hija?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Rosa! El patrón de vocales (A, E, I, O) te distrae, pero la pregunta ya mencionó que la primera hija es Rosa.`,
+                ecuacion: `Quinta hija = __ (1=Lulu, 2=Rosa, 3=Lala, 4=Otro)`,
+                ecuacionValores: [2],
+                opciones: [2, 1, 3, 4]
+            };
+        }
+    },
+    {
+        id: "dias_sin_nombre",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['arquitecto', 'cientifico'],
+        generar: () => {
+            const respuesta = 3;
+
+            return {
+                texto: `Nombra tres días consecutivos sin usar las palabras Lunes, Martes, Miércoles, Jueves, Viernes, Sábado o Domingo.`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Ayer, hoy y mañana! Estos son días consecutivos pero no pertenecen a la semana tradicional, sino a referencias temporales relativas.`,
+                ecuacion: `Días consecutivos = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 1, 2, 7]
+            };
+        }
+    },
+    // Problemas de lógica y pensamiento lateral - Nivel 4
+    {
+        id: "arca_moises",
+        tipo: "logica",
+        nivelMin: 4,
+        categorias: ['arquitecto', 'cientifico'],
+        generar: () => {
+            const respuesta = 0;
+
+            return {
+                texto: `¿Cuántos animales de cada especie llevó Moisés en su arca?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Cero! Fue Noé quien construyó el arca, no Moisés. Muchas personas responden "parejas" sin notar el error en el nombre.`,
+                ecuacion: `Animales en el arca de Moisés = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 2, 7, 1]
+            };
+        }
+    },
+    {
+        id: "cesta_huevos",
+        tipo: "logica",
+        nivelMin: 4,
+        categorias: ['arquitecto', 'cientifico'],
+        generar: () => {
+            const respuesta = 1;
+
+            return {
+                texto: `En una cesta hay 6 huevos. 6 personas compran un huevo cada una y, al final, queda un huevo en la cesta. ¿Cuántos huevos quedan en la cesta?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Uno! La última persona se llevó la cesta con el huevo dentro. No es que desapareciese un huevo, sino que viajó dentro de su contenedor.`,
+                ecuacion: `Huevos en cesta = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 0, 2, 6]
+            };
+        }
+    },
+    // Problemas de lógica y pensamiento lateral - Nivel 5
+    {
+        id: "pastor_lobo_oveja",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['cientifico'],
+        generar: () => {
+            const respuesta = 6; // Número de viajes/movimientos
+
+            return {
+                texto: `Un pastor debe cruzar un río con un lobo, una oveja y una col. En la barca solo caben él y una cosa más. Si deja al lobo con la oveja, el lobo se la come. Si deja a la oveja con la col, la oveja se la come. ¿Cuántos viajes necesita hacer como mínimo? (Cada ida o vuelta cuenta como 1 viaje)`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Solución: 1. Cruza la oveja. 2. Vuelve solo. 3. Cruza el lobo (y trae a la oveja de vuelta). 4. Cruza la col. 5. Vuelve solo. 6. Cruza la oveja. Total: 6 viajes.`,
+                ecuacion: `Viajes mínimos = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 3, 4, 5]
+            };
+        }
+    },
+    {
+        id: "reloj_espejo_avanzado",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['cientifico'],
+        generar: () => {
+            const hora = [3, 6, 9][Math.floor(Math.random() * 3)]; // Horas especiales en el espejo
+            const hora_real = 12 - hora; // Fórmula de inversión de espejo
+            const respuesta = hora_real;
+
+            return {
+                texto: `Miras un reloj de agujas a través de un espejo. Las agujas marcan las ${hora}:00. ¿Qué hora es en realidad?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `El espejo invierte la posición horizontal del reloj. La fórmula es: hora real = 12 - hora en espejo. Entonces: 12 - ${hora} = ${respuesta}:00.`,
+                ecuacion: `12 - ${hora} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, hora, 12 - hora + 6, 6]
+            };
+        }
     }
 ];
