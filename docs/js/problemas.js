@@ -507,5 +507,99 @@ window.bancoProblemas = [
                 opciones: [respuesta, hora, 12 - hora + 6, 6]
             };
         }
+    },
+    {
+        id: "peces_ahogados",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const total_peces = 10;
+            const respuesta = 10; // Los peces no se ahogan en el agua
+
+            return {
+                texto: `En una pecera hay ${total_peces} peces. Si 5 de ellos se ahogan, ¿cuántos peces quedan en la pecera?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Trampa desactivada! Los peces no se ahogan en el agua. Es su hábitat natural. Siguen habiendo ${total_peces} peces.`,
+                ecuacion: `${total_peces} - 0 = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 5, 15, 0]
+            };
+        }
+    },
+    {
+        id: "gallo_huevos",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const respuesta = 0; // Los gallos no ponen huevos
+
+            return {
+                texto: `Un gallo pone un huevo justo en la punta del tejado de un granero. Si el viento sopla hacia la derecha, ¿hacia qué lado caerá el huevo?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Trampa desactivada! Los gallos no ponen huevos, son las gallinas las que ponen huevos. Por lo tanto, no hay huevo que caiga.`,
+                ecuacion: `Huevos del gallo = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 1, 2, -1]
+            };
+        }
+    },
+    {
+        id: "patas_mesa_gato",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const patas_mesa = 4;
+            const respuesta = 4; // Solo las patas de la mesa tocan el suelo
+
+            return {
+                texto: `Una mesa tiene ${patas_mesa} patas. Si un gato se sube encima de la mesa, ¿cuántas patas hay ahora tocando el suelo?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Trampa desactivada! Las patas del gato están sobre la mesa, no sobre el suelo. Solo las ${patas_mesa} patas de la mesa tocan el suelo.`,
+                ecuacion: `${patas_mesa} (mesa) + 0 (gato) = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 8, 4, 4]
+            };
+        }
+    },
+    {
+        id: "cesta_peras",
+        tipo: "matematico",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const inicial = 3;
+            const regaladas = 2;
+            const respuesta = inicial - regaladas;
+
+            return {
+                texto: `Tienes una cesta con ${inicial} peras. Si me das ${regaladas} peras, ¿cuántas peras tienes tú ahora?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Después de dar ${regaladas} peras de tu cesta de ${inicial}, te quedan: ${inicial} - ${regaladas} = ${respuesta} pera(s).`,
+                ecuacion: `${inicial} - ${regaladas} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, regaladas, inicial, inicial + regaladas]
+            };
+        }
+    },
+    {
+        id: "nombre_tercer_hijo",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const respuesta_indice = 0; // "Juan" es la respuesta correcta (representada como 0 para la ecuación)
+
+            return {
+                texto: `La mamá de Juan tiene 3 hijos. El primero se llama Primero, el segundo se llama Segundo. ¿Cómo se llama el tercer hijo?`,
+                respuestaCorrecta: 0, // Representamos "Juan" como 0 para que funcione con la ecuación numérica
+                explicacion: `¡Trampa desactivada! El patrón numérico "Primero, Segundo, Tercero" intenta engañarte. Pero la pregunta dice "la mamá de Juan", así que Juan es el tercer hijo.`,
+                ecuacion: `El tercer hijo = __ (0=Juan, 1=Primero, 2=Segundo, 3=Tercero)`,
+                ecuacionValores: [0],
+                opciones: [0, 1, 2, 3]
+            };
+        }
     }
 ];
