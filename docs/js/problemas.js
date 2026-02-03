@@ -635,7 +635,7 @@ window.bancoProblemas = [
                 { pais1: "Mexico", pais2: "Guatemala" }
             ];
             const loc = paises[Math.floor(Math.random() * paises.length)];
-            
+
             return {
                 texto: `Un avión se estrella justo en la frontera entre ${loc.pais1} y ${loc.pais2}. ¿En qué país entierran a los supervivientes?`,
                 respuestaCorrecta: 0,
@@ -657,7 +657,7 @@ window.bancoProblemas = [
             const velas_apagadas = 3;
             const velas_encendidas = velas_iniciales - velas_apagadas;
             const respuesta = velas_apagadas; // Las encendidas se consumen completamente
-            
+
             return {
                 texto: `Hay ${velas_iniciales} velas encendidas en una mesa. Una corriente de aire apaga ${velas_apagadas} de ellas. Si nadie las vuelve a encender, ¿cuántas velas quedan al día siguiente?`,
                 respuestaCorrecta: respuesta,
@@ -680,7 +680,7 @@ window.bancoProblemas = [
             const peso_manzanas = peso_llena - peso_caja; // 13 kg
             const peso_manzanas_mitad = peso_manzanas / 2; // 6.5 kg
             const respuesta = peso_manzanas_mitad + peso_caja; // 8.5 kg
-            
+
             return {
                 texto: `Una caja llena de manzanas pesa ${peso_llena} kg. La caja vacía pesa ${peso_caja} kg. Si te comes la mitad de las manzanas, ¿cuánto pesa la caja ahora?`,
                 respuestaCorrecta: respuesta,
@@ -701,7 +701,7 @@ window.bancoProblemas = [
             const pajaro_inicial = 5;
             const pajaro_herido = 1;
             const respuesta = 0; // El herido cae y los otros salen volando
-            
+
             return {
                 texto: `Hay ${pajaro_inicial} pájaros en una rama. Un cazador dispara y acierta a uno. ¿Cuántos pájaros quedan en la rama?`,
                 respuestaCorrecta: respuesta,
@@ -726,7 +726,7 @@ window.bancoProblemas = [
             // Ladrillo y medio = 2 + 1 = 3
             const peso_ladrillo = 2;
             const respuesta = 3;
-            
+
             return {
                 texto: `Un ladrillo pesa 1 kg más medio ladrillo. ¿Cuánto pesan un ladrillo y medio?`,
                 respuestaCorrecta: respuesta,
@@ -748,14 +748,14 @@ window.bancoProblemas = [
             const sube_dia = 3;
             const resbala_noche = 2;
             const progreso_neto = sube_dia - resbala_noche;
-            
+
             // En el día 8: comienza a 7m, sube 3m = 10m (sale sin resbalar)
             const dias = 8;
-            
+
             return {
                 texto: `Un caracol está en el fondo de un pozo de ${profundidad} metros. Durante el día sube ${sube_dia} metros, pero por la noche resbala ${resbala_noche} metros. ¿En cuántos días saldrá del pozo?`,
                 respuestaCorrecta: dias,
-                explicacion: `¡Lógica secuencial! El cálculo instintivo es ${profundidad}/${progreso_neto}=${profundidad/progreso_neto} días. Pero en el día ${dias}, el caracol comienza a ${profundidad - sube_dia}m, sube ${sube_dia}m y llega a ${profundidad}m, ¡por lo que sale y no resbala esa noche!`,
+                explicacion: `¡Lógica secuencial! El cálculo instintivo es ${profundidad}/${progreso_neto}=${profundidad / progreso_neto} días. Pero en el día ${dias}, el caracol comienza a ${profundidad - sube_dia}m, sube ${sube_dia}m y llega a ${profundidad}m, ¡por lo que sale y no resbala esa noche!`,
                 ecuacion: `Día ${dias}: ${profundidad - sube_dia}m + ${sube_dia}m = ${profundidad}m (¡SALIDA!)`,
                 ecuacionValores: [dias],
                 tipoRespuesta: "numero",
@@ -774,11 +774,11 @@ window.bancoProblemas = [
             const diferencia_edad = edad_pasada - hermana_edad_pasada; // 3 años
             const edad_actual = 70;
             const respuesta = edad_actual - diferencia_edad;
-            
+
             return {
                 texto: `Cuando yo tenía ${edad_pasada} años, mi hermana tenía la mitad de mi edad. Ahora que tengo ${edad_actual} años, ¿cuántos años tiene mi hermana?`,
                 respuestaCorrecta: respuesta,
-                explicacion: `¡Relación variable constante! La mente busca la proporción "mitad" (${edad_actual}/2=${edad_actual/2}), pero la diferencia de edad es constante. Si hace tiempo había ${diferencia_edad} años de diferencia, ahora sigue habiendo ${diferencia_edad} años. Respuesta: ${edad_actual} - ${diferencia_edad} = ${respuesta} años.`,
+                explicacion: `¡Relación variable constante! La mente busca la proporción "mitad" (${edad_actual}/2=${edad_actual / 2}), pero la diferencia de edad es constante. Si hace tiempo había ${diferencia_edad} años de diferencia, ahora sigue habiendo ${diferencia_edad} años. Respuesta: ${edad_actual} - ${diferencia_edad} = ${respuesta} años.`,
                 ecuacion: `Diferencia de edad = ${edad_pasada} - ${hermana_edad_pasada} = ${diferencia_edad}; Edad hermana = ${edad_actual} - ${diferencia_edad} = __`,
                 ecuacionValores: [respuesta],
                 tipoRespuesta: "numero",
@@ -794,16 +794,16 @@ window.bancoProblemas = [
         generar: () => {
             const total_paginas = 100;
             const digito_buscado = 7;
-            
+
             // Contar 7s en unidades: 7,17,27,37,47,57,67,77,87,97 = 10
             // Contar 7s en decenas: 70,71,72,73,74,75,76,77,78,79 = 10
             // Total = 20 (nota que 77 cuenta dos veces)
             const respuesta = 20;
-            
+
             return {
                 texto: `Estás numerando las páginas de un libro que tiene exactamente ${total_paginas} páginas. ¿Cuántas veces escribirás el dígito '${digito_buscado}'?`,
                 respuestaCorrecta: respuesta,
-                explicacion: `¡Patrones numéricos! Muchos solo cuentan los 7s en unidades (7,17,27...${total_paginas-30}) = 10. Pero olvidan los 7s en la decena 70-79 (10 más). El número 77 tiene dos 7s. Total: 10 + 10 = ${respuesta} veces.`,
+                explicacion: `¡Patrones numéricos! Muchos solo cuentan los 7s en unidades (7,17,27...${total_paginas - 30}) = 10. Pero olvidan los 7s en la decena 70-79 (10 más). El número 77 tiene dos 7s. Total: 10 + 10 = ${respuesta} veces.`,
                 ecuacion: `Unidades: 7,17,27...97 = __; Decenas: 70-79 = __; Total = __`,
                 ecuacionValores: [10, 10, respuesta],
                 tipoRespuesta: "numero",
@@ -819,7 +819,7 @@ window.bancoProblemas = [
         generar: () => {
             const total_costo = 1.10;
             const diferencia = 1.00;
-            
+
             // bate + pelota = 1.10
             // bate = pelota + 1
             // (pelota + 1) + pelota = 1.10
@@ -827,7 +827,7 @@ window.bancoProblemas = [
             // pelota = 0.05
             const respuesta = 0.05;
             const bate = total_costo - respuesta;
-            
+
             return {
                 texto: `Un bate y una pelota cuestan juntos ${total_costo.toFixed(2)}€. El bate cuesta ${diferencia.toFixed(2)}€ más que la pelota. ¿Cuánto cuesta la pelota?`,
                 respuestaCorrecta: respuesta,
@@ -838,6 +838,109 @@ window.bancoProblemas = [
                 opciones: [respuesta, 0.10, 0.55, 1.05]
             };
         }
+    },
+    {
+        id: "velas_pastel",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const velas_iniciales = 6;
+            const velas_apagadas = 2;
+            const respuesta = velas_iniciales; // Siguen en el pastel aunque estén apagadas
+            
+            return {
+                texto: `En un pastel de cumpleaños hay ${velas_iniciales} velas encendidas. Si soplas y apagas ${velas_apagadas} velas, ¿cuántas velas quedan en el pastel?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Permanencia de objetos! Aunque estén apagadas, las velas siguen estando físicamente sobre el pastel. Velas apagadas: ${velas_apagadas}, Velas encendidas: ${velas_iniciales - velas_apagadas}, Total en el pastel: ${respuesta}`,
+                ecuacion: `${velas_apagadas} (apagadas) + ${velas_iniciales - velas_apagadas} (encendidas) = __`,
+                ecuacionValores: [respuesta],
+                tipoRespuesta: "numero",
+                opciones: [respuesta, velas_iniciales - velas_apagadas, velas_apagadas, 0]
+            };
+        }
+    },
+    {
+        id: "perro_hermanos",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const hermanos = 3;
+            const respuesta = 1; // Un perro compartido, no uno para cada hermano
+            
+            return {
+                texto: `${hermanos} hermanos (Juan, Luis y Ana) tienen un perro juntos. ¿Cuántos perros hay en total en la casa?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Lectura cuidadosa! El texto dice que tienen UN perro "juntos", no que cada uno tenga el suyo. Respuesta: ${respuesta} perro compartido.`,
+                ecuacion: `${hermanos} hermanos × 0 (cada uno) + 1 (compartido) = __`,
+                ecuacionValores: [respuesta],
+                tipoRespuesta: "numero",
+                opciones: [respuesta, hermanos, hermanos + 1, 0]
+            };
+        }
+    },
+    {
+        id: "naranjas_llevas",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const naranjas_mesa = 5;
+            const naranjas_coges = 3;
+            const respuesta = naranjas_coges; // Las que TÚ tienes, no las que quedan
+            
+            return {
+                texto: `Hay ${naranjas_mesa} naranjas en una mesa. Si tú vas y quitas ${naranjas_coges} naranjas, ¿cuántas naranjas tienes tú ahora?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Atención a la pregunta! No pregunta cuántas quedan en la mesa, sino cuántas TIENES TÚ. Respuesta: Las ${naranjas_coges} que acabas de coger.`,
+                ecuacion: `Naranjas que tienes = __`,
+                ecuacionValores: [respuesta],
+                tipoRespuesta: "numero",
+                opciones: [respuesta, naranjas_mesa - naranjas_coges, naranjas_mesa, 0]
+            };
+        }
+    },
+    {
+        id: "paraguas_magico",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const ninos = 4;
+            const respuesta = 0; // No está lloviendo
+            
+            return {
+                texto: `${ninos} niños intentan entrar bajo un paraguas muy pequeño, pero ninguno se moja nada de nada. ¿Cuánta agua llueve?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Usa el contexto! El cerebro busca una explicación física compleja, pero la respuesta es simple: no está lloviendo. Por eso nadie se moja.`,
+                ecuacion: `Lluvia = __`,
+                ecuacionValores: [respuesta],
+                tipoRespuesta: "numero",
+                opciones: [respuesta, 1, ninos, 10]
+            };
+        }
+    },
+    {
+        id: "patas_pajaro",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        generar: () => {
+            const patas_pajaro = 2;
+            const respuesta = patas_pajaro; // Sigue teniendo 2 patas aunque una esté escondida
+            
+            return {
+                texto: `Un pájaro tiene ${patas_pajaro} patas. Si se apoya en una rama solo con una pata y esconde la otra entre sus plumas, ¿cuántas patas tiene el pájaro ahora?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Permanencia de objetos! Aunque no se vea, la pata sigue ahí. El pájaro sigue teniendo ${patas_pajaro} patas. Visible: 1, Escondida: 1, Total: ${respuesta}.`,
+                ecuacion: `1 (visible) + 1 (escondida) = __`,
+                ecuacionValores: [respuesta],
+                tipoRespuesta: "numero",
+                opciones: [respuesta, 1, 3, 0]
+            };
+        }
     }
 ];
+
 
