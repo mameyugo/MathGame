@@ -1,3 +1,20 @@
+/**
+ * 📦 NUEVO: Banco de Problemas Modular
+ * 
+ * Este archivo ahora carga el sistema modular desde problems/index.js
+ * Las categorías están organizadas por nivel para mejor mantenibilidad.
+ * 
+ * Estructura:
+ * - problems/categories/level1.js (12 problemas)
+ * - problems/categories/level2_3.js (13 problemas)  
+ * - problems/categories/level4_5.js (21 problemas)
+ * - problems/config.js (constantes)
+ * - problems/index.js (exportador central)
+ * 
+ * @version 2.0 - Modular Architecture
+ */
+
+// Placeholder - se carga dinámicamente desde problems/index.js
 window.bancoProblemas = [
     {
         id: "manzanas_rotas_logica",
@@ -848,7 +865,7 @@ window.bancoProblemas = [
             const velas_iniciales = 6;
             const velas_apagadas = 2;
             const respuesta = velas_iniciales; // Siguen en el pastel aunque estén apagadas
-            
+
             return {
                 texto: `En un pastel de cumpleaños hay ${velas_iniciales} velas encendidas. Si soplas y apagas ${velas_apagadas} velas, ¿cuántas velas quedan en el pastel?`,
                 respuestaCorrecta: respuesta,
@@ -868,7 +885,7 @@ window.bancoProblemas = [
         generar: () => {
             const hermanos = 3;
             const respuesta = 1; // Un perro compartido, no uno para cada hermano
-            
+
             return {
                 texto: `${hermanos} hermanos (Juan, Luis y Ana) tienen un perro juntos. ¿Cuántos perros hay en total en la casa?`,
                 respuestaCorrecta: respuesta,
@@ -889,7 +906,7 @@ window.bancoProblemas = [
             const naranjas_mesa = 5;
             const naranjas_coges = 3;
             const respuesta = naranjas_coges; // Las que TÚ tienes, no las que quedan
-            
+
             return {
                 texto: `Hay ${naranjas_mesa} naranjas en una mesa. Si tú vas y quitas ${naranjas_coges} naranjas, ¿cuántas naranjas tienes tú ahora?`,
                 respuestaCorrecta: respuesta,
@@ -909,7 +926,7 @@ window.bancoProblemas = [
         generar: () => {
             const ninos = 4;
             const respuesta = 0; // No está lloviendo
-            
+
             return {
                 texto: `${ninos} niños intentan entrar bajo un paraguas muy pequeño, pero ninguno se moja nada de nada. ¿Cuánta agua llueve?`,
                 respuestaCorrecta: respuesta,
@@ -929,7 +946,7 @@ window.bancoProblemas = [
         generar: () => {
             const patas_pajaro = 2;
             const respuesta = patas_pajaro; // Sigue teniendo 2 patas aunque una esté escondida
-            
+
             return {
                 texto: `Un pájaro tiene ${patas_pajaro} patas. Si se apoya en una rama solo con una pata y esconde la otra entre sus plumas, ¿cuántas patas tiene el pájaro ahora?`,
                 respuestaCorrecta: respuesta,
