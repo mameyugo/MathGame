@@ -13,7 +13,7 @@
 }
 
 body {
-    font-family: 'Comic Sans MS', sans-serif;
+    font-family: "Comic Sans MS", sans-serif;
     background: linear-gradient(180deg, #f5dda9 0%, #e8c77d 50%, #c9a86a 100%);
     background-attachment: fixed;
     min-height: 100vh;
@@ -23,13 +23,13 @@ body {
 }
 
 body::before {
-    content: '';
+    content: "";
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('../images/background.svg');
+    background-image: url("../images/background.svg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -195,7 +195,6 @@ button.main-btn:active {
 }
 
 @keyframes shake {
-
     0%,
     100% {
         transform: translateX(0);
@@ -237,7 +236,7 @@ button.main-btn:active {
 
 .lang-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 768px) {
@@ -249,7 +248,7 @@ button.main-btn:active {
         margin-bottom: 15px;
         max-width: 100%;
     }
-    
+
     .lang-btn {
         font-size: 0.75rem;
         padding: 4px 6px;
@@ -347,25 +346,25 @@ button.main-btn:active {
 
 .category-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .category-card.selected {
-    border-color: #4CAF50;
+    border-color: #4caf50;
     background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
     box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
 }
 
 .category-card.difficulty-easy {
-    border-left: 6px solid #4CAF50;
+    border-left: 6px solid #4caf50;
 }
 
 .category-card.difficulty-medium {
-    border-left: 6px solid #FF9800;
+    border-left: 6px solid #ff9800;
 }
 
 .category-card.difficulty-hard {
-    border-left: 6px solid #F44336;
+    border-left: 6px solid #f44336;
 }
 
 .category-icon {
@@ -425,7 +424,7 @@ button.main-btn:active {
     transition: all 0.3s ease;
     border-radius: 28px !important;
     display: block !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .category-switch-slider:before {
@@ -440,7 +439,7 @@ button.main-btn:active {
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
     border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .category-switch-input:checked + .category-switch-slider {
@@ -449,7 +448,7 @@ button.main-btn:active {
 }
 
 .category-switch-input:focus + .category-switch-slider {
-    box-shadow: 0 0 1px #4CAF50;
+    box-shadow: 0 0 1px #4caf50;
 }
 
 .category-switch-input:checked + .category-switch-slider:before {
@@ -477,8 +476,8 @@ button.main-btn:active {
 }
 
 .category-checkbox:checked {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
+    background-color: #4caf50;
+    border-color: #4caf50;
 }
 
 .category-checkbox:checked::after {
@@ -493,7 +492,7 @@ button.main-btn:active {
 }
 
 .category-checkbox:hover {
-    border-color: #4CAF50;
+    border-color: #4caf50;
     box-shadow: 0 0 4px rgba(76, 175, 80, 0.3);
 }
 
@@ -501,43 +500,43 @@ button.main-btn:active {
     .config-section {
         padding: 15px;
     }
-    
+
     .category-card {
         padding: 12px;
         gap: 10px;
     }
-    
+
     .category-icon {
         font-size: 2rem;
     }
-    
+
     .category-name {
         font-size: 1rem;
     }
-    
+
     .category-description {
         font-size: 0.85rem;
     }
-    
+
     .category-switch {
         width: 48px;
         height: 24px;
     }
-    
+
     .category-switch-slider:before {
         height: 18px;
         width: 18px;
     }
-    
+
     .category-switch-input:checked + .category-switch-slider:before {
         transform: translateX(22px);
     }
-    
+
     .category-checkbox {
         width: 20px;
         height: 20px;
     }
-    
+
     .category-checkbox:checked::after {
         font-size: 14px;
     }
@@ -618,7 +617,7 @@ button.main-btn:active {
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
     display: block !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .switch-slider:before {
@@ -633,7 +632,7 @@ button.main-btn:active {
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .switch-input:checked + .switch-slider {
@@ -642,7 +641,7 @@ button.main-btn:active {
 }
 
 .switch-input:focus + .switch-slider {
-    box-shadow: 0 0 1px #4CAF50;
+    box-shadow: 0 0 1px #4caf50;
 }
 
 .switch-input:checked + .switch-slider:before {
@@ -726,17 +725,17 @@ button.main-btn:active {
     body {
         padding: 5px;
     }
-    
+
     body::before {
         background-size: cover;
         background-position: center center;
     }
-    
+
     #app-container {
         padding: 20px;
         border: 3px solid #fff;
     }
-    
+
     .user-input-group {
         display: flex;
         flex-direction: column;
@@ -745,6 +744,11 @@ button.main-btn:active {
 
     .user-input {
         width: 100%;
+        box-sizing: border-box;
+    }
+    #new-user-name:focus-visible {
+        width: 98%;
+        margin-left: 1%;
     }
 
     .btn-add {
@@ -1022,7 +1026,8 @@ button.main-btn:active {
     justify-content: center;
 }
 
-.power-up-btn, .shield-indicator {
+.power-up-btn,
+.shield-indicator {
     background: white;
     border: 3px solid #ddd;
     border-radius: 12px;
@@ -1063,18 +1068,33 @@ button.main-btn:active {
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 .coin-flash {
@@ -1082,8 +1102,14 @@ button.main-btn:active {
 }
 
 @keyframes coinFlash {
-    0%, 100% { background: #fff9e6; }
-    50% { background: #27ae60; color: white; }
+    0%,
+    100% {
+        background: #fff9e6;
+    }
+    50% {
+        background: #27ae60;
+        color: white;
+    }
 }
 
 .purchase-success {
@@ -1091,8 +1117,14 @@ button.main-btn:active {
 }
 
 @keyframes purchaseSuccess {
-    0%, 100% { transform: scale(1); }
-    25% { transform: scale(0.9) rotate(-5deg); }
-    75% { transform: scale(1.1) rotate(5deg); }
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(0.9) rotate(-5deg);
+    }
+    75% {
+        transform: scale(1.1) rotate(5deg);
+    }
 }
-
