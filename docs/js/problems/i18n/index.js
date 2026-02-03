@@ -4,23 +4,21 @@
  */
 
 import problemsES from './es.js';
-
-// En el futuro, importar otros idiomas aquí
-// import problemsGL from './gl.js';
-// import problemsEN from './en.js';
-// import problemsFR from './fr.js';
-// import problemsCA from './ca.js';
-// import problemsPT from './pt.js';
-// import problemsDE from './de.js';
+import problemsGL from './gl.js';
+import problemsEN from './en.js';
+import problemsFR from './fr.js';
+import problemsCA from './ca.js';
+import problemsPT from './pt.js';
+import problemsDE from './de.js';
 
 export const translations = {
     es: problemsES,
-    gl: problemsES, // TODO: Crear gl.js
-    en: problemsES, // TODO: Crear en.js
-    fr: problemsES, // TODO: Crear fr.js
-    ca: problemsES, // TODO: Crear ca.js
-    pt: problemsES, // TODO: Crear pt.js
-    de: problemsES  // TODO: Crear de.js
+    gl: problemsGL,
+    en: problemsEN,
+    fr: problemsFR,
+    ca: problemsCA,
+    pt: problemsPT,
+    de: problemsDE
 };
 
 /**
@@ -46,6 +44,11 @@ export function getTranslation(lang, problemId, field, ...args) {
     }
 
     return textFn || '';
+}
+
+// Exponer función en window para acceso desde QuestionGenerator
+if (typeof window !== 'undefined') {
+    window.getTranslation = getTranslation;
 }
 
 export default translations;

@@ -273,11 +273,46 @@ class QuestionGenerator {
 
         const area = document.getElementById('question-area');
         if (area) {
-            area.innerText = this.currentProblem.texto;
+            // Get current user language
+            const user = this.userManager.getCurrentUser();
+            const userLanguage = user?.idioma || 'es';
+            
+            // Try to get translated text using i18n system
+            const translatedText = this.getTranslatedProblemText(
+                this.currentProblem.id || '',
+                userLanguage
+            );
+            
+            // Use translated text if available, otherwise use original
+            area.innerText = translatedText || this.currentProblem.texto;
         }
 
         // Usar el nuevo renderProblemUI para soportar diferentes tipos de respuesta
         this.renderProblemUI(this.currentProblem);
+    }
+
+    /**
+     * Gets translated text for a problem using i18n system
+     * @param {string} problemId - ID of the problem
+     * @param {string} language - Language code (es/gl/en/fr/ca/pt/de)
+     * @returns {string|null} Translated text or null if not available
+     */
+    getTranslatedProblemText(problemId, language) {
+        if (!window.getTranslation || typeof window.getTranslation !== 'function') {
+            return null;
+        }
+
+        try {
+            // Get the generated problem data to extract parameters
+            // For now, return the base text without parameters
+            // In a future enhancement, we could parse the generar() function
+            // to extract and pass the correct parameters
+            const baseText = window.getTranslation(language, problemId, 'texto');
+            return baseText || null;
+        } catch (error) {
+            console.warn(`Translation not available for problem: ${problemId}, language: ${language}`);
+            return null;
+        }
     }
 
     /**
