@@ -7,8 +7,9 @@ class QuestionGenerator {
      * @param {UserManager} userManager - User management instance
      * @param {ProblemCategoryManager} problemCategoryManager - Problem category management instance
      * @param {Function} checkFn - Function to check answers
+     * @param {GameEngine} gameEngine - Game engine instance for tracking
      */
-    constructor(userManager, problemCategoryManager, checkFn) {
+    constructor(userManager, problemCategoryManager, checkFn, gameEngine = null) {
         this.userManager = userManager;
         this.problemCategoryManager = problemCategoryManager;
         this.check = checkFn;
@@ -16,6 +17,7 @@ class QuestionGenerator {
         this.currentProblem = null;
         this.gameLevel = 1;
         this.problemType = 'matematico';
+        this.gameEngine = gameEngine;
     }
 
     /**
@@ -190,7 +192,22 @@ class QuestionGenerator {
         );
 
         // Si no hay problemas después de filtrar por categorías, usar todos los candidatos
-        const pool = filteredByCategory.length ? filteredByCategory : candidates;
+        let pool = filteredByCategory.length ? filteredByCategory : candidates;
+
+        // Filtrar problemas ya resueltos en esta sesión
+        if (this.gameEngine) {
+            const solvedProblems = this.gameEngine.getSolvedProblems();
+            const unsolvedProblems = pool.filter(p => !solvedProblems.has(p.id));
+
+            // Si quedan problemas sin resolver, usarlos
+            if (unsolvedProblems.length > 0) {
+                pool = unsolvedProblems;
+            } else if (pool.length > 0) {
+                // Todos los problemas disponibles ya fueron resueltos
+                this.showCompletionMessage();
+                return null;
+            }
+        }
 
         if (pool.length === 0) {
             console.warn('No problems available for selected criteria');
@@ -398,6 +415,50 @@ class QuestionGenerator {
      */
     setProblemType(type) {
         this.problemType = type;
+    }
+
+    /**
+     * Shows completion message when all problems are solved
+     */
+    showCompletionMessage() {
+        const questionArea = document.getElementById('question-area');
+        const equationArea = document.getElementById('equation-area');
+
+        if (questionArea) {
+            questionArea.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">🎉 ¡Enhorabuena! 🎉</div>
+                    <p style="font-size: 1.3rem; margin-bottom: 15px;">Has completado todos los problemas disponibles</p>
+                    <p style="font-size: 1rem; color: #666; margin-bottom: 25px;">
+                        ¿Tienes más acertijos o problemas de lógica?<br>
+                        <strong>MateAventura es software libre</strong>
+                    </p>
+                    <div style="background: #f0f8ff; padding: 15px; border-radius: 12px; border: 2px solid #3498db; margin: 20px 0;">
+                        <p style="font-size: 0.95rem; margin-bottom: 10px;">
+                            💡 Puedes colaborar enviando nuevos problemas:
+                        </p>
+                        <a href="https://github.com/mameyugo/MathGame/issues/new" 
+                           target="_blank" 
+                           style="display: inline-block; background: #27ae60; color: white; padding: 12px 24px; border-radius: 10px; text-decoration: none; font-weight: bold; margin: 10px 0;">
+                            📝 Enviar Nuevo Acertijo
+                        </a>
+                        <p style="font-size: 0.85rem; color: #666; margin-top: 10px;">
+                            Lo implementaré lo más rápido posible 🚀
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        if (equationArea) {
+            equationArea.innerHTML = '';
+        }
+
+        // Ocultar botón de submit
+        const submitBtn = document.getElementById('btn-submit-problem');
+        if (submitBtn) {
+            submitBtn.style.display = 'none';
+        }
     }
 }
 

@@ -201,6 +201,8 @@ function startNextDuelTurn() {
  */
 function initGameSession(lvl, coins) {
     gameEngine.initGameSession(lvl, coins);
+    // Resetear tracking de problemas resueltos al iniciar nueva sesión
+    gameEngine.resetSolvedProblems();
     // Sincronizar estado global
     gameLevel = gameEngine.gameLevel;
     gameCoins = gameEngine.gameCoins;
@@ -269,10 +271,7 @@ if (typeof window !== 'undefined') {
     window.showTimeEffect = showTimeEffect;
 }
 
-// Inicializar QuestionGenerator antes de GameEngine
-questionGenerator = new QuestionGenerator(userManager, problemCategoryManager, (val) => check(val));
-
-// Inicializar GameEngine después de definir las funciones auxiliares
+// Inicializar GameEngine primero (sin QuestionGenerator todavía)
 gameEngine = new GameEngine(
     userManager,
     translationManager,
@@ -283,6 +282,9 @@ gameEngine = new GameEngine(
     () => applyTheme(),
     () => showUsers()
 );
+
+// Inicializar QuestionGenerator después, pasándole gameEngine para tracking
+questionGenerator = new QuestionGenerator(userManager, problemCategoryManager, (val) => check(val), gameEngine);
 
 // Wrapper functions para QuestionGenerator
 function generateQuestion() {
@@ -369,6 +371,14 @@ function submitProblem() {
 
     // Procesar resultado
     if (isCorrect) {
+        // Marcar problema como resuelto para evitar repetición
+        if (currentProblem.id) {
+            gameEngine.markProblemAsSolved(currentProblem.id);
+        }
+
+        // Resetear selectedChoice para próximo problema
+        window.selectedChoice = null;
+
         // Actualizar GameEngine
         gameEngine.gameCoins += 30;
         gameEngine.timeLeft += 10;

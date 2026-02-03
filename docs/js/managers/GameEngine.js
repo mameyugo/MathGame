@@ -47,6 +47,9 @@ class GameEngine {
         this.duelPlayers = [];
         this.currentDuelIdx = 0;
         this.duelScores = {};
+
+        // Track solved problems to avoid repetition
+        this.solvedProblemsInSession = new Set();
     }
 
     /**
@@ -139,6 +142,9 @@ class GameEngine {
         this.gameLevel = lvl;
         this.gameCoins = coins;
         this.timeLeft = this.problemMode ? 60 : 30;
+
+        // Reset solved problems tracking for new session
+        this.resetSolvedProblems();
 
         // Switch to game screen
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -371,6 +377,29 @@ class GameEngine {
             this.freezeTimeout = null;
             this.startTimer();
         }, delay);
+    }
+
+    /**
+     * Marks a problem as solved in current session
+     * @param {string} problemId - ID of the solved problem
+     */
+    markProblemAsSolved(problemId) {
+        this.solvedProblemsInSession.add(problemId);
+    }
+
+    /**
+     * Gets the set of solved problems in current session
+     * @returns {Set<string>} Set of solved problem IDs
+     */
+    getSolvedProblems() {
+        return this.solvedProblemsInSession;
+    }
+
+    /**
+     * Resets solved problems tracking (when starting new game)
+     */
+    resetSolvedProblems() {
+        this.solvedProblemsInSession.clear();
     }
 }
 

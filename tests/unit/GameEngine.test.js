@@ -462,4 +462,58 @@ describe('GameEngine', () => {
             expect(mockUserManager.updateRecordDisplay).toHaveBeenCalledWith(7);
         });
     });
+
+    describe('Problem tracking (anti-repetition system)', () => {
+        test('markProblemAsSolved should add problem ID to solved set', () => {
+            gameEngine.markProblemAsSolved('problem_1');
+            gameEngine.markProblemAsSolved('problem_2');
+
+            expect(gameEngine.solvedProblemsInSession.has('problem_1')).toBe(true);
+            expect(gameEngine.solvedProblemsInSession.has('problem_2')).toBe(true);
+            expect(gameEngine.solvedProblemsInSession.size).toBe(2);
+        });
+
+        test('getSolvedProblems should return the solved problems set', () => {
+            gameEngine.markProblemAsSolved('test_problem');
+
+            const solvedSet = gameEngine.getSolvedProblems();
+
+            expect(solvedSet).toBe(gameEngine.solvedProblemsInSession);
+            expect(solvedSet.has('test_problem')).toBe(true);
+        });
+
+        test('resetSolvedProblems should clear all solved problems', () => {
+            gameEngine.markProblemAsSolved('problem_1');
+            gameEngine.markProblemAsSolved('problem_2');
+            gameEngine.markProblemAsSolved('problem_3');
+
+            expect(gameEngine.solvedProblemsInSession.size).toBe(3);
+
+            gameEngine.resetSolvedProblems();
+
+            expect(gameEngine.solvedProblemsInSession.size).toBe(0);
+            expect(gameEngine.solvedProblemsInSession.has('problem_1')).toBe(false);
+        });
+
+        test('markProblemAsSolved should not add duplicate IDs', () => {
+            gameEngine.markProblemAsSolved('same_problem');
+            gameEngine.markProblemAsSolved('same_problem');
+            gameEngine.markProblemAsSolved('same_problem');
+
+            expect(gameEngine.solvedProblemsInSession.size).toBe(1);
+        });
+
+        test('resetSolvedProblems should work multiple times', () => {
+            gameEngine.markProblemAsSolved('problem_1');
+            gameEngine.resetSolvedProblems();
+            expect(gameEngine.solvedProblemsInSession.size).toBe(0);
+
+            gameEngine.markProblemAsSolved('problem_2');
+            gameEngine.markProblemAsSolved('problem_3');
+            expect(gameEngine.solvedProblemsInSession.size).toBe(2);
+
+            gameEngine.resetSolvedProblems();
+            expect(gameEngine.solvedProblemsInSession.size).toBe(0);
+        });
+    });
 });

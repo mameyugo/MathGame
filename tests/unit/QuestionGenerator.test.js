@@ -1,10 +1,12 @@
 const QuestionGenerator = require('../../docs/js/managers/QuestionGenerator');
+const GameEngine = require('../../docs/js/managers/GameEngine');
 
 describe('QuestionGenerator', () => {
     let questionGenerator;
     let mockUserManager;
     let mockProblemCategoryManager;
     let mockCheckFn;
+    let mockGameEngine;
 
     beforeEach(() => {
         // Mock DOM elements
@@ -12,6 +14,7 @@ describe('QuestionGenerator', () => {
             <div id="question-area"></div>
             <div id="answers-area"></div>
             <div id="equation-area"></div>
+            <div id="btn-submit-problem"></div>
         `;
 
         // Mock UserManager
@@ -34,8 +37,14 @@ describe('QuestionGenerator', () => {
         // Mock check function
         mockCheckFn = jest.fn();
 
+        // Mock GameEngine
+        mockGameEngine = {
+            getSolvedProblems: jest.fn(() => new Set()),
+            markProblemAsSolved: jest.fn()
+        };
+
         // Create QuestionGenerator instance
-        questionGenerator = new QuestionGenerator(mockUserManager, mockProblemCategoryManager, mockCheckFn);
+        questionGenerator = new QuestionGenerator(mockUserManager, mockProblemCategoryManager, mockCheckFn, mockGameEngine);
         questionGenerator.gameLevel = 5;
 
         // Mock Math.random for predictable tests
@@ -58,6 +67,15 @@ describe('QuestionGenerator', () => {
             expect(questionGenerator.userManager).toBe(mockUserManager);
             expect(questionGenerator.problemCategoryManager).toBe(mockProblemCategoryManager);
             expect(questionGenerator.check).toBe(mockCheckFn);
+        });
+
+        test('should accept gameEngine parameter', () => {
+            expect(questionGenerator.gameEngine).toBe(mockGameEngine);
+        });
+
+        test('should work without gameEngine parameter (backward compatibility)', () => {
+            const qg = new QuestionGenerator(mockUserManager, mockProblemCategoryManager, mockCheckFn);
+            expect(qg.gameEngine).toBeNull();
         });
     });
 
@@ -238,6 +256,64 @@ describe('QuestionGenerator', () => {
             expect(problem).toBeNull();
         });
 
+        test('should filter out already solved problems', () => {
+            const solvedSet = new Set(['p1', 'p3']);
+            mockGameEngine.getSolvedProblems.mockReturnValue(solvedSet);
+
+            window.bancoProblemas = [
+                { id: 'p1', tipo: 'matematico', nivelMin: 1, generar: () => ({ texto: 'Problem 1' }) },
+                { id: 'p2', tipo: 'matematico', nivelMin: 1, generar: () => ({ texto: 'Problem 2' }) },
+                { id: 'p3', tipo: 'matematico', nivelMin: 1, generar: () => ({ texto: 'Problem 3' }) }
+            ];
+
+            questionGenerator.problemType = 'matematico';
+            questionGenerator.gameLevel = 1;
+            mockProblemCategoryManager.filterProblemsByCategories.mockImplementation((problems) => problems);
+
+            const problem = questionGenerator.selectProblem();
+
+            expect(problem).toBeDefined();
+            expect(problem.texto).toBe('Problem 2');
+        });
+
+        test('should show completion message when all problems are solved', () => {
+            const solvedSet = new Set(['p1', 'p2']);
+            mockGameEngine.getSolvedProblems.mockReturnValue(solvedSet);
+
+            window.bancoProblemas = [
+                { id: 'p1', tipo: 'matematico', nivelMin: 1, generar: () => ({ texto: 'Problem 1' }) },
+                { id: 'p2', tipo: 'matematico', nivelMin: 1, generar: () => ({ texto: 'Problem 2' }) }
+            ];
+
+            questionGenerator.problemType = 'matematico';
+            questionGenerator.gameLevel = 1;
+            mockProblemCategoryManager.filterProblemsByCategories.mockImplementation((problems) => problems);
+
+            const problem = questionGenerator.selectProblem();
+
+            expect(problem).toBeNull();
+            const questionArea = document.getElementById('question-area');
+            expect(questionArea.innerHTML).toContain('¡Enhorabuena!');
+            expect(questionArea.innerHTML).toContain('github.com/mameyugo/MathGame');
+        });
+
+        test('should work without gameEngine (backward compatibility)', () => {
+            const qg = new QuestionGenerator(mockUserManager, mockProblemCategoryManager, mockCheckFn);
+
+            window.bancoProblemas = [
+                { id: 'p1', tipo: 'matematico', nivelMin: 1, generar: () => ({ texto: 'Problem 1' }) }
+            ];
+
+            qg.problemType = 'matematico';
+            qg.gameLevel = 1;
+            mockProblemCategoryManager.filterProblemsByCategories.mockImplementation((problems) => problems);
+
+            const problem = qg.selectProblem();
+
+            expect(problem).toBeDefined();
+            expect(problem.texto).toBe('Problem 1');
+        });
+
         test('should fallback to all problems if category filter yields empty', () => {
             window.bancoProblemas = [
                 { tipo: 'matematico', nivelMin: 1, generar: () => ({ texto: 'Easy', ecuacion: '1+1=__' }) }
@@ -362,6 +438,63 @@ describe('QuestionGenerator', () => {
         test('setProblemType should update problem type', () => {
             questionGenerator.setProblemType('logica');
             expect(questionGenerator.problemType).toBe('logica');
+        });
+    });
+
+    describe('showCompletionMessage', () => {
+        test('should display congratulations message in question area', () => {
+            questionGenerator.showCompletionMessage();
+
+            const questionArea = document.getElementById('question-area');
+            expect(questionArea.innerHTML).toContain('¡Enhorabuena!');
+            expect(questionArea.innerHTML).toContain('Has completado todos los problemas disponibles');
+        });
+
+        test('should include GitHub contribution link', () => {
+            questionGenerator.showCompletionMessage();
+
+            const questionArea = document.getElementById('question-area');
+            expect(questionArea.innerHTML).toContain('github.com/mameyugo/MathGame/issues/new');
+            expect(questionArea.innerHTML).toContain('Enviar Nuevo Acertijo');
+        });
+
+        test('should mention open-source nature', () => {
+            questionGenerator.showCompletionMessage();
+
+            const questionArea = document.getElementById('question-area');
+            expect(questionArea.innerHTML).toContain('MateAventura es software libre');
+        });
+
+        test('should clear equation area', () => {
+            document.getElementById('equation-area').innerHTML = '<input type="number" />';
+
+            questionGenerator.showCompletionMessage();
+
+            const equationArea = document.getElementById('equation-area');
+            expect(equationArea.innerHTML).toBe('');
+        });
+
+        test('should hide submit button', () => {
+            document.getElementById('btn-submit-problem').style.display = 'block';
+
+            questionGenerator.showCompletionMessage();
+
+            const submitBtn = document.getElementById('btn-submit-problem');
+            expect(submitBtn.style.display).toBe('none');
+        });
+
+        test('should display motivational message about submission', () => {
+            questionGenerator.showCompletionMessage();
+
+            const questionArea = document.getElementById('question-area');
+            expect(questionArea.innerHTML).toContain('Lo implementaré lo más rápido posible');
+        });
+
+        test('should include celebration emoji', () => {
+            questionGenerator.showCompletionMessage();
+
+            const questionArea = document.getElementById('question-area');
+            expect(questionArea.innerHTML).toContain('🎉');
         });
     });
 });
