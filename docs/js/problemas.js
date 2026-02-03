@@ -590,15 +590,17 @@ window.bancoProblemas = [
         nivelMin: 1,
         categorias: ['explorador'],
         generar: () => {
-            const respuesta_indice = 0; // "Juan" es la respuesta correcta (representada como 0 para la ecuación)
-
             return {
                 texto: `La mamá de Juan tiene 3 hijos. El primero se llama Primero, el segundo se llama Segundo. ¿Cómo se llama el tercer hijo?`,
-                respuestaCorrecta: 0, // Representamos "Juan" como 0 para que funcione con la ecuación numérica
+                respuestaCorrecta: "Juan",
+                tipoRespuesta: "opcion_multiple",
                 explicacion: `¡Trampa desactivada! El patrón numérico "Primero, Segundo, Tercero" intenta engañarte. Pero la pregunta dice "la mamá de Juan", así que Juan es el tercer hijo.`,
-                ecuacion: `El tercer hijo = __ (0=Juan, 1=Primero, 2=Segundo, 3=Tercero)`,
-                ecuacionValores: [0],
-                opciones: [0, 1, 2, 3]
+                opciones: [
+                    { id: "Juan", texto: "Juan", icon: "👦" },
+                    { id: "Primero", texto: "Primero", icon: "1️⃣" },
+                    { id: "Segundo", texto: "Segundo", icon: "2️⃣" },
+                    { id: "Tercero", texto: "Tercero", icon: "3️⃣" }
+                ]
             };
         }
     }

@@ -259,25 +259,8 @@ class QuestionGenerator {
             area.innerText = this.currentProblem.texto;
         }
 
-        this.renderEquation(this.currentProblem.ecuacion);
-
-        // Ocultar solo el texto de la ecuación inicialmente, no los inputs
-        const equationTexts = document.querySelectorAll('#equation-area .eq-text');
-        equationTexts.forEach(text => {
-            text.style.opacity = '0';
-        });
-
-        // Focus first input inmediatamente
-        const firstInput = document.querySelector('#equation-area .eq-input');
-        if (firstInput) firstInput.focus();
-
-        // Mostrar texto de la ecuación después de 10 segundos
-        setTimeout(() => {
-            equationTexts.forEach(text => {
-                text.style.transition = 'opacity 0.5s ease';
-                text.style.opacity = '1';
-            });
-        }, 10000);
+        // Usar el nuevo renderProblemUI para soportar diferentes tipos de respuesta
+        this.renderProblemUI(this.currentProblem);
     }
 
     /**
@@ -294,6 +277,111 @@ class QuestionGenerator {
      */
     getCurrentProblem() {
         return this.currentProblem;
+    }
+
+    /**
+     * Renders UI for problem answers based on response type
+     * @param {Object} problem - Problem object
+     */
+    renderProblemUI(problem) {
+        const equationArea = document.getElementById('equation-area');
+        if (!equationArea) return;
+
+        const tipoRespuesta = problem.tipoRespuesta || 'numero';
+
+        // Limpiar área
+        equationArea.innerHTML = '';
+
+        if (tipoRespuesta === 'numero') {
+            // Renderizar ecuación con inputs numéricos (comportamiento actual)
+            this.renderEquation(problem.ecuacion);
+
+            // Ocultar solo el texto de la ecuación inicialmente
+            const equationTexts = document.querySelectorAll('#equation-area .eq-text');
+            equationTexts.forEach(text => {
+                text.style.opacity = '0';
+            });
+
+            // Focus first input inmediatamente
+            const firstInput = document.querySelector('#equation-area .eq-input');
+            if (firstInput) firstInput.focus();
+
+            // Mostrar texto de la ecuación después de 10 segundos
+            setTimeout(() => {
+                equationTexts.forEach(text => {
+                    text.style.transition = 'opacity 0.5s ease';
+                    text.style.opacity = '1';
+                });
+            }, 10000);
+
+        } else if (tipoRespuesta === 'opcion_multiple') {
+            this.renderMultipleChoice(problem);
+        } else if (tipoRespuesta === 'texto') {
+            this.renderTextInput(problem);
+        }
+    }
+
+    /**
+     * Renders multiple choice buttons
+     * @param {Object} problem - Problem object
+     */
+    renderMultipleChoice(problem) {
+        const equationArea = document.getElementById('equation-area');
+
+        const container = document.createElement('div');
+        container.className = 'multiple-choice-container';
+
+        problem.opciones.forEach((opcion, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.dataset.value = opcion.id || opcion;
+            btn.dataset.index = idx;
+
+            // Soportar objetos con propiedades o strings simples
+            if (typeof opcion === 'object') {
+                btn.innerHTML = `<span class="choice-icon">${opcion.icon || ''}</span> ${opcion.texto}`;
+            } else {
+                btn.textContent = opcion;
+            }
+
+            btn.addEventListener('click', () => {
+                // Deseleccionar otros
+                document.querySelectorAll('.choice-btn').forEach(b => {
+                    b.classList.remove('selected');
+                });
+                // Seleccionar este
+                btn.classList.add('selected');
+                // Guardar respuesta
+                window.selectedChoice = opcion.id || opcion;
+            });
+
+            container.appendChild(btn);
+        });
+
+        equationArea.appendChild(container);
+    }
+
+    /**
+     * Renders text input field
+     * @param {Object} problem - Problem object
+     */
+    renderTextInput(problem) {
+        const equationArea = document.getElementById('equation-area');
+
+        const container = document.createElement('div');
+        container.className = 'text-input-container';
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = 'text-answer-input';
+        input.placeholder = problem.placeholder || 'Escribe tu respuesta...';
+        input.className = 'text-answer-input';
+
+        container.appendChild(input);
+        equationArea.appendChild(container);
+
+        // Focus automático
+        setTimeout(() => input.focus(), 100);
     }
 
     /**

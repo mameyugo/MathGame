@@ -1212,3 +1212,76 @@ button.main-btn:active {
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
     background: #f0f8ff;
 }
+
+/* Estilos para respuestas de opción múltiple */
+.multiple-choice-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.choice-btn {
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    background: white;
+    color: #2c3e50;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+}
+
+.choice-btn:hover {
+    border-color: #3498db;
+    background: #f0f8ff;
+    transform: translateX(4px);
+}
+
+.choice-btn.selected {
+    border-color: #27ae60;
+    background: #d4edda;
+    color: #155724;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+.choice-icon {
+    font-size: 1.5rem;
+    display: inline-block;
+}
+
+/* Estilos para entrada de texto */
+.text-input-container {
+    margin: 15px 0;
+}
+
+.text-answer-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2rem;
+    border: 2px solid #3498db;
+    border-radius: 10px;
+    background: white;
+    color: #2c3e50;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.text-answer-input:hover {
+    border-color: #2980b9;
+    box-shadow: 0 2px 6px rgba(52, 152, 219, 0.2);
+}
+
+.text-answer-input:focus {
+    border-color: #2980b9;
+    background: #f0f8ff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}

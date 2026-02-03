@@ -323,23 +323,54 @@ function generateProblem() {
 function submitProblem() {
     if (!currentProblem) return;
 
-    const equationArea = document.getElementById('equation-area');
-    const inputs = Array.from(equationArea.querySelectorAll('input.eq-input'));
-    const values = inputs.map(i => i.value.trim());
+    const tipoRespuesta = currentProblem.tipoRespuesta || 'numero';
+    let isCorrect = false;
 
-    if (values.some(v => v === '')) {
-        alert(t('alert_fill_equation'));
-        return;
+    if (tipoRespuesta === 'numero') {
+        // Validación para respuestas numéricas (comportamiento actual)
+        const equationArea = document.getElementById('equation-area');
+        const inputs = Array.from(equationArea.querySelectorAll('input.eq-input'));
+        const values = inputs.map(i => i.value.trim());
+
+        if (values.some(v => v === '')) {
+            alert(t('alert_fill_equation'));
+            return;
+        }
+
+        const parsed = values.map(v => Number(v));
+        const expected = currentProblem.ecuacionValores || [];
+        isCorrect = parsed.length === expected.length && parsed.every((v, i) => v === expected[i]);
+
+    } else if (tipoRespuesta === 'opcion_multiple') {
+        // Validación para opciones múltiples
+        if (!window.selectedChoice) {
+            alert('Por favor, selecciona una opción');
+            return;
+        }
+        isCorrect = window.selectedChoice === currentProblem.respuestaCorrecta;
+
+    } else if (tipoRespuesta === 'texto') {
+        // Validación para entrada de texto
+        const input = document.getElementById('text-answer-input');
+        if (!input || input.value.trim() === '') {
+            alert('Por favor, escribe tu respuesta');
+            return;
+        }
+        let userAnswer = input.value.trim();
+        let correctAnswer = String(currentProblem.respuestaCorrecta);
+
+        if (currentProblem.caseSensitive === false) {
+            userAnswer = userAnswer.toLowerCase();
+            correctAnswer = correctAnswer.toLowerCase();
+        }
+
+        isCorrect = userAnswer === correctAnswer;
     }
 
-    const parsed = values.map(v => Number(v));
-    const expected = currentProblem.ecuacionValores || [];
-
-    const isCorrect = parsed.length === expected.length && parsed.every((v, i) => v === expected[i]);
-
+    // Procesar resultado
     if (isCorrect) {
         // Actualizar GameEngine
-        gameEngine.gameCoins += 20;
+        gameEngine.gameCoins += 30;
         gameEngine.timeLeft += 10;
         showTimeDelta(10);
 
