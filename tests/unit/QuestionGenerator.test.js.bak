@@ -3,6 +3,7 @@ const QuestionGenerator = require('../../docs/js/managers/QuestionGenerator');
 describe('QuestionGenerator', () => {
     let questionGenerator;
     let mockUserManager;
+    let mockProblemCategoryManager;
     let mockCheckFn;
 
     beforeEach(() => {
@@ -21,11 +22,17 @@ describe('QuestionGenerator', () => {
             }))
         };
 
+        // Mock ProblemCategoryManager
+        mockProblemCategoryManager = {
+            getProblemCategory: jest.fn(() => 'explorador'),
+            categorizeProblems: jest.fn()
+        };
+
         // Mock check function
         mockCheckFn = jest.fn();
 
         // Create QuestionGenerator instance
-        questionGenerator = new QuestionGenerator(mockUserManager, mockCheckFn);
+        questionGenerator = new QuestionGenerator(mockUserManager, mockProblemCategoryManager, mockCheckFn);
         questionGenerator.gameLevel = 5;
 
         // Mock Math.random for predictable tests
@@ -46,6 +53,7 @@ describe('QuestionGenerator', () => {
 
         test('should store manager and function references', () => {
             expect(questionGenerator.userManager).toBe(mockUserManager);
+            expect(questionGenerator.problemCategoryManager).toBe(mockProblemCategoryManager);
             expect(questionGenerator.check).toBe(mockCheckFn);
         });
     });
