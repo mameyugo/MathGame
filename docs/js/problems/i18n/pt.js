@@ -192,8 +192,26 @@ export const problemsPT = {
     },
     bate_pelota: {
         texto: (total_costo, diferencia) => `Um taco e uma bola custam juntos ${total_costo.toFixed(2)}€. O taco custa ${diferencia.toFixed(2)}€ a mais que a bola. Quanto custa a bola?`,
-        explicacion: () => `Equação de diferença! A resposta automática é 0,10€, mas se a bola custasse 0,10€, o taco custaria 1,10€, e o total seria 1,20€. Corretamente: Se bola = x, então taco = x + 1. x + (x + 1) = 1,10 → 2x = 0,10 → x = 0,05€`
-    }
+        explicacion: () => `Equação de diferença! A resposta automática é 0,10€, mas se a bola custasse 0,10€, o taco custaria 1,10€, e o total seria 1,20€. Corretamente: Se bola = x, então taco = x + 1. x + (x + 1) = 1,10 → 2x = 0,10 → x = 0,05€`    },
+    vuelo_pajaro: {
+        texto: (distancia, velocidad_t, velocidad_p, tiempo) => `Dois trens estão em trilhos opostos a ${distancia} km de distância e se aproximam um do outro a ${velocidad_t} km/h cada um. Um pássaro sai do Trem A a ${velocidad_p} km/h em direção ao Trem B, e quando o atinge, volta ao Trem A, e assim sucessivamente até que os trens colidem. Qual é a distância total percorrida pelo pássaro?`,
+        explicacion: (velocidad_p, tiempo, velocidad_t) => `A armadilha do cálculo infinito! Muitos tentam calcular cada trajetória do pássaro (série infinita). O truque é calcular o tempo: os trens levarão ${tiempo} hora para se encontrar (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h de velocidade relativa). Se o pássaro voa a ${velocidad_p} km/h durante essa hora, percorre exatamente ${velocidad_p * tiempo} km.`
+    },
+    cumpleaños_imposible: {
+        texto: (edad_anteayer, edad_proximo) => `Anteontem eu tinha ${edad_anteayer} anos e no próximo ano terei ${edad_proximo}. Quantos anos tenho hoje? (Sabendo que hoje é 1º de janeiro)`,
+        explicacion: (edad_anteayer, edad_hoy, edad_proximo) => `Lógica temporal! Parece impossível passar de ${edad_anteayer} para ${edad_proximo} em tão pouco tempo. A solução: 1. Ontem (31 de dezembro) fiz ${edad_hoy}. 2. Anteontem (30 de dezembro) ainda tinha ${edad_anteayer}. 3. Este ano farei ${edad_hoy + 1} em dezembro. 4. No próximo ano farei ${edad_proximo}. Hoje: ${edad_hoy} anos.`
+    },
+    cubo_pintado: {
+        texto: (tamano, total, respuesta) => `Um cubo de madeira de ${tamano}×${tamano}×${tamano} cm é pintado de azul por fora. Em seguida, é cortado em ${total} cubinhos de 1×1×1 cm. Quantos desses cubinhos terão exatamente 2 faces pintadas de azul?`,
+        explicacion: (aristas, tamano, respuesta) => `Visualização espacial! O cérebro tenta contar as faces totais, mas o truque é saber que os cubos com 2 faces pintadas são aqueles nas arestas (mas não nos cantos, que têm 3). Um cubo tem ${aristas} arestas, e neste caso há 1 cubinho central por aresta. Total: ${respuesta} cubinhos.`
+    },
+    carrera_100m: {
+        texto: (distancia, ventaja) => `O corredor A vence o corredor B por ${ventaja} metros. O corredor B vence o corredor C por ${ventaja} metros. Se os três correm ${distancia} metros, por quantos metros A vence C?`,
+        explicacion: (ventaja, velocidad_c_porcent, respuesta) => `A armadilha da soma! A resposta intuitiva é ${ventaja + ventaja} metros (${ventaja}+${ventaja}). Mas as distâncias são proporcionais à velocidade. C corre a ${velocidad_c_porcent}×100=${Math.round(velocidad_c_porcent * 100)}% da velocidade de A. Vantagem real: 100 - (100 × ${velocidad_c_porcent}) ≈ ${respuesta}m`
+    },
+    monos_platanos: {
+        texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Se ${monos_ini} macacos levam ${tiempo_ini} minutos para comer ${platanos_ini} bananas, quanto tempo levarão ${monos_fin} macacos para comer ${platanos_fin} bananas?`,
+        explicacion: (tiempo_ini) => `A armadilha da regra de três! Tenta-se aplicar uma proporção direta. Mas a taxa é de 1 macaco por banana a cada ${tiempo_ini} minutos. Se todos começam a comer ao mesmo tempo, terminam ao mesmo tempo. A razão macacos:bananas é a mesma (1:1), então o tempo permanece constante: ${tiempo_ini} minutos.`    }
 };
 
 export default problemsPT;

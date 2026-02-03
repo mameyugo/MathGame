@@ -192,8 +192,26 @@ export const problemsFR = {
     },
     bate_pelota: {
         texto: (total_costo, diferencia) => `Une raquette et une balle coûtent ensemble ${total_costo.toFixed(2)}€. La raquette coûte ${diferencia.toFixed(2)}€ de plus que la balle. Combien coûte la balle?`,
-        explicacion: () => `Équation de différence! La réponse automatique est 0,10€, mais si la balle coûtait 0,10€, la raquette coûterait 1,10€, et le total serait 1,20€. Correctement: Si balle = x, alors raquette = x + 1. x + (x + 1) = 1,10 → 2x = 0,10 → x = 0,05€`
-    }
+        explicacion: () => `Équation de différence! La réponse automatique est 0,10€, mais si la balle coûtait 0,10€, la raquette coûterait 1,10€, et le total serait 1,20€. Correctement: Si balle = x, alors raquette = x + 1. x + (x + 1) = 1,10 → 2x = 0,10 → x = 0,05€`    },
+    vuelo_pajaro: {
+        texto: (distancia, velocidad_t, velocidad_p, tiempo) => `Deux trains sont sur des voies opposées à ${distancia} km de distance et se rapprochent l'un de l'autre à ${velocidad_t} km/h chacun. Un oiseau quitte le Train A à ${velocidad_p} km/h vers le Train B, et quand il l'atteint, il revient au Train A, et ainsi de suite jusqu'à ce que les trains se heurtent. Quelle est la distance totale parcourue par l'oiseau ?`,
+        explicacion: (velocidad_p, tiempo, velocidad_t) => `Le piège du calcul infini ! Beaucoup essaient de calculer chaque trajectoire de l'oiseau (série infinie). L'astuce consiste à calculer le temps : les trains mettront ${tiempo} heure pour se rencontrer (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h de vitesse relative). Si l'oiseau vole à ${velocidad_p} km/h pendant cette heure, il parcourt exactement ${velocidad_p * tiempo} km.`
+    },
+    cumpleaños_imposible: {
+        texto: (edad_anteayer, edad_proximo) => `Avant-hier j'avais ${edad_anteayer} ans et l'année prochaine j'aurai ${edad_proximo}. Quel âge ai-je aujourd'hui ? (Sachant qu'aujourd'hui c'est le 1er janvier)`,
+        explicacion: (edad_anteayer, edad_hoy, edad_proximo) => `Logique temporelle ! Il semble impossible de passer de ${edad_anteayer} à ${edad_proximo} en si peu de temps. La solution : 1. Hier (31 décembre) j'ai eu ${edad_hoy}. 2. Avant-hier (30 décembre) j'avais encore ${edad_anteayer}. 3. Cette année j'aurai ${edad_hoy + 1} en décembre. 4. L'année prochaine j'aurai ${edad_proximo}. Aujourd'hui : ${edad_hoy} ans.`
+    },
+    cubo_pintado: {
+        texto: (tamano, total, respuesta) => `Un cube en bois de ${tamano}×${tamano}×${tamano} cm est peint en bleu à l'extérieur. Ensuite, il est coupé en ${total} petits cubes de 1×1×1 cm. Combien de ces petits cubes auront exactement 2 faces peintes en bleu ?`,
+        explicacion: (aristas, tamano, respuesta) => `Visualisation spatiale ! Le cerveau essaie de compter les faces totales, mais l'astuce est de savoir que les cubes avec 2 faces peintes sont ceux sur les arêtes (mais pas aux coins, qui en ont 3). Un cube a ${aristas} arêtes, et dans ce cas, il y a 1 petit cube central par arête. Total : ${respuesta} petits cubes.`
+    },
+    carrera_100m: {
+        texto: (distancia, ventaja) => `Le coureur A bat le coureur B de ${ventaja} mètres. Le coureur B bat le coureur C de ${ventaja} mètres. Si les trois courent ${distancia} mètres, de combien de mètres A bat-il C ?`,
+        explicacion: (ventaja, velocidad_c_porcent, respuesta) => `Le piège de l'addition ! La réponse intuitive est ${ventaja + ventaja} mètres (${ventaja}+${ventaja}). Mais les distances sont proportionnelles à la vitesse. C court à ${velocidad_c_porcent}×100=${Math.round(velocidad_c_porcent * 100)}% de la vitesse de A. Avantage réel : 100 - (100 × ${velocidad_c_porcent}) ≈ ${respuesta}m`
+    },
+    monos_platanos: {
+        texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Si ${monos_ini} singes mettent ${tiempo_ini} minutes à manger ${platanos_ini} bananes, combien de temps faudra-t-il à ${monos_fin} singes pour manger ${platanos_fin} bananes ?`,
+        explicacion: (tiempo_ini) => `Le piège de la règle de trois ! Une proportion directe est tentée. Mais le taux est de 1 singe par banane toutes les ${tiempo_ini} minutes. Si tout le monde commence à manger en même temps, ils terminent en même temps. Le ratio singes:bananes est le même (1:1), donc le temps reste constant : ${tiempo_ini} minutes.`    }
 };
 
 export default problemsFR;

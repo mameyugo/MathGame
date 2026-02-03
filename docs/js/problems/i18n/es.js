@@ -193,6 +193,26 @@ export const problemsES = {
     bate_pelota: {
         texto: (total_costo, diferencia) => `Un bate y una pelota cuestan juntos ${total_costo.toFixed(2)}€. El bate cuesta ${diferencia.toFixed(2)}€ más que la pelota. ¿Cuánto cuesta la pelota?`,
         explicacion: () => `¡Ecuación de diferencia! La respuesta automática es 0.10€, pero si la pelota costara 0.10€, el bate costaría 1.10€, y el total sería 1.20€. Correctamente: Si pelota = x, entonces bate = x + 1. x + (x + 1) = 1.10 → 2x = 0.10 → x = 0.05€`
+    },
+    vuelo_pajaro: {
+        texto: (distancia, velocidad_t, velocidad_p, tiempo) => `Dos trenes están en vías opuestas a ${distancia} km de distancia y avanzan el uno hacia el otro a ${velocidad_t} km/h cada uno. Un pájaro sale del Tren A a ${velocidad_p} km/h hacia el Tren B, y cuando llega a este, vuelve al Tren A, y así sucesivamente hasta que los trenes chocan. ¿Qué distancia total habrá recorrido el pájaro?`,
+        explicacion: (velocidad_p, tiempo, velocidad_t) => `¡La trampa del cálculo infinito! Muchos intentan calcular cada trayecto del pájaro (serie infinita). El truco es calcular el tiempo: los trenes tardarán ${tiempo} hora en encontrarse (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h de velocidad relativa). Si el pájaro vuela a ${velocidad_p} km/h durante esa hora, recorre exactamente ${velocidad_p * tiempo} km.`
+    },
+    cumpleaños_imposible: {
+        texto: (edad_anteayer, edad_proximo) => `Anteayer tenía ${edad_anteayer} años y el año que viene tendré ${edad_proximo}. ¿Cuántos años tengo hoy? (Sabiendo que hoy es 1 de enero)`,
+        explicacion: (edad_anteayer, edad_hoy, edad_proximo) => `¡Lógica temporal! Parece imposible pasar de ${edad_anteayer} a ${edad_proximo} en poco tiempo. La solución: 1. Ayer (31 de diciembre) cumplí ${edad_hoy}. 2. Anteayer (30 de diciembre) aún tenía ${edad_anteayer}. 3. Este año cumpliré ${edad_hoy + 1} en diciembre. 4. El año que viene cumpliré ${edad_proximo}. Hoy: ${edad_hoy} años.`
+    },
+    cubo_pintado: {
+        texto: (tamano, total, respuesta) => `Un cubo de madera de ${tamano}×${tamano}×${tamano} cm se pinta de azul por fuera. Luego se corta en ${total} cubitos de 1×1×1 cm. ¿Cuántos de esos cubitos tendrán exactamente 2 caras pintadas de azul?`,
+        explicacion: (aristas, tamano, respuesta) => `¡Visualización espacial! El cerebro intenta contar caras totales, pero el truco es saber que los cubos con 2 caras pintadas son los que están en las aristas (pero no en las esquinas, que tienen 3). Un cubo tiene ${aristas} aristas, y en este caso hay 1 cubito central por arista. Total: ${respuesta} cubitos.`
+    },
+    carrera_100m: {
+        texto: (distancia, ventaja) => `El corredor A vence al corredor B por ${ventaja} metros. El corredor B vence al corredor C por ${ventaja} metros. Si los tres corren ${distancia} metros, ¿por cuántos metros vence A a C?`,
+        explicacion: (ventaja, velocidad_c_porcent, respuesta) => `¡La trampa de la suma! La respuesta intuitiva es ${ventaja + ventaja} metros (${ventaja}+${ventaja}). Pero las distancias son proporcionales a la velocidad. C corre al ${velocidad_c_porcent}×100=${Math.round(velocidad_c_porcent * 100)}% de la velocidad de A. Ventaja real: 100 - (100 × ${velocidad_c_porcent}) ≈ ${respuesta}m`
+    },
+    monos_platanos: {
+        texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Si ${monos_ini} monos tardan ${tiempo_ini} minutos en comerse ${platanos_ini} plátanos, ¿cuánto tiempo tardarán ${monos_fin} monos en comerse ${platanos_fin} plátanos?`,
+        explicacion: (tiempo_ini) => `¡La trampa de la regla de tres! Se intenta aplicar proporción directa. Pero el ritmo es de 1 mono por plátano cada ${tiempo_ini} minutos. Si todos empiezan a comer a la vez, terminan a la vez. La relación monos:plátanos es la misma (1:1), así que el tiempo permanece constante: ${tiempo_ini} minutos.`
     }
 };
 

@@ -152,5 +152,119 @@ export const level5Problems = [
                 opciones: [respuesta, 0.10, 0.55, 1.05]
             };
         }
+    },
+    {
+        id: "vuelo_pajaro",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['cientifico'],
+        i18n: "vuelo_pajaro",
+        generar: () => {
+            const distancia_inicial = 100;
+            const velocidad_trenes = 50;
+            const velocidad_pajaro = 100;
+            const tiempo_encuentro = 1;
+            const respuesta = velocidad_pajaro * tiempo_encuentro;
+
+            return {
+                texto: `Dos trenes están en vías opuestas a ${distancia_inicial} km de distancia y avanzan el uno hacia el otro a ${velocidad_trenes} km/h cada uno. Un pájaro sale del Tren A a ${velocidad_pajaro} km/h hacia el Tren B, y cuando llega a este, vuelve al Tren A, y así sucesivamente hasta que los trenes chocan. ¿Qué distancia total habrá recorrido el pájaro?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡La trampa del cálculo infinito! Muchos intentan calcular cada trayecto del pájaro (serie infinita). El truco es calcular el tiempo: los trenes tardarán ${tiempo_encuentro} hora en encontrarse (${velocidad_trenes}+${velocidad_trenes}=${velocidad_trenes * 2} km/h de velocidad relativa). Si el pájaro vuela a ${velocidad_pajaro} km/h durante esa hora, recorre exactamente ${respuesta} km.`,
+                ecuacion: `d = v × t = ${velocidad_pajaro} × ${tiempo_encuentro} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, distancia_inicial / 2, 50, 150]
+            };
+        }
+    },
+    {
+        id: "cumpleaños_imposible",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['cientifico'],
+        i18n: "cumpleaños_imposible",
+        generar: () => {
+            const edad_anteayer = 25;
+            const edad_hoy = 26;
+            const edad_proximo_ano = 28;
+            const respuesta = 26;
+
+            return {
+                texto: `Anteayer tenía ${edad_anteayer} años y el año que viene tendré ${edad_proximo_ano}. ¿Cuántos años tengo hoy? (Sabiendo que hoy es 1 de enero)`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Lógica temporal! Parece imposible pasar de ${edad_anteayer} a ${edad_proximo_ano} en poco tiempo. La solución: 1. Ayer (31 de diciembre) cumplí ${edad_hoy}. 2. Anteayer (30 de diciembre) aún tenía ${edad_anteayer}. 3. Este año cumpliré ${edad_hoy + 1} en diciembre. 4. El año que viene cumpliré ${edad_proximo_ano}. Hoy: ${respuesta} años.`,
+                ecuacion: `Edad hoy = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, edad_anteayer, edad_proximo_ano - 2, 25]
+            };
+        }
+    },
+    {
+        id: "cubo_pintado",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['cientifico'],
+        i18n: "cubo_pintado",
+        generar: () => {
+            const tamano_cubo = 3;
+            const total_cubitos = 27;
+            const aristas = 12;
+            const respuesta = aristas;
+
+            return {
+                texto: `Un cubo de madera de ${tamano_cubo}×${tamano_cubo}×${tamano_cubo} cm se pinta de azul por fuera. Luego se corta en ${total_cubitos} cubitos de 1×1×1 cm. ¿Cuántos de esos cubitos tendrán exactamente 2 caras pintadas de azul?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Visualización espacial! El cerebro intenta contar caras totales, pero el truco es saber que los cubos con 2 caras pintadas son los que están en las aristas (pero no en las esquinas, que tienen 3). Un cubo tiene ${aristas} aristas, y en este caso hay 1 cubito central por arista. Total: ${respuesta} cubitos.`,
+                ecuacion: `Aristas × (n - 2) = ${aristas} × (${tamano_cubo} - 2) = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 8, 20, 6]
+            };
+        }
+    },
+    {
+        id: "carrera_100m",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['cientifico'],
+        i18n: "carrera_100m",
+        generar: () => {
+            const distancia = 100;
+            const ventaja = 10;
+            const velocidad_b_porcent = 0.9;
+            const velocidad_c_porcent = velocidad_b_porcent * velocidad_b_porcent;
+            const respuesta = Math.round((distancia - (distancia * velocidad_c_porcent)) * 10) / 10;
+
+            return {
+                texto: `El corredor A vence al corredor B por ${ventaja} metros. El corredor B vence al corredor C por ${ventaja} metros. Si los tres corren ${distancia} metros, ¿por cuántos metros vence A a C?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡La trampa de la suma! La respuesta intuitiva es ${ventaja + ventaja} metros (${ventaja}+${ventaja}). Pero las distancias son proporcionales a la velocidad. Cuando A llega a los ${distancia}m, B está en los ${distancia - ventaja}m (B corre al ${ventaja === 10 ? 90 : 'X'}% de A). Cuando B llega a los ${distancia}m, C está en los ${distancia - ventaja}m (C corre al ${ventaja === 10 ? 90 : 'X'}% de B). Por tanto, C corre al ${velocidad_c_porcent}×100=${velocidad_c_porcent * 100}% de la velocidad de A. Ventaja real: ${distancia} - (${distancia}×${velocidad_c_porcent}) ≈ ${respuesta}m`,
+                ecuacion: `${distancia} - (${distancia} × ${velocidad_c_porcent}) = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 20, 15, 18]
+            };
+        }
+    },
+    {
+        id: "monos_platanos",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['cientifico'],
+        i18n: "monos_platanos",
+        generar: () => {
+            const monos_iniciales = 3;
+            const platanos_iniciales = 3;
+            const tiempo_inicial = 3;
+            const monos_finales = 100;
+            const platanos_finales = 100;
+            const respuesta = tiempo_inicial;
+
+            return {
+                texto: `Si ${monos_iniciales} monos tardan ${tiempo_inicial} minutos en comerse ${platanos_iniciales} plátanos, ¿cuánto tiempo tardarán ${monos_finales} monos en comerse ${platanos_finales} plátanos?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡La trampa de la regla de tres! Se intenta aplicar proporción directa (${(monos_finales * tiempo_inicial) / monos_iniciales} minutos). Pero el ritmo es de 1 mono por plátano cada ${tiempo_inicial} minutos. Si todos empiezan a comer a la vez, terminan a la vez. La relación monos:plátanos es la misma (1:1), así que el tiempo permanece constante: ${respuesta} minutos.`,
+                ecuacion: `Tiempo = constante si ratio_monos = ratio_plátanos = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 100, 300, 10]
+            };
+        }
     }
 ];

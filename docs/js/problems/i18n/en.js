@@ -193,6 +193,26 @@ export const problemsEN = {
     bate_pelota: {
         texto: (total_costo, diferencia) => `A bat and a ball cost together ${total_costo.toFixed(2)}€. The bat costs ${diferencia.toFixed(2)}€ more than the ball. How much does the ball cost?`,
         explicacion: () => `Difference equation! The automatic answer is 0.10€, but if the ball cost 0.10€, the bat would cost 1.10€, and the total would be 1.20€. Correctly: If ball = x, then bat = x + 1. x + (x + 1) = 1.10 → 2x = 0.10 → x = 0.05€`
+    },
+    vuelo_pajaro: {
+        texto: (distancia, velocidad_t, velocidad_p, tiempo) => `Two trains are on opposite tracks ${distancia} km apart and move toward each other at ${velocidad_t} km/h each. A bird leaves Train A at ${velocidad_p} km/h toward Train B, and when it reaches it, it returns to Train A, and so on until the trains collide. What is the total distance traveled by the bird?`,
+        explicacion: (velocidad_p, tiempo, velocidad_t) => `The infinite calculation trap! Many try to calculate each trajectory of the bird (infinite series). The trick is to calculate the time: the trains will take ${tiempo} hour to meet (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h relative speed). If the bird flies at ${velocidad_p} km/h for that hour, it travels exactly ${velocidad_p * tiempo} km.`
+    },
+    cumpleaños_imposible: {
+        texto: (edad_anteayer, edad_proximo) => `The day before yesterday I was ${edad_anteayer} years old and next year I will be ${edad_proximo}. How old am I today? (Knowing that today is January 1st)`,
+        explicacion: (edad_anteayer, edad_hoy, edad_proximo) => `Temporal logic! It seems impossible to go from ${edad_anteayer} to ${edad_proximo} in such a short time. The solution: 1. Yesterday (December 31st) I turned ${edad_hoy}. 2. The day before yesterday (December 30th) I was still ${edad_anteayer}. 3. This year I will turn ${edad_hoy + 1} in December. 4. Next year I will turn ${edad_proximo}. Today: ${edad_hoy} years old.`
+    },
+    cubo_pintado: {
+        texto: (tamano, total, respuesta) => `A wooden cube of ${tamano}×${tamano}×${tamano} cm is painted blue on the outside. Then it is cut into ${total} cubes of 1×1×1 cm. How many of these cubes will have exactly 2 faces painted blue?`,
+        explicacion: (aristas, tamano, respuesta) => `Spatial visualization! The brain tries to count total faces, but the trick is knowing that cubes with 2 painted faces are those on the edges (but not at corners, which have 3). A cube has ${aristas} edges, and in this case there is 1 central cube per edge. Total: ${respuesta} cubes.`
+    },
+    carrera_100m: {
+        texto: (distancia, ventaja) => `Runner A beats Runner B by ${ventaja} meters. Runner B beats Runner C by ${ventaja} meters. If all three run ${distancia} meters, by how many meters does A beat C?`,
+        explicacion: (ventaja, velocidad_c_porcent, respuesta) => `The addition trap! The intuitive answer is ${ventaja + ventaja} meters (${ventaja}+${ventaja}). But distances are proportional to speed. C runs at ${velocidad_c_porcent}×100=${Math.round(velocidad_c_porcent * 100)}% of A's speed. Real advantage: 100 - (100 × ${velocidad_c_porcent}) ≈ ${respuesta}m`
+    },
+    monos_platanos: {
+        texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `If ${monos_ini} monkeys take ${tiempo_ini} minutes to eat ${platanos_ini} bananas, how long will ${monos_fin} monkeys take to eat ${platanos_fin} bananas?`,
+        explicacion: (tiempo_ini) => `The rule of three trap! A direct proportion is attempted. But the rate is 1 monkey per banana every ${tiempo_ini} minutes. If everyone starts eating at the same time, they finish at the same time. The monkeys:bananas ratio is the same (1:1), so time remains constant: ${tiempo_ini} minutes.`
     }
 };
 

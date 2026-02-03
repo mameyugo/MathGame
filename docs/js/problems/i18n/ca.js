@@ -192,8 +192,26 @@ export const problemsCA = {
     },
     bate_pelota: {
         texto: (total_costo, diferencia) => `Una raqueta i una pilota costen juntes ${total_costo.toFixed(2)}€. La raqueta costa ${diferencia.toFixed(2)}€ més que la pilota. Quant costa la pilota?`,
-        explicacion: () => `Equació de diferència! La resposta automàtica és 0.10€, però si la pilota costés 0.10€, la raqueta costaria 1.10€, i el total seria 1.20€. Correctament: Si pilota = x, aleshores raqueta = x + 1. x + (x + 1) = 1.10 → 2x = 0.10 → x = 0.05€`
-    }
+        explicacion: () => `Equació de diferència! La resposta automàtica és 0.10€, però si la pilota costés 0.10€, la raqueta costaria 1.10€, i el total seria 1.20€. Correctament: Si pilota = x, aleshores raqueta = x + 1. x + (x + 1) = 1.10 → 2x = 0.10 → x = 0.05€`    },
+    vuelo_pajaro: {
+        texto: (distancia, velocidad_t, velocidad_p, tiempo) => `Dos trens estan en vies oposades a ${distancia} km de distància i s'acosten l'un a l'altre a ${velocidad_t} km/h cadascun. Un ocell surt del Tren A a ${velocidad_p} km/h cap al Tren B, i quan l'assoleix, torna al Tren A, i així successivament fins que els trens xoquen. Quina és la distància total recorreguda per l'ocell?`,
+        explicacion: (velocidad_p, tiempo, velocidad_t) => `¡La trampa del càlcul infinit! Molts intenten calcular cada trajectòria de l'ocell (sèrie infinita). El truc és calcular el temps: els trens tardaran ${tiempo} hora a trobar-se (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h de velocitat relativa). Si l'ocell vola a ${velocidad_p} km/h durant aquesta hora, recorre exactament ${velocidad_p * tiempo} km.`
+    },
+    cumpleaños_imposible: {
+        texto: (edad_anteayer, edad_proximo) => `Abans d'ahir tenia ${edad_anteayer} anys i l'any que ve tindré ${edad_proximo}. Quants anys tinc avui? (Sabent que avui és 1 de gener)`,
+        explicacion: (edad_anteayer, edad_hoy, edad_proximo) => `¡Lògica temporal! Sembla impossible passar de ${edad_anteayer} a ${edad_proximo} en tan poc temps. La solució: 1. Ahir (31 de desembre) vaig fer ${edad_hoy}. 2. Abans d'ahir (30 de desembre) encara tenia ${edad_anteayer}. 3. Enguany faré ${edad_hoy + 1} en desembre. 4. L'any que ve faré ${edad_proximo}. Avui: ${edad_hoy} anys.`
+    },
+    cubo_pintado: {
+        texto: (tamano, total, respuesta) => `Un cub de fusta de ${tamano}×${tamano}×${tamano} cm es pinta de blau per fora. Després es talla en ${total} cubets de 1×1×1 cm. Quants d'aquests cubets tindran exactament 2 cares pintades de blau?`,
+        explicacion: (aristas, tamano, respuesta) => `¡Visualització espacial! El cervell intenta comptar les cares totals, però el truc és saber que els cubs amb 2 cares pintades són els que estan en les arestes (però no en les cantonades, que en tenen 3). Un cub té ${aristas} arestes, i en aquest cas hi ha 1 cubet central per aresta. Total: ${respuesta} cubets.`
+    },
+    carrera_100m: {
+        texto: (distancia, ventaja) => `El corredor A guanya el corredor B per ${ventaja} metres. El corredor B guanya el corredor C per ${ventaja} metres. Si els tres corren ${distancia} metres, per quants metres guanya A a C?`,
+        explicacion: (ventaja, velocidad_c_porcent, respuesta) => `¡La trampa de la suma! La resposta intuïtiva és ${ventaja + ventaja} metres (${ventaja}+${ventaja}). Però les distàncies són proporcionals a la velocitat. C corre al ${velocidad_c_porcent}×100=${Math.round(velocidad_c_porcent * 100)}% de la velocitat de A. Avantatge real: 100 - (100 × ${velocidad_c_porcent}) ≈ ${respuesta}m`
+    },
+    monos_platanos: {
+        texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Si ${monos_ini} micos triguen ${tiempo_ini} minuts en menjar-se ${platanos_ini} plàtans, quant temps tardaran ${monos_fin} micos en menjar-se ${platanos_fin} plàtans?`,
+        explicacion: (tiempo_ini) => `¡La trampa de la regla de tres! S'intenta aplicar una proporció directa. Però el ritme és d'1 mica per plàtan cada ${tiempo_ini} minuts. Si tots comencen a menjar al mateix temps, terminen al mateix temps. La relació micos:plàtans és la mateixa (1:1), així que el temps es manté constant: ${tiempo_ini} minuts.`    }
 };
 
 export default problemsCA;
