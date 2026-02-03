@@ -132,7 +132,26 @@ export const problemsEN = {
         },
         explicacion: (duracion, fin) => `We add ${duracion} minutes. Result: ${fin}.`
     },
-
+    ascensor_loco: {
+        texto: (inicio, sube1, baja, sube2, respuesta) => `You live on the ${inicio}th floor. You go up ${sube1} floors to visit a friend, then down ${baja} to the laundry, and finally up ${sube2} more to the terrace. What floor is the terrace on?`,
+        explicacion: (inicio, sube1, baja, sube2, respuesta) => `Sequential memory exercise! You must follow the movements: floor ${inicio} + ${sube1} - ${baja} + ${sube2} = ${respuesta}. The common mistake is forgetting the starting floor.`
+    },
+    hermanos_balon: {
+        texto: (hermanas, hermanos, respuesta) => `In a family there are ${hermanas} sisters. Each sister has one brother. How many people are in the group of siblings in total?`,
+        explicacion: (hermanas, hermanos, respuesta) => `Watch out for the trick! The brain tends to add ${hermanas} + ${hermanas} = ${hermanas * 2}. But the brother is the SAME for all three sisters. Total: ${hermanas} sisters + ${hermanos} brother = ${respuesta} people.`
+    },
+    libro_aventuras: {
+        texto: (paginas, paginas_diarias) => `A book has ${paginas} pages. If you read ${paginas_diarias} pages each day, starting on a Monday, what day of the week will you finish the book?`,
+        explicacion: (paginas, paginas_diarias, dias) => `Calculate the days: ${paginas} / ${paginas_diarias} = ${dias} days. Then count from Monday: day ${dias} is a Wednesday (of the following week).`
+    },
+    caracoles_carrera: {
+        texto: (velocidad, distancia, descanso) => `If a snail travels ${velocidad} meters in one hour, how long will it take to travel ${distancia} meters if it stops to rest for half an hour halfway through?`,
+        explicacion: (velocidad, distancia, descanso, tiempoTotal) => `The basic calculation is ${distancia} / ${velocidad} = ${distancia / velocidad} hours. But don't forget the rest time: ${distancia / velocidad} + ${descanso} = ${tiempoTotal} hours (${tiempoTotal * 60} minutes).`
+    },
+    peso_fruta: {
+        texto: (pinasParaManzanas, pesoDeManzana, numeroDePinas) => `A pineapple weighs the same as ${pinasParaManzanas} apples. If one apple weighs ${pesoDeManzana} grams, how much will a basket with ${numeroDePinas} pineapples weigh if the empty basket weighs nothing?`,
+        explicacion: (pinasParaManzanas, pesoDeManzana, numeroDePinas, pesoTotal) => `It's a substitution problem. First find the weight of the pineapple: ${pinasParaManzanas} × ${pesoDeManzana} = ${pinasParaManzanas * pesoDeManzana} grams. Then multiply by ${numeroDePinas} pineapples: ${pinasParaManzanas * pesoDeManzana} × ${numeroDePinas} = ${pesoTotal} grams.`
+    },
     // LEVEL 4
     patas_mesa: {
         texto: (mesas, patas_m, sillas, patas_s, perros, patas_p) =>

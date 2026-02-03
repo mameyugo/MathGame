@@ -133,6 +133,27 @@ export const problemsDE = {
         explicacion: (duracion, fin) => `Wir addieren ${duracion} Minuten. Ergebnis: ${fin}.`
     },
 
+    ascensor_loco: {
+        texto: (inicio, sube1, baja, sube2, respuesta) => `Du lebst in der ${inicio}. Etage. Du gehst ${sube1} Stockwerke hinauf, um einen Freund zu besuchen, dann ${baja} hinunter zur Waschküche und schließlich ${sube2} hinauf zur Terrasse. In welcher Etage ist die Terrasse?`,
+        explicacion: (inicio, sube1, baja, sube2, respuesta) => `Sequenzielles Gedächtnisübung! Du musst den Bewegungen folgen: Etage ${inicio} + ${sube1} - ${baja} + ${sube2} = ${respuesta}. Der häufige Fehler ist, die Ausgangsebene zu vergessen.`
+    },
+    hermanos_balon: {
+        texto: (hermanas, hermanos, respuesta) => `In einer Familie gibt es ${hermanas} Schwestern. Jede Schwester hat einen Bruder. Wie viele Personen bilden die Gruppe der Geschwister insgesamt?`,
+        explicacion: (hermanas, hermanos, respuesta) => `Vorsicht vor der Falle! Das Gehirn neigt dazu, ${hermanas} + ${hermanas} = ${hermanas * 2} zu addieren. Aber der Bruder ist derselbe für alle drei Mädchen. Insgesamt: ${hermanas} Schwestern + ${hermanos} Bruder = ${respuesta} Personen.`
+    },
+    libro_aventuras: {
+        texto: (paginas, paginas_diarias) => `Ein Buch hat ${paginas} Seiten. Wenn du ${paginas_diarias} Seiten pro Tag liest und an einem Montag anfängst, an welchem Wochentag wirst du das Buch fertig lesen?`,
+        explicacion: (paginas, paginas_diarias, dias) => `Berechne die Tage: ${paginas} / ${paginas_diarias} = ${dias} Tage. Dann zähle ab Montag: Tag ${dias} ist ein Mittwoch (der nächsten Woche).`
+    },
+    caracoles_carrera: {
+        texto: (velocidad, distancia, descanso) => `Wenn eine Schnecke ${velocidad} Meter in einer Stunde zurücklegt, wie lange braucht sie, um ${distancia} Meter zu gehen, wenn sie auf halbem Weg eine halbe Stunde Rast macht?`,
+        explicacion: (velocidad, distancia, descanso, tiempoTotal) => `Die Grundberechnung ist ${distancia} / ${velocidad} = ${distancia / velocidad} Stunden. Aber vergiss nicht die Ruhezeit: ${distancia / velocidad} + ${descanso} = ${tiempoTotal} Stunden (${tiempoTotal * 60} Minuten).`
+    },
+    peso_fruta: {
+        texto: (pinasParaManzanas, pesoDeManzana, numeroDePinas) => `Eine Ananas wiegt genauso viel wie ${pinasParaManzanas} Äpfel. Wenn ein Apfel ${pesoDeManzana} Gramm wiegt, wie viel wiegt ein Korb mit ${numeroDePinas} Ananas, wenn der leere Korb nichts wiegt?`,
+        explicacion: (pinasParaManzanas, pesoDeManzana, numeroDePinas, pesoTotal) => `Es ist ein Substitutionsproblem. Finde zuerst das Gewicht der Ananas: ${pinasParaManzanas} × ${pesoDeManzana} = ${pinasParaManzanas * pesoDeManzana} Gramm. Dann multipliziere mit ${numeroDePinas} Ananas: ${pinasParaManzanas * pesoDeManzana} × ${numeroDePinas} = ${pesoTotal} Gramm.`
+    },
+
     // LEVEL 4
     patas_mesa: {
         texto: (mesas, patas_m, sillas, patas_s, perros, patas_p) =>

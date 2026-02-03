@@ -132,7 +132,26 @@ export const problemsCA = {
         },
         explicacion: (duracion, fin) => `Sumem ${duracion} minuts. Resultat: ${fin}.`
     },
-
+    ascensor_loco: {
+        texto: (inicio, sube1, baja, sube2, respuesta) => `Vius a la planta ${inicio}. Puxes ${sube1} plantes per visitar un amic, llavors baixes ${baja} per anar a la bugaderia i finalment puxes ${sube2} més per anar a la terrassa. ¿A quina planta és la terrassa?`,
+        explicacion: (inicio, sube1, baja, sube2, respuesta) => `¡Exercici de memòria seqüencial! Has de seguir els moviments: planta ${inicio} + ${sube1} - ${baja} + ${sube2} = ${respuesta}. L'error comú és oblidar la planta de partida.`
+    },
+    hermanos_balon: {
+        texto: (hermanas, hermanos, respuesta) => `En una família hi ha ${hermanas} germanes. Cada germana té un germà. ¿Quantes persones formen el grup de germans en total?`,
+        explicacion: (hermanas, hermanos, respuesta) => `¡Atenció a la trampa! El cervell tendeix a sumar ${hermanas} + ${hermanas} = ${hermanas * 2}. Però el germà és el MATEIX per a les tres nenes. Total: ${hermanas} germanes + ${hermanos} germà = ${respuesta} persones.`
+    },
+    libro_aventuras: {
+        texto: (paginas, paginas_diarias) => `Un llibre té ${paginas} pàgines. Si llegeixes ${paginas_diarias} pàgines cada dia, començant un dilluns, ¿quin dia de la setmana acabaràs el llibre?`,
+        explicacion: (paginas, paginas_diarias, dias) => `Calcula els dies: ${paginas} / ${paginas_diarias} = ${dias} dies. Llavors compta des del dilluns: el dia ${dias} és un dimecres (de la setmana següent).`
+    },
+    caracoles_carrera: {
+        texto: (velocidad, distancia, descanso) => `Si un caragol recorre ${velocidad} metres en una hora, ¿quant de temps tardarà a recorre ${distancia} metres si es para a descansar mitja hora a mig camí?`,
+        explicacion: (velocidad, distancia, descanso, tiempoTotal) => `El càlcul base és ${distancia} / ${velocidad} = ${distancia / velocidad} hores. Però no oblidis el temps de descans: ${distancia / velocidad} + ${descanso} = ${tiempoTotal} hores (${tiempoTotal * 60} minuts).`
+    },
+    peso_fruta: {
+        texto: (pinasParaManzanas, pesoDeManzana, numeroDePinas) => `Una pinya pesa el mateix que ${pinasParaManzanas} pomes. Si una poma pesa ${pesoDeManzana} grams, ¿quant pesarà una cesta amb ${numeroDePinas} pinyes si la cesta buida no pesa res?`,
+        explicacion: (pinasParaManzanas, pesoDeManzana, numeroDePinas, pesoTotal) => `És un problema de substitució. Primer troba el pes de la pinya: ${pinasParaManzanas} × ${pesoDeManzana} = ${pinasParaManzanas * pesoDeManzana} grams. Llavors multiplica per ${numeroDePinas} pinyes: ${pinasParaManzanas * pesoDeManzana} × ${numeroDePinas} = ${pesoTotal} grams.`
+    },
     // LEVEL 4
     patas_mesa: {
         texto: (mesas, patas_m, sillas, patas_s, perros, patas_p) =>

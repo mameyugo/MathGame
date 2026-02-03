@@ -132,7 +132,26 @@ export const problemsPT = {
         },
         explicacion: (duracion, fin) => `Adicionamos ${duracion} minutos. Resultado: ${fin}.`
     },
-
+    ascensor_loco: {
+        texto: (inicio, sube1, baja, sube2, respuesta) => `Você mora no andar ${inicio}. Você sobe ${sube1} andares para visitar um amigo, depois desce ${baja} para ir à lavanderia e finalmente sobe mais ${sube2} andares para ir ao terraço. Em qual andar fica o terraço?`,
+        explicacion: (inicio, sube1, baja, sube2, respuesta) => `Exercício de memória sequencial! Você deve seguir os movimentos: andar ${inicio} + ${sube1} - ${baja} + ${sube2} = ${respuesta}. O erro comum é esquecer o andar inicial.`
+    },
+    hermanos_balon: {
+        texto: (hermanas, hermanos, respuesta) => `Em uma família há ${hermanas} irmãs. Cada irmã tem um irmão. Quantas pessoas formam o grupo de irmãos no total?`,
+        explicacion: (hermanas, hermanos, respuesta) => `Cuidado com a armadilha! O cérebro tende a somar ${hermanas} + ${hermanas} = ${hermanas * 2}. Mas o irmão é o MESMO para as três meninas. Total: ${hermanas} irmãs + ${hermanos} irmão = ${respuesta} pessoas.`
+    },
+    libro_aventuras: {
+        texto: (paginas, paginas_diarias) => `Um livro tem ${paginas} páginas. Se você ler ${paginas_diarias} páginas por dia, começando segunda-feira, em que dia da semana terminará o livro?`,
+        explicacion: (paginas, paginas_diarias, dias) => `Calcule os dias: ${paginas} / ${paginas_diarias} = ${dias} dias. Depois conte a partir de segunda-feira: o dia ${dias} é uma quarta-feira (da semana seguinte).`
+    },
+    caracoles_carrera: {
+        texto: (velocidad, distancia, descanso) => `Se um caracol percorre ${velocidad} metros em uma hora, quanto tempo levará para percorrer ${distancia} metros se parar para descansar meia hora no meio do caminho?`,
+        explicacion: (velocidad, distancia, descanso, tiempoTotal) => `O cálculo básico é ${distancia} / ${velocidad} = ${distancia / velocidad} horas. Mas não esqueça o tempo de descanso: ${distancia / velocidad} + ${descanso} = ${tiempoTotal} horas (${tiempoTotal * 60} minutos).`
+    },
+    peso_fruta: {
+        texto: (pinasParaManzanas, pesoDeManzana, numeroDePinas) => `Um abacaxi pesa o mesmo que ${pinasParaManzanas} maçãs. Se uma maçã pesa ${pesoDeManzana} gramas, quanto pesará um cesto com ${numeroDePinas} abacaxis se o cesto vazio não pesa nada?`,
+        explicacion: (pinasParaManzanas, pesoDeManzana, numeroDePinas, pesoTotal) => `É um problema de substituição. Primeiro encontre o peso do abacaxi: ${pinasParaManzanas} × ${pesoDeManzana} = ${pinasParaManzanas * pesoDeManzana} gramas. Depois multiplique por ${numeroDePinas} abacaxis: ${pinasParaManzanas * pesoDeManzana} × ${numeroDePinas} = ${pesoTotal} gramas.`
+    },
     // LEVEL 4
     patas_mesa: {
         texto: (mesas, patas_m, sillas, patas_s, perros, patas_p) =>

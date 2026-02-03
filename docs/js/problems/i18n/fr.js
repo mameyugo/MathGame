@@ -132,7 +132,26 @@ export const problemsFR = {
         },
         explicacion: (duracion, fin) => `Nous ajoutons ${duracion} minutes. Résultat: ${fin}.`
     },
-
+    ascensor_loco: {
+        texto: (inicio, sube1, baja, sube2, respuesta) => `Tu habites au ${inicio}ème étage. Tu montes ${sube1} étages pour visiter un ami, puis tu descends ${baja} pour aller à la buanderie et enfin tu montes ${sube2} étages pour aller à la terrasse. À quel étage se trouve la terrasse?`,
+        explicacion: (inicio, sube1, baja, sube2, respuesta) => `Exercice de mémoire séquentielle! Tu dois suivre les mouvements: étage ${inicio} + ${sube1} - ${baja} + ${sube2} = ${respuesta}. L'erreur courante est d'oublier l'étage de départ.`
+    },
+    hermanos_balon: {
+        texto: (hermanas, hermanos, respuesta) => `Dans une famille il y a ${hermanas} sœurs. Chaque sœur a un frère. Combien de personnes forment le groupe de frères et sœurs au total?`,
+        explicacion: (hermanas, hermanos, respuesta) => `Attention au piège! Le cerveau a tendance à ajouter ${hermanas} + ${hermanas} = ${hermanas * 2}. Mais le frère est le MÊME pour les trois filles. Total: ${hermanas} sœurs + ${hermanos} frère = ${respuesta} personnes.`
+    },
+    libro_aventuras: {
+        texto: (paginas, paginas_diarias) => `Un livre a ${paginas} pages. Si tu lis ${paginas_diarias} pages par jour, en commençant un lundi, quel jour de la semaine termineras-tu le livre?`,
+        explicacion: (paginas, paginas_diarias, dias) => `Calcule les jours: ${paginas} / ${paginas_diarias} = ${dias} jours. Ensuite compte à partir de lundi: le jour ${dias} est un mercredi (de la semaine suivante).`
+    },
+    caracoles_carrera: {
+        texto: (velocidad, distancia, descanso) => `Si un escargot parcourt ${velocidad} mètres en une heure, combien de temps lui faudra-t-il pour parcourir ${distancia} mètres s'il s'arrête pour se reposer une demi-heure à mi-chemin?`,
+        explicacion: (velocidad, distancia, descanso, tiempoTotal) => `Le calcul de base est ${distancia} / ${velocidad} = ${distancia / velocidad} heures. Mais n'oublie pas le temps de repos: ${distancia / velocidad} + ${descanso} = ${tiempoTotal} heures (${tiempoTotal * 60} minutes).`
+    },
+    peso_fruta: {
+        texto: (pinasParaManzanas, pesoDeManzana, numeroDePinas) => `Un ananas pèse autant que ${pinasParaManzanas} pommes. Si une pomme pèse ${pesoDeManzana} grammes, combien pèsera un panier avec ${numeroDePinas} ananas si le panier vide ne pèse rien?`,
+        explicacion: (pinasParaManzanas, pesoDeManzana, numeroDePinas, pesoTotal) => `C'est un problème de substitution. D'abord, trouve le poids de l'ananas: ${pinasParaManzanas} × ${pesoDeManzana} = ${pinasParaManzanas * pesoDeManzana} grammes. Ensuite multiplie par ${numeroDePinas} ananas: ${pinasParaManzanas * pesoDeManzana} × ${numeroDePinas} = ${pesoTotal} grammes.`
+    },
     // LEVEL 4
     patas_mesa: {
         texto: (mesas, patas_m, sillas, patas_s, perros, patas_p) =>

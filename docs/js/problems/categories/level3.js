@@ -133,6 +133,122 @@ export const level3Problems = [
                     : [respuesta, `${hora_fin + 1}:00`, `${hora_inicio}:${duracion}`, `${hora_fin}:00`]
             };
         }
+    },
+    {
+        id: "ascensor_loco",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['arquitecto', 'cientifico'],
+        i18n: "ascensor_loco",
+        generar: () => {
+            const inicio = 4;
+            const sube1 = 5;
+            const baja = 2;
+            const sube2 = 3;
+            const respuesta = inicio + sube1 - baja + sube2;
+
+            return {
+                texto: `Vives en el piso ${inicio}. Subes ${sube1} pisos para visitar a un amigo, luego bajas ${baja} para ir a la lavandería y finalmente subes otros ${sube2} para ir a la terraza. ¿En qué piso está la terraza?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Ejercicio de memoria secuencial! Debes seguir los movimientos: piso ${inicio} + ${sube1} - ${baja} + ${sube2} = ${respuesta}. El error común es olvidar el piso de origen.`,
+                ecuacion: `${inicio} + ${sube1} - ${baja} + ${sube2} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, inicio + sube1, inicio + sube1 + sube2, 12]
+            };
+        }
+    },
+    {
+        id: "hermanos_balon",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['arquitecto', 'cientifico'],
+        i18n: "hermanos_balon",
+        generar: () => {
+            const hermanas = 3;
+            const hermanos = 1;
+            const respuesta = hermanas + hermanos;
+
+            return {
+                texto: `En una familia hay ${hermanas} hermanas. Cada hermana tiene un hermano varón. ¿Cuántas personas forman el grupo de hermanos en total?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Atención al truco! El cerebro tiende a sumar ${hermanas} + ${hermanas} = ${hermanas * 2}. Pero el hermano varón es el MISMO para las tres niñas. Total: ${hermanas} hermanas + ${hermanos} hermano = ${respuesta} personas.`,
+                ecuacion: `${hermanas} hermanas + ${hermanos} hermano = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, hermanas * 2, hermanas, hermanas + 2]
+            };
+        }
+    },
+    {
+        id: "libro_aventuras",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['arquitecto', 'cientifico'],
+        i18n: "libro_aventuras",
+        generar: () => {
+            const paginas_totales = 100;
+            const paginas_diarias = 10;
+            const dias = paginas_totales / paginas_diarias;
+            const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+            const diaInicio = 0; // Lunes
+            const diaFin = (diaInicio + dias - 1) % 7;
+            const semana = Math.floor((diaInicio + dias - 1) / 7);
+
+            return {
+                texto: `Un libro tiene ${paginas_totales} páginas. Si lees ${paginas_diarias} páginas cada día, empezando un ${diasSemana[diaInicio]}, ¿qué día de la semana terminarás el libro?`,
+                respuestaCorrecta: diasSemana[diaFin],
+                explicacion: `Calcula los días: ${paginas_totales} / ${paginas_diarias} = ${dias} días. Luego cuenta desde el ${diasSemana[diaInicio]}: el día ${dias} es un ${diasSemana[diaFin]}${semana > 0 ? ` de la semana siguiente` : ''}.`,
+                ecuacion: `${paginas_totales} / ${paginas_diarias} = __`,
+                ecuacionValores: [dias],
+                opciones: [diasSemana[diaFin], diasSemana[(diaFin + 1) % 7], diasSemana[(diaFin - 1 + 7) % 7], diasSemana[(diaFin + 2) % 7]]
+            };
+        }
+    },
+    {
+        id: "caracoles_carrera",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['arquitecto', 'cientifico'],
+        i18n: "caracoles_carrera",
+        generar: () => {
+            const velocidad = 2; // metros por hora
+            const distancia = 10; // metros
+            const descanso = 0.5; // horas
+            const tiempoSinDescanso = distancia / velocidad;
+            const tiempoTotal = tiempoSinDescanso + descanso;
+            const minutos = tiempoTotal * 60;
+
+            return {
+                texto: `Si un caracol recorre ${velocidad} metros en una hora, ¿cuánto tiempo tardará en recorrer ${distancia} metros si se para a descansar media hora a mitad del camino?`,
+                respuestaCorrecta: `${tiempoTotal} horas`,
+                explicacion: `El cálculo base es ${distancia} / ${velocidad} = ${tiempoSinDescanso} horas. Pero no olvides el tiempo de descanso: ${tiempoSinDescanso} + ${descanso} = ${tiempoTotal} horas (${minutos} minutos).`,
+                ecuacion: `(${distancia} / ${velocidad}) + ${descanso} = __`,
+                ecuacionValores: [tiempoTotal, minutos],
+                opciones: [`${tiempoTotal} horas`, `${tiempoSinDescanso} horas`, `${tiempoTotal + 1} horas`, `${tiempoSinDescanso + 1} horas`]
+            };
+        }
+    },
+    {
+        id: "peso_fruta",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['arquitecto', 'cientifico'],
+        i18n: "peso_fruta",
+        generar: () => {
+            const pesoDeManzana = 200; // gramos
+            const pinasParaManzanas = 3;
+            const numeroDePinas = 2;
+            const pesoDePina = pinasParaManzanas * pesoDeManzana;
+            const pesoTotal = pesoDePina * numeroDePinas;
+
+            return {
+                texto: `Una piña pesa lo mismo que ${pinasParaManzanas} manzanas. Si una manzana pesa ${pesoDeManzana} gramos, ¿cuánto pesará una cesta con ${numeroDePinas} piñas si la cesta vacía no pesa nada?`,
+                respuestaCorrecta: pesoTotal,
+                explicacion: `Es un problema de sustitución. Primero halla el peso de la piña: ${pinasParaManzanas} × ${pesoDeManzana} = ${pesoDePina} gramos. Luego multiplica por ${numeroDePinas} piñas: ${pesoDePina} × ${numeroDePinas} = ${pesoTotal} gramos.`,
+                ecuacion: `(${pinasParaManzanas} × ${pesoDeManzana}) × ${numeroDePinas} = __`,
+                ecuacionValores: [pesoTotal],
+                opciones: [pesoTotal, pesoDePina, pesoDeManzana * numeroDePinas, pesoDeManzana * pinasParaManzanas]
+            };
+        }
     }
 ];
 
