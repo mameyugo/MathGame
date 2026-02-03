@@ -50,24 +50,28 @@ css/
 ## 🎯 Ventajas
 
 ### Organización
+
 ✅ Cada módulo tiene una responsabilidad clara  
 ✅ Fácil localizar y modificar estilos específicos  
-✅ Mejor navegación mental del proyecto  
+✅ Mejor navegación mental del proyecto
 
 ### Mantenibilidad
+
 ✅ Menor tamaño de archivo = cargas más rápidas  
 ✅ Facilita colaboración en equipo  
-✅ Reduce conflictos de merge  
+✅ Reduce conflictos de merge
 
 ### Performance
+
 ✅ Mejor caché del navegador (cambios = actualiza solo el módulo)  
 ✅ Posibilidad de cargar lazy (solo si es necesario)  
-✅ Más fácil minificación selectiva  
+✅ Más fácil minificación selectiva
 
 ### Escalabilidad
+
 ✅ Agregar nuevas pantallas: crear nuevo módulo  
 ✅ Agregar nuevos componentes: actualizar módulo relevante  
-✅ Temas (dark mode, etc): crear 11-themes.css  
+✅ Temas (dark mode, etc): crear 11-themes.css
 
 ## 🔄 Orden de Carga
 
@@ -75,30 +79,31 @@ Los archivos se cargan en orden específico en `index.html`:
 
 ```html
 <!-- Variables primero (dependen todas) -->
-<link rel="stylesheet" href="./css/1-variables.css">
+<link rel="stylesheet" href="./css/1-variables.css" />
 
 <!-- Base y estructura -->
-<link rel="stylesheet" href="./css/2-base.css">
+<link rel="stylesheet" href="./css/2-base.css" />
 
 <!-- Componentes (sin dependencias entre sí) -->
-<link rel="stylesheet" href="./css/3-buttons.css">
-<link rel="stylesheet" href="./css/4-users.css">
-<link rel="stylesheet" href="./css/5-game.css">
-<link rel="stylesheet" href="./css/6-problems.css">
-<link rel="stylesheet" href="./css/7-config.css">
-<link rel="stylesheet" href="./css/8-store.css">
-<link rel="stylesheet" href="./css/9-help.css">
+<link rel="stylesheet" href="./css/3-buttons.css" />
+<link rel="stylesheet" href="./css/4-users.css" />
+<link rel="stylesheet" href="./css/5-game.css" />
+<link rel="stylesheet" href="./css/6-problems.css" />
+<link rel="stylesheet" href="./css/7-config.css" />
+<link rel="stylesheet" href="./css/8-store.css" />
+<link rel="stylesheet" href="./css/9-help.css" />
 
 <!-- Responsive (puede sobrescribir media queries) -->
-<link rel="stylesheet" href="./css/10-responsive.css">
+<link rel="stylesheet" href="./css/10-responsive.css" />
 
 <!-- Animaciones (último, puede depender de todo) -->
-<link rel="stylesheet" href="./css/11-animations.css">
+<link rel="stylesheet" href="./css/11-animations.css" />
 ```
 
 ## 📝 Convenciones
 
 ### Numeración con Prefijo
+
 - **1-xx**: Variables y configuración
 - **2-xx**: Base y layout
 - **3-9x**: Componentes específicos
@@ -106,7 +111,9 @@ Los archivos se cargan en orden específico en `index.html`:
 - **11-xx**: Efectos especiales
 
 ### Comentarios de Cabecera
+
 Cada archivo tiene encabezado descriptivo:
+
 ```css
 /**
  * MateAventura - Descripción
@@ -117,12 +124,14 @@ Cada archivo tiene encabezado descriptivo:
 ## 🚀 Futuras Mejoras
 
 ### Posibles Nuevos Módulos
+
 - `12-dark-mode.css` - Tema oscuro
 - `13-accessibility.css` - Mejoras a11y
 - `14-themes.css` - Temas personalizados
 - `15-animations-advanced.css` - Animaciones complejas
 
 ### Alternativas Avanzadas
+
 - **SCSS**: Convertir a SCSS con variables y mixins
 - **PostCSS**: Agregador de prefijos automático
 - **Tailwind CSS**: Sistema de utilidades (si quieres refactorizar más)
@@ -130,11 +139,13 @@ Cada archivo tiene encabezado descriptivo:
 ## ✅ Verificación
 
 ### Antes del Refactor
+
 ```
 styles.css → 1,287 líneas
 ```
 
 ### Después del Refactor
+
 ```
 1-variables.css     → 9 líneas
 2-base.css          → 75 líneas
@@ -152,6 +163,7 @@ Total              → 1,124 líneas
 ```
 
 ### Beneficio
+
 - Reducción de código duplicado/unused
 - Mejor organización sin cambiar funcionalidad
 - Mismo visual y comportamiento
@@ -159,18 +171,20 @@ Total              → 1,124 líneas
 ## 🔧 Mantenimiento
 
 ### Agregar Nuevo Componente
+
 1. Identificar qué módulo es responsable
 2. Agregar estilos al módulo correcto
 3. Si necesita nuevo contexto: crear nuevo módulo
 
 ### Modificar Existente
+
 1. Buscar en el módulo temático (3-11)
 2. Editar solo ese archivo
 3. Los cambios son localizados y claros
 
 ### Debug
+
 1. Abrir DevTools
 2. Identificar estilos conflictivos
 3. Ver en qué módulo CSS están
 4. Editar el módulo específico
-
