@@ -276,13 +276,13 @@ class QuestionGenerator {
             // Get current user language
             const user = this.userManager.getCurrentUser();
             const userLanguage = user?.idioma || 'es';
-            
+
             // Try to get translated text using i18n system
             const translatedText = this.getTranslatedProblemText(
                 this.currentProblem.id || '',
                 userLanguage
             );
-            
+
             // Use translated text if available, otherwise use original
             area.innerText = translatedText || this.currentProblem.texto;
         }
