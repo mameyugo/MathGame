@@ -192,7 +192,8 @@ export const problemsFR = {
     },
     bate_pelota: {
         texto: (total_costo, diferencia) => `Une raquette et une balle coûtent ensemble ${total_costo.toFixed(2)}€. La raquette coûte ${diferencia.toFixed(2)}€ de plus que la balle. Combien coûte la balle?`,
-        explicacion: () => `Équation de différence! La réponse automatique est 0,10€, mais si la balle coûtait 0,10€, la raquette coûterait 1,10€, et le total serait 1,20€. Correctement: Si balle = x, alors raquette = x + 1. x + (x + 1) = 1,10 → 2x = 0,10 → x = 0,05€`    },
+        explicacion: () => `Équation de différence! La réponse automatique est 0,10€, mais si la balle coûtait 0,10€, la raquette coûterait 1,10€, et le total serait 1,20€. Correctement: Si balle = x, alors raquette = x + 1. x + (x + 1) = 1,10 → 2x = 0,10 → x = 0,05€`
+    },
     vuelo_pajaro: {
         texto: (distancia, velocidad_t, velocidad_p, tiempo) => `Deux trains sont sur des voies opposées à ${distancia} km de distance et se rapprochent l'un de l'autre à ${velocidad_t} km/h chacun. Un oiseau quitte le Train A à ${velocidad_p} km/h vers le Train B, et quand il l'atteint, il revient au Train A, et ainsi de suite jusqu'à ce que les trains se heurtent. Quelle est la distance totale parcourue par l'oiseau ?`,
         explicacion: (velocidad_p, tiempo, velocidad_t) => `Le piège du calcul infini ! Beaucoup essaient de calculer chaque trajectoire de l'oiseau (série infinie). L'astuce consiste à calculer le temps : les trains mettront ${tiempo} heure pour se rencontrer (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h de vitesse relative). Si l'oiseau vole à ${velocidad_p} km/h pendant cette heure, il parcourt exactement ${velocidad_p * tiempo} km.`
@@ -211,7 +212,8 @@ export const problemsFR = {
     },
     monos_platanos: {
         texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Si ${monos_ini} singes mettent ${tiempo_ini} minutes à manger ${platanos_ini} bananes, combien de temps faudra-t-il à ${monos_fin} singes pour manger ${platanos_fin} bananes ?`,
-        explicacion: (tiempo_ini) => `Le piège de la règle de trois ! Une proportion directe est tentée. Mais le taux est de 1 singe par banane toutes les ${tiempo_ini} minutes. Si tout le monde commence à manger en même temps, ils terminent en même temps. Le ratio singes:bananes est le même (1:1), donc le temps reste constant : ${tiempo_ini} minutes.`    }
+        explicacion: (tiempo_ini) => `Le piège de la règle de trois ! Une proportion directe est tentée. Mais le taux est de 1 singe par banane toutes les ${tiempo_ini} minutes. Si tout le monde commence à manger en même temps, ils terminent en même temps. Le ratio singes:bananes est le même (1:1), donc le temps reste constant : ${tiempo_ini} minutes.`
+    }
 };
 
 export default problemsFR;

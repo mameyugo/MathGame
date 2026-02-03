@@ -192,7 +192,8 @@ export const problemsPT = {
     },
     bate_pelota: {
         texto: (total_costo, diferencia) => `Um taco e uma bola custam juntos ${total_costo.toFixed(2)}€. O taco custa ${diferencia.toFixed(2)}€ a mais que a bola. Quanto custa a bola?`,
-        explicacion: () => `Equação de diferença! A resposta automática é 0,10€, mas se a bola custasse 0,10€, o taco custaria 1,10€, e o total seria 1,20€. Corretamente: Se bola = x, então taco = x + 1. x + (x + 1) = 1,10 → 2x = 0,10 → x = 0,05€`    },
+        explicacion: () => `Equação de diferença! A resposta automática é 0,10€, mas se a bola custasse 0,10€, o taco custaria 1,10€, e o total seria 1,20€. Corretamente: Se bola = x, então taco = x + 1. x + (x + 1) = 1,10 → 2x = 0,10 → x = 0,05€`
+    },
     vuelo_pajaro: {
         texto: (distancia, velocidad_t, velocidad_p, tiempo) => `Dois trens estão em trilhos opostos a ${distancia} km de distância e se aproximam um do outro a ${velocidad_t} km/h cada um. Um pássaro sai do Trem A a ${velocidad_p} km/h em direção ao Trem B, e quando o atinge, volta ao Trem A, e assim sucessivamente até que os trens colidem. Qual é a distância total percorrida pelo pássaro?`,
         explicacion: (velocidad_p, tiempo, velocidad_t) => `A armadilha do cálculo infinito! Muitos tentam calcular cada trajetória do pássaro (série infinita). O truque é calcular o tempo: os trens levarão ${tiempo} hora para se encontrar (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h de velocidade relativa). Se o pássaro voa a ${velocidad_p} km/h durante essa hora, percorre exatamente ${velocidad_p * tiempo} km.`
@@ -211,7 +212,8 @@ export const problemsPT = {
     },
     monos_platanos: {
         texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Se ${monos_ini} macacos levam ${tiempo_ini} minutos para comer ${platanos_ini} bananas, quanto tempo levarão ${monos_fin} macacos para comer ${platanos_fin} bananas?`,
-        explicacion: (tiempo_ini) => `A armadilha da regra de três! Tenta-se aplicar uma proporção direta. Mas a taxa é de 1 macaco por banana a cada ${tiempo_ini} minutos. Se todos começam a comer ao mesmo tempo, terminam ao mesmo tempo. A razão macacos:bananas é a mesma (1:1), então o tempo permanece constante: ${tiempo_ini} minutos.`    }
+        explicacion: (tiempo_ini) => `A armadilha da regra de três! Tenta-se aplicar uma proporção direta. Mas a taxa é de 1 macaco por banana a cada ${tiempo_ini} minutos. Se todos começam a comer ao mesmo tempo, terminam ao mesmo tempo. A razão macacos:bananas é a mesma (1:1), então o tempo permanece constante: ${tiempo_ini} minutos.`
+    }
 };
 
 export default problemsPT;

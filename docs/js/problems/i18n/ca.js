@@ -192,7 +192,8 @@ export const problemsCA = {
     },
     bate_pelota: {
         texto: (total_costo, diferencia) => `Una raqueta i una pilota costen juntes ${total_costo.toFixed(2)}€. La raqueta costa ${diferencia.toFixed(2)}€ més que la pilota. Quant costa la pilota?`,
-        explicacion: () => `Equació de diferència! La resposta automàtica és 0.10€, però si la pilota costés 0.10€, la raqueta costaria 1.10€, i el total seria 1.20€. Correctament: Si pilota = x, aleshores raqueta = x + 1. x + (x + 1) = 1.10 → 2x = 0.10 → x = 0.05€`    },
+        explicacion: () => `Equació de diferència! La resposta automàtica és 0.10€, però si la pilota costés 0.10€, la raqueta costaria 1.10€, i el total seria 1.20€. Correctament: Si pilota = x, aleshores raqueta = x + 1. x + (x + 1) = 1.10 → 2x = 0.10 → x = 0.05€`
+    },
     vuelo_pajaro: {
         texto: (distancia, velocidad_t, velocidad_p, tiempo) => `Dos trens estan en vies oposades a ${distancia} km de distància i s'acosten l'un a l'altre a ${velocidad_t} km/h cadascun. Un ocell surt del Tren A a ${velocidad_p} km/h cap al Tren B, i quan l'assoleix, torna al Tren A, i així successivament fins que els trens xoquen. Quina és la distància total recorreguda per l'ocell?`,
         explicacion: (velocidad_p, tiempo, velocidad_t) => `¡La trampa del càlcul infinit! Molts intenten calcular cada trajectòria de l'ocell (sèrie infinita). El truc és calcular el temps: els trens tardaran ${tiempo} hora a trobar-se (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h de velocitat relativa). Si l'ocell vola a ${velocidad_p} km/h durant aquesta hora, recorre exactament ${velocidad_p * tiempo} km.`
@@ -211,7 +212,8 @@ export const problemsCA = {
     },
     monos_platanos: {
         texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Si ${monos_ini} micos triguen ${tiempo_ini} minuts en menjar-se ${platanos_ini} plàtans, quant temps tardaran ${monos_fin} micos en menjar-se ${platanos_fin} plàtans?`,
-        explicacion: (tiempo_ini) => `¡La trampa de la regla de tres! S'intenta aplicar una proporció directa. Però el ritme és d'1 mica per plàtan cada ${tiempo_ini} minuts. Si tots comencen a menjar al mateix temps, terminen al mateix temps. La relació micos:plàtans és la mateixa (1:1), així que el temps es manté constant: ${tiempo_ini} minuts.`    }
+        explicacion: (tiempo_ini) => `¡La trampa de la regla de tres! S'intenta aplicar una proporció directa. Però el ritme és d'1 mica per plàtan cada ${tiempo_ini} minuts. Si tots comencen a menjar al mateix temps, terminen al mateix temps. La relació micos:plàtans és la mateixa (1:1), així que el temps es manté constant: ${tiempo_ini} minuts.`
+    }
 };
 
 export default problemsCA;

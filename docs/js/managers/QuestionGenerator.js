@@ -215,7 +215,14 @@ class QuestionGenerator {
         }
 
         const pick = pool[Math.floor(Math.random() * pool.length)];
-        return pick?.generar ? pick.generar() : null;
+        const generated = pick?.generar ? pick.generar() : null;
+        
+        // Add the problem ID to the generated problem so it can be tracked
+        if (generated && pick.id) {
+            generated.id = pick.id;
+        }
+        
+        return generated;
     }
 
     /**

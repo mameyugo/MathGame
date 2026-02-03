@@ -192,7 +192,8 @@ export const problemsDE = {
     },
     bate_pelota: {
         texto: (total_costo, diferencia) => `Ein Schläger und ein Ball kosten zusammen ${total_costo.toFixed(2)}€. Der Schläger kostet ${diferencia.toFixed(2)}€ mehr als der Ball. Wie viel kostet der Ball?`,
-        explicacion: () => `Differenzgleichung! Die automatische Antwort ist 0,10€, aber wenn der Ball 0,10€ kostet, würde der Schläger 1,10€ kosten und das Gesamte 1,20€. Korrekt: Wenn Ball = x, dann Schläger = x + 1. x + (x + 1) = 1,10 → 2x = 0,10 → x = 0,05€`    },
+        explicacion: () => `Differenzgleichung! Die automatische Antwort ist 0,10€, aber wenn der Ball 0,10€ kostet, würde der Schläger 1,10€ kosten und das Gesamte 1,20€. Korrekt: Wenn Ball = x, dann Schläger = x + 1. x + (x + 1) = 1,10 → 2x = 0,10 → x = 0,05€`
+    },
     vuelo_pajaro: {
         texto: (distancia, velocidad_t, velocidad_p, tiempo) => `Zwei Züge fahren auf gegenüberliegenden Gleisen ${distancia} km voneinander entfernt und nähern sich gegenseitig mit je ${velocidad_t} km/h. Ein Vogel fliegt von Zug A mit ${velocidad_p} km/h zu Zug B, und wenn er ihn erreicht, fliegt er zurück zu Zug A, und so weiter, bis die Züge kollidieren. Wie weit ist die Gesamtstrecke, die der Vogel fliegt?`,
         explicacion: (velocidad_p, tiempo, velocidad_t) => `Die Falle der unendlichen Berechnung! Viele versuchen, jede Vogelflugbahn zu berechnen (unendliche Reihe). Der Trick ist, die Zeit zu berechnen: Die Züge brauchen ${tiempo} Stunde bis zur Kollision (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h relative Geschwindigkeit). Wenn der Vogel ${velocidad_p} km/h für diese Stunde fliegt, legt er genau ${velocidad_p * tiempo} km zurück.`
@@ -211,7 +212,8 @@ export const problemsDE = {
     },
     monos_platanos: {
         texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Wenn ${monos_ini} Affen ${tiempo_ini} Minuten brauchen, um ${platanos_ini} Bananen zu essen, wie lange brauchen ${monos_fin} Affen, um ${platanos_fin} Bananen zu essen?`,
-        explicacion: (tiempo_ini) => `Die Dreisatzfalle! Es wird versucht, einen direkten Anteil anzuwenden. Aber die Rate beträgt 1 Affe pro Banane alle ${tiempo_ini} Minuten. Wenn alle gleichzeitig anfangen zu essen, enden sie zur gleichen Zeit. Das Verhältnis Affen:Bananen ist gleich (1:1), also bleibt die Zeit konstant: ${tiempo_ini} Minuten.`    }
+        explicacion: (tiempo_ini) => `Die Dreisatzfalle! Es wird versucht, einen direkten Anteil anzuwenden. Aber die Rate beträgt 1 Affe pro Banane alle ${tiempo_ini} Minuten. Wenn alle gleichzeitig anfangen zu essen, enden sie zur gleichen Zeit. Das Verhältnis Affen:Bananen ist gleich (1:1), also bleibt die Zeit konstant: ${tiempo_ini} Minuten.`
+    }
 };
 
 export default problemsDE;
