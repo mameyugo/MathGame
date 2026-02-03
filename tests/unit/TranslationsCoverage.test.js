@@ -56,4 +56,56 @@ describe('Translations coverage', () => {
             expect({ lang, empty }).toEqual({ lang, empty: [] });
         });
     });
+
+    test('no duplicate keys in translation files', () => {
+        const keyRegex = /"([^"\\]+)"\s*:/g;
+
+        languages.forEach((lang) => {
+            const filePath = path.join(langDir, `${lang}.json`);
+            const raw = fs.readFileSync(filePath, 'utf8');
+            const keys = [];
+            let match;
+
+            while ((match = keyRegex.exec(raw)) !== null) {
+                keys.push(match[1]);
+            }
+
+            const duplicates = keys.filter((k, idx) => keys.indexOf(k) !== idx);
+            expect({ lang, duplicates }).toEqual({ lang, duplicates: [] });
+        });
+    });
+
+    test('placeholders are consistent across languages', () => {
+        const placeholderRegex = /(\{[^}]+\}|%[a-zA-Z])/g;
+        const baseData = loadLang(baseLang);
+        const baseKeys = collectKeys(baseData);
+
+        const getValue = (obj, dottedKey) => {
+            return dottedKey.split('.').reduce((acc, part) => acc && acc[part], obj);
+        };
+
+        const extractPlaceholders = (value) => {
+            if (typeof value !== 'string') return [];
+            const matches = value.match(placeholderRegex) || [];
+            return matches.sort();
+        };
+
+        languages.forEach((lang) => {
+            const data = loadLang(lang);
+
+            const mismatches = baseKeys.reduce((acc, key) => {
+                const baseVal = getValue(baseData, key);
+                const langVal = getValue(data, key);
+                const basePh = extractPlaceholders(baseVal);
+                const langPh = extractPlaceholders(langVal);
+
+                if (basePh.join('|') !== langPh.join('|')) {
+                    acc.push({ key, base: basePh, lang: langPh });
+                }
+                return acc;
+            }, []);
+
+            expect({ lang, mismatches }).toEqual({ lang, mismatches: [] });
+        });
+    });
 });
