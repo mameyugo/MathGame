@@ -295,8 +295,17 @@ class GameEngine {
                 user.achievementStats = user.achievementStats || {};
                 // Reset streak on wrong answer
                 user.achievementStats.streak = 0;
+                
+                // Check achievements after resetting streak (some achievements may depend on losing streak)
+                const newAchievements = this.achievementManager.checkAchievements(user);
+                if (newAchievements && newAchievements.length > 0) {
+                    newAchievements.forEach(achievement => {
+                        this.achievementManager.showAchievementNotification(achievement);
+                    });
+                    this.userManager.saveToStorage();
+                }
             }
-            
+
             // Check for shield
             if (user) {
                 this.userManager.initInventory(user);

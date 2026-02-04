@@ -505,7 +505,7 @@ function buyItem(itemId) {
             user.achievementStats.itemsBought = (user.achievementStats.itemsBought || 0) + 1;
             user.achievementStats.totalCoinsSpent = (user.achievementStats.totalCoinsSpent || 0) + 1;
             user.achievementStats.coins = user.totalCoins;
-            
+
             const newAchievements = achievementManager.checkAchievements(user);
             if (newAchievements && newAchievements.length > 0) {
                 newAchievements.forEach(achievement => {
