@@ -156,17 +156,17 @@ class StoreManager {
      */
     buyItem(itemId) {
         const item = this.storeItems.find(i => i.id === itemId);
-        if (!item) return;
+        if (!item) return false;
 
         const user = this.userManager.getCurrentUser();
-        if (!user) return;
+        if (!user) return false;
 
         this.userManager.initInventory(user);
 
         // Verificar si tiene suficientes monedas
         if (user.totalCoins < item.price) {
             alert(this.translationManager.t('alert_not_enough_coins'));
-            return;
+            return false;
         }
 
         // Descontar monedas
@@ -212,6 +212,7 @@ class StoreManager {
         // Re-renderizar tienda
         this.renderStore();
         this.userManager.renderUserList();
+        return true;
     }
 
     /**

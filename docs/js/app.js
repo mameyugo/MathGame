@@ -276,6 +276,7 @@ if (typeof window !== 'undefined') {
 gameEngine = new GameEngine(
     userManager,
     translationManager,
+    achievementManager,
     () => generateQuestion(),
     () => generateProblem(),
     (enabled) => toggleProblemUI(enabled),
@@ -385,6 +386,24 @@ function submitProblem() {
         gameEngine.timeLeft += 10;
         showTimeDelta(10);
 
+        // Track achievement stats for problems
+        const user = userManager.getCurrentUser();
+        if (user && achievementManager) {
+            user.achievementStats = user.achievementStats || {};
+            user.achievementStats.problemsSolved = (user.achievementStats.problemsSolved || 0) + 1;
+            user.achievementStats.coins = gameEngine.gameCoins;
+            user.achievementStats.level = gameEngine.gameLevel;
+
+            // Check for new achievements
+            const newAchievements = achievementManager.checkAchievements(user);
+            if (newAchievements && newAchievements.length > 0) {
+                newAchievements.forEach(achievement => {
+                    achievementManager.showAchievementNotification(achievement);
+                });
+                userManager.saveToStorage();
+            }
+        }
+
         try {
             confetti({ particleCount: 30, spread: 50 });
         } catch (e) {
@@ -478,7 +497,23 @@ function renderStore() {
 }
 
 function buyItem(itemId) {
-    storeManager.buyItem(itemId);
+    const purchased = storeManager.buyItem(itemId);
+    if (purchased) {
+        const user = userManager.getCurrentUser();
+        if (user && achievementManager) {
+            user.achievementStats = user.achievementStats || {};
+            user.achievementStats.itemsBought = (user.achievementStats.itemsBought || 0) + 1;
+            user.achievementStats.totalCoinsSpent = (user.achievementStats.totalCoinsSpent || 0) + 1;
+            user.achievementStats.coins = user.totalCoins;
+            
+            const newAchievements = achievementManager.checkAchievements(user);
+            if (newAchievements && newAchievements.length > 0) {
+                newAchievements.forEach(achievement => {
+                    achievementManager.showAchievementNotification(achievement);
+                });
+            }
+        }
+    }
     users = userManager.getUsers();
 }
 

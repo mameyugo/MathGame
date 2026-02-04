@@ -6,6 +6,7 @@ class GameEngine {
     /**
      * @param {UserManager} userManager - User management instance
      * @param {TranslationManager} translationManager - Translation instance
+     * @param {AchievementManager} achievementManager - Achievement management instance
      * @param {Function} generateQuestionFn - Function to generate math questions
      * @param {Function} generateProblemFn - Function to generate logic problems
      * @param {Function} toggleProblemUIFn - Function to toggle problem UI
@@ -16,6 +17,7 @@ class GameEngine {
     constructor(
         userManager,
         translationManager,
+        achievementManager,
         generateQuestionFn,
         generateProblemFn,
         toggleProblemUIFn,
@@ -25,6 +27,7 @@ class GameEngine {
     ) {
         this.userManager = userManager;
         this.translationManager = translationManager;
+        this.achievementManager = achievementManager;
         this.generateQuestion = generateQuestionFn;
         this.generateProblem = generateProblemFn;
         this.toggleProblemUI = toggleProblemUIFn;
@@ -218,6 +221,26 @@ class GameEngine {
             this.gameCoins += 10;
             this.timeLeft += 2;
 
+            // Track achievement stats
+            const user = this.userManager.getCurrentUser();
+            if (user && this.achievementManager) {
+                // Update streak tracking
+                user.achievementStats = user.achievementStats || {};
+                user.achievementStats.correctAnswers = (user.achievementStats.correctAnswers || 0) + 1;
+                user.achievementStats.streak = (user.achievementStats.streak || 0) + 1;
+                user.achievementStats.coins = this.gameCoins;
+                user.achievementStats.level = this.gameLevel;
+
+                // Check for new achievements
+                const newAchievements = this.achievementManager.checkAchievements(user);
+                if (newAchievements && newAchievements.length > 0) {
+                    newAchievements.forEach(achievement => {
+                        this.achievementManager.showAchievementNotification(achievement);
+                    });
+                    this.userManager.saveToStorage();
+                }
+            }
+
             try {
                 confetti({ particleCount: 30, spread: 50 });
             } catch (e) {
@@ -226,12 +249,22 @@ class GameEngine {
 
             if (this.gameCoins % 50 === 0) {
                 this.gameLevel++;
+                if (user && this.achievementManager) {
+                    user.achievementStats.level = this.gameLevel;
+                }
             }
 
             this.generateQuestion();
         } else {
-            // Wrong answer - check for shield
+            // Wrong answer - reset streak
             const user = this.userManager.getCurrentUser();
+            if (user && this.achievementManager) {
+                user.achievementStats = user.achievementStats || {};
+                // Reset streak on wrong answer
+                user.achievementStats.streak = 0;
+            }
+            
+            // Check for shield
             if (user) {
                 this.userManager.initInventory(user);
 
@@ -301,6 +334,27 @@ class GameEngine {
             if (this.currentDuelIdx < this.duelPlayers.length) {
                 this.startNextDuelTurn();
             } else {
+                // Determine winner and track achievement stats
+                const winner = Object.entries(this.duelScores)
+                    .reduce((prev, current) => (prev[1] > current[1]) ? prev : current)[0];
+
+                // Track duel win for achievements
+                const winnerUser = this.userManager.getUsers()[winner];
+                if (winnerUser && this.achievementManager) {
+                    winnerUser.achievementStats = winnerUser.achievementStats || {};
+                    winnerUser.achievementStats.duelsWon = (winnerUser.achievementStats.duelsWon || 0) + 1;
+                    winnerUser.achievementStats.duelStreakMax = (winnerUser.achievementStats.duelStreakMax || 0) + 1;
+
+                    // Check for new duel-related achievements
+                    const newAchievements = this.achievementManager.checkAchievements(winnerUser);
+                    if (newAchievements && newAchievements.length > 0) {
+                        newAchievements.forEach(achievement => {
+                            this.achievementManager.showAchievementNotification(achievement);
+                        });
+                        this.userManager.saveToStorage();
+                    }
+                }
+
                 // Show final duel results
                 const results = Object.entries(this.duelScores)
                     .map(([p, s]) => `${p}: ${s}`)
@@ -314,6 +368,23 @@ class GameEngine {
             if (user) {
                 user.totalCoins += this.gameCoins;
                 user.level = Math.max(user.level || 1, this.gameLevel);
+
+                // Track achievement stats for single-player
+                if (this.achievementManager) {
+                    user.achievementStats = user.achievementStats || {};
+                    user.achievementStats.coins = user.totalCoins;
+                    user.achievementStats.level = user.level;
+                    user.achievementStats.totalCoinsEarned = (user.achievementStats.totalCoinsEarned || 0) + this.gameCoins;
+
+                    // Check for new achievements
+                    const newAchievements = this.achievementManager.checkAchievements(user);
+                    if (newAchievements && newAchievements.length > 0) {
+                        newAchievements.forEach(achievement => {
+                            this.achievementManager.showAchievementNotification(achievement);
+                        });
+                    }
+                }
+
                 this.userManager.saveToStorage();
             }
 

@@ -19,44 +19,44 @@ beforeAll(() => {
     if (localStorage && localStorage.getItem && localStorage.getItem.mockReturnValue) {
         localStorage.getItem.mockReturnValue(null);
     }
-    
+
     // Ejecutar los scripts en el contexto del window
     // Wrap cada manager para asignarlo explícitamente a window
     window.eval(`
         ${translationManagerCode}
         window.TranslationManager = TranslationManager;
     `);
-    
+
     window.eval(`
         ${achievementManagerCode}
         window.AchievementManager = AchievementManager;
     `);
-    
+
     window.eval(`
         ${userManagerCode}
         window.UserManager = UserManager;
     `);
-    
+
     window.eval(`
         ${storeManagerCode}
         window.StoreManager = StoreManager;
     `);
-    
+
     window.eval(`
         ${gameEngineCode}
         window.GameEngine = GameEngine;
     `);
-    
+
     window.eval(`
         ${questionGeneratorCode}
         window.QuestionGenerator = QuestionGenerator;
     `);
-    
+
     window.eval(`
         ${problemCategoryManagerCode}
         window.ProblemCategoryManager = ProblemCategoryManager;
     `);
-    
+
     window.eval(problemaCode);
     window.eval(appCode);
 });
