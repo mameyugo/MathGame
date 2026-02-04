@@ -192,6 +192,39 @@ class GameEngine {
      * Starts or restarts the game timer
      */
     startTimer() {
+        // Track special times for secret achievements
+        if (this.achievementManager) {
+            const user = this.userManager.getCurrentUser();
+            if (user) {
+                const now = new Date();
+                const hour = now.getHours();
+                const minute = now.getMinutes();
+                const day = now.getDay(); // 0 = Sunday, 1 = Monday
+
+                // Track midnight plays (00:00-00:59)
+                if (hour === 0) {
+                    user.achievementStats = user.achievementStats || {};
+                    user.achievementStats.midnightPlays = (user.achievementStats.midnightPlays || 0) + 1;
+                }
+
+                // Track Monday 8 AM plays (08:00-08:59)
+                if (day === 1 && hour === 8) {
+                    user.achievementStats = user.achievementStats || {};
+                    user.achievementStats.mondayMorningPlays = (user.achievementStats.mondayMorningPlays || 0) + 1;
+                }
+
+                // Check for secret achievements
+                const newAchievements = this.achievementManager.checkAchievements(user);
+                if (newAchievements && newAchievements.length > 0) {
+                    newAchievements.forEach(achievement => {
+                        if (achievement.secret) {
+                            this.achievementManager.showAchievementNotification(achievement);
+                        }
+                    });
+                }
+            }
+        }
+
         // Don't start if time has run out
         if (this.timeLeft <= 0) {
             this.endGameSession();

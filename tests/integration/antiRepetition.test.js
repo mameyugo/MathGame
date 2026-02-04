@@ -53,10 +53,18 @@ describe('Anti-Repetition System Integration', () => {
             filterProblemsByCategories: jest.fn((problems) => problems)
         };
 
+        // Mock AchievementManager
+        const mockAchievementManager = {
+            checkAchievements: jest.fn(() => []),
+            showAchievementNotification: jest.fn(),
+            updateStats: jest.fn()
+        };
+
         // Initialize GameEngine
         gameEngine = new GameEngine(
             mockUserManager,
             mockTranslationManager,
+            mockAchievementManager,
             jest.fn(),
             jest.fn(),
             jest.fn(),
