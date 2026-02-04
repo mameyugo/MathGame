@@ -397,8 +397,8 @@ class AchievementManager {
                 ...achievement,
                 unlocked,
                 unlockedAt: userAchievement ? userAchievement.unlockedAt : null,
-                name: this.translationManager.translate(`achievements.${achievement.i18nKey}.name`),
-                description: this.translationManager.translate(`achievements.${achievement.i18nKey}.description`)
+                name: this.translationManager.translate(`achievements_${achievement.i18nKey}_name`),
+                description: this.translationManager.translate(`achievements_${achievement.i18nKey}_description`)
             };
         }).filter(a => a !== null);
     }
