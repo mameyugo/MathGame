@@ -244,31 +244,31 @@ class AchievementManager {
                 totalAnswered: 0,
                 level: 1,
                 themes: [],
-                
+
                 // Lógica
                 logicStreakMax: 0,
                 advancedProblemsCompleted: 0,
                 fastestLogicTime: 0,
                 equationsCompleted: 0,
-                
+
                 // Maestría
                 streakMax: 0,
                 shieldUsedInStreak: 0,
                 fastestHardTime: 0,
                 perfectSessions: 0,
-                
+
                 // Economía
                 coins: 0,
                 totalCoinsEarned: 0,
                 itemsBought: 0,
                 potions: 0,
                 shields: 0,
-                
+
                 // Social
                 duelsWon: 0,
                 duelStreakMax: 0,
                 multiplayerConnections: 0,
-                
+
                 // Secretos
                 mondayMorningPlays: 0,
                 midnightPlays: 0,
@@ -354,7 +354,7 @@ class AchievementManager {
 
         Object.values(this.achievements).forEach(achievement => {
             const userAchievement = user.achievements[achievement.id];
-            
+
             // Si ya está desbloqueado, saltar
             if (userAchievement && userAchievement.unlocked) {
                 return;
@@ -503,7 +503,7 @@ class AchievementManager {
 
             oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
             oscillator.type = 'sine';
-            
+
             gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
 
@@ -518,7 +518,7 @@ class AchievementManager {
 
             oscillator2.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
             oscillator2.type = 'sine';
-            
+
             gainNode2.gain.setValueAtTime(0.3, audioContext.currentTime + 0.1);
             gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
 
@@ -582,5 +582,3 @@ class AchievementManager {
         }
     }
 }
-
-export default AchievementManager;

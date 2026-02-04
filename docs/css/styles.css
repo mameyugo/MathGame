@@ -1318,7 +1318,8 @@ button.main-btn:active {
 }
 
 @keyframes pulse-icon {
-    0%, 100% {
+    0%,
+    100% {
         transform: scale(1);
     }
     50% {
@@ -1490,13 +1491,12 @@ button.main-btn:active {
         width: calc(100% - 40px);
         right: -100%;
     }
-    
+
     .achievement-notification.show {
         right: 20px;
     }
-    
+
     .achievements-grid {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
 }
-

@@ -695,7 +695,7 @@ function renderAchievements() {
 
         categories[categoryKey].forEach(achievement => {
             const unlockedClass = achievement.unlocked ? 'unlocked' : 'locked';
-            const dateText = achievement.unlocked && achievement.unlockedAt 
+            const dateText = achievement.unlocked && achievement.unlockedAt
                 ? `<div class="achievement-card-date">Desbloqueado: ${new Date(achievement.unlockedAt).toLocaleDateString()}</div>`
                 : '';
 
@@ -736,7 +736,7 @@ function checkAndNotifyAchievements() {
     if (!user) return;
 
     const unlockedAchievements = achievementManager.checkAchievements(user);
-    
+
     // Mostrar notificaciones para nuevos logros
     unlockedAchievements.forEach((achievement, index) => {
         setTimeout(() => {
