@@ -46,6 +46,38 @@ class StoreManager {
                 descKey: 'item_theme_jungle_desc',
                 price: 200,
                 type: 'theme'
+            },
+            {
+                id: 'theme_underwater',
+                icon: '🐠',
+                nameKey: 'item_theme_underwater_name',
+                descKey: 'item_theme_underwater_desc',
+                price: 200,
+                type: 'theme'
+            },
+            {
+                id: 'theme_forest',
+                icon: '🌲',
+                nameKey: 'item_theme_forest_name',
+                descKey: 'item_theme_forest_desc',
+                price: 200,
+                type: 'theme'
+            },
+            {
+                id: 'theme_desert',
+                icon: '🏜️',
+                nameKey: 'item_theme_desert_name',
+                descKey: 'item_theme_desert_desc',
+                price: 200,
+                type: 'theme'
+            },
+            {
+                id: 'theme_arctic',
+                icon: '🧊',
+                nameKey: 'item_theme_arctic_name',
+                descKey: 'item_theme_arctic_desc',
+                price: 200,
+                type: 'theme'
             }
         ];
     }

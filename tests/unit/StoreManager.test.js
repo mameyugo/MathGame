@@ -58,7 +58,7 @@ describe('StoreManager', () => {
     describe('Constructor', () => {
         test('should initialize with store items', () => {
             expect(manager.storeItems).toBeDefined();
-            expect(manager.storeItems.length).toBe(5);
+            expect(manager.storeItems.length).toBe(9);
         });
 
         test('should have consumable items', () => {
@@ -69,8 +69,8 @@ describe('StoreManager', () => {
 
         test('should have theme items', () => {
             const themes = manager.storeItems.filter(i => i.type === 'theme');
-            expect(themes.length).toBe(2);
-            expect(themes.map(i => i.id)).toEqual(['theme_space', 'theme_jungle']);
+            expect(themes.length).toBe(6);
+            expect(themes.map(i => i.id)).toEqual(['theme_space', 'theme_jungle', 'theme_underwater', 'theme_forest', 'theme_desert', 'theme_arctic']);
         });
     });
 
@@ -130,7 +130,7 @@ describe('StoreManager', () => {
             manager.renderStore();
 
             expect(mockBalance.innerText).toBe(200);
-            expect(mockContainer.appendChild).toHaveBeenCalledTimes(5);
+            expect(mockContainer.appendChild).toHaveBeenCalledTimes(9);
         });
 
         test('should handle missing elements gracefully', () => {
@@ -448,7 +448,7 @@ describe('StoreManager', () => {
         test('should return store items', () => {
             const items = manager.getStoreItems();
             expect(items).toBe(manager.storeItems);
-            expect(items.length).toBe(5);
+            expect(items.length).toBe(9);
         });
     });
 });

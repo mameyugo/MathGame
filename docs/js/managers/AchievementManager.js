@@ -46,7 +46,7 @@ class AchievementManager {
                 i18nKey: 'collector',
                 icon: '🖼️',
                 condition: (stats) => {
-                    const availableThemes = ['space', 'underwater', 'forest', 'desert', 'arctic'];
+                    const availableThemes = ['theme_space', 'theme_jungle', 'theme_underwater', 'theme_forest', 'theme_desert', 'theme_arctic'];
                     return availableThemes.every(theme => stats.themes.includes(theme));
                 },
                 secret: false
