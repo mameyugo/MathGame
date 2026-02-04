@@ -7,7 +7,8 @@ class GameEngine {
      * @param {UserManager} userManager - User management instance
      * @param {TranslationManager} translationManager - Translation instance
      * @param {AchievementManager} achievementManager - Achievement management instance
-     * @param {Function} generateQuestionFn - Function to generate math questions
+    * @param {DailyChallengeManager} dailyChallengeManager - Daily challenge management instance
+    * @param {Function} generateQuestionFn - Function to generate math questions
      * @param {Function} generateProblemFn - Function to generate logic problems
      * @param {Function} toggleProblemUIFn - Function to toggle problem UI
      * @param {Function} updatePowerUpDisplayFn - Function to update power-up display
@@ -18,6 +19,7 @@ class GameEngine {
         userManager,
         translationManager,
         achievementManager,
+        dailyChallengeManager,
         generateQuestionFn,
         generateProblemFn,
         toggleProblemUIFn,
@@ -28,6 +30,7 @@ class GameEngine {
         this.userManager = userManager;
         this.translationManager = translationManager;
         this.achievementManager = achievementManager;
+        this.dailyChallengeManager = dailyChallengeManager;
         this.generateQuestion = generateQuestionFn;
         this.generateProblem = generateProblemFn;
         this.toggleProblemUI = toggleProblemUIFn;
@@ -395,6 +398,11 @@ class GameEngine {
                         });
                         this.userManager.saveToStorage();
                     }
+                }
+
+                if (winnerUser && this.dailyChallengeManager) {
+                    this.dailyChallengeManager.updateProgress(winnerUser, 'duel_won', 1);
+                    this.userManager.saveToStorage();
                 }
 
                 // Show final duel results

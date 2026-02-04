@@ -651,3 +651,8 @@ class AchievementManager {
     }
 
 }
+
+// Export for testing environments
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AchievementManager;
+}

@@ -60,11 +60,16 @@ describe('Anti-Repetition System Integration', () => {
             updateStats: jest.fn()
         };
 
+        const mockDailyChallengeManager = {
+            updateProgress: jest.fn(() => [])
+        };
+
         // Initialize GameEngine
         gameEngine = new GameEngine(
             mockUserManager,
             mockTranslationManager,
             mockAchievementManager,
+            mockDailyChallengeManager,
             jest.fn(),
             jest.fn(),
             jest.fn(),

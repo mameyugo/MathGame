@@ -224,6 +224,117 @@
     text-align: center;
 }
 
+.daily-challenges {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 16px;
+    margin-bottom: 25px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.daily-challenges-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.daily-challenges-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--dark);
+}
+
+.daily-challenges-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.daily-challenge-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    background: #f9f9f9;
+    border: 1px solid #eee;
+}
+
+.daily-challenge-card.completed {
+    background: #f1fff3;
+    border-color: #c8f0d0;
+}
+
+.daily-challenge-info {
+    flex: 1;
+}
+
+.daily-challenge-name {
+    font-weight: bold;
+    color: var(--dark);
+    margin-bottom: 4px;
+}
+
+.daily-challenge-desc {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.daily-challenge-reward {
+    font-size: 12px;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.daily-challenge-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.daily-challenge-bar {
+    flex: 1;
+    height: 6px;
+    background: #eaeaea;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.daily-challenge-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4caf50 0%, #45a049 100%);
+    border-radius: 6px;
+    transition: width 0.3s ease;
+}
+
+.daily-challenge-percent {
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--primary);
+    min-width: 36px;
+    text-align: right;
+}
+
+.daily-challenge-claim {
+    align-self: center;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.daily-challenge-claim[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .summary-title {
     font-size: 22px;
     font-weight: bold;

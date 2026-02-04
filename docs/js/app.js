@@ -9,6 +9,7 @@ const achievementManager = new AchievementManager(translationManager);
 const userManager = new UserManager(translationManager);
 const storeManager = new StoreManager(userManager, translationManager);
 const problemCategoryManager = new ProblemCategoryManager(translationManager);
+const dailyChallengeManager = new DailyChallengeManager(translationManager);
 
 // Variables globales
 let currentLanguage = translationManager.getCurrentLanguage();
@@ -277,6 +278,7 @@ gameEngine = new GameEngine(
     userManager,
     translationManager,
     achievementManager,
+    dailyChallengeManager,
     () => generateQuestion(),
     () => generateProblem(),
     (enabled) => toggleProblemUI(enabled),
@@ -404,6 +406,9 @@ function submitProblem() {
             }
         }
 
+        updateDailyChallengeProgress('problem_solved', 1);
+        updateDailyChallengeProgress('coins_earned', 30);
+
         try {
             confetti({ particleCount: 30, spread: 50 });
         } catch (e) {
@@ -458,10 +463,16 @@ function submitProblem() {
 function check(val) {
     // Sincronizar currentAnswer con gameEngine
     const prevTime = gameEngine.timeLeft;
+    const isCorrect = val === currentAnswer;
     gameEngine.currentAnswer = currentAnswer;
     gameEngine.check(val);
     const delta = gameEngine.timeLeft - prevTime;
     showTimeDelta(delta);
+
+    if (isCorrect) {
+        updateDailyChallengeProgress('correct_answer', 1);
+        updateDailyChallengeProgress('coins_earned', 10);
+    }
 
     // Sincronizar estado global de vuelta
     gameCoins = gameEngine.gameCoins;
@@ -513,6 +524,8 @@ function buyItem(itemId) {
                 });
             }
         }
+
+        updateDailyChallengeProgress('item_bought', 1);
     }
     users = userManager.getUsers();
 }
@@ -679,6 +692,7 @@ function renderAchievements() {
     const progress = achievementManager.getTotalProgress(user);
     const categoryProgress = achievementManager.getProgressByCategory(user);
     const achievements = achievementManager.getUserAchievements(user, false);
+    const dailyChallenges = dailyChallengeManager.getDailyChallenges(user);
 
     // Resumen general
     let html = `
@@ -697,6 +711,48 @@ function renderAchievements() {
                     <span class="stat-value">${progress.percentage}%</span>
                     <span class="stat-label">Completado</span>
                 </div>
+            </div>
+        </div>
+    `;
+
+    // Desafíos diarios
+    html += `
+        <div class="daily-challenges">
+            <div class="daily-challenges-header">
+                <div class="daily-challenges-title">${t('daily_challenges_title')}</div>
+            </div>
+            <div class="daily-challenges-list">
+    `;
+
+    dailyChallenges.forEach(challenge => {
+        const progressPercent = Math.round((challenge.progress / challenge.target) * 100);
+        const text = dailyChallengeManager.formatChallengeText(challenge);
+        const isClaimable = challenge.completed && !challenge.claimed;
+        const buttonLabel = challenge.claimed
+            ? t('daily_challenge_claimed')
+            : (isClaimable ? t('daily_challenge_claim') : t('daily_challenge_progress'));
+
+        html += `
+            <div class="daily-challenge-card ${challenge.completed ? 'completed' : ''}">
+                <div class="daily-challenge-info">
+                    <div class="daily-challenge-name">${text.name}</div>
+                    <div class="daily-challenge-desc">${text.description}</div>
+                    <div class="daily-challenge-reward">${t('daily_challenge_reward')} +${challenge.reward}</div>
+                    <div class="daily-challenge-progress">
+                        <div class="daily-challenge-bar">
+                            <div class="daily-challenge-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                        <div class="daily-challenge-percent">${progressPercent}%</div>
+                    </div>
+                </div>
+                <button class="daily-challenge-claim" onclick="claimDailyChallenge('${challenge.id}')" ${isClaimable ? '' : 'disabled'}>
+                    ${buttonLabel}
+                </button>
+            </div>
+        `;
+    });
+
+    html += `
             </div>
         </div>
     `;
@@ -820,6 +876,26 @@ function renderAchievements() {
     });
 }
 
+function updateDailyChallengeProgress(type, amount) {
+    const user = userManager.getCurrentUser();
+    if (!user) return;
+
+    dailyChallengeManager.updateProgress(user, type, amount);
+    userManager.saveToStorage();
+}
+
+function claimDailyChallenge(challengeId) {
+    const user = userManager.getCurrentUser();
+    if (!user) return;
+
+    const claimed = dailyChallengeManager.claimReward(user, challengeId);
+    if (claimed) {
+        userManager.saveToStorage();
+        renderAchievements();
+        users = userManager.getUsers();
+    }
+}
+
 /**
  * Verifica y muestra notificaciones de logros desbloqueados
  */
@@ -851,4 +927,5 @@ if (typeof window !== 'undefined') {
     window.__appManagers = window.__appManagers || {};
     window.__appManagers.userManager = userManager;
     window.__appManagers.achievementManager = achievementManager;
+    window.__appManagers.dailyChallengeManager = dailyChallengeManager;
 }

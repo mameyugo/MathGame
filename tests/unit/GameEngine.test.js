@@ -5,6 +5,7 @@ describe('GameEngine', () => {
     let mockUserManager;
     let mockTranslationManager;
     let mockAchievementManager;
+    let mockDailyChallengeManager;
     let mockGenerateQuestion;
     let mockGenerateProblem;
     let mockToggleProblemUI;
@@ -65,6 +66,11 @@ describe('GameEngine', () => {
             updateStats: jest.fn()
         };
 
+        // Mock DailyChallengeManager
+        mockDailyChallengeManager = {
+            updateProgress: jest.fn(() => [])
+        };
+
         // Mock functions
         mockGenerateQuestion = jest.fn();
         mockGenerateProblem = jest.fn();
@@ -84,6 +90,7 @@ describe('GameEngine', () => {
             mockUserManager,
             mockTranslationManager,
             mockAchievementManager,
+            mockDailyChallengeManager,
             mockGenerateQuestion,
             mockGenerateProblem,
             mockToggleProblemUI,

@@ -6,6 +6,7 @@ const translationManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/
 const achievementManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/AchievementManager.js'), 'utf8');
 const userManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/UserManager.js'), 'utf8');
 const storeManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/StoreManager.js'), 'utf8');
+const dailyChallengeManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/DailyChallengeManager.js'), 'utf8');
 const gameEngineCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/GameEngine.js'), 'utf8');
 const questionGeneratorCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/QuestionGenerator.js'), 'utf8');
 const problemCategoryManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/ProblemCategoryManager.js'), 'utf8');
@@ -40,6 +41,11 @@ beforeAll(() => {
     window.eval(`
         ${storeManagerCode}
         window.StoreManager = StoreManager;
+    `);
+
+    window.eval(`
+        ${dailyChallengeManagerCode}
+        window.DailyChallengeManager = DailyChallengeManager;
     `);
 
     window.eval(`
