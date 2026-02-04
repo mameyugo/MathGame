@@ -668,7 +668,7 @@ function openAchievements() {
     achievementManager.initAchievements(user);
 
     const modal = document.getElementById('achievements-modal');
-    modal.style.display = 'flex';
+    modal.classList.add('active');
 
     renderAchievements();
 }
@@ -678,7 +678,7 @@ function openAchievements() {
  */
 function closeAchievements() {
     const modal = document.getElementById('achievements-modal');
-    modal.style.display = 'none';
+    modal.classList.remove('active');
 }
 
 /**
