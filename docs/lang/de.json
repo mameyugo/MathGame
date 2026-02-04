@@ -1,5 +1,5 @@
 {
-    "app_title": "🚀 MatheAbenteuer",
+    "app_title": "🚀 MathQix",
     "intro_create_player": "👋 Erstellen Sie Ihren ersten Spieler:",
     "intro_create_new_player": "➕ Erstellen Sie einen neuen Spieler:",
     "input_player_name": "Spielername...",
@@ -70,9 +70,9 @@
     "alert_potion_used": "Trank verwendet! +15s ⏰",
     "alert_no_freezes": "Keine Zeiteinfrieren mehr!",
     "alert_freeze_used": "Zeit eingefroren! ❄️",
-    "help_title": "📚 Hilfe - MatheAbenteuer",
+    "help_title": "📚 Hilfe - MathQix",
     "help_how_to_play_title": "🎮 Wie spielt man?",
-    "help_how_to_play_desc": "MatheAbenteuer ist ein Lernspiel für Mathematik, bei dem Sie Rechenaufgaben gegen die Zeit lösen müssen. Verdienen Sie Münzen und steigen Sie auf, während Sie lernen!",
+    "help_how_to_play_desc": "MathQix ist ein Lernspiel für Mathematik, bei dem Sie Rechenaufgaben gegen die Zeit lösen müssen. Verdienen Sie Münzen und steigen Sie auf, während Sie lernen!",
     "help_game_types_title": "🎲 Spieltypen",
     "help_visual_mode": "📦 Visueller Modus",
     "help_visual_mode_desc": "In diesem Modus sehen Sie visuelle Darstellungen mit Zehnerblöcken (📦x10) und Einheiten (🍎), um das Zählen zu erleichtern. Ideal für Anfänger.",

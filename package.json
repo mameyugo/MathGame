@@ -1,7 +1,7 @@
 {
     "name": "mathgame",
     "version": "1.0.0",
-    "description": "MateAventura - Juego educativo de matemáticas",
+    "description": "MathQix - Juego educativo de matemáticas",
     "main": "docs/js/app.js",
     "scripts": {
         "test": "jest",

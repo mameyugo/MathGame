@@ -1,5 +1,5 @@
 /**
- * MateAventura - Página de Ayuda
+ * MathQix - Página de Ayuda
  * Sistema de traducciones para la página de ayuda
  */
 

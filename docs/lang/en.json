@@ -1,5 +1,5 @@
 {
-    "app_title": "🚀 MathAdventure",
+    "app_title": "🚀 MathQix",
     "intro_create_player": "👋 Create your first player:",
     "intro_create_new_player": "➕ Create a new player:",
     "input_player_name": "Player name...",
@@ -70,9 +70,9 @@
     "alert_potion_used": "Potion used! +15s ⏰",
     "alert_no_freezes": "No time freezers left!",
     "alert_freeze_used": "Time frozen! ❄️",
-    "help_title": "📚 Help - MathAdventure",
+    "help_title": "📚 Help - MathQix",
     "help_how_to_play_title": "🎮 How to Play?",
-    "help_how_to_play_desc": "MathAdventure is an educational math game where you must solve math operations against time. Earn coins and level up while learning!",
+    "help_how_to_play_desc": "MathQix is an educational math game where you must solve math operations against time. Earn coins and level up while learning!",
     "help_game_types_title": "🎲 Game Types",
     "help_visual_mode": "📦 Visual Mode",
     "help_visual_mode_desc": "In this mode you'll see visual representations with tens blocks (📦x10) and units (🍎) to make counting easier. Ideal for beginner levels.",

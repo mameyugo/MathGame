@@ -1,5 +1,5 @@
 /**
- * MateAventura - Lógica principal de la aplicación
+ * MathQix - Lógica principal de la aplicación
  * Juego educativo de matemáticas multiidioma (ES/GL)
  */
 

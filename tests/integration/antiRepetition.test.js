@@ -211,7 +211,7 @@ describe('Anti-Repetition System Integration', () => {
             expect(html).toContain('🎉');
             expect(html).toContain('¡Enhorabuena!');
             expect(html).toContain('Has completado todos los problemas disponibles');
-            expect(html).toContain('MateAventura es software libre');
+            expect(html).toContain('MathQix es software libre');
             expect(html).toContain('Puedes colaborar');
             expect(html).toContain('github.com/mameyugo/MathGame/issues/new');
             expect(html).toContain('Enviar Nuevo Acertijo');

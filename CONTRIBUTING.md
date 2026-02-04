@@ -1,6 +1,6 @@
-# 🤝 Guía de Contribución - MateAventura
+# 🤝 Guía de Contribución - MathQix
 
-¡Gracias por tu interés en contribuir a MateAventura! Este documento explica cómo puedes ayudar a mejorar el proyecto.
+¡Gracias por tu interés en contribuir a MathQix! Este documento explica cómo puedes ayudar a mejorar el proyecto.
 
 ## Cómo Contribuir
 
@@ -158,4 +158,4 @@ Este proyecto adhiere a un [Código de Conducta](CODE_OF_CONDUCT.md). Al partici
 
 ---
 
-¡Gracias por ayudar a que MateAventura sea mejor! 🎮✨
+¡Gracias por ayudar a que MathQix sea mejor! 🎮✨

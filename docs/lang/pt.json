@@ -1,5 +1,5 @@
 {
-    "app_title": "🚀 MateAventura",
+    "app_title": "🚀 MathQix",
     "intro_create_player": "👋 Crie o seu primeiro jogador:",
     "intro_create_new_player": "➕ Crie um novo jogador:",
     "input_player_name": "Nome do jogador...",
@@ -70,9 +70,9 @@
     "alert_potion_used": "Poção usada! +15s ⏰",
     "alert_no_freezes": "Não tem congeladores de tempo!",
     "alert_freeze_used": "Tempo congelado! ❄️",
-    "help_title": "📚 Ajuda - MateAventura",
+    "help_title": "📚 Ajuda - MathQix",
     "help_how_to_play_title": "🎮 Como Jogar?",
-    "help_how_to_play_desc": "MateAventura é um jogo educativo de matemática onde deve resolver operações matemáticas contra o tempo. Ganhe moedas e suba de nível enquanto aprende!",
+    "help_how_to_play_desc": "MathQix é um jogo educativo de matemática onde deve resolver operações matemáticas contra o tempo. Ganhe moedas e suba de nível enquanto aprende!",
     "help_game_types_title": "🎲 Tipos de Jogo",
     "help_visual_mode": "📦 Modo Visual",
     "help_visual_mode_desc": "Neste modo verá representações visuais com blocos de dezenas (📦x10) e unidades (🍎) para facilitar a contagem. Ideal para níveis iniciais.",
