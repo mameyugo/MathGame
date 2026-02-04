@@ -462,7 +462,7 @@ describe('QuestionGenerator', () => {
             questionGenerator.showCompletionMessage();
 
             const questionArea = document.getElementById('question-area');
-            expect(questionArea.innerHTML).toContain('MateAventura es software libre');
+            expect(questionArea.innerHTML).toContain('MathQix es software libre');
         });
 
         test('should clear equation area', () => {

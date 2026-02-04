@@ -1,6 +1,6 @@
-# 🚀 MateAventura Pro
+# 🚀 MathQix Pro
 
-**MateAventura** es una plataforma educativa de código abierto diseñada para que niños de primaria dominen las matemáticas básicas a través del juego. Utiliza mecánicas de gamificación, niveles adaptativos y representaciones visuales para facilitar el aprendizaje del cálculo mental.
+**MathQix** es una plataforma educativa de código abierto diseñada para que niños de primaria dominen las matemáticas básicas a través del juego. Utiliza mecánicas de gamificación, niveles adaptativos y representaciones visuales para facilitar el aprendizaje del cálculo mental.
 
 🎮 **[¡Juega ahora aquí!](https://mameyugo.github.io/MathGame/)**
 

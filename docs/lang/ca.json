@@ -1,5 +1,5 @@
 {
-    "app_title": "🚀 MateAventura",
+    "app_title": "🚀 MathQix",
     "intro_create_player": "👋 Crea el teu primer jugador:",
     "intro_create_new_player": "➕ Crea un nou jugador:",
     "input_player_name": "Nom del jugador...",
@@ -70,9 +70,9 @@
     "alert_potion_used": "Poció utilitzada! +15s ⏰",
     "alert_no_freezes": "No tens congeladors de temps!",
     "alert_freeze_used": "Temps congelat! ❄️",
-    "help_title": "📚 Ajuda - MateAventura",
+    "help_title": "📚 Ajuda - MathQix",
     "help_how_to_play_title": "🎮 Com es juga?",
-    "help_how_to_play_desc": "MateAventura és un joc educatiu de matemàtiques on has de resoldre operacions matemàtiques contra rellotge. Guanya monedes i puja de nivell mentre aprens!",
+    "help_how_to_play_desc": "MathQix és un joc educatiu de matemàtiques on has de resoldre operacions matemàtiques contra rellotge. Guanya monedes i puja de nivell mentre aprens!",
     "help_game_types_title": "🎲 Tipus de Joc",
     "help_visual_mode": "📦 Mode Visual",
     "help_visual_mode_desc": "En aquest mode veuràs representacions visuals amb blocs de desenes (📦x10) i unitats (🍎) per facilitar el recompte. Ideal per a nivells inicials.",

@@ -1,4 +1,4 @@
-# Estructura Flexible de Problemas - MateAventura
+# Estructura Flexible de Problemas - MathQix
 
 ## Problema Actual
 

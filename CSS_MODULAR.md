@@ -1,4 +1,4 @@
-# 🎨 Estructura Modular CSS - MateAventura
+# 🎨 Estructura Modular CSS - MathQix
 
 ## Descripción
 
@@ -116,7 +116,7 @@ Cada archivo tiene encabezado descriptivo:
 
 ```css
 /**
- * MateAventura - Descripción
+ * MathQix - Descripción
  * Qué contiene este módulo
  */
 ```

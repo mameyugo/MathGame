@@ -67,7 +67,7 @@ beforeAll(() => {
     window.eval(appCode);
 });
 
-describe('MateAventura - Tests Unitarios', () => {
+describe('MathQix - Tests Unitarios', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         localStorage.getItem.mockReturnValue(null);

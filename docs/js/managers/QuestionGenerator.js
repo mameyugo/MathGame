@@ -473,7 +473,7 @@ class QuestionGenerator {
                     <p style="font-size: 1.3rem; margin-bottom: 15px;">Has completado todos los problemas disponibles</p>
                     <p style="font-size: 1rem; color: #666; margin-bottom: 25px;">
                         ¿Tienes más acertijos o problemas de lógica?<br>
-                        <strong>MateAventura es software libre</strong>
+                        <strong>MathQix es software libre</strong>
                     </p>
                     <div style="background: #f0f8ff; padding: 15px; border-radius: 12px; border: 2px solid #3498db; margin: 20px 0;">
                         <p style="font-size: 0.95rem; margin-bottom: 10px;">
