@@ -39,6 +39,55 @@ body::before {
     backdrop-filter: blur(5px);
 }
 
+/* Footer */
+.app-footer {
+    max-width: 550px;
+    margin: 20px auto 30px;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.footer-content {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 15px 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid #fff;
+}
+
+.footer-text {
+    margin: 0 0 10px;
+    color: var(--dark);
+    font-size: 14px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.footer-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
 .screen {
     display: none;
     padding-top: 30px;
