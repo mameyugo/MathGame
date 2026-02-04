@@ -5,6 +5,7 @@
 
 // Importar managers (se deben cargar antes en el HTML)
 const translationManager = new TranslationManager();
+const achievementManager = new AchievementManager(translationManager);
 const userManager = new UserManager(translationManager);
 const storeManager = new StoreManager(userManager, translationManager);
 const problemCategoryManager = new ProblemCategoryManager(translationManager);
@@ -607,6 +608,147 @@ window.addEventListener('beforeunload', function () {
     localStorage.setItem('math_users', JSON.stringify(users));
     localStorage.setItem('math_lang', currentLanguage);
 });
+
+/**
+ * Abre el modal de logros
+ */
+function openAchievements() {
+    const user = userManager.getCurrentUser();
+    if (!user) return;
+
+    // Inicializar logros si no existen
+    achievementManager.initAchievements(user);
+
+    const modal = document.getElementById('achievements-modal');
+    modal.style.display = 'flex';
+
+    renderAchievements();
+}
+
+/**
+ * Cierra el modal de logros
+ */
+function closeAchievements() {
+    const modal = document.getElementById('achievements-modal');
+    modal.style.display = 'none';
+}
+
+/**
+ * Renderiza los logros del usuario
+ */
+function renderAchievements() {
+    const user = userManager.getCurrentUser();
+    if (!user) return;
+
+    const content = document.getElementById('achievements-content');
+    const progress = achievementManager.getTotalProgress(user);
+    const categoryProgress = achievementManager.getProgressByCategory(user);
+    const achievements = achievementManager.getUserAchievements(user, false);
+
+    // Resumen general
+    let html = `
+        <div class="achievements-summary">
+            <div class="summary-title">Progreso Total</div>
+            <div class="summary-stats">
+                <div class="summary-stat">
+                    <span class="stat-value">${progress.unlocked}</span>
+                    <span class="stat-label">Desbloqueados</span>
+                </div>
+                <div class="summary-stat">
+                    <span class="stat-value">${progress.total}</span>
+                    <span class="stat-label">Total</span>
+                </div>
+                <div class="summary-stat">
+                    <span class="stat-value">${progress.percentage}%</span>
+                    <span class="stat-label">Completado</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Agrupar logros por categoría
+    const categories = {
+        progress: [],
+        logic: [],
+        mastery: [],
+        economy: [],
+        social: [],
+        secret: []
+    };
+
+    achievements.forEach(achievement => {
+        categories[achievement.category].push(achievement);
+    });
+
+    // Renderizar cada categoría
+    Object.entries(categoryProgress).forEach(([categoryKey, categoryData]) => {
+        if (categories[categoryKey].length === 0) return;
+
+        html += `
+            <div class="achievement-category">
+                <div class="category-header">
+                    <div class="category-title">${categoryData.name}</div>
+                    <div class="category-progress">${categoryData.unlocked}/${categoryData.total}</div>
+                </div>
+                <div class="achievements-grid">
+        `;
+
+        categories[categoryKey].forEach(achievement => {
+            const unlockedClass = achievement.unlocked ? 'unlocked' : 'locked';
+            const dateText = achievement.unlocked && achievement.unlockedAt 
+                ? `<div class="achievement-card-date">Desbloqueado: ${new Date(achievement.unlockedAt).toLocaleDateString()}</div>`
+                : '';
+
+            if (achievement.secret && !achievement.unlocked) {
+                html += `
+                    <div class="achievement-card locked">
+                        <div class="achievement-secret">❓</div>
+                        <div class="achievement-card-name">Logro Secreto</div>
+                        <div class="achievement-card-description">???</div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="achievement-card ${unlockedClass}">
+                        <div class="achievement-card-icon">${achievement.icon}</div>
+                        <div class="achievement-card-name">${achievement.name}</div>
+                        <div class="achievement-card-description">${achievement.description}</div>
+                        ${dateText}
+                    </div>
+                `;
+            }
+        });
+
+        html += `
+                </div>
+            </div>
+        `;
+    });
+
+    content.innerHTML = html;
+}
+
+/**
+ * Verifica y muestra notificaciones de logros desbloqueados
+ */
+function checkAndNotifyAchievements() {
+    const user = userManager.getCurrentUser();
+    if (!user) return;
+
+    const unlockedAchievements = achievementManager.checkAchievements(user);
+    
+    // Mostrar notificaciones para nuevos logros
+    unlockedAchievements.forEach((achievement, index) => {
+        setTimeout(() => {
+            achievementManager.showAchievementNotification(achievement);
+        }, index * 500); // Retrasar cada notificación 500ms
+    });
+
+    if (unlockedAchievements.length > 0) {
+        userManager.saveToStorage();
+    }
+}
+
 // Inicializar la aplicación (evitar auto-init en tests)
 if (typeof window !== 'undefined' && !window.__TEST__) {
     initApp();

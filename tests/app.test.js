@@ -3,6 +3,7 @@ const path = require('path');
 
 // Cargar archivos necesarios
 const translationManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/TranslationManager.js'), 'utf8');
+const achievementManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/AchievementManager.js'), 'utf8');
 const userManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/UserManager.js'), 'utf8');
 const storeManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/StoreManager.js'), 'utf8');
 const gameEngineCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/GameEngine.js'), 'utf8');
@@ -20,6 +21,7 @@ beforeAll(() => {
     }
     // Ejecutar los scripts en el contexto del window (managers, problemas, luego app)
     window.eval(translationManagerCode);
+    window.eval(achievementManagerCode);
     window.eval(userManagerCode);
     window.eval(storeManagerCode);
     window.eval(gameEngineCode);

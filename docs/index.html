@@ -111,6 +111,7 @@
             </div>
             Problemas de lógica</button>
             <button class="main-btn btn-store" onclick="openStore()" data-i18n="btn_open_store">🏪 TIENDA</button>
+            <button class="main-btn btn-achievements" onclick="openAchievements()" data-i18n="btn_open_achievements">🏆 LOGROS</button>
             <button class="btn-back" onclick="showUsers()" data-i18n="btn_change_user">⬅ Cambiar de usuario</button>
         </div>
 
@@ -162,6 +163,20 @@
                 <button class="btn-back" onclick="closeStore()" data-i18n="btn_close_store">⬅ Cerrar</button>
             </div>
         </div>
+
+        <!-- Achievements Modal -->
+        <div id="achievements-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 data-i18n="achievements_title">🏆 Tus Logros</h2>
+                    <button class="modal-close" onclick="closeAchievements()">✖</button>
+                </div>
+                <div id="achievements-content">
+                    <!-- Achievements will be rendered here -->
+                </div>
+                <button class="btn-back" onclick="closeAchievements()" data-i18n="btn_close_achievements">⬅ Cerrar</button>
+            </div>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -186,6 +201,7 @@
     </footer>
 
     <script src="./js/managers/TranslationManager.js"></script>
+    <script src="./js/managers/AchievementManager.js"></script>
     <script src="./js/managers/UserManager.js"></script>
     <script src="./js/managers/StoreManager.js"></script>
     <script src="./js/managers/GameEngine.js"></script>
