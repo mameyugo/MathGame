@@ -564,4 +564,83 @@ describe('MateAventura - Tests Unitarios', () => {
             expect(window.problemType).toBe('logica');
         });
     });
+
+    describe('Panel de Logros', () => {
+        test('renderAchievements debe crear filtros y categorías', () => {
+            const userManager = window.__appManagers.userManager;
+            const achievementManager = window.__appManagers.achievementManager;
+
+            const user = {
+                level: 1,
+                totalCoins: 0,
+                ops: ['+'],
+                inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                currentTheme: 'default',
+                achievementStats: {
+                    streak: 0,
+                    duelStreakMax: 0,
+                    totalCoinsEarned: 0,
+                    equationsCompleted: 0,
+                    fastestTime: 0,
+                    accuracyPercentage: 0,
+                    themes: []
+                }
+            };
+
+            achievementManager.initAchievements(user);
+            userManager.users = { TestPlayer: user };
+            userManager.currentUser = 'TestPlayer';
+
+            document.body.innerHTML = '<div id="achievements-content"></div>';
+
+            window.renderAchievements();
+
+            const filters = document.querySelector('.achievement-filters');
+            const filterButtons = document.querySelectorAll('.achievement-filter');
+            const categoryBlocks = document.querySelectorAll('.achievement-category');
+
+            expect(filters).toBeTruthy();
+            expect(filterButtons.length).toBe(7);
+            expect(categoryBlocks.length).toBeGreaterThan(0);
+        });
+
+        test('filtro de categoría debe ocultar otras categorías', () => {
+            const userManager = window.__appManagers.userManager;
+            const achievementManager = window.__appManagers.achievementManager;
+
+            const user = {
+                level: 1,
+                totalCoins: 0,
+                ops: ['+'],
+                inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                currentTheme: 'default',
+                achievementStats: {
+                    streak: 0,
+                    duelStreakMax: 0,
+                    totalCoinsEarned: 0,
+                    equationsCompleted: 0,
+                    fastestTime: 0,
+                    accuracyPercentage: 0,
+                    themes: []
+                }
+            };
+
+            achievementManager.initAchievements(user);
+            userManager.users = { TestPlayer: user };
+            userManager.currentUser = 'TestPlayer';
+
+            document.body.innerHTML = '<div id="achievements-content"></div>';
+
+            window.renderAchievements();
+
+            const logicFilter = document.querySelector('.achievement-filter[data-filter="logic"]');
+            const progressCategory = document.querySelector('.achievement-category[data-category="progress"]');
+            const logicCategory = document.querySelector('.achievement-category[data-category="logic"]');
+
+            logicFilter.dispatchEvent(new window.Event('click'));
+
+            expect(progressCategory.style.display).toBe('none');
+            expect(logicCategory.style.display).toBe('block');
+        });
+    });
 });

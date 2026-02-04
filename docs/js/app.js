@@ -715,15 +715,38 @@ function renderAchievements() {
         categories[achievement.category].push(achievement);
     });
 
+    // Filtros por categoría
+    html += `
+        <div class="achievement-filters">
+            <button class="achievement-filter active" data-filter="all">Todas</button>
+            <button class="achievement-filter" data-filter="progress">Progreso</button>
+            <button class="achievement-filter" data-filter="logic">Lógica</button>
+            <button class="achievement-filter" data-filter="mastery">Maestría</button>
+            <button class="achievement-filter" data-filter="economy">Economía</button>
+            <button class="achievement-filter" data-filter="social">Social</button>
+            <button class="achievement-filter" data-filter="secret">Secretos</button>
+        </div>
+    `;
+
     // Renderizar cada categoría
     Object.entries(categoryProgress).forEach(([categoryKey, categoryData]) => {
         if (categories[categoryKey].length === 0) return;
 
+        const progressPercentage = (categoryData.unlocked / categoryData.total) * 100;
+
         html += `
-            <div class="achievement-category">
+            <div class="achievement-category" data-category="${categoryKey}">
                 <div class="category-header">
-                    <div class="category-title">${categoryData.name}</div>
-                    <div class="category-progress">${categoryData.unlocked}/${categoryData.total}</div>
+                    <div>
+                        <div class="category-title">${categoryData.name}</div>
+                        <div class="category-progress">${categoryData.unlocked}/${categoryData.total} · ${Math.round(progressPercentage)}%</div>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-background">
+                        <div class="progress-bar-fill" style="width: ${progressPercentage}%"></div>
+                    </div>
+                    <div class="progress-bar-text">${Math.round(progressPercentage)}%</div>
                 </div>
                 <div class="achievements-grid">
         `;
@@ -743,11 +766,28 @@ function renderAchievements() {
                     </div>
                 `;
             } else {
+                // Calcular progreso para logros bloqueados
+                let progressHTML = '';
+                if (!achievement.unlocked) {
+                    const progress = achievementManager.getAchievementProgress(achievement, user);
+                    if (progress.percentage > 0 && progress.percentage < 100) {
+                        progressHTML = `
+                            <div class="achievement-progress-container">
+                                <div class="achievement-progress-bar">
+                                    <div class="achievement-progress-fill" style="width: ${progress.percentage}%"></div>
+                                </div>
+                                <div class="achievement-progress-text">${progress.hint}</div>
+                            </div>
+                        `;
+                    }
+                }
+
                 html += `
                     <div class="achievement-card ${unlockedClass}">
                         <div class="achievement-card-icon">${achievement.icon}</div>
                         <div class="achievement-card-name">${achievement.name}</div>
                         <div class="achievement-card-description">${achievement.description}</div>
+                        ${progressHTML}
                         ${dateText}
                     </div>
                 `;
@@ -761,6 +801,23 @@ function renderAchievements() {
     });
 
     content.innerHTML = html;
+
+    // Activar filtros
+    const filterButtons = content.querySelectorAll('.achievement-filter');
+    const categoryBlocks = content.querySelectorAll('.achievement-category');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const filter = button.getAttribute('data-filter');
+            categoryBlocks.forEach(block => {
+                const category = block.getAttribute('data-category');
+                block.style.display = (filter === 'all' || filter === category) ? 'block' : 'none';
+            });
+        });
+    });
 }
 
 /**
@@ -787,4 +844,11 @@ function checkAndNotifyAchievements() {
 // Inicializar la aplicación (evitar auto-init en tests)
 if (typeof window !== 'undefined' && !window.__TEST__) {
     initApp();
+}
+
+// Exponer managers para tests
+if (typeof window !== 'undefined') {
+    window.__appManagers = window.__appManagers || {};
+    window.__appManagers.userManager = userManager;
+    window.__appManagers.achievementManager = achievementManager;
 }

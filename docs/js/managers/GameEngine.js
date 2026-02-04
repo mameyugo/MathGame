@@ -295,7 +295,7 @@ class GameEngine {
                 user.achievementStats = user.achievementStats || {};
                 // Reset streak on wrong answer
                 user.achievementStats.streak = 0;
-                
+
                 // Check achievements after resetting streak (some achievements may depend on losing streak)
                 const newAchievements = this.achievementManager.checkAchievements(user);
                 if (newAchievements && newAchievements.length > 0) {

@@ -397,8 +397,8 @@ class AchievementManager {
                 ...achievement,
                 unlocked,
                 unlockedAt: userAchievement ? userAchievement.unlockedAt : null,
-                name: this.translationManager.translate(`achievements_${achievement.i18nKey}_name`),
-                description: this.translationManager.translate(`achievements_${achievement.i18nKey}_description`)
+                name: this.translationManager.t(`achievements_${achievement.i18nKey}_name`),
+                description: this.translationManager.t(`achievements_${achievement.i18nKey}_description`)
             };
         }).filter(a => a !== null);
     }
@@ -463,9 +463,9 @@ class AchievementManager {
         notification.innerHTML = `
             <div class="achievement-icon">${achievement.icon}</div>
             <div class="achievement-content">
-                <div class="achievement-title">🏆 ${this.translationManager.translate('achievements.unlocked')}</div>
-                <div class="achievement-name">${this.translationManager.translate(`achievements.${achievement.i18nKey}.name`)}</div>
-                <div class="achievement-description">${this.translationManager.translate(`achievements.${achievement.i18nKey}.description`)}</div>
+                <div class="achievement-title">🏆 ${this.translationManager.t('achievements_unlocked')}</div>
+                <div class="achievement-name">${this.translationManager.t(`achievements_${achievement.i18nKey}_name`)}</div>
+                <div class="achievement-description">${this.translationManager.t(`achievements_${achievement.i18nKey}_description`)}</div>
             </div>
         `;
 
@@ -581,4 +581,73 @@ class AchievementManager {
             user.achievementStats.mondayMorningPlays = (user.achievementStats.mondayMorningPlays || 0) + 1;
         }
     }
+
+    /**
+     * Calcula el progreso hacia un logro específico
+     * @param {Object} achievement - Logro a verificar
+     * @param {Object} user - Usuario
+     * @returns {Object} {current, target, percentage}
+     */
+    getAchievementProgress(achievement, user) {
+        if (!user.achievementStats) {
+            return { current: 0, target: 1, percentage: 0, hint: '' };
+        }
+
+        const stats = user.achievementStats;
+        let current = 0;
+        let target = 1;
+        let hint = '';
+
+        // Analizar logros por ID para calcular progreso
+        switch (achievement.id) {
+            case 'fire_streak':
+                current = stats.streak || 0;
+                target = 10;
+                hint = current + '/10 acertos seguidos';
+                break;
+            case 'immortal':
+                current = stats.streak || 0;
+                target = 20;
+                hint = current + '/20 acertos + escudo';
+                break;
+            case 'speed_of_light':
+                current = stats.fastestTime || 0;
+                target = 3;
+                hint = 'Mejor: ' + current + 's (necesitas <3s)';
+                break;
+            case 'zero_errors':
+                current = stats.accuracyPercentage || 0;
+                target = 100;
+                hint = current + '% precisión (necesitas 100%)';
+                break;
+            case 'imbatible':
+                current = stats.duelStreakMax || 0;
+                target = 5;
+                hint = current + '/5 duelos ganados';
+                break;
+            case 'treasure_hunter':
+                current = stats.totalCoinsEarned || 0;
+                target = 10000;
+                hint = current + '/10000 monedas';
+                break;
+            case 'collector':
+                current = stats.themes ? stats.themes.length : 0;
+                target = 6;
+                hint = current + '/6 temas';
+                break;
+            case 'math_detective':
+                current = stats.equationsCompleted || 0;
+                target = 20;
+                hint = current + '/20 ecuaciones';
+                break;
+            default:
+                current = 0;
+                target = 1;
+                hint = 'Progreso desconocido';
+        }
+
+        const percentage = Math.min(100, Math.round((current / target) * 100));
+        return { current, target, percentage, hint };
+    }
+
 }
