@@ -46,9 +46,10 @@ git clone https://github.com/mameyugo/MathGame.git
 
 1. Haz un Fork del proyecto.
 2. Crea una rama para tu mejora (`git checkout -b feature/NuevaMejora`).
-3. Haz un Commit de tus cambios (`git commit -m 'Añadida nueva funcionalidad'`).
-4. Sube tus cambios (`git push origin feature/NuevaMejora`).
-5. Abre un Pull Request.
+3. Antes de cada commit, ejecuta `npm run bump:cache`.
+4. Haz un Commit de tus cambios (`git commit -m 'Añadida nueva funcionalidad'`).
+5. Sube tus cambios (`git push origin feature/NuevaMejora`).
+6. Abre un Pull Request.
 
 Consulta [CONTRIBUTING.md](CONTRIBUTING.md) para más detalles.
 
