@@ -369,14 +369,170 @@ describe("AchievementManager", () => {
 });
 ```
 
-Ver: `tests/unit/AchievementManager.test.js`
+## 📋 Logros Implementados (23 Total en 6 Categorías)
 
-## 📖 Documentación Detallada
+### 1. 📈 Progreso (4 logros)
+- **first_steps**: Resolver tu primera operación
+- **graduated_primary**: Alcanzar Nivel 10
+- **master_numbers**: Superar Nivel 50
+- **collector**: Desbloquear todos los temas visuales
 
-Ver: `docs/js/managers/ACHIEVEMENTS.md` para lista completa de logros.
+### 2. 🧠 Lógica (4 logros)
+- **logic_streak**: 5 problemas de lógica seguidos sin fallar
+- **lateral_thinker**: Resolver primer problema Nivel Avanzado
+- **quick_eye**: Problema de lógica en <10 segundos
+- **math_detective**: 20 ecuaciones de problemas completadas
+
+### 3. 🎯 Maestría (5 logros)
+- **fire_streak**: 10 operaciones seguidas sin errores
+- **immortal**: Escudo en racha de +20 acertos
+- **speed_of_light**: Operación difícil en <3 segundos
+- **zero_failures**: Sesión de 20 preguntas con 100% precisión
+- **human_calculator**: 50 acertos consecutivos (SECRETO)
+
+### 4. 💰 Economía (4 logros)
+- **saver**: Acumular 1,000 monedas sin gastar
+- **vip_customer**: Primer compra en la tienda
+- **fully_equipped**: 5 pociones + 5 escudos simultáneamente
+- **treasure_hunter**: 10,000 monedas totales
+
+### 5. 👥 Social (3 logros)
+- **first_blood**: Ganar primer duelo
+- **unbeatable**: 5 duelos ganados seguidos
+- **invite_sent**: Conectar con otro dispositivo
+
+### 6. 🔐 Secretos (3 logros)
+- **pythagoras_chosen**: Jugar lunes 8:00 AM
+- **night_owl**: Jugar 5 veces a medianoche
+- **persistent**: Jugar 7 días consecutivos
+- **complete_explorer**: Completar problemas de todas las categorías
+
+## 🔄 Integración en GameEngine
+
+### Respuestas Correctas
+```javascript
+// En check() cuando respuesta es correcta
+user.achievementStats.streak++;
+user.achievementStats.correctAnswers++;
+user.achievementStats.coins = this.gameCoins;
+
+const newAchievements = this.achievementManager.checkAchievements(user);
+```
+
+### Problemas de Lógica
+```javascript
+// En submitProblem() cuando problema correcto
+user.achievementStats.problemsSolved++;
+const newAchievements = achievementManager.checkAchievements(user);
+```
+
+### Compras en la Tienda
+```javascript
+// En buyItem() después de compra exitosa
+user.achievementStats.itemsBought++;
+user.achievementStats.totalCoinsSpent++;
+```
+
+### Duelos Ganados
+```javascript
+// En endGameSession() cuando duelo termina
+user.achievementStats.duelsWon++;
+user.achievementStats.duelStreakMax++;
+```
+
+### Tiempos Especiales
+```javascript
+// En startTimer()
+if (hour === 0) {
+    // Medianoche
+    user.achievementStats.midnightPlays++;
+}
+if (day === 1 && hour === 8) {
+    // Lunes 8 AM
+    user.achievementStats.mondayMorningPlays++;
+}
+```
+
+## 💾 Estructura de Datos Completa
+
+### user.achievements
+```javascript
+{
+    first_steps: { unlocked: true, unlockedAt: 1707000000000 },
+    fire_streak: { unlocked: false, unlockedAt: null },
+    // ... más logros
+}
+```
+
+### user.achievementStats
+```javascript
+{
+    // Progreso
+    level: 15,
+    streakMax: 25,
+
+    // Lógica
+    logicProblems: 8,
+    logicStreakMax: 5,
+
+    // Economía
+    coins: 5000,
+    itemsBought: 3,
+    potions: 2,
+    shields: 3,
+
+    // Social
+    duelsWon: 3,
+    duelStreakMax: 2,
+
+    // Secretos
+    midnightPlays: 2,
+    mondayMorningPlays: 1,
+    consecutiveDays: 5
+}
+```
+
+## 📢 Sistema de Notificaciones
+
+### Características
+- 🎨 Animación flotante desde la derecha
+- ✨ Efecto de pulso en el ícono
+- 🔊 Sonido Web Audio API personalizado
+- ⏱️ Cola con delay de 500ms entre notificaciones
+- 🌙 Respetuoso del modo oscuro/claro
+
+### Métodos
+```javascript
+showAchievementNotification(achievement)  // Muestra notificación animada
+playAchievementSound()                    // Reproduce sonido
+```
+
+## 🚀 Roadmap Futuro
+
+### Nivel 1: Experiencia del Usuario (3-4 horas)
+- Panel de Progreso en Tiempo Real (barras de progreso por categoría)
+- Categorías Colapsables en Modal
+- Notificaciones Mejoradas (progreso en notificaciones, sonidos distintos)
+
+### Nivel 2: Gamificación Avanzada (4-6 horas)
+- Desafíos Diarios de Logros (3 nuevos cada día a las 6 AM)
+- Logros Dinámicos por Temporada (5 nuevos cada mes)
+- Hitos de Racha Mejorados (notificaciones especiales en hitos)
+
+### Nivel 3: Social & Competencia (5-7 horas)
+- Leaderboard de Logros (Top 10 por categoría)
+- Insignias de Méritos (Medallas especiales)
+- Desafíos Multijugador (Racha más larga, primero en desbloquear)
+
+### Nivel 4: Analytics & Insights (3-5 horas)
+- Panel de Estadísticas de Logros (gráficos de progreso)
+- Análisis Personalizados (sugerencias, comparativas)
+- Exportar Logros (PDF, Imagen compartible, JSON)
+
+**Recomendación Inmediata**: Panel de Progreso en Tiempo Real (2-3 horas, alto impacto visual)
 
 ## 🔗 Archivos Relacionados
 
-- `GameEngine.js` - Llama checkAchievements() después de sesión
-- `UserManager.js` - Gestiona recompensas
-- `ACHIEVEMENTS.md` - Lista completa de logros
+- `GameEngine.js` - Integración con sistema de logros
+- `UserManager.js` - Gestión de recompensas y estadísticas
+- `tests/unit/AchievementManager.test.js` - Pruebas unitarias
