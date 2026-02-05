@@ -204,5 +204,17 @@
     "achievements_category_mastery": "Maîtrise",
     "achievements_category_economy": "Économie",
     "achievements_category_social": "Social",
-    "achievements_category_secret": "Secrets"
+    "achievements_category_secret": "Secret",
+    "duel_choose_mode": "🏆 Choisissez votre type de duel",
+    "online_credentials_title": "🌐 Connexion En Ligne",
+    "online_credentials_desc": "Créez un compte pour jouer en ligne",
+    "input_username": "Identifiant",
+    "input_password": "Mot de passe",
+    "btn_connect_online": "🔗 Connexion",
+    "btn_cancel": "❌ Annuler",
+    "error_credentials_required": "L'identifiant et le mot de passe sont obligatoires",
+    "error_password_min": "Le mot de passe doit comporter au moins 6 caractères",
+    "error_connection": "Erreur de connexion au serveur",
+    "error_websocket": "Erreur de connexion WebSocket",
+    "success_connected": "✅ Connecté avec succès"
 }

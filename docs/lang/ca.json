@@ -204,5 +204,17 @@
     "achievements_category_mastery": "Mestria",
     "achievements_category_economy": "Economia",
     "achievements_category_social": "Social",
-    "achievements_category_secret": "Secrets"
+    "achievements_category_secret": "Secrets",
+    "duel_choose_mode": "🏆 Tria el teu tipus de duel",
+    "online_credentials_title": "🌐 Connexió Online",
+    "online_credentials_desc": "Crea un compte per jugar online",
+    "input_username": "Usuari",
+    "input_password": "Contrasenya",
+    "btn_connect_online": "🔗 Connexió",
+    "btn_cancel": "❌ Cancel·lar",
+    "error_credentials_required": "Usuari i contrasenya són necessaris",
+    "error_password_min": "La contrasenya ha de tenir almenys 6 caràcters",
+    "error_connection": "Error de connexió amb el servidor",
+    "error_websocket": "Error de connexió WebSocket",
+    "success_connected": "✅ Connectat correctament"
 }

@@ -204,5 +204,17 @@
     "achievements_category_mastery": "Maestría",
     "achievements_category_economy": "Economía",
     "achievements_category_social": "Social",
-    "achievements_category_secret": "Segredos"
+    "achievements_category_secret": "Secretos",
+    "duel_choose_mode": "🏆 Escolle o teu tipo de duelo",
+    "online_credentials_title": "🌐 Conexión Online",
+    "online_credentials_desc": "Crea unha conta para xogar online",
+    "input_username": "Usuario",
+    "input_password": "Contrasinal",
+    "btn_connect_online": "🔗 Conectar",
+    "btn_cancel": "❌ Cancelar",
+    "error_credentials_required": "Usuario e contrasinal son obrigatorios",
+    "error_password_min": "O contrasinal debe ter polo menos 6 caracteres",
+    "error_connection": "Erro de conexión co servidor",
+    "error_websocket": "Erro de conexión WebSocket",
+    "success_connected": "✅ Conectado exitosamente"
 }

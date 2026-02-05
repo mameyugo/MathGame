@@ -7,18 +7,18 @@
     <title>MathQix Pro: Hall of Fame 🏆</title>
 
     <!-- CSS Modular -->
-    <link rel="stylesheet" href="./css/1-variables.css?v=202602041453">
-    <link rel="stylesheet" href="./css/2-base.css?v=202602041453">
-    <link rel="stylesheet" href="./css/3-buttons.css?v=202602041453">
-    <link rel="stylesheet" href="./css/4-users.css?v=202602041453">
-    <link rel="stylesheet" href="./css/5-game.css?v=202602041453">
-    <link rel="stylesheet" href="./css/6-problems.css?v=202602041453">
-    <link rel="stylesheet" href="./css/7-config.css?v=202602041453">
-    <link rel="stylesheet" href="./css/8-store.css?v=202602041453">
-    <link rel="stylesheet" href="./css/9-help.css?v=202602041453">
-    <link rel="stylesheet" href="./css/12-achievements.css?v=202602041453">
-    <link rel="stylesheet" href="./css/10-responsive.css?v=202602041453">
-    <link rel="stylesheet" href="./css/11-animations.css?v=202602041453">
+    <link rel="stylesheet" href="./css/1-variables.css?v=202602051600">
+    <link rel="stylesheet" href="./css/2-base.css?v=202602051600">
+    <link rel="stylesheet" href="./css/3-buttons.css?v=202602051600">
+    <link rel="stylesheet" href="./css/4-users.css?v=202602051600">
+    <link rel="stylesheet" href="./css/5-game.css?v=202602051600">
+    <link rel="stylesheet" href="./css/6-problems.css?v=202602051600">
+    <link rel="stylesheet" href="./css/7-config.css?v=202602051600">
+    <link rel="stylesheet" href="./css/8-store.css?v=202602051600">
+    <link rel="stylesheet" href="./css/9-help.css?v=202602051600">
+    <link rel="stylesheet" href="./css/12-achievements.css?v=202602051600">
+    <link rel="stylesheet" href="./css/10-responsive.css?v=202602051600">
+    <link rel="stylesheet" href="./css/11-animations.css?v=202602051600">
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
@@ -117,6 +117,46 @@
             <button class="btn-back" onclick="showUsers()" data-i18n="btn_change_user">⬅ Cambiar de usuario</button>
         </div>
 
+        <!-- Pantalla de Selección de Modo Duelo -->
+        <div id="screen-duel-mode" class="screen">
+            <h2 style="text-align: center; margin-bottom: 30px;" data-i18n="duel_choose_mode">🏆 Elige tu tipo de duelo
+            </h2>
+            <div style="display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto;">
+                <button class="main-btn" onclick="startLocalDuel()"
+                    style="padding: 20px; font-size: 1.2rem; height: auto;">
+                    👥 Jugar con amigos en este dispositivo
+                </button>
+                <button class="main-btn btn-duel" onclick="prepareOnlineDuel()"
+                    style="padding: 20px; font-size: 1.2rem; height: auto;">
+                    🌐 Jugar Online (Multijugador en red)
+                </button>
+                <button class="btn-back" onclick="showUsers()" style="margin-top: 10px;" data-i18n="btn_cancel">❌
+                    Cancelar</button>
+            </div>
+        </div>
+
+        <!-- Pantalla de Opciones de Duelo Online -->
+        <div id="screen-online-options" class="screen">
+            <h2 style="text-align: center; margin-bottom: 30px;">🌐 Duelo Online</h2>
+            <div style="display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto;">
+                <button class="main-btn" onclick="startCreateRoom()"
+                    style="padding: 20px; font-size: 1.1rem; height: auto;">
+                    ✨ Crear sala y compartir código
+                </button>
+                <div style="text-align: center; color: #666; font-size: 0.9rem;">- O -</div>
+                <div style="border: 1px solid #ddd; border-radius: 10px; padding: 20px;">
+                    <label style="display: block; margin-bottom: 10px; font-weight: bold;">Ingresa el código de tu
+                        amigo:</label>
+                    <input type="text" id="join-room-input" placeholder="Ej: ABC123"
+                        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 1.1rem; text-transform: uppercase; text-align: center; letter-spacing: 2px; margin-bottom: 10px;">
+                    <button class="main-btn" onclick="joinRoomByCode()" style="width: 100%; padding: 12px;">
+                        🔗 Unirse a sala
+                    </button>
+                </div>
+                <button class="btn-back" onclick="showDuelModeSelector()" style="margin-top: 10px;">⬅ Atrás</button>
+            </div>
+        </div>
+
         <div id="screen-game" class="screen">
             <div id="turn-indicator" class="turn-indicator"></div>
             <div class="game-stats">
@@ -148,6 +188,34 @@
             <div id="answers-area" class="options-grid"></div>
         </div>
 
+    </div>
+
+    <!-- Modal de Credenciales para Juego Online -->
+    <div id="online-credentials-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2 data-i18n="online_credentials_title">🌐 Conectar Online</h2>
+                <button class="modal-close" onclick="closeOnlineCredentialsModal()">✖</button>
+            </div>
+            <div style="padding: 20px;">
+                <p data-i18n="online_credentials_desc" style="margin-bottom: 20px; text-align: center;">
+                    Crea una cuenta para jugar online
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <input type="text" id="online-username" placeholder="Usuario" data-i18n-placeholder="input_username"
+                        style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem;">
+                    <input type="password" id="online-password" placeholder="Contraseña"
+                        data-i18n-placeholder="input_password"
+                        style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem;">
+                    <div id="online-credentials-message" class="message"
+                        style="display: none; padding: 10px; border-radius: 5px;"></div>
+                    <button class="main-btn" onclick="registerOrLoginOnline()" data-i18n="btn_connect_online">🔗
+                        Conectar</button>
+                    <button class="btn-back" onclick="closeOnlineCredentialsModal()" data-i18n="btn_cancel">❌
+                        Cancelar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Store Modal -->
@@ -204,17 +272,18 @@
         </div>
     </footer>
 
-    <script src="./js/managers/TranslationManager.js?v=202602041453"></script>
-    <script src="./js/managers/AchievementManager.js?v=202602041453"></script>
-    <script src="./js/managers/UserManager.js?v=202602041453"></script>
-    <script src="./js/managers/StoreManager.js?v=202602041453"></script>
-    <script src="./js/managers/GameEngine.js?v=202602041453"></script>
-    <script src="./js/managers/QuestionGenerator.js?v=202602041453"></script>
-    <script src="./js/managers/ProblemCategoryManager.js?v=202602041453"></script>
-    <script src="./js/managers/DailyChallengeManager.js?v=202602041453"></script>
-    <script type="module" src="./js/problems/index.js?v=202602041453"></script>
-    <script src="./js/problemas.js?v=202602041453"></script>
-    <script src="./js/app.js?v=202602041453"></script>
+    <script src="./js/managers/TranslationManager.js?v=202602051600"></script>
+    <script src="./js/managers/AchievementManager.js?v=202602051600"></script>
+    <script src="./js/managers/UserManager.js?v=202602051600"></script>
+    <script src="./js/managers/StoreManager.js?v=202602051600"></script>
+    <script src="./js/managers/GameEngine.js?v=202602051600"></script>
+    <script src="./js/managers/QuestionGenerator.js?v=202602051600"></script>
+    <script src="./js/managers/ProblemCategoryManager.js?v=202602051600"></script>
+    <script src="./js/managers/DailyChallengeManager.js?v=202602051600"></script>
+    <script src="./js/managers/OnlineManager.js?v=202602051600"></script>
+    <script type="module" src="./js/problems/index.js?v=202602051600"></script>
+    <script src="./js/problemas.js?v=202602051600"></script>
+    <script src="./js/app.js?v=202602051600"></script>
 </body>
 
 </html>

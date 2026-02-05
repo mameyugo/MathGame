@@ -297,3 +297,57 @@
     border-color: #4caf50;
     box-shadow: 0 0 4px rgba(76, 175, 80, 0.3);
 }
+/**
+ * Pantalla de Selección de Modo Duelo
+ */
+#screen-duel-mode {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 20px;
+}
+
+#screen-duel-mode h2 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#screen-duel-mode > div {
+    width: 100%;
+    max-width: 400px;
+}
+
+#screen-duel-mode .main-btn {
+    width: 100%;
+    min-height: 60px;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+/**
+ * Modal de Credenciales Online
+ */
+#online-credentials-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s;
+    justify-content: center;
+    align-items: center;
+}
+
+.message {
+    padding: 12px;
+    border-radius: 5px;
+    font-weight: 600;
+    text-align: center;
+    border-left: 4px solid #999;
+}

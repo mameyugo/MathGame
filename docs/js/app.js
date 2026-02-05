@@ -10,6 +10,7 @@ const userManager = new UserManager(translationManager);
 const storeManager = new StoreManager(userManager, translationManager);
 const problemCategoryManager = new ProblemCategoryManager(translationManager);
 const dailyChallengeManager = new DailyChallengeManager(translationManager);
+const onlineManager = new OnlineManager(translationManager);
 
 // Variables globales
 let currentLanguage = translationManager.getCurrentLanguage();
@@ -33,6 +34,9 @@ let freezeTimeout = null;
 let problemMode = false;
 let problemType = 'matematico';
 let currentProblem = null;
+
+// Variables para duelo online
+let pendingOnlineAction = null; // 'create' o 'join' según lo que el usuario quiera hacer
 
 /**
  * Initialize user inventory if it doesn't exist
@@ -324,7 +328,7 @@ function generateProblem() {
     questionGenerator.setGameLevel(gameLevel);
     questionGenerator.generateProblem();
     currentProblem = questionGenerator.getCurrentProblem();
-    
+
     // Si no hay problema (todos completados), finalizar la sesión
     if (!currentProblem) {
         endGameSession();
@@ -925,6 +929,353 @@ function checkAndNotifyAchievements() {
     }
 }
 
+/**
+ * ========== FUNCIONES PARA MODO DUELO ONLINE ==========
+ */
+
+/**
+ * Reemplaza setupDuel() para mostrar opciones de duelo
+ */
+function setupDuel() {
+    showDuelModeSelector();
+}
+
+/**
+ * Muestra la pantalla de selección de modo duelo
+ */
+function showDuelModeSelector() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const screen = document.getElementById('screen-duel-mode');
+    if (screen) {
+        screen.classList.add('active');
+    }
+}
+
+/**
+ * Inicia duelo local (múltiples jugadores en el dispositivo actual)
+ */
+function startLocalDuel() {
+    const users = userManager.getUsers();
+
+    if (Object.keys(users).length < 2) {
+        alert(t('alert_min_users'));
+        return;
+    }
+
+    // Usar la función original de GameEngine
+    gameEngine.setupDuel();
+    // Sincronizar estado global
+    currentUser = userManager.getCurrentUserName();
+}
+
+/**
+ * Crea una sala online y muestra el token para compartir
+ */
+async function createAndShareGameRoom() {
+    try {
+        const messageDiv = document.getElementById('online-credentials-message');
+        showMessage(messageDiv, 'Creando sala...', 'loading');
+
+        const result = await onlineManager.createRoom();
+
+        if (result.ok) {
+            showMessage(messageDiv, '✅ Sala creada', 'success');
+            showShareRoomToken(result.token);
+        } else {
+            showMessage(messageDiv, result.error || 'Error desconocido', 'error');
+        }
+    } catch (error) {
+        console.error('Error al crear sala:', error);
+        showMessage(messageDiv, error.message || 'Error de conexión', 'error');
+    }
+}
+
+/**
+ * Muestra modal con código de sala para compartir
+ */
+function showShareRoomToken(token) {
+    closeOnlineCredentialsModal();
+    const modal = document.getElementById('share-room-modal');
+    if (!modal) {
+        // Crear modal si no existe
+        createShareRoomModal();
+    }
+
+    const modal2 = document.getElementById('share-room-modal');
+    if (modal2) {
+        document.getElementById('room-code-display').textContent = token;
+        modal2.style.display = 'flex';
+    }
+}
+
+/**
+ * Crea el modal de compartir sala si no existe
+ */
+function createShareRoomModal() {
+    const html = `
+        <div id="share-room-modal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 400px;">
+                <div class="modal-header">
+                    <h2>🎮 Código de Sala</h2>
+                    <button class="modal-close" onclick="closeShareRoomModal()">✖</button>
+                </div>
+                <div style="padding: 20px; text-align: center;">
+                    <p style="margin-bottom: 20px; font-size: 1.1rem;">
+                        Comparte este código con tu amigo:
+                    </p>
+                    <div style="background: #fff9e6; border: 3px solid var(--gold); border-radius: 10px; padding: 15px; margin-bottom: 20px;">
+                        <div id="room-code-display" style="font-size: 2rem; font-weight: bold; color: var(--primary); font-family: monospace; letter-spacing: 5px;">
+                            LOADING...
+                        </div>
+                    </div>
+                    <button class="main-btn" onclick="copyRoomCode()" style="width: 100%; margin-bottom: 10px;">
+                        📋 Copiar código
+                    </button>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">
+                        Esperando a tu amigo... (Timeout en 1 hora)
+                    </p>
+                    <button class="btn-back" onclick="closeShareRoomModal()" style="width: 100%;">
+                        ❌ Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const container = document.getElementById('app-container');
+    if (container) {
+        container.insertAdjacentHTML('beforeend', html);
+    }
+}
+
+/**
+ * Copia el código de sala al portapapeles
+ */
+function copyRoomCode() {
+    const code = document.getElementById('room-code-display').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+        alert(`✅ Código copiado: ${code}\nComparte por WhatsApp, Telegram o email`);
+    }).catch(err => {
+        console.error('Error al copiar:', err);
+        alert('No pudimos copiar. Copia manualmente: ' + code);
+    });
+}
+
+/**
+ * Cierra modal de compartir sala
+ */
+function closeShareRoomModal() {
+    const modal = document.getElementById('share-room-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+    showDuelModeSelector();
+}
+
+/**
+ * Se une a una sala usando código
+ */
+async function joinRoomByCode() {
+    const roomCode = document.getElementById('join-room-input').value.trim().toUpperCase();
+    const messageDiv = document.getElementById('online-credentials-message');
+
+    if (!roomCode) {
+        showMessage(messageDiv, 'Ingresa el código de la sala', 'error');
+        return;
+    }
+
+    try {
+        showMessage(messageDiv, 'Uniéndose a la sala...', 'loading');
+
+        const result = await onlineManager.joinRoom(roomCode);
+
+        if (result.ok) {
+            showMessage(messageDiv, '✅ ¡Te uniste a la sala!', 'success');
+
+            // Cerrar modal y conectar al WebSocket
+            setTimeout(() => {
+                closeOnlineCredentialsModal();
+                const username = userManager.getCurrentUserName();
+                const credentials = onlineManager.getStoredCredentials();
+                connectToOnlineGame(username, credentials.password);
+            }, 1000);
+        } else {
+            showMessage(messageDiv, result.error || 'Error desconocido', 'error');
+        }
+    } catch (error) {
+        console.error('Error al unirse a sala:', error);
+        showMessage(messageDiv, error.message || 'Error de conexión', 'error');
+    }
+}
+ */
+function prepareOnlineDuel() {
+    // Verificar si hay credenciales guardadas
+    if (onlineManager.hasStoredCredentials()) {
+        // Ya tiene credenciales guardadas, ir a opciones
+        const credentials = onlineManager.getStoredCredentials();
+        console.log('Usando credenciales guardadas:', credentials.username);
+        showOnlineDuelOptions();
+    } else {
+        // Mostrar modal para ingresar credenciales
+        openOnlineCredentialsModal();
+    }
+}
+
+/**
+ * Muestra las opciones para crear o unirse a una sala
+ */
+function showOnlineDuelOptions() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const screen = document.getElementById('screen-online-options');
+    if (screen) {
+        screen.classList.add('active');
+        // Limpiar input
+        const input = document.getElementById('join-room-input');
+        if (input) input.value = '';
+    }
+}
+
+/**
+ * Inicia el proceso de crear una sala después de autentificar
+ */
+function startCreateRoom() {
+    pendingOnlineAction = 'create';
+    openOnlineCredentialsModal();
+}
+
+/**
+ * Abre el modal para ingresar credenciales
+ */
+function openOnlineCredentialsModal() {
+    const modal = document.getElementById('online-credentials-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.getElementById('online-username').value = '';
+        document.getElementById('online-password').value = '';
+        document.getElementById('online-username').focus();
+
+        // Limpiar mensaje previo
+        const messageDiv = document.getElementById('online-credentials-message');
+        if (messageDiv) {
+            messageDiv.style.display = 'none';
+        }
+    }
+}
+
+/**
+ * Cierra el modal de credenciales
+ */
+function closeOnlineCredentialsModal() {
+    const modal = document.getElementById('online-credentials-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+/**
+ * Registra o autentica al usuario online
+ */
+async function registerOrLoginOnline() {
+    const username = document.getElementById('online-username').value.trim();
+    const password = document.getElementById('online-password').value.trim();
+    const messageDiv = document.getElementById('online-credentials-message');
+
+    if (!username || !password) {
+        showMessage(messageDiv, t('error_credentials_required') || 'Usuario y contraseña requeridos', 'error');
+        return;
+    }
+
+    if (password.length < 6) {
+        showMessage(messageDiv, t('error_password_min') || 'La contraseña debe tener al menos 6 caracteres', 'error');
+        return;
+    }
+
+    try {
+        showMessage(messageDiv, 'Conectando...', 'loading');
+
+        // Usar OnlineManager para registrar o login
+        const result = await onlineManager.registerOrLogin(username, password);
+
+        if (result.ok) {
+            showMessage(messageDiv, t('success_connected') || '✅ Conectado exitosamente', 'success');
+
+            // Cerrar modal después de 1 segundo
+            setTimeout(() => {
+                closeOnlineCredentialsModal();
+
+                // Realizar acción pendiente
+                if (pendingOnlineAction === 'create') {
+                    createAndShareGameRoom();
+                    pendingOnlineAction = null;
+                } else {
+                    // Mostrar opciones de duelo online y conectar
+                    const credentials = onlineManager.getStoredCredentials();
+                    connectToOnlineGame(username, credentials.password);
+                }
+            }, 1000);
+        } else {
+            showMessage(messageDiv, result.error || 'Error desconocido', 'error');
+        }
+    } catch (error) {
+        console.error('Error al conectar:', error);
+        showMessage(messageDiv, error.message || 'Error de conexión', 'error');
+    }
+}
+
+/**
+ * Conecta al servidor WebSocket para juego online
+ */
+async function connectToOnlineGame(username, password) {
+    try {
+        const result = await onlineManager.connect(username, password);
+
+        if (result && result.type === 'login_success') {
+            startOnlineGame(username, result.iceServers);
+        }
+    } catch (error) {
+        console.error('Error al conectar:', error);
+        alert(error.message || 'Error de conexión');
+        showDuelModeSelector();
+    }
+}
+
+/**
+ * Inicia el juego online (placeholder por ahora)
+ */
+function startOnlineGame(username, iceServers) {
+    console.log('🌐 Juego online iniciado para:', username);
+    console.log('🔌 ICE Servers disponibles:', iceServers);
+
+    // Aquí se implementaría la lógica del juego online con WebRTC
+    // Por ahora solo mostrar confirmación
+    alert(`Preparado para jugar online como ${username}. Próximamente se habilitará la búsqueda de oponentes.`);
+
+    // Volver a pantalla inicial
+    showUsers();
+}
+
+/**
+ * Muestra mensaje en el div especificado
+ */
+function showMessage(messageDiv, text, type = 'error') {
+    if (!messageDiv) return;
+
+    messageDiv.style.display = 'block';
+    messageDiv.textContent = text;
+    messageDiv.style.backgroundColor =
+        type === 'error' ? '#fee' :
+            type === 'loading' ? '#eef' :
+                type === 'success' ? '#efe' : '#fff';
+    messageDiv.style.color =
+        type === 'error' ? '#c33' :
+            type === 'loading' ? '#33c' :
+                type === 'success' ? '#3c3' : '#333';
+    messageDiv.style.borderLeft =
+        type === 'error' ? '4px solid #c33' :
+            type === 'loading' ? '4px solid #33c' :
+                type === 'success' ? '4px solid #3c3' : '4px solid #999';
+}
+
 // Inicializar la aplicación (evitar auto-init en tests)
 if (typeof window !== 'undefined' && !window.__TEST__) {
     initApp();
@@ -936,4 +1287,5 @@ if (typeof window !== 'undefined') {
     window.__appManagers.userManager = userManager;
     window.__appManagers.achievementManager = achievementManager;
     window.__appManagers.dailyChallengeManager = dailyChallengeManager;
+    window.__appManagers.onlineManager = onlineManager;
 }
