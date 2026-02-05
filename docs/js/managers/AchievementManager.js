@@ -650,6 +650,170 @@ class AchievementManager {
         return { current, target, percentage, hint };
     }
 
+    /**
+     * Renderiza los logros del usuario
+     * @param {Object} user - Usuario actual
+     * @param {DailyChallengeManager} dailyChallengeManager - Manager de desafíos diarios
+     */
+    renderAchievements(user, dailyChallengeManager) {
+        if (!user) return;
+
+        const content = document.getElementById('achievements-content');
+        if (!content) return;
+
+        const progress = this.getTotalProgress(user);
+        const achievements = this.getUserAchievements(user, false);
+        const dailyChallenges = dailyChallengeManager ? dailyChallengeManager.getDailyChallenges(user) : [];
+
+        // Resumen general
+        let html = `
+            <div class="achievements-summary">
+                <div class="summary-title">Progreso Total</div>
+                <div class="summary-stats">
+                    <div class="summary-stat">
+                        <span class="stat-value">${progress.unlocked}</span>
+                        <span class="stat-label">Desbloqueados</span>
+                    </div>
+                    <div class="summary-stat">
+                        <span class="stat-value">${progress.total}</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                    <div class="summary-stat">
+                        <span class="stat-value">${progress.percentage}%</span>
+                        <span class="stat-label">Completado</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Desafíos diarios
+        if (dailyChallenges && dailyChallenges.length > 0) {
+            html += `
+            <div class="daily-challenges">
+                <div class="daily-challenges-header">
+                    <div class="daily-challenges-title">${this.translationManager.t('daily_challenges_title')}</div>
+                </div>
+                <div class="daily-challenges-list">
+            `;
+
+            dailyChallenges.forEach(challenge => {
+                const progressPercent = Math.round((challenge.progress / challenge.target) * 100);
+                const text = dailyChallengeManager.formatChallengeText(challenge);
+                const isClaimable = challenge.completed && !challenge.claimed;
+                const buttonLabel = challenge.claimed
+                    ? this.translationManager.t('daily_challenge_claimed')
+                    : (isClaimable ? this.translationManager.t('daily_challenge_claim') : this.translationManager.t('daily_challenge_progress'));
+
+                html += `
+                <div class="daily-challenge-card ${challenge.completed ? 'completed' : ''}">
+                    <div class="daily-challenge-info">
+                        <div class="daily-challenge-name">${text.name}</div>
+                        <div class="daily-challenge-desc">${text.description}</div>
+                        <div class="daily-challenge-reward">${this.translationManager.t('daily_challenge_reward')} +${challenge.reward}</div>
+                        <div class="daily-challenge-progress">
+                            <div class="daily-challenge-bar">
+                                <div class="daily-challenge-fill" style="width: ${progressPercent}%"></div>
+                            </div>
+                            <div class="daily-challenge-percent">${progressPercent}%</div>
+                        </div>
+                    </div>
+                    <button class="daily-challenge-claim" onclick="claimDailyChallenge('${challenge.id}')" ${isClaimable ? '' : 'disabled'}>
+                        ${buttonLabel}
+                    </button>
+                </div>
+            `;
+            });
+
+            html += `
+                </div>
+            </div>
+        `;
+        }
+
+        // Agrupar logros por categoría
+        const categories = {
+            progress: [],
+            logic: [],
+            mastery: [],
+            economy: [],
+            social: [],
+            secret: []
+        };
+
+        achievements.forEach(achievement => {
+            if (categories[achievement.category]) {
+                categories[achievement.category].push(achievement);
+            }
+        });
+
+        // Filtros por categoría
+        html += `
+            <div class="achievement-filters">
+                <button class="achievement-filter active" data-filter="all">Todas</button>
+                <button class="achievement-filter" data-filter="progress">Progreso</button>
+                <button class="achievement-filter" data-filter="logic">Lógica</button>
+                <button class="achievement-filter" data-filter="mastery">Maestría</button>
+                <button class="achievement-filter" data-filter="economy">Economía</button>
+                <button class="achievement-filter" data-filter="social">Social</button>
+                <button class="achievement-filter" data-filter="secret">Secretos</button>
+            </div>
+        `;
+
+        // Lista de logros
+        html += '<div class="achievements-list">';
+
+        // Helper para renderizar tarjeta
+        const renderCard = (achievement) => {
+            const progress = this.getAchievementProgress(achievement, user);
+            const statusClass = achievement.unlocked ? 'unlocked' : 'locked';
+
+            return `
+            <div class="achievement-card ${statusClass}" data-category="${achievement.category}">
+                <div class="achievement-icon">${achievement.icon}</div>
+                <div class="achievement-info">
+                    <div class="achievement-name">${achievement.name}</div>
+                    <div class="achievement-desc">${achievement.description}</div>
+                    ${!achievement.unlocked ? `<div class="achievement-progress-hint">${progress.hint}</div>` : ''}
+                </div>
+                ${achievement.unlocked ? '<div class="check-icon">✓</div>' : ''}
+            </div>
+            `;
+        };
+
+        // Renderizar todos los logros (ordenados: desbloqueados primero)
+        achievements.sort((a, b) => (b.unlocked ? 1 : 0) - (a.unlocked ? 1 : 0));
+
+        achievements.forEach(achievement => {
+            html += renderCard(achievement);
+        });
+
+        html += '</div>';
+
+        content.innerHTML = html;
+
+        // Añadir listeners para filtros
+        const filters = content.querySelectorAll('.achievement-filter');
+        filters.forEach(filter => {
+            filter.addEventListener('click', () => {
+                // Actualizar estado activo
+                filters.forEach(f => f.classList.remove('active'));
+                filter.classList.add('active');
+
+                // Filtrar tarjetas
+                const category = filter.dataset.filter;
+                const cards = content.querySelectorAll('.achievement-card');
+
+                cards.forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    }
+
 }
 
 // Export for testing environments

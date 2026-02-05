@@ -11,6 +11,7 @@ const storeManager = new StoreManager(userManager, translationManager);
 const problemCategoryManager = new ProblemCategoryManager(translationManager);
 const dailyChallengeManager = new DailyChallengeManager(translationManager);
 const onlineManager = new OnlineManager(translationManager);
+const localDuelManager = new LocalDuelManager(null, userManager, t); // GameEngine not ready yet
 
 // Variables globales
 let currentLanguage = translationManager.getCurrentLanguage();
@@ -189,8 +190,7 @@ function startProblemGame(type) {
  * Configura el modo duelo
  */
 function setupDuel() {
-    gameEngine.setupDuel();
-    // Sincronizar estado global
+    localDuelManager.setupDuel();
     currentUser = userManager.getCurrentUserName();
 }
 
@@ -198,8 +198,7 @@ function setupDuel() {
  * Inicia el siguiente turno en modo duelo
  */
 function startNextDuelTurn() {
-    gameEngine.startNextDuelTurn();
-    // Sincronizar estado global
+    localDuelManager.startNextTurn();
     currentUser = userManager.getCurrentUserName();
 }
 
@@ -293,6 +292,9 @@ gameEngine = new GameEngine(
     () => applyTheme(),
     () => showUsers()
 );
+
+// Update managers with gameEngine dependency
+localDuelManager.gameEngine = gameEngine;
 
 // Inicializar QuestionGenerator después, pasándole gameEngine para tracking
 questionGenerator = new QuestionGenerator(userManager, problemCategoryManager, (val) => check(val), gameEngine);
@@ -623,24 +625,15 @@ async function initApp() {
  * Renderiza las tarjetas de categorías de problemas en la configuración del usuario
  */
 function renderProblemCategories() {
-    console.log('=== renderProblemCategories called ===');
-
     const container = document.getElementById('problem-categories-area');
-    console.log('Container element:', container);
-
-    if (!container) {
-        console.error('ERROR: problem-categories-area not found in DOM!');
-        return;
-    }
+    if (!container) return;
 
     const selectedCategories = userManager.getProblemCategories();
-    console.log('Selected categories from user:', selectedCategories);
 
     problemCategoryManager.renderCategoryCards(
         'problem-categories-area',
         selectedCategories,
         (categoryId) => {
-            console.log('Category toggled:', categoryId);
             // Callback cuando se hace clic en una categoría
             userManager.toggleProblemCategory(categoryId);
             // Re-renderizar para actualizar visualización
@@ -682,7 +675,8 @@ function openAchievements() {
     const modal = document.getElementById('achievements-modal');
     modal.classList.add('active');
 
-    renderAchievements();
+    // Usar el método refactorizado del manager
+    achievementManager.renderAchievements(user, dailyChallengeManager);
 }
 
 /**
@@ -693,200 +687,6 @@ function closeAchievements() {
     modal.classList.remove('active');
 }
 
-/**
- * Renderiza los logros del usuario
- */
-function renderAchievements() {
-    const user = userManager.getCurrentUser();
-    if (!user) return;
-
-    const content = document.getElementById('achievements-content');
-    const progress = achievementManager.getTotalProgress(user);
-    const categoryProgress = achievementManager.getProgressByCategory(user);
-    const achievements = achievementManager.getUserAchievements(user, false);
-    const dailyChallenges = dailyChallengeManager.getDailyChallenges(user);
-
-    // Resumen general
-    let html = `
-        <div class="achievements-summary">
-            <div class="summary-title">Progreso Total</div>
-            <div class="summary-stats">
-                <div class="summary-stat">
-                    <span class="stat-value">${progress.unlocked}</span>
-                    <span class="stat-label">Desbloqueados</span>
-                </div>
-                <div class="summary-stat">
-                    <span class="stat-value">${progress.total}</span>
-                    <span class="stat-label">Total</span>
-                </div>
-                <div class="summary-stat">
-                    <span class="stat-value">${progress.percentage}%</span>
-                    <span class="stat-label">Completado</span>
-                </div>
-            </div>
-        </div>
-    `;
-
-    // Desafíos diarios
-    html += `
-        <div class="daily-challenges">
-            <div class="daily-challenges-header">
-                <div class="daily-challenges-title">${t('daily_challenges_title')}</div>
-            </div>
-            <div class="daily-challenges-list">
-    `;
-
-    dailyChallenges.forEach(challenge => {
-        const progressPercent = Math.round((challenge.progress / challenge.target) * 100);
-        const text = dailyChallengeManager.formatChallengeText(challenge);
-        const isClaimable = challenge.completed && !challenge.claimed;
-        const buttonLabel = challenge.claimed
-            ? t('daily_challenge_claimed')
-            : (isClaimable ? t('daily_challenge_claim') : t('daily_challenge_progress'));
-
-        html += `
-            <div class="daily-challenge-card ${challenge.completed ? 'completed' : ''}">
-                <div class="daily-challenge-info">
-                    <div class="daily-challenge-name">${text.name}</div>
-                    <div class="daily-challenge-desc">${text.description}</div>
-                    <div class="daily-challenge-reward">${t('daily_challenge_reward')} +${challenge.reward}</div>
-                    <div class="daily-challenge-progress">
-                        <div class="daily-challenge-bar">
-                            <div class="daily-challenge-fill" style="width: ${progressPercent}%"></div>
-                        </div>
-                        <div class="daily-challenge-percent">${progressPercent}%</div>
-                    </div>
-                </div>
-                <button class="daily-challenge-claim" onclick="claimDailyChallenge('${challenge.id}')" ${isClaimable ? '' : 'disabled'}>
-                    ${buttonLabel}
-                </button>
-            </div>
-        `;
-    });
-
-    html += `
-            </div>
-        </div>
-    `;
-
-    // Agrupar logros por categoría
-    const categories = {
-        progress: [],
-        logic: [],
-        mastery: [],
-        economy: [],
-        social: [],
-        secret: []
-    };
-
-    achievements.forEach(achievement => {
-        categories[achievement.category].push(achievement);
-    });
-
-    // Filtros por categoría
-    html += `
-        <div class="achievement-filters">
-            <button class="achievement-filter active" data-filter="all">Todas</button>
-            <button class="achievement-filter" data-filter="progress">Progreso</button>
-            <button class="achievement-filter" data-filter="logic">Lógica</button>
-            <button class="achievement-filter" data-filter="mastery">Maestría</button>
-            <button class="achievement-filter" data-filter="economy">Economía</button>
-            <button class="achievement-filter" data-filter="social">Social</button>
-            <button class="achievement-filter" data-filter="secret">Secretos</button>
-        </div>
-    `;
-
-    // Renderizar cada categoría
-    Object.entries(categoryProgress).forEach(([categoryKey, categoryData]) => {
-        if (categories[categoryKey].length === 0) return;
-
-        const progressPercentage = (categoryData.unlocked / categoryData.total) * 100;
-
-        html += `
-            <div class="achievement-category" data-category="${categoryKey}">
-                <div class="category-header">
-                    <div>
-                        <div class="category-title">${categoryData.name}</div>
-                        <div class="category-progress">${categoryData.unlocked}/${categoryData.total} · ${Math.round(progressPercentage)}%</div>
-                    </div>
-                </div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar-background">
-                        <div class="progress-bar-fill" style="width: ${progressPercentage}%"></div>
-                    </div>
-                    <div class="progress-bar-text">${Math.round(progressPercentage)}%</div>
-                </div>
-                <div class="achievements-grid">
-        `;
-
-        categories[categoryKey].forEach(achievement => {
-            const unlockedClass = achievement.unlocked ? 'unlocked' : 'locked';
-            const dateText = achievement.unlocked && achievement.unlockedAt
-                ? `<div class="achievement-card-date">Desbloqueado: ${new Date(achievement.unlockedAt).toLocaleDateString()}</div>`
-                : '';
-
-            if (achievement.secret && !achievement.unlocked) {
-                html += `
-                    <div class="achievement-card locked">
-                        <div class="achievement-secret">❓</div>
-                        <div class="achievement-card-name">Logro Secreto</div>
-                        <div class="achievement-card-description">???</div>
-                    </div>
-                `;
-            } else {
-                // Calcular progreso para logros bloqueados
-                let progressHTML = '';
-                if (!achievement.unlocked) {
-                    const progress = achievementManager.getAchievementProgress(achievement, user);
-                    if (progress.percentage > 0 && progress.percentage < 100) {
-                        progressHTML = `
-                            <div class="achievement-progress-container">
-                                <div class="achievement-progress-bar">
-                                    <div class="achievement-progress-fill" style="width: ${progress.percentage}%"></div>
-                                </div>
-                                <div class="achievement-progress-text">${progress.hint}</div>
-                            </div>
-                        `;
-                    }
-                }
-
-                html += `
-                    <div class="achievement-card ${unlockedClass}">
-                        <div class="achievement-card-icon">${achievement.icon}</div>
-                        <div class="achievement-card-name">${achievement.name}</div>
-                        <div class="achievement-card-description">${achievement.description}</div>
-                        ${progressHTML}
-                        ${dateText}
-                    </div>
-                `;
-            }
-        });
-
-        html += `
-                </div>
-            </div>
-        `;
-    });
-
-    content.innerHTML = html;
-
-    // Activar filtros
-    const filterButtons = content.querySelectorAll('.achievement-filter');
-    const categoryBlocks = content.querySelectorAll('.achievement-category');
-
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            const filter = button.getAttribute('data-filter');
-            categoryBlocks.forEach(block => {
-                const category = block.getAttribute('data-category');
-                block.style.display = (filter === 'all' || filter === category) ? 'block' : 'none';
-            });
-        });
-    });
-}
 
 function updateDailyChallengeProgress(type, amount) {
     const user = userManager.getCurrentUser();
@@ -903,7 +703,7 @@ function claimDailyChallenge(challengeId) {
     const claimed = dailyChallengeManager.claimReward(user, challengeId);
     if (claimed) {
         userManager.saveToStorage();
-        renderAchievements();
+        achievementManager.renderAchievements(user, dailyChallengeManager);
         users = userManager.getUsers();
     }
 }
@@ -929,13 +729,22 @@ function checkAndNotifyAchievements() {
     }
 }
 
+// Inicializar OnlineGameController
+const onlineGameController = new OnlineGameController(
+    onlineManager,
+    gameEngine,
+    questionGenerator,
+    userManager,
+    t
+);
+
+// Exponer globalmente para HTML calls
+window.onlineGameController = onlineGameController;
+
 /**
  * ========== FUNCIONES PARA MODO DUELO ONLINE ==========
  */
 
-/**
- * Muestra la pantalla de selección de modo duelo
- */
 function showDuelModeSelector() {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const screen = document.getElementById('screen-duel-mode');
@@ -944,201 +753,55 @@ function showDuelModeSelector() {
     }
 }
 
-/**
- * Inicia duelo local (múltiples jugadores en el dispositivo actual)
- */
 function startLocalDuel() {
-    const users = userManager.getUsers();
-
-    if (Object.keys(users).length < 2) {
-        alert(t('alert_min_users'));
-        return;
-    }
-
-    // Usar la función original de GameEngine
-    gameEngine.setupDuel();
-    // Sincronizar estado global
+    localDuelManager.startDuel();
     currentUser = userManager.getCurrentUserName();
 }
 
 /**
- * Crea una sala online y muestra el token para compartir
+ * Delegated Methods for Online Play
  */
-async function createAndShareGameRoom() {
-    try {
-        const messageDiv = document.getElementById('online-credentials-message');
-        showMessage(messageDiv, 'Creando sala...', 'loading');
-
-        const result = await onlineManager.createRoom();
-
-        if (result.ok) {
-            showMessage(messageDiv, '✅ Sala creada', 'success');
-            showShareRoomToken(result.token);
-        } else {
-            showMessage(messageDiv, result.error || 'Error desconocido', 'error');
-        }
-    } catch (error) {
-        console.error('Error al crear sala:', error);
-        showMessage(messageDiv, error.message || 'Error de conexión', 'error');
-    }
+function createAndShareGameRoom() {
+    onlineGameController.createAndShareGameRoom();
 }
 
-/**
- * Muestra modal con código de sala para compartir
- */
-function showShareRoomToken(token) {
-    closeOnlineCredentialsModal();
-    const modal = document.getElementById('share-room-modal');
-    if (!modal) {
-        // Crear modal si no existe
-        createShareRoomModal();
-    }
-
-    const modal2 = document.getElementById('share-room-modal');
-    if (modal2) {
-        document.getElementById('room-code-display').textContent = token;
-        modal2.style.display = 'flex';
-    }
-}
-
-/**
- * Crea el modal de compartir sala si no existe
- */
-function createShareRoomModal() {
-    const html = `
-        <div id="share-room-modal" class="modal" style="display: none;">
-            <div class="modal-content" style="max-width: 400px;">
-                <div class="modal-header">
-                    <h2>🎮 Código de Sala</h2>
-                    <button class="modal-close" onclick="closeShareRoomModal()">✖</button>
-                </div>
-                <div style="padding: 20px; text-align: center;">
-                    <p style="margin-bottom: 20px; font-size: 1.1rem;">
-                        Comparte este código con tu amigo:
-                    </p>
-                    <div style="background: #fff9e6; border: 3px solid var(--gold); border-radius: 10px; padding: 15px; margin-bottom: 20px;">
-                        <div id="room-code-display" style="font-size: 2rem; font-weight: bold; color: var(--primary); font-family: monospace; letter-spacing: 5px;">
-                            LOADING...
-                        </div>
-                    </div>
-                    <button class="main-btn" onclick="copyRoomCode()" style="width: 100%; margin-bottom: 10px;">
-                        📋 Copiar código
-                    </button>
-                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">
-                        Esperando a tu amigo... (Timeout en 1 hora)
-                    </p>
-                    <button class="btn-back" onclick="closeShareRoomModal()" style="width: 100%;">
-                        ❌ Cancelar
-                    </button>
-                </div>
-            </div>
-        </div>
-    `;
-
-    const container = document.getElementById('app-container');
-    if (container) {
-        container.insertAdjacentHTML('beforeend', html);
-    }
-}
-
-/**
- * Copia el código de sala al portapapeles
- */
-function copyRoomCode() {
-    const code = document.getElementById('room-code-display').textContent;
-    navigator.clipboard.writeText(code).then(() => {
-        alert(`✅ Código copiado: ${code}\nComparte por WhatsApp, Telegram o email`);
-    }).catch(err => {
-        console.error('Error al copiar:', err);
-        alert('No pudimos copiar. Copia manualmente: ' + code);
-    });
-}
-
-/**
- * Cierra modal de compartir sala
- */
-function closeShareRoomModal() {
-    const modal = document.getElementById('share-room-modal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-    showDuelModeSelector();
-}
-
-/**
- * Se une a una sala usando código
- */
-async function joinRoomByCode() {
+function joinRoomByCode() {
     const roomCode = document.getElementById('join-room-input').value.trim().toUpperCase();
-    const messageDiv = document.getElementById('online-credentials-message');
-
-    if (!roomCode) {
-        showMessage(messageDiv, 'Ingresa el código de la sala', 'error');
-        return;
-    }
-
-    try {
-        showMessage(messageDiv, 'Uniéndose a la sala...', 'loading');
-
-        const result = await onlineManager.joinRoom(roomCode);
-
-        if (result.ok) {
-            showMessage(messageDiv, '✅ ¡Te uniste a la sala!', 'success');
-
-            // Cerrar modal y conectar al WebSocket
-            setTimeout(() => {
-                closeOnlineCredentialsModal();
-                const username = userManager.getCurrentUserName();
-                const credentials = onlineManager.getStoredCredentials();
-                connectToOnlineGame(username, credentials.password);
-            }, 1000);
-        } else {
-            showMessage(messageDiv, result.error || 'Error desconocido', 'error');
-        }
-    } catch (error) {
-        console.error('Error al unirse a sala:', error);
-        showMessage(messageDiv, error.message || 'Error de conexión', 'error');
-    }
+    onlineGameController.joinRoomByCode(roomCode);
 }
 
 function prepareOnlineDuel() {
-    // Verificar si hay credenciales guardadas
+    // Check credentials via manager, logic in controller?? 
+    // Usually UI logic stays here or delegates. 
+    // Let's delegate checking logic or keep simple UI switch here.
     if (onlineManager.hasStoredCredentials()) {
-        // Ya tiene credenciales guardadas, ir a opciones
         const credentials = onlineManager.getStoredCredentials();
-        console.log('Usando credenciales guardadas:', credentials.username);
+        console.log('Usando credenciales:', credentials.username);
         showOnlineDuelOptions();
     } else {
-        // Mostrar modal para ingresar credenciales
         openOnlineCredentialsModal();
     }
 }
 
-/**
- * Muestra las opciones para crear o unirse a una sala
- */
 function showOnlineDuelOptions() {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    const screen = document.getElementById('screen-online-options');
-    if (screen) {
-        screen.classList.add('active');
-        // Limpiar input
-        const input = document.getElementById('join-room-input');
-        if (input) input.value = '';
-    }
+    document.getElementById('screen-online-options').classList.add('active');
+    const input = document.getElementById('join-room-input');
+    if (input) input.value = '';
 }
 
-/**
- * Inicia el proceso de crear una sala después de autentificar
- */
 function startCreateRoom() {
-    pendingOnlineAction = 'create';
+    onlineGameController.pendingOnlineAction = 'create';
     openOnlineCredentialsModal();
 }
 
-/**
- * Abre el modal para ingresar credenciales
- */
+function registerOrLoginOnline() {
+    const username = document.getElementById('online-username').value.trim();
+    const password = document.getElementById('online-password').value.trim();
+    onlineGameController.registerOrLoginOnline(username, password);
+}
+
+// Credential Modals Helper (View Logic)
 function openOnlineCredentialsModal() {
     const modal = document.getElementById('online-credentials-modal');
     if (modal) {
@@ -1147,127 +810,48 @@ function openOnlineCredentialsModal() {
         document.getElementById('online-password').value = '';
         document.getElementById('online-username').focus();
 
-        // Limpiar mensaje previo
         const messageDiv = document.getElementById('online-credentials-message');
-        if (messageDiv) {
-            messageDiv.style.display = 'none';
-        }
+        if (messageDiv) messageDiv.style.display = 'none';
     }
 }
 
-/**
- * Cierra el modal de credenciales
- */
 function closeOnlineCredentialsModal() {
     const modal = document.getElementById('online-credentials-modal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
+    if (modal) modal.style.display = 'none';
 }
 
-/**
- * Registra o autentica al usuario online
- */
-async function registerOrLoginOnline() {
-    const username = document.getElementById('online-username').value.trim();
-    const password = document.getElementById('online-password').value.trim();
-    const messageDiv = document.getElementById('online-credentials-message');
-
-    if (!username || !password) {
-        showMessage(messageDiv, t('error_credentials_required') || 'Usuario y contraseña requeridos', 'error');
-        return;
-    }
-
-    if (password.length < 6) {
-        showMessage(messageDiv, t('error_password_min') || 'La contraseña debe tener al menos 6 caracteres', 'error');
-        return;
-    }
-
-    try {
-        showMessage(messageDiv, 'Conectando...', 'loading');
-
-        // Usar OnlineManager para registrar o login
-        const result = await onlineManager.registerOrLogin(username, password);
-
-        if (result.ok) {
-            showMessage(messageDiv, t('success_connected') || '✅ Conectado exitosamente', 'success');
-
-            // Cerrar modal después de 1 segundo
-            setTimeout(() => {
-                closeOnlineCredentialsModal();
-
-                // Realizar acción pendiente
-                if (pendingOnlineAction === 'create') {
-                    createAndShareGameRoom();
-                    pendingOnlineAction = null;
-                } else {
-                    // Mostrar opciones de duelo online y conectar
-                    const credentials = onlineManager.getStoredCredentials();
-                    connectToOnlineGame(username, credentials.password);
-                }
-            }, 1000);
-        } else {
-            showMessage(messageDiv, result.error || 'Error desconocido', 'error');
-        }
-    } catch (error) {
-        console.error('Error al conectar:', error);
-        showMessage(messageDiv, error.message || 'Error de conexión', 'error');
-    }
-}
-
-/**
- * Conecta al servidor WebSocket para juego online
- */
-async function connectToOnlineGame(username, password) {
-    try {
-        const result = await onlineManager.connect(username, password);
-
-        if (result && result.type === 'login_success') {
-            startOnlineGame(username, result.iceServers);
-        }
-    } catch (error) {
-        console.error('Error al conectar:', error);
-        alert(error.message || 'Error de conexión');
-        showDuelModeSelector();
-    }
-}
-
-/**
- * Inicia el juego online (placeholder por ahora)
- */
-function startOnlineGame(username, iceServers) {
-    console.log('🌐 Juego online iniciado para:', username);
-    console.log('🔌 ICE Servers disponibles:', iceServers);
-
-    // Aquí se implementaría la lógica del juego online con WebRTC
-    // Por ahora solo mostrar confirmación
-    alert(`Preparado para jugar online como ${username}. Próximamente se habilitará la búsqueda de oponentes.`);
-
-    // Volver a pantalla inicial
-    showUsers();
-}
-
-/**
- * Muestra mensaje en el div especificado
- */
 function showMessage(messageDiv, text, type = 'error') {
-    if (!messageDiv) return;
-
-    messageDiv.style.display = 'block';
-    messageDiv.textContent = text;
-    messageDiv.style.backgroundColor =
-        type === 'error' ? '#fee' :
-            type === 'loading' ? '#eef' :
-                type === 'success' ? '#efe' : '#fff';
-    messageDiv.style.color =
-        type === 'error' ? '#c33' :
-            type === 'loading' ? '#33c' :
-                type === 'success' ? '#3c3' : '#333';
-    messageDiv.style.borderLeft =
-        type === 'error' ? '4px solid #c33' :
-            type === 'loading' ? '4px solid #33c' :
-                type === 'success' ? '4px solid #3c3' : '4px solid #999';
+    onlineGameController.showMessage(messageDiv, text, type);
 }
+
+/**
+ * Listeners for Custom Events from Controller
+ */
+window.addEventListener('online-connected', () => {
+    // If we just connected (not joining/creating), show options
+    showOnlineDuelOptions();
+});
+
+window.addEventListener('show-duel-selector', () => {
+    showDuelModeSelector();
+});
+
+window.addEventListener('online-game-start', () => {
+    // Update global UI vars from engine if needed (often reference directly)
+    gameLevel = gameEngine.gameLevel;
+    gameCoins = gameEngine.gameCoins;
+    timeLeft = gameEngine.timeLeft;
+
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-game').classList.add('active');
+
+    updateRecordDisplay();
+    document.getElementById('game-level').innerText = gameLevel;
+    document.getElementById('game-coins').innerText = gameCoins;
+
+    generateQuestion();
+    startTimer();
+});
 
 // Inicializar la aplicación (evitar auto-init en tests)
 if (typeof window !== 'undefined' && !window.__TEST__) {
@@ -1281,4 +865,5 @@ if (typeof window !== 'undefined') {
     window.__appManagers.achievementManager = achievementManager;
     window.__appManagers.dailyChallengeManager = dailyChallengeManager;
     window.__appManagers.onlineManager = onlineManager;
+    window.__appManagers.onlineGameController = onlineGameController;
 }
