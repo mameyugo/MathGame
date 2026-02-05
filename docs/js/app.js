@@ -160,6 +160,9 @@ function startSingleGame() {
  * @param {string} type - 'logica' o 'matematico'
  */
 function startProblemGame(type) {
+    // Reset problem session to establish new problem pool
+    questionGenerator.resetProblemSession();
+
     // Validar que hay categorías seleccionadas
     const selectedCategories = userManager.getProblemCategories();
     if (!problemCategoryManager.hasValidSelection(selectedCategories)) {

@@ -18,6 +18,7 @@ class QuestionGenerator {
         this.gameLevel = 1;
         this.problemType = 'matematico';
         this.gameEngine = gameEngine;
+        this.initialProblemLevel = null; // Locked level for problem pool during session
     }
 
     /**
@@ -171,6 +172,11 @@ class QuestionGenerator {
             return null;
         }
 
+        // Lock the initial problem level on first selection to maintain constant pool
+        if (this.initialProblemLevel === null) {
+            this.initialProblemLevel = this.gameLevel;
+        }
+
         // Obtener categorías seleccionadas por el usuario
         const selectedCategories = this.userManager.getProblemCategories();
 
@@ -180,9 +186,9 @@ class QuestionGenerator {
             return null;
         }
 
-        // Filtrar problemas por tipo y nivel
+        // Filtrar problemas por tipo y nivel CONGELADO (no dinámico)
         const candidates = window.bancoProblemas.filter(
-            p => p.tipo === this.problemType && p.nivelMin <= this.gameLevel
+            p => p.tipo === this.problemType && p.nivelMin <= this.initialProblemLevel
         );
 
         // Filtrar por categorías seleccionadas
@@ -510,6 +516,14 @@ class QuestionGenerator {
         if (typeof window !== 'undefined' && this.gameEngine && typeof endGameSession === 'function') {
             endGameSession();
         }
+    }
+
+    /**
+     * Resets the problem session level to allow new sessions to establish their own pool
+     * Called when starting a new problem game session
+     */
+    resetProblemSession() {
+        this.initialProblemLevel = null;
     }
 }
 
