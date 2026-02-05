@@ -11,6 +11,8 @@ const gameEngineCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers
 const questionGeneratorCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/QuestionGenerator.js'), 'utf8');
 const problemCategoryManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/ProblemCategoryManager.js'), 'utf8');
 const onlineManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/OnlineManager.js'), 'utf8');
+const localDuelManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/LocalDuelManager.js'), 'utf8');
+const onlineGameControllerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/OnlineGameController.js'), 'utf8');
 const problemaCode = fs.readFileSync(path.join(__dirname, '../docs/js/problemas.js'), 'utf8');
 const appCode = fs.readFileSync(path.join(__dirname, '../docs/js/app.js'), 'utf8');
 
@@ -67,6 +69,16 @@ beforeAll(() => {
     window.eval(`
         ${onlineManagerCode}
         window.OnlineManager = OnlineManager;
+    `);
+
+    window.eval(`
+        ${localDuelManagerCode}
+        window.LocalDuelManager = LocalDuelManager;
+    `);
+
+    window.eval(`
+        ${onlineGameControllerCode}
+        window.OnlineGameController = OnlineGameController;
     `);
 
     window.eval(problemaCode);
@@ -578,9 +590,10 @@ describe('MathQix - Tests Unitarios', () => {
     });
 
     describe('Panel de Logros', () => {
-        test('renderAchievements debe crear filtros y categorías', () => {
+        test('renderAchievements debe crear filtros y lista de logros', () => {
             const userManager = window.__appManagers.userManager;
             const achievementManager = window.__appManagers.achievementManager;
+            const dailyChallengeManager = window.__appManagers.dailyChallengeManager;
 
             const user = {
                 level: 1,
@@ -605,20 +618,21 @@ describe('MathQix - Tests Unitarios', () => {
 
             document.body.innerHTML = '<div id="achievements-content"></div>';
 
-            window.renderAchievements();
+            achievementManager.renderAchievements(user, dailyChallengeManager);
 
             const filters = document.querySelector('.achievement-filters');
             const filterButtons = document.querySelectorAll('.achievement-filter');
-            const categoryBlocks = document.querySelectorAll('.achievement-category');
+            const cards = document.querySelectorAll('.achievement-card');
 
             expect(filters).toBeTruthy();
             expect(filterButtons.length).toBe(7);
-            expect(categoryBlocks.length).toBeGreaterThan(0);
+            expect(cards.length).toBeGreaterThan(0);
         });
 
-        test('filtro de categoría debe ocultar otras categorías', () => {
+        test('filtro de categoría debe ocultar tarjetas de otras categorías', () => {
             const userManager = window.__appManagers.userManager;
             const achievementManager = window.__appManagers.achievementManager;
+            const dailyChallengeManager = window.__appManagers.dailyChallengeManager;
 
             const user = {
                 level: 1,
@@ -643,16 +657,25 @@ describe('MathQix - Tests Unitarios', () => {
 
             document.body.innerHTML = '<div id="achievements-content"></div>';
 
-            window.renderAchievements();
+            achievementManager.renderAchievements(user, dailyChallengeManager);
 
             const logicFilter = document.querySelector('.achievement-filter[data-filter="logic"]');
-            const progressCategory = document.querySelector('.achievement-category[data-category="progress"]');
-            const logicCategory = document.querySelector('.achievement-category[data-category="logic"]');
+
+            // Find a card that should show (logic) and one that should hide (progress)
+            // Note: We need to know which cards belong to which category.
+            // AchievementManager logic: card.dataset.category
+
+            const logicCard = document.querySelector('.achievement-card[data-category="logic"]');
+            const progressCard = document.querySelector('.achievement-card[data-category="progress"]');
+
+            // Initial state (all shown)
+            // expect(logicCard.style.display).not.toBe('none'); // Flex by default or from CSS class
 
             logicFilter.dispatchEvent(new window.Event('click'));
 
-            expect(progressCategory.style.display).toBe('none');
-            expect(logicCategory.style.display).toBe('block');
+            expect(progressCard.style.display).toBe('none');
+            // Logic card should be visible (style.display sets to 'flex')
+            expect(logicCard.style.display).toBe('flex');
         });
     });
 });

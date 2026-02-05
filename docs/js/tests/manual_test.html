@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>MathGame Manual Test</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .test-section { margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; }
+        .passed { color: green; font-weight: bold; }
+        .failed { color: red; font-weight: bold; }
+        button { padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>MathGame Manual Test Suite</h1>
+    
+    <div class="test-section">
+        <h3>1. Managers Initialization</h3>
+        <p>Check if all managers are initialized correctly.</p>
+        <button onclick="checkManagers()">Run Check</button>
+        <div id="result-managers"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>2. Local Duel Manager</h3>
+        <p>Test if LocalDuelManager is exposed and functional.</p>
+        <button onclick="checkLocalDuel()">Run Check</button>
+        <div id="result-duel"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>3. Online Controller</h3>
+        <p>Test if OnlineGameController is exposed.</p>
+        <button onclick="checkOnline()">Run Check</button>
+        <div id="result-online"></div>
+    </div>
+
+    <!-- Mocks and Imports -->
+    <script>
+        // Mock translation
+        const t = (key) => key;
+        class TranslationManager { t(k) { return k; } getCurrentLanguage() { return 'es'; } loadTranslations() {} changeLanguage() {} }
+        class UserManager { 
+            getUsers() { return { 'player1': {}, 'player2': {} }; } 
+            getCurrentUserName() { return 'player1'; }
+            getCurrentUser() { return { name: 'player1' }; }
+        }
+        class GameEngine { 
+            setupDuel() { console.log('GameEngine: setupDuel called'); }
+            setOnlineCallbacks() {}
+        }
+        class QuestionGenerator {}
+        class AchievementManager {}
+        class DailyChallengeManager {}
+        class OnlineManager { onPeerConnected() {} onGameEvent() {} }
+        class StoreManager { getStoreItems() { return []; } }
+        class ProblemCategoryManager {}
+
+        // Mock window globals expected by app.js if they don't exist
+        window.TranslationManager = TranslationManager;
+        window.UserManager = UserManager;
+        window.GameEngine = GameEngine;
+        window.QuestionGenerator = QuestionGenerator;
+        window.AchievementManager = AchievementManager;
+        window.DailyChallengeManager = DailyChallengeManager;
+        window.OnlineManager = OnlineManager;
+        window.StoreManager = StoreManager;
+        window.ProblemCategoryManager = ProblemCategoryManager;
+    </script>
+    
+    <!-- Load Scripts to Test (Assuming relative paths work if served correctly, otherwise adapt) -->
+    <script src="../managers/OnlineGameController.js"></script>
+    <script src="../managers/LocalDuelManager.js"></script>
+
+    <script>
+        function log(id, msg, success) {
+            const el = document.getElementById(id);
+            el.innerHTML = `<span class="${success ? 'passed' : 'failed'}">${success ? 'PASS' : 'FAIL'}</span>: ${msg}`;
+        }
+
+        function checkManagers() {
+            try {
+                // In a real env, app.js would init these. Here we explicitly check the classes we just loaded
+                if (window.OnlineGameController && window.LocalDuelManager) {
+                    log('result-managers', 'Classes loaded successfully', true);
+                } else {
+                    log('result-managers', 'One or more classes missing', false);
+                }
+            } catch (e) {
+                log('result-managers', e.message, false);
+            }
+        }
+
+        function checkLocalDuel() {
+            try {
+                const mockGameEngine = new GameEngine();
+                const mockUserManager = new UserManager();
+                const manager = new LocalDuelManager(mockGameEngine, mockUserManager, t);
+                
+                manager.setupDuel(); // Should log to console
+                log('result-duel', 'LocalDuelManager instantiated and method called (check console)', true);
+            } catch (e) {
+                log('result-duel', e.message, false);
+            }
+        }
+
+        function checkOnline() {
+             try {
+                const mockOnline = new OnlineManager();
+                const ctrl = new OnlineGameController(mockOnline, {}, {}, {}, t);
+                if (ctrl) log('result-online', 'OnlineGameController instantiated', true);
+            } catch (e) {
+                log('result-online', e.message, false);
+            }
+        }
+    </script>
+</body>
+</html>
