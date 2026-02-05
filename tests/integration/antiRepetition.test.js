@@ -436,8 +436,21 @@ describe('Anti-Repetition System Integration', () => {
             questionGenerator.gameLevel = 2;
 
             const problem2 = questionGenerator.selectProblem();
-            // Should now have access to level 2 problems
-            expect(['level1_problem', 'level2_problem']).toContain(problem2.id);
+            // After reset at level 2, should now have access to both level 1 and 2 problems
+            expect(problem2).toBeDefined();
+            expect(problem2.id).toMatch(/^level[12]_problem$/);
+            
+            // Verify the pool now includes level 2 problems by attempting to select multiple times
+            const selectedIds = new Set();
+            for (let i = 0; i < 10; i++) {
+                questionGenerator.resetProblemSession();
+                gameEngine.resetSolvedProblems();
+                questionGenerator.gameLevel = 2;
+                const p = questionGenerator.selectProblem();
+                if (p) selectedIds.add(p.id);
+            }
+            // Should be able to find both level 1 and level 2 problems in the pool
+            expect(selectedIds.size).toBeGreaterThan(1);
         });
     });
 });
