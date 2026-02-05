@@ -10,6 +10,7 @@ const dailyChallengeManagerCode = fs.readFileSync(path.join(__dirname, '../docs/
 const gameEngineCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/GameEngine.js'), 'utf8');
 const questionGeneratorCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/QuestionGenerator.js'), 'utf8');
 const problemCategoryManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/ProblemCategoryManager.js'), 'utf8');
+const onlineManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/OnlineManager.js'), 'utf8');
 const problemaCode = fs.readFileSync(path.join(__dirname, '../docs/js/problemas.js'), 'utf8');
 const appCode = fs.readFileSync(path.join(__dirname, '../docs/js/app.js'), 'utf8');
 
@@ -61,6 +62,11 @@ beforeAll(() => {
     window.eval(`
         ${problemCategoryManagerCode}
         window.ProblemCategoryManager = ProblemCategoryManager;
+    `);
+
+    window.eval(`
+        ${onlineManagerCode}
+        window.OnlineManager = OnlineManager;
     `);
 
     window.eval(problemaCode);

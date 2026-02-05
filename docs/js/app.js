@@ -1107,7 +1107,7 @@ async function joinRoomByCode() {
         showMessage(messageDiv, error.message || 'Error de conexión', 'error');
     }
 }
- */
+
 function prepareOnlineDuel() {
     // Verificar si hay credenciales guardadas
     if (onlineManager.hasStoredCredentials()) {
