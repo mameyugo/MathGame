@@ -1,6 +1,7 @@
 # Estructura del Proyecto MathGame
 
 ## 📋 Descripción General
+
 **MathGame** es una aplicación educativa de juegos matemáticos interactivos para niños. El proyecto está estructurado de forma modular con separación clara entre problemas matemáticos, gestión de usuarios, logros, tienda y sistema de traducciones.
 
 ## 🏗️ Estructura de Carpetas
@@ -124,30 +125,39 @@ MathGame/
 ## 🎮 Módulos Principales
 
 ### 1. **GameEngine** (`managers/GameEngine.js`)
+
 Núcleo de la aplicación. Gestiona el flujo del juego, turnos, puntuación y progresión del usuario.
 
 ### 2. **QuestionGenerator** (`managers/QuestionGenerator.js`)
+
 Genera preguntas y problemas dinámicamente según el nivel y categoría seleccionada.
 
 ### 3. **ProblemCategoryManager** (`managers/ProblemCategoryManager.js`)
+
 Gestiona categorías de problemas y niveles de dificultad.
 
 ### 4. **UserManager** (`managers/UserManager.js`)
+
 Gestiona datos de usuarios: nivel, puntuación, monedas, avatares.
 
 ### 5. **AchievementManager** (`managers/AchievementManager.js`)
+
 Sistema de logros desbloqueables por alcanzar metas específicas.
 
 ### 6. **DailyChallengeManager** (`managers/DailyChallengeManager.js`)
+
 Desafíos diarios que se regeneran cada 24 horas.
 
 ### 7. **StoreManager** (`managers/StoreManager.js`)
+
 Tienda virtual donde comprar avatares y decoraciones con monedas.
 
 ### 8. **TranslationManager** (`managers/TranslationManager.js`)
+
 Sistema multiidioma (7 idiomas soportados).
 
 ## 🌍 Idiomas Soportados
+
 - 🇪🇸 Español (es)
 - 🇬🇧 English (en)
 - 🇫🇷 Français (fr)
@@ -159,7 +169,9 @@ Sistema multiidioma (7 idiomas soportados).
 ## 📚 Sistema de Problemas
 
 ### Estructura de Problemas
+
 Cada problema tiene:
+
 - `id`: Identificador único
 - `tipo`: matemático, lógica
 - `nivelMin`: Nivel mínimo requerido
@@ -168,6 +180,7 @@ Cada problema tiene:
 - `generar()`: Función que genera la pregunta dinámicamente
 
 ### Respuesta de Problema
+
 ```javascript
 {
   texto: "Pregunta generada",
@@ -182,11 +195,13 @@ Cada problema tiene:
 ## 🧪 Testing
 
 ### Cobertura
+
 - **220 pruebas totales**
 - **10 suites de pruebas**
 - Incluye pruebas unitarias e integración
 
 ### Ejecutar pruebas
+
 ```bash
 npm test
 ```
@@ -194,19 +209,23 @@ npm test
 ## 🛠️ Desarrollo
 
 ### Instalar dependencias
+
 ```bash
 npm install
 ```
 
 ### Ejecutar en desarrollo
+
 Abrir `docs/index.html` en navegador (requiere servidor local)
 
 ### Construir/Empaquetar
+
 ```bash
 npm run build
 ```
 
 ### Ver cambios de cache
+
 ```bash
 npm run bump-cache
 ```
@@ -214,6 +233,7 @@ npm run bump-cache
 ## 📖 Para Agentes IA
 
 Para entender mejor cómo contribuir:
+
 1. Lee [PROJECT_ARCHITECTURE.md](.ai-docs/PROJECT_ARCHITECTURE.md) para visión técnica completa
 2. Consulta los módulos específicos en `.ai-docs/` según lo que necesites modificar
 3. Revisa [DEVELOPMENT_GUIDE.md](.ai-docs/DEVELOPMENT_GUIDE.md) para mejores prácticas

@@ -1,23 +1,25 @@
 # Sistema de Traducciones (i18n)
 
 ## 📍 Ubicación
+
 - **Problemas**: `docs/js/problems/i18n/`
 - **UI General**: `docs/lang/`
 
 ## 🎯 Propósito
+
 Soportar múltiples idiomas (7 actualmente) para la interfaz y problemas matemáticos.
 
 ## 🌍 Idiomas Soportados
 
-| Código | Idioma | Archivos |
-|--------|--------|----------|
-| es | Español | i18n/es.js, lang/es.json |
-| en | English | i18n/en.js, lang/en.json |
-| fr | Français | i18n/fr.js, lang/fr.json |
-| ca | Català | i18n/ca.js, lang/ca.json |
-| de | Deutsch | i18n/de.js, lang/de.json |
-| pt | Português | i18n/pt.js, lang/pt.json |
-| gl | Galego | i18n/gl.js, lang/gl.json |
+| Código | Idioma    | Archivos                 |
+| ------ | --------- | ------------------------ |
+| es     | Español   | i18n/es.js, lang/es.json |
+| en     | English   | i18n/en.js, lang/en.json |
+| fr     | Français  | i18n/fr.js, lang/fr.json |
+| ca     | Català    | i18n/ca.js, lang/ca.json |
+| de     | Deutsch   | i18n/de.js, lang/de.json |
+| pt     | Português | i18n/pt.js, lang/pt.json |
+| gl     | Galego    | i18n/gl.js, lang/gl.json |
 
 ## 🏗️ Estructura del Sistema
 
@@ -42,21 +44,18 @@ TranslationManager
 ```javascript
 // i18n/es.js
 export const problemsES = {
-  compra_estandar: {
-    texto: (cantidad, precio) => 
-      `Compramos ${cantidad} gomas de borrar...`,
-    explicacion: (cantidad, precio) => 
-      `Tienes que multiplicar: ${cantidad} × ${precio}...`
-  },
-  
-  dedos_manos_logica: {
-    texto: (manos) => 
-      `Si en una mano tengo 5 dedos...`,
-    explicacion: (manos) => 
-      `¡Piensa bien! Cada mano tiene 5 dedos...`
-  },
-  
-  // ... más problemas
+    compra_estandar: {
+        texto: (cantidad, precio) => `Compramos ${cantidad} gomas de borrar...`,
+        explicacion: (cantidad, precio) =>
+            `Tienes que multiplicar: ${cantidad} × ${precio}...`,
+    },
+
+    dedos_manos_logica: {
+        texto: (manos) => `Si en una mano tengo 5 dedos...`,
+        explicacion: (manos) => `¡Piensa bien! Cada mano tiene 5 dedos...`,
+    },
+
+    // ... más problemas
 };
 ```
 
@@ -70,19 +69,19 @@ export const problemsES = {
 
 ```javascript
 // i18n/index.js
-import { problemsES } from './es.js';
-import { problemsEN } from './en.js';
-import { problemsFR } from './fr.js';
+import { problemsES } from "./es.js";
+import { problemsEN } from "./en.js";
+import { problemsFR } from "./fr.js";
 // ... más idiomas
 
 export const allProblemTranslations = {
-  es: problemsES,
-  en: problemsEN,
-  fr: problemsFR,
-  ca: problemsCA,
-  de: problemsDE,
-  pt: problemsPT,
-  gl: problemsGL
+    es: problemsES,
+    en: problemsEN,
+    fr: problemsFR,
+    ca: problemsCA,
+    de: problemsDE,
+    pt: problemsPT,
+    gl: problemsGL,
 };
 ```
 
@@ -93,20 +92,20 @@ export const allProblemTranslations = {
 ```json
 // lang/es.json
 {
-  "app_title": "MathGame",
-  "start_game": "Comenzar Juego",
-  "next_question": "Siguiente Pregunta",
-  "score": "Puntuación",
-  "level": "Nivel",
-  "coins": "Monedas",
-  "achievements": "Logros",
-  "language": "Idioma",
-  "settings": "Configuración",
-  "help": "Ayuda",
-  "about": "Acerca de",
-  "correct": "¡Correcto!",
-  "incorrect": "Incorrecto",
-  "try_again": "Intenta de nuevo"
+    "app_title": "MathGame",
+    "start_game": "Comenzar Juego",
+    "next_question": "Siguiente Pregunta",
+    "score": "Puntuación",
+    "level": "Nivel",
+    "coins": "Monedas",
+    "achievements": "Logros",
+    "language": "Idioma",
+    "settings": "Configuración",
+    "help": "Ayuda",
+    "about": "Acerca de",
+    "correct": "¡Correcto!",
+    "incorrect": "Incorrecto",
+    "try_again": "Intenta de nuevo"
 }
 ```
 
@@ -114,26 +113,27 @@ export const allProblemTranslations = {
 
 ```json
 {
-  "menu": {
-    "play": "Jugar",
-    "settings": "Configuración",
-    "achievements": "Logros"
-  },
-  "game": {
-    "score": "Puntuación",
-    "level": "Nivel",
-    "answer": "Respuesta"
-  },
-  "messages": {
-    "correct": "¡Muy bien!",
-    "incorrect": "Intenta de nuevo"
-  }
+    "menu": {
+        "play": "Jugar",
+        "settings": "Configuración",
+        "achievements": "Logros"
+    },
+    "game": {
+        "score": "Puntuación",
+        "level": "Nivel",
+        "answer": "Respuesta"
+    },
+    "messages": {
+        "correct": "¡Muy bien!",
+        "incorrect": "Intenta de nuevo"
+    }
 }
 ```
 
 ## 🔄 TranslationManager
 
 ### Ubicación
+
 `docs/js/managers/TranslationManager.js`
 
 ### Métodos Principales
@@ -142,19 +142,19 @@ export const allProblemTranslations = {
 class TranslationManager {
   // Obtener idioma actual
   getCurrentLanguage() → string
-  
+
   // Cambiar idioma
   setLanguage(languageCode) → void
-  
+
   // Traducir string de UI
   translate(key) → string
-  
+
   // Traducir con parámetros
   translateWithParams(key, params) → string
-  
+
   // Obtener problema traducido
   getProblemTranslation(problemId) → Object
-  
+
   // Obtener todos los idiomas disponibles
   getAvailableLanguages() → string[]
 }
@@ -166,18 +166,18 @@ class TranslationManager {
 const tm = new TranslationManager();
 
 // Cambiar idioma
-tm.setLanguage('en');
+tm.setLanguage("en");
 
 // Traducir string simple
-const buttonText = tm.translate('menu.play');
+const buttonText = tm.translate("menu.play");
 // → "Play"
 
 // Traducir con parámetros (si fuera necesario)
-const message = tm.translateWithParams('game.level', { level: 3 });
+const message = tm.translateWithParams("game.level", { level: 3 });
 // → "Level 3"
 
 // Obtener problema traducido
-const problemTrans = tm.getProblemTranslation('compra_estandar');
+const problemTrans = tm.getProblemTranslation("compra_estandar");
 const texto = problemTrans.texto(5, 3);
 // → "Compramos 5 gomas de borrar. Cada una cuesta 3€..."
 ```
@@ -232,12 +232,12 @@ const texto = problemTrans.texto(5, 3);
 
 ```javascript
 // Guardar preferencia
-localStorage['mathgame_language'] = 'es';
+localStorage["mathgame_language"] = "es";
 
 // Cargar al iniciar
-const savedLanguage = localStorage['mathgame_language'];
+const savedLanguage = localStorage["mathgame_language"];
 if (savedLanguage) {
-  translationManager.setLanguage(savedLanguage);
+    translationManager.setLanguage(savedLanguage);
 }
 ```
 
@@ -265,14 +265,14 @@ Cada función de traducción debe aceptar los parámetros necesarios:
 ```javascript
 // ❌ MALO - Falta parámetro
 compra_estandar: {
-  texto: (cantidad) => `Compramos ${cantidad} gomas...`
-  // ↑ Falta 'precio'
+    texto: (cantidad) => `Compramos ${cantidad} gomas...`;
+    // ↑ Falta 'precio'
 }
 
 // ✅ CORRECTO - Parámetros completos
 compra_estandar: {
-  texto: (cantidad, precio) => 
-    `Compramos ${cantidad} gomas de borrar. Cada una cuesta ${precio}€...`
+    texto: (cantidad, precio) =>
+        `Compramos ${cantidad} gomas de borrar. Cada una cuesta ${precio}€...`;
 }
 ```
 
@@ -304,32 +304,32 @@ Total: 2,100+ líneas traducidas
 ### Pruebas de Cobertura
 
 ```javascript
-describe('TranslationManager', () => {
-  it('should load all languages', () => {
-    const langs = tm.getAvailableLanguages();
-    expect(langs).toContain('es');
-    expect(langs).toContain('en');
-    // ... más idiomas
-  });
-  
-  it('should have all problem translations', () => {
-    for (const lang of tm.getAvailableLanguages()) {
-      tm.setLanguage(lang);
-      const trans = tm.getProblemTranslation('compra_estandar');
-      expect(trans.texto).toBeDefined();
-      expect(trans.explicacion).toBeDefined();
-    }
-  });
-  
-  it('should handle language switching', () => {
-    tm.setLanguage('es');
-    let text = tm.translate('menu.play');
-    expect(text).toBe('Jugar');
-    
-    tm.setLanguage('en');
-    text = tm.translate('menu.play');
-    expect(text).toBe('Play');
-  });
+describe("TranslationManager", () => {
+    it("should load all languages", () => {
+        const langs = tm.getAvailableLanguages();
+        expect(langs).toContain("es");
+        expect(langs).toContain("en");
+        // ... más idiomas
+    });
+
+    it("should have all problem translations", () => {
+        for (const lang of tm.getAvailableLanguages()) {
+            tm.setLanguage(lang);
+            const trans = tm.getProblemTranslation("compra_estandar");
+            expect(trans.texto).toBeDefined();
+            expect(trans.explicacion).toBeDefined();
+        }
+    });
+
+    it("should handle language switching", () => {
+        tm.setLanguage("es");
+        let text = tm.translate("menu.play");
+        expect(text).toBe("Jugar");
+
+        tm.setLanguage("en");
+        text = tm.translate("menu.play");
+        expect(text).toBe("Play");
+    });
 });
 ```
 
@@ -351,13 +351,12 @@ Ver: `tests/unit/TranslationsCoverage.test.js`
 ```javascript
 // i18n/xx.js
 export const problemsXX = {
-  compra_estandar: {
-    texto: (cantidad, precio) => 
-      `[Traducción nuevo idioma con ${cantidad} y ${precio}]`,
-    explicacion: (cantidad, precio) => 
-      `[Explicación]`
-  },
-  // ... copiar estructura completa
+    compra_estandar: {
+        texto: (cantidad, precio) =>
+            `[Traducción nuevo idioma con ${cantidad} y ${precio}]`,
+        explicacion: (cantidad, precio) => `[Explicación]`,
+    },
+    // ... copiar estructura completa
 };
 ```
 
@@ -365,29 +364,29 @@ export const problemsXX = {
 
 ```json
 {
-  "menu": {
-    "play": "[Traducción]",
-    "settings": "[Traducción]"
-  },
-  // ... copiar estructura completa
+    "menu": {
+        "play": "[Traducción]",
+        "settings": "[Traducción]"
+    }
+    // ... copiar estructura completa
 }
 ```
 
 ### Paso 3: Actualizar i18n/index.js
 
 ```javascript
-import { problemsXX } from './xx.js';
+import { problemsXX } from "./xx.js";
 
 export const allProblemTranslations = {
-  // ... existentes
-  xx: problemsXX
+    // ... existentes
+    xx: problemsXX,
 };
 ```
 
 ### Paso 4: Actualizar TranslationManager
 
 ```javascript
-const AVAILABLE_LANGUAGES = ['es', 'en', 'fr', 'ca', 'de', 'pt', 'gl', 'xx'];
+const AVAILABLE_LANGUAGES = ["es", "en", "fr", "ca", "de", "pt", "gl", "xx"];
 ```
 
 ### Paso 5: Testear

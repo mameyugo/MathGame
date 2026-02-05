@@ -1,9 +1,11 @@
 # Desafíos Diarios (Daily Challenges)
 
 ## 📍 Ubicación
+
 `docs/js/managers/DailyChallengeManager.js`
 
 ## 🎯 Propósito
+
 Generar un desafío único diario que incentiva al usuario a jugar regularmente con recompensas especiales.
 
 ## 🌟 Características
@@ -37,16 +39,18 @@ Generar un desafío único diario que incentiva al usuario a jugar regularmente 
 ## 🔄 Métodos Principales
 
 ### `getDailyChallenge() → DailyChallenge`
+
 Obtiene el desafío del día actual (o genera si no existe).
 
 ```javascript
 const challenge = dailyChallengeManager.getDailyChallenge();
-console.log(challenge.target);        // 10
-console.log(challenge.progress);      // 5 (progresión actual)
-console.log(challenge.description);   // "Responde 10 preguntas correctamente"
+console.log(challenge.target); // 10
+console.log(challenge.progress); // 5 (progresión actual)
+console.log(challenge.description); // "Responde 10 preguntas correctamente"
 ```
 
 ### `updateProgress(increment) → void`
+
 Actualiza progreso del desafío diario.
 
 ```javascript
@@ -56,17 +60,18 @@ dailyChallengeManager.updateProgress(1);
 
 // Verifica si se completó
 if (challenge.progress >= challenge.target) {
-  completeDailyChallenge();
+    completeDailyChallenge();
 }
 ```
 
 ### `completeDailyChallenge() → Reward`
+
 Marca el desafío como completado y otorga recompensas.
 
 ```javascript
 const reward = dailyChallengeManager.completeDailyChallenge();
-console.log(reward.coins);  // 75 (50 base + 25 bonus)
-console.log(reward.xp);     // 150
+console.log(reward.coins); // 75 (50 base + 25 bonus)
+console.log(reward.xp); // 150
 
 // Actualiza usuario
 userManager.addCoins(reward.coins);
@@ -77,28 +82,31 @@ onDailyChallengeCompleted.notify(reward);
 ```
 
 ### `getStreak() → number`
+
 Obtiene días consecutivos completando desafío.
 
 ```javascript
 const streak = dailyChallengeManager.getStreak();
-console.log(streak);  // 5 (5 días seguidos)
+console.log(streak); // 5 (5 días seguidos)
 
 // Mostrar en UI: "¡Racha de 5 días!"
 ```
 
 ### `isExpired() → boolean`
+
 Verifica si el desafío del día ha expirado.
 
 ```javascript
 if (dailyChallengeManager.isExpired()) {
-  // Generar nuevo desafío
-  dailyChallengeManager.generateNewChallenge();
+    // Generar nuevo desafío
+    dailyChallengeManager.generateNewChallenge();
 }
 ```
 
 ## 📈 Tipos de Desafíos
 
 ### Tipo 1: Respuestas Correctas
+
 ```javascript
 {
   type: 'correct_answers',
@@ -110,6 +118,7 @@ if (dailyChallengeManager.isExpired()) {
 ```
 
 ### Tipo 2: Racha de Respuestas
+
 ```javascript
 {
   type: 'streak',
@@ -121,6 +130,7 @@ if (dailyChallengeManager.isExpired()) {
 ```
 
 ### Tipo 3: Puntuación Total
+
 ```javascript
 {
   type: 'score_target',
@@ -132,6 +142,7 @@ if (dailyChallengeManager.isExpired()) {
 ```
 
 ### Tipo 4: Precisión
+
 ```javascript
 {
   type: 'accuracy',
@@ -146,36 +157,36 @@ if (dailyChallengeManager.isExpired()) {
 
 ### Recompensa Base por Tipo
 
-| Tipo | Monedas Base | XP Base | Dificultad |
-|------|-------------|--------|-----------|
-| correct_answers | 50 | 100 | 2 |
-| streak | 75 | 150 | 2 |
-| score_target | 100 | 200 | 3 |
-| accuracy | 150 | 300 | 3 |
+| Tipo            | Monedas Base | XP Base | Dificultad |
+| --------------- | ------------ | ------- | ---------- |
+| correct_answers | 50           | 100     | 2          |
+| streak          | 75           | 150     | 2          |
+| score_target    | 100          | 200     | 3          |
+| accuracy        | 150          | 300     | 3          |
 
 ### Bonus por Racha
 
 ```javascript
 const streakBonus = {
-  1: 0,           // Sin bonus primer día
-  2: 10,          // 10 monedas extra en día 2
-  3: 20,          // 20 monedas extra en día 3
-  4: 30,          // 30 monedas extra en día 4
-  5: 50,          // 50 monedas extra en día 5
-  10: 100,        // 100 monedas extra en día 10
-  30: 500         // 500 monedas extra en día 30
+    1: 0, // Sin bonus primer día
+    2: 10, // 10 monedas extra en día 2
+    3: 20, // 20 monedas extra en día 3
+    4: 30, // 30 monedas extra en día 4
+    5: 50, // 50 monedas extra en día 5
+    10: 100, // 100 monedas extra en día 10
+    30: 500, // 500 monedas extra en día 30
 };
 
 function getStreakBonus(streak) {
-  return streakBonus[streak] || streakBonus[Math.min(streak, 30)];
+    return streakBonus[streak] || streakBonus[Math.min(streak, 30)];
 }
 
 // Ejemplo: Desafío día 5 con racha de 5 días
 recompensa = {
-  coins: 75 + 50,  // 125 total
-  xp: 150,
-  bonus: 50
-}
+    coins: 75 + 50, // 125 total
+    xp: 150,
+    bonus: 50,
+};
 ```
 
 ## 🔄 Ciclo Diario
@@ -222,28 +233,28 @@ Genera nuevo desafío
 
 ```javascript
 // Guardar en localStorage
-localStorage['mathgame_daily_challenge'] = JSON.stringify({
-  id: '2024-02-05-c7a9e...',
-  date: '2024-02-05',
-  type: 'correct_answers',
-  target: 10,
-  progress: 7,
-  completed: false,
-  reward: {
-    coins: 75,
-    xp: 150,
-    bonus: 50
-  },
-  streak: 5,
-  startTime: '2024-02-05T00:00:00Z',
-  endTime: '2024-02-06T00:00:00Z'
+localStorage["mathgame_daily_challenge"] = JSON.stringify({
+    id: "2024-02-05-c7a9e...",
+    date: "2024-02-05",
+    type: "correct_answers",
+    target: 10,
+    progress: 7,
+    completed: false,
+    reward: {
+        coins: 75,
+        xp: 150,
+        bonus: 50,
+    },
+    streak: 5,
+    startTime: "2024-02-05T00:00:00Z",
+    endTime: "2024-02-06T00:00:00Z",
 });
 
 // También guardar historial
-localStorage['mathgame_challenge_history'] = JSON.stringify([
-  { date: '2024-02-04', completed: true, reward: { coins: 75, xp: 150 } },
-  { date: '2024-02-03', completed: true, reward: { coins: 70, xp: 150 } },
-  { date: '2024-02-02', completed: false, streak_broken: true }
+localStorage["mathgame_challenge_history"] = JSON.stringify([
+    { date: "2024-02-04", completed: true, reward: { coins: 75, xp: 150 } },
+    { date: "2024-02-03", completed: true, reward: { coins: 70, xp: 150 } },
+    { date: "2024-02-02", completed: false, streak_broken: true },
 ]);
 ```
 
@@ -259,13 +270,13 @@ const challenge = dailyChallengeManager.getDailyChallenge();
 // → Recompensa: 75 monedas + 150 XP + 50 bonus (racha día 5)
 
 // 2. Usuario responde pregunta 1 correctamente
-gameEngine.checkAnswer(userAnswer);  // true
+gameEngine.checkAnswer(userAnswer); // true
 dailyChallengeManager.updateProgress(1);
 // → Progreso: 1/10
 
 // 3. Usuario responde preguntas 2-10 correctamente
 for (let i = 2; i <= 10; i++) {
-  dailyChallengeManager.updateProgress(1);
+    dailyChallengeManager.updateProgress(1);
 }
 // → Progreso: 10/10
 
@@ -282,7 +293,7 @@ const reward = dailyChallengeManager.completeDailyChallenge();
 userManager.addCoins(125);
 userManager.addExperience(150);
 achievementManager.checkAchievements({
-  dailyChallengeCompleted: true
+    dailyChallengeCompleted: true,
 });
 
 // 6. Actualiza racha
@@ -290,45 +301,45 @@ achievementManager.checkAchievements({
 
 // 7. Muestra notificación
 onDailyChallengeCompleted.notify({
-  message: "¡Desafío Diario Completado!",
-  reward: reward,
-  streak: 5
+    message: "¡Desafío Diario Completado!",
+    reward: reward,
+    streak: 5,
 });
 ```
 
 ## 🧪 Testing
 
 ```javascript
-describe('DailyChallengeManager', () => {
-  it('should generate daily challenge', () => {
-    const challenge = manager.getDailyChallenge();
-    expect(challenge).toBeDefined();
-    expect(challenge.target).toBeGreaterThan(0);
-  });
-  
-  it('should update progress', () => {
-    manager.updateProgress(1);
-    expect(manager.getDailyChallenge().progress).toBe(1);
-  });
-  
-  it('should complete challenge', () => {
-    // Set progress to target
-    manager.getDailyChallenge().progress = 
-      manager.getDailyChallenge().target;
-    
-    const reward = manager.completeDailyChallenge();
-    expect(reward.coins).toBeGreaterThan(0);
-    expect(manager.getDailyChallenge().completed).toBe(true);
-  });
-  
-  it('should increment streak on completion', () => {
-    const streakBefore = manager.getStreak();
-    manager.completeDailyChallenge();
-    // Simular nuevo día
-    manager.generateNewChallenge();
-    const streakAfter = manager.getStreak();
-    expect(streakAfter).toBe(streakBefore + 1);
-  });
+describe("DailyChallengeManager", () => {
+    it("should generate daily challenge", () => {
+        const challenge = manager.getDailyChallenge();
+        expect(challenge).toBeDefined();
+        expect(challenge.target).toBeGreaterThan(0);
+    });
+
+    it("should update progress", () => {
+        manager.updateProgress(1);
+        expect(manager.getDailyChallenge().progress).toBe(1);
+    });
+
+    it("should complete challenge", () => {
+        // Set progress to target
+        manager.getDailyChallenge().progress =
+            manager.getDailyChallenge().target;
+
+        const reward = manager.completeDailyChallenge();
+        expect(reward.coins).toBeGreaterThan(0);
+        expect(manager.getDailyChallenge().completed).toBe(true);
+    });
+
+    it("should increment streak on completion", () => {
+        const streakBefore = manager.getStreak();
+        manager.completeDailyChallenge();
+        // Simular nuevo día
+        manager.generateNewChallenge();
+        const streakAfter = manager.getStreak();
+        expect(streakAfter).toBe(streakBefore + 1);
+    });
 });
 ```
 
@@ -340,9 +351,9 @@ Ver: `tests/unit/DailyChallengeManager.test.js`
 
 ```javascript
 function renderDailyChallenge() {
-  const challenge = dailyChallengeManager.getDailyChallenge();
-  
-  const html = `
+    const challenge = dailyChallengeManager.getDailyChallenge();
+
+    const html = `
     <div class="daily-challenge">
       <h3>🎯 Desafío Diario</h3>
       <p>${challenge.description}</p>
@@ -355,14 +366,15 @@ function renderDailyChallenge() {
         <span>⭐ ${challenge.reward.xp}</span>
       </div>
       
-      ${challenge.completed ? 
-        '<p class="completed">✅ ¡Completado!</p>' : 
-        '<p>Falta: ${challenge.target - challenge.progress}</p>'
+      ${
+          challenge.completed
+              ? '<p class="completed">✅ ¡Completado!</p>'
+              : "<p>Falta: ${challenge.target - challenge.progress}</p>"
       }
     </div>
   `;
-  
-  document.getElementById('challenge-container').innerHTML = html;
+
+    document.getElementById("challenge-container").innerHTML = html;
 }
 
 // Llamar cuando inicia app o cambia desafío

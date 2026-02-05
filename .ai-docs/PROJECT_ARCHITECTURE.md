@@ -41,33 +41,35 @@ MathGame es una aplicación educativa construida con vanilla JavaScript sin fram
 ## 🔧 Componentes Principales
 
 ### 1. **GameEngine** (Núcleo Orquestador)
+
 **Ubicación**: `docs/js/managers/GameEngine.js`
 
 **Responsabilidades**:
+
 - Inicializar y controlar flujo del juego
 - Gestionar turnos y progresión
 - Coordinar entre managers
 - Calcular puntuación y recompensas
 
 **Métodos principales**:
+
 ```javascript
-- startGame()
-- nextQuestion()
-- checkAnswer(answer)
-- endGame()
-- resetGame()
+-startGame() - nextQuestion() - checkAnswer(answer) - endGame() - resetGame();
 ```
 
 ### 2. **UserManager** (Gestión de Usuarios)
+
 **Ubicación**: `docs/js/managers/UserManager.js`
 
 **Responsabilidades**:
+
 - Almacenar datos del usuario
 - Gestionar nivel y experiencia
 - Administrar monedas virtuales
 - Guardar/cargar datos en localStorage
 
 **Estructura de datos**:
+
 ```javascript
 {
   id: string,
@@ -85,14 +87,17 @@ MathGame es una aplicación educativa construida con vanilla JavaScript sin fram
 ```
 
 ### 3. **QuestionGenerator** (Generador de Preguntas)
+
 **Ubicación**: `docs/js/managers/QuestionGenerator.js`
 
 **Responsabilidades**:
+
 - Generar preguntas dinámicamente
 - Seleccionar problemas según nivel
 - Crear opciones múltiples
 
 **Flujo**:
+
 ```
 selectProblem(level, category)
   → loadProblem()
@@ -102,14 +107,17 @@ selectProblem(level, category)
 ```
 
 ### 4. **ProblemCategoryManager** (Gestor de Categorías)
+
 **Ubicación**: `docs/js/managers/ProblemCategoryManager.js`
 
 **Responsabilidades**:
+
 - Organizar problemas por nivel
 - Mapear categorías
 - Filtrar problemas disponibles
 
 **Niveles**:
+
 - Level 1: Edades 5-7 (básico)
 - Level 2: Edades 7-8 (intermedio)
 - Level 3: Edades 8-9 (intermedio-alto)
@@ -117,49 +125,60 @@ selectProblem(level, category)
 - Level 5: Edades 10+ (experto)
 
 ### 5. **AchievementManager** (Logros)
+
 **Ubicación**: `docs/js/managers/AchievementManager.js`
 
 **Responsabilidades**:
+
 - Definir criterios de logros
 - Detectar logros desbloqueados
 - Guardar progreso de logros
 
 **Ejemplos de logros**:
+
 - Primera respuesta correcta
 - 10 respuestas correctas
 - Racha de 5 correctas seguidas
 - Desbloquear todos los niveles
 
 ### 6. **DailyChallengeManager** (Desafíos Diarios)
+
 **Ubicación**: `docs/js/managers/DailyChallengeManager.js`
 
 **Responsabilidades**:
+
 - Generar desafío diario
 - Rastrear progreso del día
 - Calcular recompensas
 
 **Características**:
+
 - Se regenera cada 24 horas
 - Recompensas aumentadas
 - Seguimiento independiente
 
 ### 7. **StoreManager** (Tienda Virtual)
+
 **Ubicación**: `docs/js/managers/StoreManager.js`
 
 **Responsabilidades**:
+
 - Gestionar catálogo de items
 - Procesar compras
 - Gestionar inventario
 
 **Items disponibles**:
+
 - Avatares
 - Temas visuales
 - Decoraciones
 
 ### 8. **TranslationManager** (Sistema Multiidioma)
+
 **Ubicación**: `docs/js/managers/TranslationManager.js`
 
 **Responsabilidades**:
+
 - Cargar traducciones
 - Cambiar idioma dinámicamente
 - Traducir textos en tiempo real
@@ -167,12 +186,14 @@ selectProblem(level, category)
 **Idiomas soportados**: 7
 
 **Fuentes de traducción**:
+
 - `docs/js/problems/i18n/*.js` (problemas)
 - `docs/lang/*.json` (UI general)
 
 ## 📚 Sistema de Problemas
 
 ### Estructura de Archivos
+
 ```
 problems/
 ├── config.js              # Configuración global
@@ -232,15 +253,18 @@ const text = es.compra_estandar.texto(5, 3);
 ### Estructura i18n
 
 **Problemas**: `docs/js/problems/i18n/`
+
 - Define textos y explicaciones de problemas
 - Aceptan parámetros dinámicos
 - Un archivo por idioma
 
 **UI General**: `docs/lang/`
+
 - Traducciones JSON para interfaz
 - Textos estáticos de menús, botones, etc.
 
 ### Flujo de Traducción
+
 ```
 1. TranslationManager detecta idioma actual
 2. Carga i18n de problemas según idioma
@@ -253,38 +277,44 @@ const text = es.compra_estandar.texto(5, 3);
 ## 💾 Persistencia de Datos
 
 ### LocalStorage
+
 Todos los datos se guardan en localStorage del navegador:
+
 - Datos de usuario
 - Progreso de logros
 - Configuración (idioma, tema)
 - Estadísticas
 
 **Estructura**:
+
 ```javascript
-localStorage['mathgame_user'] = JSON.stringify(userData)
-localStorage['mathgame_achievements'] = JSON.stringify(achievements)
-localStorage['mathgame_settings'] = JSON.stringify(settings)
+localStorage["mathgame_user"] = JSON.stringify(userData);
+localStorage["mathgame_achievements"] = JSON.stringify(achievements);
+localStorage["mathgame_settings"] = JSON.stringify(settings);
 ```
 
 ## 🧪 Patrones de Testing
 
 ### Unit Tests
+
 - Prueban un manager en aislamiento
 - Mock de dependencias
 - Verifican métodos específicos
 
 **Ejemplo**:
+
 ```javascript
-describe('GameEngine', () => {
-  it('should start game correctly', () => {
-    const engine = new GameEngine();
-    engine.startGame();
-    expect(engine.gameActive).toBe(true);
-  });
+describe("GameEngine", () => {
+    it("should start game correctly", () => {
+        const engine = new GameEngine();
+        engine.startGame();
+        expect(engine.gameActive).toBe(true);
+    });
 });
 ```
 
 ### Integration Tests
+
 - Prueban múltiples managers juntos
 - Prueba flujo completo
 - Ejemplo: `antiRepetition.test.js`
@@ -292,6 +322,7 @@ describe('GameEngine', () => {
 ## 🔄 Flujos Principales
 
 ### Flujo de Juego Completo
+
 ```
 1. User selecciona nivel/categoría
 2. GameEngine.startGame()
@@ -306,6 +337,7 @@ describe('GameEngine', () => {
 ```
 
 ### Flujo de Cambio de Idioma
+
 ```
 1. Usuario selecciona idioma
 2. TranslationManager.setLanguage(lang)
@@ -332,6 +364,7 @@ describe('GameEngine', () => {
 ## 📖 Documentación Relacionada
 
 Para detalles específicos, consulta:
+
 - [GAME_ENGINE.md](GAME_ENGINE.md) - Detalles del motor
 - [PROBLEM_SYSTEM.md](PROBLEM_SYSTEM.md) - Sistema de problemas
 - [TRANSLATION_SYSTEM.md](TRANSLATION_SYSTEM.md) - i18n

@@ -1,9 +1,11 @@
 # Sistema de Problemas
 
 ## 📍 Ubicación
+
 `docs/js/problems/`
 
 ## 🎯 Propósito
+
 Sistema modular para definir, generar y traducir problemas matemáticos y de lógica con dificultad graduada.
 
 ## 🏗️ Estructura
@@ -64,18 +66,22 @@ Retorna un objeto con la pregunta generada:
 ## 📚 Tipos de Problemas
 
 ### Problemas Matemáticos (`tipo: "matematico"`)
+
 Requieren cálculos aritméticos.
 
 **Ejemplos**:
+
 - Multiplicación básica
 - Sumas y restas
 - Fracciones y decimales
 - Cálculo de vueltas
 
 ### Problemas de Lógica (`tipo: "logica"`)
+
 Requieren razonamiento y pensamiento crítico.
 
 **Ejemplos**:
+
 - Problemas con trampa
 - Acertijos matemáticos
 - Razonamiento espacial
@@ -83,15 +89,15 @@ Requieren razonamiento y pensamiento crítico.
 
 ## 🎯 Niveles de Dificultad
 
-| Nivel | Rango Edad | Características | Cantidad Problemas |
-|-------|-----------|-----------------|-------------------|
-| 1     | 5-7 años  | Básico, sumas/restas simples, lógica básica | 16+ |
-| 2     | 7-8 años  | Multiplicación, problemas más complejos | Expandible |
-| 2-3   | Transición | Mix de nivel 2 y 3 | Expandible |
-| 3     | 8-9 años  | División, fracciones simples, lógica avanzada | Expandible |
-| 4     | 9-10 años | Operaciones combinadas, problemas multi-paso | Expandible |
-| 4-5   | Transición | Mix de nivel 4 y 5 | Expandible |
-| 5     | 10+ años  | Álgebra básica, problemas complejos | Expandible |
+| Nivel | Rango Edad | Características                               | Cantidad Problemas |
+| ----- | ---------- | --------------------------------------------- | ------------------ |
+| 1     | 5-7 años   | Básico, sumas/restas simples, lógica básica   | 16+                |
+| 2     | 7-8 años   | Multiplicación, problemas más complejos       | Expandible         |
+| 2-3   | Transición | Mix de nivel 2 y 3                            | Expandible         |
+| 3     | 8-9 años   | División, fracciones simples, lógica avanzada | Expandible         |
+| 4     | 9-10 años  | Operaciones combinadas, problemas multi-paso  | Expandible         |
+| 4-5   | Transición | Mix de nivel 4 y 5                            | Expandible         |
+| 5     | 10+ años   | Álgebra básica, problemas complejos           | Expandible         |
 
 ## 🔄 Flujo de Generación de Preguntas
 
@@ -118,14 +124,14 @@ Requieren razonamiento y pensamiento crítico.
 ```javascript
 // i18n/es.js
 export const problemsES = {
-  compra_estandar: {
-    texto: (cantidad, precio) => 
-      `Compramos ${cantidad} gomas de borrar. Cada una cuesta ${precio}€...`,
-    explicacion: (cantidad, precio) => 
-      `Tienes que multiplicar: ${cantidad} × ${precio} = ${cantidad * precio}€...`
-  },
-  // ... más problemas
-}
+    compra_estandar: {
+        texto: (cantidad, precio) =>
+            `Compramos ${cantidad} gomas de borrar. Cada una cuesta ${precio}€...`,
+        explicacion: (cantidad, precio) =>
+            `Tienes que multiplicar: ${cantidad} × ${precio} = ${cantidad * precio}€...`,
+    },
+    // ... más problemas
+};
 ```
 
 ### Parámetros Dinámicos
@@ -138,8 +144,7 @@ const cantidad = Math.floor(Math.random() * 5) + 2;
 const precio = Math.floor(Math.random() * 3) + 1;
 
 // En i18n/es.js
-texto: (cantidad, precio) => 
-  `Compramos ${cantidad} gomas de borrar...`
+texto: (cantidad, precio) => `Compramos ${cantidad} gomas de borrar...`;
 
 // Uso en QuestionGenerator
 const textoFinal = problemsES.compra_estandar.texto(cantidad, precio);
@@ -147,15 +152,15 @@ const textoFinal = problemsES.compra_estandar.texto(cantidad, precio);
 
 ### 7 Idiomas Soportados
 
-| Idioma | Código | Archivo | Estado |
-|--------|--------|---------|--------|
-| Español | es | es.js | ✅ Completo |
-| English | en | en.js | ✅ Completo |
-| Français | fr | fr.js | ✅ Completo |
-| Català | ca | ca.js | ✅ Completo |
-| Deutsch | de | de.js | ✅ Completo |
-| Português | pt | pt.js | ✅ Completo |
-| Galego | gl | gl.js | ✅ Completo |
+| Idioma    | Código | Archivo | Estado      |
+| --------- | ------ | ------- | ----------- |
+| Español   | es     | es.js   | ✅ Completo |
+| English   | en     | en.js   | ✅ Completo |
+| Français  | fr     | fr.js   | ✅ Completo |
+| Català    | ca     | ca.js   | ✅ Completo |
+| Deutsch   | de     | de.js   | ✅ Completo |
+| Português | pt     | pt.js   | ✅ Completo |
+| Galego    | gl     | gl.js   | ✅ Completo |
 
 ## 📝 Ejemplo Completo: Problema "compra_estandar"
 
@@ -172,7 +177,7 @@ const textoFinal = problemsES.compra_estandar.texto(cantidad, precio);
     const cantidad = Math.floor(Math.random() * 5) + 2;    // 2-6
     const precio = Math.floor(Math.random() * 3) + 1;      // 1-3
     const total = cantidad * precio;
-    
+
     return {
       texto: `Compramos ${cantidad} gomas de borrar. Cada una cuesta ${precio}€. ¿Cuánto pagamos en total?`,
       respuestaCorrecta: total,
@@ -188,9 +193,9 @@ const textoFinal = problemsES.compra_estandar.texto(cantidad, precio);
 
 ```javascript
 compra_estandar: {
-  texto: (cantidad, precio) => 
+  texto: (cantidad, precio) =>
     `Compramos ${cantidad} gomas de borrar. Cada una cuesta ${precio}€. ¿Cuánto pagamos en total?`,
-  explicacion: (cantidad, precio) => 
+  explicacion: (cantidad, precio) =>
     `Tienes que multiplicar el número de gomas por el precio: ${cantidad} × ${precio} = ${cantidad * precio}€.`
 }
 ```
@@ -199,7 +204,7 @@ compra_estandar: {
 
 ```javascript
 // 1. Se selecciona el problema
-const problema = level1Problems.find(p => p.id === "compra_estandar");
+const problema = level1Problems.find((p) => p.id === "compra_estandar");
 
 // 2. Se ejecuta generar()
 const pregunta = problema.generar();
@@ -215,7 +220,7 @@ const i18nTexto = problemsES.compra_estandar.texto(3, 2);
 // ↓ resultado: "Compramos 3 gomas de borrar..."
 
 // 4. Se reemplaza en la pregunta (si usa i18n)
-pregunta.texto = i18nTexto;  // Si el problema usa i18n
+pregunta.texto = i18nTexto; // Si el problema usa i18n
 ```
 
 ## 🎲 Variación Dinámica
@@ -256,11 +261,11 @@ pregunta.texto = i18nTexto;  // Si el problema usa i18n
 }
 ```
 
-## 📝 Tipos de Respuesta Soportados (Futuro)
+## 📝 Tipos de Respuesta Soportados (✅ Implementados)
 
-Aunque actualmente solo se soportan respuestas numéricas, el sistema fue diseñado para expandirse:
+El sistema soporta múltiples tipos de respuestas, implementadas en `app.js` en la función `submitProblem()`:
 
-### 1. **numero** (Actual)
+### 1. **numero** (✅ Implementado - Actual)
 ```javascript
 {
   respuestaCorrecta: 15,
@@ -269,32 +274,40 @@ Aunque actualmente solo se soportan respuestas numéricas, el sistema fue diseñ
   ecuacionValores: [15]
 }
 ```
+**Validación**: Inputs numéricos en la ecuación. Compara array de valores ingresados con `ecuacionValores`.
 
-### 2. **opcion_multiple** (Planeado)
+### 2. **opcion_multiple** (✅ Implementado)
 ```javascript
 {
-  respuestaCorrecta: "Juan",
+  respuestaCorrecta: "juan",
   tipoRespuesta: "opcion_multiple",
   opciones: [
     { id: "juan", texto: "Juan", icon: "👦" },
     { id: "primero", texto: "Primero", icon: "1️⃣" },
-    { id: "segundo", texto: "Segundo", icon: "2️⃣" }
+    { id: "segundo", texto: "Segundo", icon: "2️⃣" },
+    { id: "tercero", texto: "Tercero", icon: "3️⃣" }
   ]
 }
 ```
+**Validación**: Usuario selecciona una opción. Compara `window.selectedChoice` con `respuestaCorrecta` (string).
+**Nota**: Se guarda en `window.selectedChoice` al hacer clic en botón de opción.
 
-### 3. **texto** (Planeado)
+### 3. **texto** (✅ Implementado)
 ```javascript
 {
   respuestaCorrecta: "Juan",
   tipoRespuesta: "texto",
-  placeholder: "¿Cómo se llama?",
+  placeholder: "¿Cómo se llama el personaje?",
   caseSensitive: false,
   trim: true
 }
 ```
+**Validación**: Campo de entrada de texto. Compara valor ingresado con `respuestaCorrecta` (string).
+**Opciones**:
+- `caseSensitive: false` - Ignora mayúsculas/minúsculas
+- `trim: true` - Elimina espacios al inicio/final
 
-### 4. **drag_drop** (Futuro)
+### 4. **drag_drop** (🔲 Futuro)
 ```javascript
 {
   respuestaCorrecta: ["lobo", "col", "oveja"],
@@ -303,21 +316,71 @@ Aunque actualmente solo se soportan respuestas numéricas, el sistema fue diseñ
   zonas: ["primero", "segundo", "tercero"]
 }
 ```
+**Validación**: No implementada aún. Usuario arrastra elementos a zonas.
+
+## 🔍 Cómo Validar Respuestas (en app.js)
+
+```javascript
+function submitProblem() {
+    const tipoRespuesta = currentProblem.tipoRespuesta || 'numero';
+    let isCorrect = false;
+
+    if (tipoRespuesta === 'numero') {
+        // Valida inputs del equation-area
+        // Compara con ecuacionValores
+    } else if (tipoRespuesta === 'opcion_multiple') {
+        // Valida window.selectedChoice
+        // Compara con respuestaCorrecta
+    } else if (tipoRespuesta === 'texto') {
+        // Valida #text-answer-input
+        // Respeta caseSensitive y trim
+    }
+    // ...
+}
+```
+
+## 📊 Estructura Completa del Problema con Tipo de Respuesta
+
+```javascript
+{
+  id: "ejemplo_completo",
+  tipo: "matematico|logica",
+  nivelMin: 1,
+  categorias: ['explorador'],
+  i18n: "ejemplo_completo",
+  tipoRespuesta: "numero|opcion_multiple|texto",  // Tipo de respuesta
+  generar: () => {
+    // ... lógica de generación
+    return {
+      texto: "...",
+      respuestaCorrecta: valor,  // número o string según tipoRespuesta
+      explicacion: "...",
+      ecuacion: "...",            // Para tipo 'numero'
+      ecuacionValores: [...],     // Para tipo 'numero'
+      opciones: [...],            // Para tipo 'opcion_multiple'
+      placeholder: "...",         // Para tipo 'texto'
+      caseSensitive: false,       // Para tipo 'texto'
+      trim: true                  // Para tipo 'texto'
+    };
+  }
+}
+```
 
 ## 🔍 Validación de Opciones
 
 Las opciones múltiples incluyen:
+
 1. **Respuesta correcta**
 2. **Distractores razonables**: Errores comunes de cálculo
 3. **Distractores comunes**: Sumas o restas simples
 
 ```javascript
 opciones: [
-  respuestaCorrecta,        // 6
-  respuestaCorrecta + 2,    // 8 (error común)
-  cantidad + precio,        // 5 (error común)
-  respuestaCorrecta - 1     // 5 (error común)
-]
+    respuestaCorrecta, // 6
+    respuestaCorrecta + 2, // 8 (error común)
+    cantidad + precio, // 5 (error común)
+    respuestaCorrecta - 1, // 5 (error común)
+];
 ```
 
 ## 📊 Estructura de Datos
@@ -326,15 +389,15 @@ opciones: [
 
 ```javascript
 export const problemsConfig = {
-  totalLevels: 5,
-  problemsPerLevel: {
-    1: 'expandible',    // Expandible
-    2: 'expandible',
-    3: 'expandible',
-    4: 'expandible',
-    5: 'expandible'
-  },
-  languages: ['es', 'en', 'fr', 'ca', 'de', 'pt', 'gl']
+    totalLevels: 5,
+    problemsPerLevel: {
+        1: "expandible", // Expandible
+        2: "expandible",
+        3: "expandible",
+        4: "expandible",
+        5: "expandible",
+    },
+    languages: ["es", "en", "fr", "ca", "de", "pt", "gl"],
 };
 ```
 
@@ -342,22 +405,23 @@ export const problemsConfig = {
 
 ```javascript
 // index.js
-import { level1Problems } from './categories/level1.js';
-import { level2Problems } from './categories/level2.js';
+import { level1Problems } from "./categories/level1.js";
+import { level2Problems } from "./categories/level2.js";
 // ... más niveles
 
 export const allProblems = {
-  1: level1Problems,
-  2: level2Problems,
-  3: level3Problems,
-  4: level4Problems,
-  5: level5Problems
+    1: level1Problems,
+    2: level2Problems,
+    3: level3Problems,
+    4: level4Problems,
+    5: level5Problems,
 };
 ```
 
 ## 🧪 Testing
 
 **Validaciones**:
+
 - Cada problema genera una respuesta válida
 - Las opciones contienen la respuesta correcta
 - Las traducciones tienen los parámetros requeridos

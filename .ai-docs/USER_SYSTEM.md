@@ -1,9 +1,11 @@
 # Sistema de Usuarios
 
 ## 📍 Ubicación
+
 `docs/js/managers/UserManager.js`
 
 ## 🎯 Propósito
+
 Gestionar todos los datos y estadísticas del usuario, incluyendo progresión, monedas, avatares y datos persistentes.
 
 ## 🏗️ Estructura de Datos del Usuario
@@ -51,16 +53,18 @@ Gestionar todos los datos y estadísticas del usuario, incluyendo progresión, m
 ## 🎮 Métodos Principales
 
 ### `getUserData() → UserObject`
+
 Obtiene los datos actuales del usuario.
 
 ```javascript
 const userData = userManager.getUserData();
-console.log(userData.level);      // 2
-console.log(userData.coins);      // 150
-console.log(userData.accuracy);   // 0.85
+console.log(userData.level); // 2
+console.log(userData.coins); // 150
+console.log(userData.accuracy); // 0.85
 ```
 
 ### `createNewUser(name) → string`
+
 Crea nuevo usuario y retorna su ID.
 
 ```javascript
@@ -69,6 +73,7 @@ const userId = userManager.createNewUser("Juan");
 ```
 
 ### `setLevel(level) → void`
+
 Actualiza el nivel del usuario.
 
 ```javascript
@@ -78,15 +83,17 @@ userManager.setLevel(3);
 ```
 
 ### `addCoins(amount) → void`
+
 Suma monedas al usuario.
 
 ```javascript
-userManager.addCoins(50);   // Suma 50 monedas
-userManager.addCoins(-10);  // Resta 10 monedas
+userManager.addCoins(50); // Suma 50 monedas
+userManager.addCoins(-10); // Resta 10 monedas
 // No permite saldo negativo
 ```
 
 ### `addExperience(xp) → void`
+
 Suma experiencia y maneja subidas de nivel.
 
 ```javascript
@@ -96,41 +103,45 @@ userManager.addExperience(100);
 ```
 
 ### `updateStats(gameStats) → void`
+
 Actualiza estadísticas después de una sesión.
 
 ```javascript
 userManager.updateStats({
-  gamesPlayed: 1,
-  correctAnswers: 8,
-  totalAnswers: 10,
-  score: 150
+    gamesPlayed: 1,
+    correctAnswers: 8,
+    totalAnswers: 10,
+    score: 150,
 });
 // Recalcula accuracy automáticamente
 ```
 
 ### `addAchievement(achievementId) → void`
+
 Registra un logro desbloqueado.
 
 ```javascript
-userManager.addAchievement('first_victory');
+userManager.addAchievement("first_victory");
 // Guarda fecha de desbloqueo
 // Obtiene recompensa de logro (monedas, etc.)
 ```
 
 ### `changeLanguage(languageCode) → void`
+
 Cambia idioma del usuario.
 
 ```javascript
-userManager.changeLanguage('en');  // Cambia a inglés
-userManager.changeLanguage('es');  // Vuelve a español
+userManager.changeLanguage("en"); // Cambia a inglés
+userManager.changeLanguage("es"); // Vuelve a español
 // Almacena preferencia en localStorage
 ```
 
 ### `purchaseItem(itemId, itemType) → boolean`
+
 Compra un item en la tienda.
 
 ```javascript
-const success = userManager.purchaseItem('avatar_ninja', 'avatar');
+const success = userManager.purchaseItem("avatar_ninja", "avatar");
 // Valida si tiene suficientes monedas
 // Deduce monedas
 // Añade a inventario
@@ -142,12 +153,12 @@ const success = userManager.purchaseItem('avatar_ninja', 'avatar');
 ### Requisitos de XP por Nivel
 
 | Nivel | XP Total | XP por Nivel | Descripción |
-|-------|----------|-------------|-------------|
-| 1 | 0 | - | Inicio |
-| 2 | 500 | 500 | Fundamentos |
-| 3 | 1500 | 1000 | Intermedio |
-| 4 | 3000 | 1500 | Avanzado |
-| 5 | 5000 | 2000 | Experto |
+| ----- | -------- | ------------ | ----------- |
+| 1     | 0        | -            | Inicio      |
+| 2     | 500      | 500          | Fundamentos |
+| 3     | 1500     | 1000         | Intermedio  |
+| 4     | 3000     | 1500         | Avanzado    |
+| 5     | 5000     | 2000         | Experto     |
 
 ```javascript
 // En UserManager
@@ -172,35 +183,35 @@ checkLevelUp() {
 
 ### Ganancias de Monedas
 
-| Acción | Monedas | Condición |
-|--------|---------|-----------|
-| Respuesta correcta | 10 | - |
-| Racha 5 correctas | +15 | Bonus |
-| Desafío diario completado | 50 | - |
-| Logro desbloqueado | Variable | Según logro |
-| Venta de items | Variable | - |
+| Acción                    | Monedas  | Condición   |
+| ------------------------- | -------- | ----------- |
+| Respuesta correcta        | 10       | -           |
+| Racha 5 correctas         | +15      | Bonus       |
+| Desafío diario completado | 50       | -           |
+| Logro desbloqueado        | Variable | Según logro |
+| Venta de items            | Variable | -           |
 
 ### Gasto de Monedas
 
-| Item | Costo |
-|------|-------|
-| Avatar | 25-100 |
-| Tema visual | 50 |
-| Decoración | 10-30 |
+| Item        | Costo  |
+| ----------- | ------ |
+| Avatar      | 25-100 |
+| Tema visual | 50     |
+| Decoración  | 10-30  |
 
 ```javascript
 // Método de compra seguro
 purchaseItem(itemId, itemType) {
   const item = this.itemCatalog[itemType][itemId];
-  
+
   if (!item) return false;
   if (this.coins < item.cost) return false;
   if (this.inventory[itemType].includes(itemId)) return false;
-  
+
   this.coins -= item.cost;
   this.inventory[itemType].push(itemId);
   this.saveToLocalStorage();
-  
+
   return true;
 }
 ```
@@ -239,14 +250,14 @@ Progresión: ↑ Mejorando
 ### Claves de almacenamiento
 
 ```javascript
-localStorage['mathgame_user'] = JSON.stringify(userData);
-localStorage['mathgame_user_prefs'] = JSON.stringify(preferences);
-localStorage['mathgame_user_inventory'] = JSON.stringify(inventory);
-localStorage['mathgame_user_stats'] = JSON.stringify(stats);
+localStorage["mathgame_user"] = JSON.stringify(userData);
+localStorage["mathgame_user_prefs"] = JSON.stringify(preferences);
+localStorage["mathgame_user_inventory"] = JSON.stringify(inventory);
+localStorage["mathgame_user_stats"] = JSON.stringify(stats);
 
 // Opcionales (para análisis)
-localStorage['mathgame_game_sessions'] = JSON.stringify([]);
-localStorage['mathgame_achievements_log'] = JSON.stringify([]);
+localStorage["mathgame_game_sessions"] = JSON.stringify([]);
+localStorage["mathgame_achievements_log"] = JSON.stringify([]);
 ```
 
 ### Estrategia de Guardado
@@ -332,26 +343,26 @@ setAvatar(avatarId) {
 ## 🧪 Testing
 
 ```javascript
-describe('UserManager', () => {
-  it('should create new user', () => {
-    const userId = userManager.createNewUser('Test');
-    expect(userId).toBeDefined();
-  });
-  
-  it('should add coins correctly', () => {
-    userManager.addCoins(50);
-    expect(userManager.coins).toBe(50);
-  });
-  
-  it('should handle level up', () => {
-    userManager.addExperience(500);
-    expect(userManager.level).toBe(2);
-  });
-  
-  it('should not allow negative coins', () => {
-    userManager.addCoins(-1000);
-    expect(userManager.coins).toBeGreaterThanOrEqual(0);
-  });
+describe("UserManager", () => {
+    it("should create new user", () => {
+        const userId = userManager.createNewUser("Test");
+        expect(userId).toBeDefined();
+    });
+
+    it("should add coins correctly", () => {
+        userManager.addCoins(50);
+        expect(userManager.coins).toBe(50);
+    });
+
+    it("should handle level up", () => {
+        userManager.addExperience(500);
+        expect(userManager.level).toBe(2);
+    });
+
+    it("should not allow negative coins", () => {
+        userManager.addCoins(-1000);
+        expect(userManager.coins).toBeGreaterThanOrEqual(0);
+    });
 });
 ```
 

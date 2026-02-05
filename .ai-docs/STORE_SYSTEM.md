@@ -1,9 +1,11 @@
 # Sistema de Tienda (Store)
 
 ## 📍 Ubicación
+
 `docs/js/managers/StoreManager.js`
 
 ## 🎯 Propósito
+
 Gestionar catálogo de items, procesar compras y mantener inventario del usuario con monedas virtuales.
 
 ## 🏪 Estructura de Item
@@ -26,6 +28,7 @@ Gestionar catálogo de items, procesar compras y mantener inventario del usuario
 ## 📂 Categorías de Items
 
 ### 1. **Avatares** (type: "avatar")
+
 Personajes que representan al jugador.
 
 ```javascript
@@ -60,6 +63,7 @@ Personajes que representan al jugador.
 ```
 
 ### 2. **Temas Visuales** (type: "theme")
+
 Temas de color y diseño para la interfaz.
 
 ```javascript
@@ -83,6 +87,7 @@ Temas de color y diseño para la interfaz.
 ```
 
 ### 3. **Decoraciones** (type: "decoration")
+
 Accesorios para personalizar el perfil.
 
 ```javascript
@@ -107,26 +112,29 @@ Accesorios para personalizar el perfil.
 ## 🔄 Métodos Principales
 
 ### `getCatalog() → Item[]`
+
 Obtiene todo el catálogo disponible.
 
 ```javascript
 const catalog = storeManager.getCatalog();
-console.log(catalog.length);  // 25 items totales
+console.log(catalog.length); // 25 items totales
 
 // Filtrar solo avatares
-const avatars = catalog.filter(item => item.type === 'avatar');
+const avatars = catalog.filter((item) => item.type === "avatar");
 ```
 
 ### `getItemsByType(type) → Item[]`
+
 Obtiene items de un tipo específico.
 
 ```javascript
-const avatars = storeManager.getItemsByType('avatar');
-const themes = storeManager.getItemsByType('theme');
-const decorations = storeManager.getItemsByType('decoration');
+const avatars = storeManager.getItemsByType("avatar");
+const themes = storeManager.getItemsByType("theme");
+const decorations = storeManager.getItemsByType("decoration");
 ```
 
 ### `getAvailableItems(userLevel) → Item[]`
+
 Obtiene items disponibles para comprar según nivel del usuario.
 
 ```javascript
@@ -135,53 +143,57 @@ const availableItems = storeManager.getAvailableItems(3);
 ```
 
 ### `purchaseItem(userId, itemId) → boolean`
+
 Realiza compra de un item.
 
 ```javascript
-const success = storeManager.purchaseItem('user_123', 'avatar_ninja');
+const success = storeManager.purchaseItem("user_123", "avatar_ninja");
 
 if (success) {
-  console.log('¡Compra exitosa!');
-  // Item añadido al inventario
-  // Monedas deducidas
+    console.log("¡Compra exitosa!");
+    // Item añadido al inventario
+    // Monedas deducidas
 } else {
-  console.log('Compra fallida');
-  // Razones posibles:
-  // - Monedas insuficientes
-  // - Ya posee el item
-  // - No cumple nivel requerido
+    console.log("Compra fallida");
+    // Razones posibles:
+    // - Monedas insuficientes
+    // - Ya posee el item
+    // - No cumple nivel requerido
 }
 ```
 
 ### `getUserInventory(userId) → Inventory`
+
 Obtiene inventario del usuario.
 
 ```javascript
-const inventory = storeManager.getUserInventory('user_123');
-console.log(inventory.avatars);      // ["avatar_default", "avatar_ninja"]
-console.log(inventory.themes);       // ["theme_dark"]
-console.log(inventory.decorations);  // ["deco_badges"]
+const inventory = storeManager.getUserInventory("user_123");
+console.log(inventory.avatars); // ["avatar_default", "avatar_ninja"]
+console.log(inventory.themes); // ["theme_dark"]
+console.log(inventory.decorations); // ["deco_badges"]
 ```
 
 ### `getItemDetails(itemId) → Item`
+
 Obtiene detalles completos de un item.
 
 ```javascript
-const item = storeManager.getItemDetails('avatar_ninja');
-console.log(item.name);              // "Ninja"
-console.log(item.cost);              // 50
-console.log(item.rarity);            // "rare"
-console.log(item.description);       // "Ninja silencioso..."
+const item = storeManager.getItemDetails("avatar_ninja");
+console.log(item.name); // "Ninja"
+console.log(item.cost); // 50
+console.log(item.rarity); // "rare"
+console.log(item.description); // "Ninja silencioso..."
 ```
 
 ### `setActiveItem(userId, itemId, type) → void`
+
 Activa un item para el usuario (ej: cambiar avatar).
 
 ```javascript
-storeManager.setActiveItem('user_123', 'avatar_ninja', 'avatar');
+storeManager.setActiveItem("user_123", "avatar_ninja", "avatar");
 // Usuario ahora usa avatar ninja
 
-storeManager.setActiveItem('user_123', 'theme_neon', 'theme');
+storeManager.setActiveItem("user_123", "theme_neon", "theme");
 // Usuario ahora usa tema neon
 ```
 
@@ -192,7 +204,7 @@ purchaseItem(userId, itemId) {
   const user = userManager.getUserData(userId);
   const item = this.getItemDetails(itemId);
   const inventory = this.getUserInventory(userId);
-  
+
   // Validación 1: Item existe
   if (!item) {
     return {
@@ -200,7 +212,7 @@ purchaseItem(userId, itemId) {
       reason: 'ITEM_NOT_FOUND'
     };
   }
-  
+
   // Validación 2: Nivel suficiente
   if (user.level < item.requiredLevel) {
     return {
@@ -209,7 +221,7 @@ purchaseItem(userId, itemId) {
       required: item.requiredLevel
     };
   }
-  
+
   // Validación 3: No ya posee
   if (inventory[item.type + 's'].includes(itemId)) {
     return {
@@ -217,7 +229,7 @@ purchaseItem(userId, itemId) {
       reason: 'ALREADY_OWNED'
     };
   }
-  
+
   // Validación 4: Monedas suficientes
   if (user.coins < item.cost) {
     return {
@@ -227,12 +239,12 @@ purchaseItem(userId, itemId) {
       need: item.cost
     };
   }
-  
+
   // Realizar compra
   userManager.addCoins(-item.cost);
   inventory[item.type + 's'].push(itemId);
   this.saveInventory(userId, inventory);
-  
+
   return {
     success: true,
     coinsRemaining: user.coins - item.cost,
@@ -243,41 +255,42 @@ purchaseItem(userId, itemId) {
 
 ## 📊 Rareza y Precio
 
-| Rareza | Multiplicador Precio | Color | Símbolo |
-|--------|---------------------|-------|---------|
-| Common | 1x | Gris | ▢ |
-| Rare | 1.5x | Azul | ◆ |
-| Epic | 2.5x | Púrpura | ✦ |
-| Legendary | 5x+ | Dorado | ★ |
+| Rareza    | Multiplicador Precio | Color   | Símbolo |
+| --------- | -------------------- | ------- | ------- |
+| Common    | 1x                   | Gris    | ▢       |
+| Rare      | 1.5x                 | Azul    | ◆       |
+| Epic      | 2.5x                 | Púrpura | ✦       |
+| Legendary | 5x+                  | Dorado  | ★       |
 
 ### Ejemplo de Precios
 
 ```javascript
 AVATARES_PRECIOS = {
-  common: 25,
-  rare: 50,
-  epic: 75,
-  legendary: 150
+    common: 25,
+    rare: 50,
+    epic: 75,
+    legendary: 150,
 };
 
 TEMAS_PRECIOS = {
-  common: 50,
-  rare: 75,
-  epic: 100,
-  legendary: 250
+    common: 50,
+    rare: 75,
+    epic: 100,
+    legendary: 250,
 };
 
 DECORACIONES_PRECIOS = {
-  common: 10,
-  rare: 25,
-  epic: 50,
-  legendary: 100
+    common: 10,
+    rare: 25,
+    epic: 50,
+    legendary: 100,
 };
 ```
 
 ## 📈 Catálogo Inicial
 
 ### Avatares (8 items)
+
 ```
 Nivel 1: Default (gratis)
 Nivel 2: Ninja (50), Wizard (50)
@@ -287,6 +300,7 @@ Nivel 5: Superhero (150)
 ```
 
 ### Temas (5 items)
+
 ```
 Nivel 1: Light (predeterminado)
 Nivel 2: Dark (50)
@@ -296,6 +310,7 @@ Nivel 5: Neon (100)
 ```
 
 ### Decoraciones (5 items)
+
 ```
 Nivel 1: Basic Badge (10)
 Nivel 2: Golden Badge (25), Stars (25)
@@ -307,27 +322,27 @@ Nivel 4: Special Effects (100)
 
 ```javascript
 // Guardar inventario
-localStorage['mathgame_inventory'] = JSON.stringify({
-  avatars: ['avatar_default', 'avatar_ninja'],
-  themes: ['theme_light', 'theme_dark'],
-  decorations: ['deco_badge_golden']
+localStorage["mathgame_inventory"] = JSON.stringify({
+    avatars: ["avatar_default", "avatar_ninja"],
+    themes: ["theme_light", "theme_dark"],
+    decorations: ["deco_badge_golden"],
 });
 
 // Guardar items activos
-localStorage['mathgame_active_items'] = JSON.stringify({
-  avatar: 'avatar_ninja',
-  theme: 'theme_dark',
-  decoration: 'deco_badge_golden'
+localStorage["mathgame_active_items"] = JSON.stringify({
+    avatar: "avatar_ninja",
+    theme: "theme_dark",
+    decoration: "deco_badge_golden",
 });
 
 // Histórico de compras (opcional)
-localStorage['mathgame_purchase_history'] = JSON.stringify([
-  {
-    itemId: 'avatar_ninja',
-    timestamp: '2024-02-05T15:30:00Z',
-    cost: 50,
-    level: 2
-  }
+localStorage["mathgame_purchase_history"] = JSON.stringify([
+    {
+        itemId: "avatar_ninja",
+        timestamp: "2024-02-05T15:30:00Z",
+        cost: 50,
+        level: 2,
+    },
 ]);
 ```
 
@@ -337,72 +352,79 @@ localStorage['mathgame_purchase_history'] = JSON.stringify([
 
 ```javascript
 function renderStore() {
-  const user = userManager.getUserData();
-  const availableItems = storeManager.getAvailableItems(user.level);
-  
-  const html = `
+    const user = userManager.getUserData();
+    const availableItems = storeManager.getAvailableItems(user.level);
+
+    const html = `
     <div class="store">
       <h2>🏪 Tienda</h2>
       <p>Monedas: ${user.coins}</p>
       
       <div class="store-items">
-        ${availableItems.map(item => `
+        ${availableItems
+            .map(
+                (item) => `
           <div class="item ${item.rarity}">
             <img src="${item.icon}" alt="${item.name}">
             <h3>${item.name}</h3>
             <p>${item.description}</p>
             <span class="price">💰 ${item.cost}</span>
             <button onclick="buyItem('${item.id}')">
-              ${isOwned(item.id) ? 'Usar' : 'Comprar'}
+              ${isOwned(item.id) ? "Usar" : "Comprar"}
             </button>
           </div>
-        `).join('')}
+        `,
+            )
+            .join("")}
       </div>
     </div>
   `;
-  
-  document.getElementById('store').innerHTML = html;
+
+    document.getElementById("store").innerHTML = html;
 }
 
 function buyItem(itemId) {
-  const result = storeManager.purchaseItem(userManager.getCurrentUserId(), itemId);
-  
-  if (result.success) {
-    showNotification('¡Compra exitosa!');
-    userManager.updateUI();
-    renderStore();
-  } else {
-    showError(`Error: ${result.reason}`);
-  }
+    const result = storeManager.purchaseItem(
+        userManager.getCurrentUserId(),
+        itemId,
+    );
+
+    if (result.success) {
+        showNotification("¡Compra exitosa!");
+        userManager.updateUI();
+        renderStore();
+    } else {
+        showError(`Error: ${result.reason}`);
+    }
 }
 ```
 
 ## 🧪 Testing
 
 ```javascript
-describe('StoreManager', () => {
-  it('should get catalog', () => {
-    const catalog = manager.getCatalog();
-    expect(catalog.length).toBeGreaterThan(0);
-  });
-  
-  it('should filter items by type', () => {
-    const avatars = manager.getItemsByType('avatar');
-    expect(avatars.every(i => i.type === 'avatar')).toBe(true);
-  });
-  
-  it('should not allow purchase without coins', () => {
-    const result = manager.purchaseItem('user', 'expensive_item');
-    if (user.coins < item.cost) {
-      expect(result.success).toBe(false);
-      expect(result.reason).toBe('INSUFFICIENT_COINS');
-    }
-  });
-  
-  it('should not allow purchase below level', () => {
-    const result = manager.purchaseItem('user_level1', 'level5_item');
-    expect(result.success).toBe(false);
-  });
+describe("StoreManager", () => {
+    it("should get catalog", () => {
+        const catalog = manager.getCatalog();
+        expect(catalog.length).toBeGreaterThan(0);
+    });
+
+    it("should filter items by type", () => {
+        const avatars = manager.getItemsByType("avatar");
+        expect(avatars.every((i) => i.type === "avatar")).toBe(true);
+    });
+
+    it("should not allow purchase without coins", () => {
+        const result = manager.purchaseItem("user", "expensive_item");
+        if (user.coins < item.cost) {
+            expect(result.success).toBe(false);
+            expect(result.reason).toBe("INSUFFICIENT_COINS");
+        }
+    });
+
+    it("should not allow purchase below level", () => {
+        const result = manager.purchaseItem("user_level1", "level5_item");
+        expect(result.success).toBe(false);
+    });
 });
 ```
 

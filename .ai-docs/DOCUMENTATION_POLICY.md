@@ -7,18 +7,22 @@
 ## 📂 Ubicaciones Permitidas
 
 ### ✅ `.github/PROJECT_STRUCTURE.md`
+
 **Ubicación**: `.github/PROJECT_STRUCTURE.md`
 
 **Contenido permitido**:
+
 - Estructura general de carpetas y archivos
 - Descripción de qué contiene cada carpeta
 - Mapa general del proyecto
 - Diagrama ASCII de la estructura
 
 ### ✅ `.ai-docs/` (Documentación Técnica para IA)
+
 **Ubicación**: `.ai-docs/*.md`
 
 **Subdivisión**:
+
 - `README.md` - Índice y guía rápida
 - `PROJECT_ARCHITECTURE.md` - Visión técnica general
 - `GAME_ENGINE.md` - Módulo GameEngine
@@ -31,6 +35,7 @@
 - `DEVELOPMENT_GUIDE.md` - Guía de desarrollo
 
 **Contenido permitido**:
+
 - Documentación técnica de módulos
 - Métodos y funciones
 - Estructuras de datos
@@ -42,6 +47,7 @@
 ## ❌ Ubicaciones NO Permitidas
 
 **Raíz del proyecto (`/`)**:
+
 - ❌ ESTRUCTURA_PROBLEMAS.md
 - ❌ TESTS_ANTI_REPETITION.md
 - ❌ CSS_MODULAR.md
@@ -49,6 +55,7 @@
 - ❌ Cualquier documento `.md` técnico/arquitectura
 
 **Razón**: La raíz del proyecto debe mantenerse limpia y enfocada solo en:
+
 - `README.md` - Documentación principal del usuario
 - `CODE_OF_CONDUCT.md` - Código de conducta
 - `CONTRIBUTING.md` - Guía de contribución
@@ -59,25 +66,25 @@
 ### Casos que Requieren Actualizar Documentación en `.ai-docs/`
 
 1. **Cambios en estructura de carpetas**
-   - Actualizar: `.github/PROJECT_STRUCTURE.md`
-   - Actualizar: `.ai-docs/PROJECT_ARCHITECTURE.md`
+    - Actualizar: `.github/PROJECT_STRUCTURE.md`
+    - Actualizar: `.ai-docs/PROJECT_ARCHITECTURE.md`
 
 2. **Cambios en un módulo**
-   - Actualizar: `.ai-docs/[MODULE_NAME].md`
-   - Ejemplo: Si cambias `UserManager.js`, actualizar `USER_SYSTEM.md`
+    - Actualizar: `.ai-docs/[MODULE_NAME].md`
+    - Ejemplo: Si cambias `UserManager.js`, actualizar `USER_SYSTEM.md`
 
 3. **Nuevos sistemas o características**
-   - Crear nuevo archivo en `.ai-docs/`
-   - Actualizar `.ai-docs/README.md` con entrada en índice
-   - Actualizar `.ai-docs/PROJECT_ARCHITECTURE.md` si afecta visión general
+    - Crear nuevo archivo en `.ai-docs/`
+    - Actualizar `.ai-docs/README.md` con entrada en índice
+    - Actualizar `.ai-docs/PROJECT_ARCHITECTURE.md` si afecta visión general
 
 4. **Cambios en flujos o reglas**
-   - Actualizar: `.ai-docs/[RELEVANT_MODULE].md`
-   - Ejemplo: Si cambias cómo funcionan los logros, actualizar `ACHIEVEMENT_SYSTEM.md`
+    - Actualizar: `.ai-docs/[RELEVANT_MODULE].md`
+    - Ejemplo: Si cambias cómo funcionan los logros, actualizar `ACHIEVEMENT_SYSTEM.md`
 
 5. **Nuevos problemas o idiomas**
-   - Actualizar: `.ai-docs/PROBLEM_SYSTEM.md`
-   - Actualizar: `.ai-docs/TRANSLATION_SYSTEM.md`
+    - Actualizar: `.ai-docs/PROBLEM_SYSTEM.md`
+    - Actualizar: `.ai-docs/TRANSLATION_SYSTEM.md`
 
 ## 🔄 Flujo de Cambio
 
@@ -150,6 +157,7 @@ NIVEL 3: Técnico/IA
 ### Escenario: "Agregar sistema de Desafío Semanal"
 
 **CORRECTO**:
+
 ```
 1. Crear DailyChallengeManager.js (código)
 2. Crear pruebas en tests/
@@ -160,6 +168,7 @@ NIVEL 3: Técnico/IA
 ```
 
 **INCORRECTO**:
+
 ```
 1. Crear WEEKLY_CHALLENGES.md en raíz ❌
 2. Crear SISTEMA_DESAFIOS.md en raíz ❌
@@ -180,6 +189,7 @@ Si encuentras archivos .md técnicos fuera de .github y .ai-docs:
 
 **P: ¿Dónde documento un bug fix?**
 R: No necesita documentación en `.ai-docs/`. Hazlo en el commit message:
+
 ```bash
 git commit -m "fix: Corregir cálculo de XP en GameEngine"
 ```
@@ -198,7 +208,8 @@ R: Aunque existe `CSS_MODULAR.md`, debería estar en `.ai-docs/CSS_ARCHITECTURE.
 
 ## ✅ Conclusión
 
-**Regla de Oro**: 
+**Regla de Oro**:
+
 - Documentación técnica = `.ai-docs/` + `.github/PROJECT_STRUCTURE.md`
 - Documentación usuario = `README.md`, `CONTRIBUTING.md`
 - Documentación legal = `CODE_OF_CONDUCT.md`, `LICENSE`

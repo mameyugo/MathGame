@@ -1,9 +1,11 @@
 # Sistema de Logros (Achievements)
 
 ## 📍 Ubicación
+
 `docs/js/managers/AchievementManager.js`
 
 ## 🎯 Propósito
+
 Sistema de logros desbloqueables que motiva al usuario y rastrea hitos importantes en su progresión.
 
 ## 🏆 Estructura de Logro
@@ -28,18 +30,21 @@ Sistema de logros desbloqueables que motiva al usuario y rastrea hitos important
 ## 🎯 Categorías de Logros
 
 ### 1. **Gameplay** - Durante el juego
+
 - Respuesta correcta
 - Racha de respuestas correctas
 - Completar nivel
 - Desafío diario completado
 
 ### 2. **Progression** - Progresión general
+
 - Alcanzar nivel 2, 3, 4, 5
 - Acumular X respuestas correctas
 - Acumular X puntuación
 - Días consecutivos jugando
 
 ### 3. **Special** - Logros especiales
+
 - Responder con 100% accuracy
 - Desbloquear todo
 - Logros secretos
@@ -129,46 +134,51 @@ Sistema de logros desbloqueables que motiva al usuario y rastrea hitos important
 ## 🔄 Métodos Principales
 
 ### `checkAchievements(stats) → Achievement[]`
+
 Verifica y retorna logros desbloqueados en esta sesión.
 
 ```javascript
 const achievementsUnlocked = achievementManager.checkAchievements({
-  correctAnswers: 50,
-  level: 2,
-  sessionAccuracy: 0.95
+    correctAnswers: 50,
+    level: 2,
+    sessionAccuracy: 0.95,
 });
 
 // Retorna solo logros nuevos desbloqueados
-console.log(achievementsUnlocked[0].name);  // "Maestro Nivel 2"
+console.log(achievementsUnlocked[0].name); // "Maestro Nivel 2"
 ```
 
 ### `unlockAchievement(achievementId) → Achievement`
+
 Desbloquea un logro específico.
 
 ```javascript
-const achievement = achievementManager.unlockAchievement('first_correct');
-console.log(achievement.reward.coins);  // 5
-console.log(achievement.reward.xp);     // 10
+const achievement = achievementManager.unlockAchievement("first_correct");
+console.log(achievement.reward.coins); // 5
+console.log(achievement.reward.xp); // 10
 ```
 
 ### `getAchievementProgress(achievementId) → number`
+
 Obtiene progreso hacia un logro (0-100).
 
 ```javascript
-const progress = achievementManager.getAchievementProgress('hundred_answers');
+const progress = achievementManager.getAchievementProgress("hundred_answers");
 // Si usuario ha respondido 70 correctas: 70
 // Si usuario ha respondido 100+ correctas: 100
 ```
 
 ### `getUnlockedAchievements() → Achievement[]`
+
 Retorna todos los logros desbloqueados.
 
 ```javascript
 const unlocked = achievementManager.getUnlockedAchievements();
-console.log(unlocked.length);  // 5
+console.log(unlocked.length); // 5
 ```
 
 ### `getLockedAchievements() → Achievement[]`
+
 Retorna logros no desbloqueados.
 
 ```javascript
@@ -197,7 +207,7 @@ progress: {
 
 ```javascript
 // Sistema mantiene racha de respuestas correctas
-currentStreak: 5
+currentStreak: 5;
 
 // Si responde mal, se reinicia a 0
 // Si llega a 5, desbloquea "Racha Dorada"
@@ -212,18 +222,18 @@ Al desbloquear un logro:
 ```javascript
 unlockAchievement(achievementId) {
   const achievement = this.achievements[achievementId];
-  
+
   // Dar recompensas
   userManager.addCoins(achievement.reward.coins);
   userManager.addExperience(achievement.reward.xp);
-  
+
   // Marcar como desbloqueado
   this.unlockedAchievements.add(achievementId);
   this.unlockTimes[achievementId] = new Date();
-  
+
   // Guardar
   this.saveToLocalStorage();
-  
+
   // Notificar UI
   this.onAchievementUnlocked.notify(achievement);
 }
@@ -242,16 +252,16 @@ XP máximo: ~4000 (de todos los logros)
 
 ```javascript
 achievementManager.onAchievementUnlocked.subscribe((achievement) => {
-  // Mostrar popup
-  // Reproducir sonido
-  // Animar UI
-  showAchievementNotification(achievement);
+    // Mostrar popup
+    // Reproducir sonido
+    // Animar UI
+    showAchievementNotification(achievement);
 });
 
 achievementManager.onMultipleAchievements.subscribe((achievements) => {
-  // Si desbloquea múltiples
-  // Mostrar "¡Triple Logro!"
-  showMultipleAchievementNotification(achievements);
+    // Si desbloquea múltiples
+    // Mostrar "¡Triple Logro!"
+    showMultipleAchievementNotification(achievements);
 });
 ```
 
@@ -320,41 +330,42 @@ getStatistics() {
 
 ```javascript
 // Guardar en localStorage
-localStorage['mathgame_achievements'] = JSON.stringify({
-  unlocked: ['first_correct', 'level_2', 'five_streak'],
-  progress: {
-    'hundred_answers': 70,
-    'perfect_game': false
-  },
-  unlockTimes: {
-    'first_correct': '2024-01-15T10:30:00Z'
-  }
+localStorage["mathgame_achievements"] = JSON.stringify({
+    unlocked: ["first_correct", "level_2", "five_streak"],
+    progress: {
+        hundred_answers: 70,
+        perfect_game: false,
+    },
+    unlockTimes: {
+        first_correct: "2024-01-15T10:30:00Z",
+    },
 });
 ```
 
 ## 🧪 Testing
 
 ```javascript
-describe('AchievementManager', () => {
-  it('should unlock achievement on condition met', () => {
-    manager.checkAchievements({ correctAnswers: 1 });
-    expect(manager.getUnlockedAchievements()).toContain(
-      expect.objectContaining({ id: 'first_correct' })
-    );
-  });
-  
-  it('should award coins and xp', () => {
-    manager.unlockAchievement('first_correct');
-    expect(userManager.coins).toBeGreaterThan(0);
-  });
-  
-  it('should not unlock twice', () => {
-    manager.unlockAchievement('first_correct');
-    manager.unlockAchievement('first_correct');
-    const count = manager.getUnlockedAchievements()
-      .filter(a => a.id === 'first_correct').length;
-    expect(count).toBe(1);
-  });
+describe("AchievementManager", () => {
+    it("should unlock achievement on condition met", () => {
+        manager.checkAchievements({ correctAnswers: 1 });
+        expect(manager.getUnlockedAchievements()).toContain(
+            expect.objectContaining({ id: "first_correct" }),
+        );
+    });
+
+    it("should award coins and xp", () => {
+        manager.unlockAchievement("first_correct");
+        expect(userManager.coins).toBeGreaterThan(0);
+    });
+
+    it("should not unlock twice", () => {
+        manager.unlockAchievement("first_correct");
+        manager.unlockAchievement("first_correct");
+        const count = manager
+            .getUnlockedAchievements()
+            .filter((a) => a.id === "first_correct").length;
+        expect(count).toBe(1);
+    });
 });
 ```
 
