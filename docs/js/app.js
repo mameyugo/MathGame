@@ -934,13 +934,6 @@ function checkAndNotifyAchievements() {
  */
 
 /**
- * Reemplaza setupDuel() para mostrar opciones de duelo
- */
-function setupDuel() {
-    showDuelModeSelector();
-}
-
-/**
  * Muestra la pantalla de selección de modo duelo
  */
 function showDuelModeSelector() {
