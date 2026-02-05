@@ -57,6 +57,26 @@ export const problemsPT = {
         texto: (articulo, precio, billete) => `Você vai à papelaria e compra ${articulo.toLowerCase()} que custa ${precio}€. Se pagar com uma nota de ${billete}€, quanto de troco você recebe?`,
         explicacion: (precio, billete) => `Você deve subtrair o preço da nota: ${billete} - ${precio} = ${billete - precio}€.`
     },
+    merienda_mates: {
+        texto: () => "Você tem 3 sanduíches de queijo na mochila. Sua mãe chega e coloca mais 2 sanduíches de presunto. Quantos sanduíches você tem no total para o lanche?",
+        explicacion: () => "Junte todos os sanduíches e conte! 🥪"
+    },
+    tesoro_canicas: {
+        texto: () => "No recreio você tinha 8 bolinhas brilhantes. Jogando com um amigo, você perde 3 bolinhas. Quantas bolinhas restam na sua bolsa?",
+        explicacion: () => "Lembre que perder é como subtrair! 🔵"
+    },
+    estrellas_pegatina: {
+        texto: () => "Hoje você se comportou muito bem e a professora te deu 5 adesivos de estrelas douradas e 2 adesivos de corações vermelhos. Quantos adesivos você tem agora?",
+        explicacion: () => "Some as estrelas e os corações! ⭐"
+    },
+    garaje_juguete: {
+        texto: () => "Na sua garagem de brinquedo há 7 carros estacionados. De repente, 2 carros saem em alta velocidade para uma corrida. Quantos carros ficaram na garagem?",
+        explicacion: () => "Se eles saem, ficam menos carros dentro. 🏎️"
+    },
+    manzanas_cesta: {
+        texto: () => "Há uma cesta com 10 maçãs vermelhas. Ao olhar de perto, você vê que 4 têm um verme e não podem ser comidas. Quantas maçãs boas restam?",
+        explicacion: () => "Tire as que têm verme para saber quantas restam! 🍎"
+    },
 
     // LEVEL 2
     pastor_ovejas: {

@@ -57,6 +57,26 @@ export const problemsEN = {
         texto: (articulo, precio, billete) => `You go to the stationery store and buy ${articulo.toLowerCase()} that costs ${precio}€. If you pay with a ${billete}€ note, how much change do they give you?`,
         explicacion: (precio, billete) => `You have to subtract the price from the note: ${billete} - ${precio} = ${billete - precio}€.`
     },
+    merienda_mates: {
+        texto: () => "You have 3 cheese sandwiches in your backpack. Your mom arrives and puts in 2 more ham sandwiches. How many sandwiches do you have for snack in total?",
+        explicacion: () => "Put all the sandwiches together and count them! 🥪"
+    },
+    tesoro_canicas: {
+        texto: () => "At recess you had 8 shiny marbles. Playing with a friend, you lose 3 marbles. How many marbles are left in your bag?",
+        explicacion: () => "Remember that losing is the same as subtracting! 🔵"
+    },
+    estrellas_pegatina: {
+        texto: () => "Today you behaved very well and the teacher gave you 5 golden star stickers and 2 red heart stickers. How many stickers do you have now?",
+        explicacion: () => "Add the stars and the hearts! ⭐"
+    },
+    garaje_juguete: {
+        texto: () => "In your toy garage there are 7 parked cars. Suddenly, 2 cars speed out to a race. How many cars are left in the garage?",
+        explicacion: () => "If they leave, there are fewer cars inside. 🏎️"
+    },
+    manzanas_cesta: {
+        texto: () => "There is a basket with 10 red apples. Looking closely, you see that 4 have a worm and cannot be eaten. How many good apples are left?",
+        explicacion: () => "Remove the wormy ones to know how many are left! 🍎"
+    },
 
     // LEVEL 2
     pastor_ovejas: {

@@ -57,6 +57,26 @@ export const problemsES = {
         texto: (articulo, precio, billete) => `Vas a la papelería y compras ${articulo.toLowerCase()} que cuesta ${precio}€. Si pagas con un billete de ${billete}€, ¿cuánto dinero te tienen que devolver?`,
         explicacion: (precio, billete) => `Tienes que restar el precio del billete: ${billete} - ${precio} = ${billete - precio}€.`
     },
+    merienda_mates: {
+        texto: () => "Tienes 3 sándwiches de queso en tu mochila. Tu mamá llega y te guarda otros 2 sándwiches de jamón. ¿Cuántos sándwiches tienes para merendar en total?",
+        explicacion: () => "¡Junta todos los sándwiches y cuéntalos! 🥪"
+    },
+    tesoro_canicas: {
+        texto: () => "En el recreo tenías 8 canicas brillantes. Jugando con un amigo, pierdes 3 canicas. ¿Cuántas canicas te quedan en la bolsa?",
+        explicacion: () => "¡Recuerda que perder es como restar! 🔵"
+    },
+    estrellas_pegatina: {
+        texto: () => "Hoy te has portado muy bien y la profe te ha dado 5 pegatinas de estrellas doradas y 2 pegatinas de corazones rojos. ¿Cuántas pegatinas tienes ahora en tu cuaderno?",
+        explicacion: () => "¡Suma las estrellas y los corazones! ⭐"
+    },
+    garaje_juguete: {
+        texto: () => "En tu garaje de juguete hay 7 coches aparcados. De repente, 2 coches salen a toda velocidad para ir a una carrera. ¿Cuántos coches se han quedado en el garaje?",
+        explicacion: () => "Si salen, hay menos coches dentro. 🏎️"
+    },
+    manzanas_cesta: {
+        texto: () => "Hay una cesta con 10 manzanas rojas. Al mirarlas de cerca, ves que 4 tienen un gusanito y no se pueden comer. ¿Cuántas manzanas ricas quedan?",
+        explicacion: () => "¡Quita las del gusanito para saber cuántas quedan! 🍎"
+    },
 
     // LEVEL 2
     pastor_ovejas: {

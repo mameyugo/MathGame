@@ -57,6 +57,26 @@ export const problemsCA = {
         texto: (articulo, precio, billete) => `Vas a la papereria i compres ${articulo.toLowerCase()} que costa ${precio}€. Si paques amb un bitllet de ${billete}€, quant et donen de canvi?`,
         explicacion: (precio, billete) => `Has de restar el preu del bitllet: ${billete} - ${precio} = ${billete - precio}€.`
     },
+    merienda_mates: {
+        texto: () => "Tens 3 entrepans de formatge a la motxilla. La teva mare arriba i et posa 2 entrepans més de pernil. Quants entrepans tens en total per berenar?",
+        explicacion: () => "Ajunta tots els entrepans i compta'ls! 🥪"
+    },
+    tesoro_canicas: {
+        texto: () => "Al pati tenies 8 bales brillants. Jugant amb un amic, en perds 3. Quantes bales et queden a la bossa?",
+        explicacion: () => "Recorda que perdre és com restar! 🔵"
+    },
+    estrellas_pegatina: {
+        texto: () => "Avui t'has portat molt bé i la profe t'ha donat 5 enganxines d'estrelles daurades i 2 enganxines de cors vermells. Quantes enganxines tens ara?",
+        explicacion: () => "Suma les estrelles i els cors! ⭐"
+    },
+    garaje_juguete: {
+        texto: () => "Al teu garatge de joguina hi ha 7 cotxes aparcats. De sobte, 2 cotxes surten a tota velocitat per anar a una cursa. Quants cotxes s'han quedat al garatge?",
+        explicacion: () => "Si surten, n'hi ha menys a dins. 🏎️"
+    },
+    manzanas_cesta: {
+        texto: () => "Hi ha una cistella amb 10 pomes vermelles. Mirant-les de prop, veus que 4 tenen un cuc i no es poden menjar. Quantes pomes bones queden?",
+        explicacion: () => "Treu les del cuc per saber quantes en queden! 🍎"
+    },
 
     // LEVEL 2
     pastor_ovejas: {

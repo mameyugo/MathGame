@@ -57,6 +57,26 @@ export const problemsGL = {
         texto: (articulo, precio, billete) => `Vas á papelería e compras ${articulo.toLowerCase()} que custa ${precio}€. Se pagas cun billete de ${billete}€, ¿canto diñeiro te teñen que devolver?`,
         explicacion: (precio, billete) => `Tes que restar o prezo do billete: ${billete} - ${precio} = ${billete - precio}€.`
     },
+    merienda_mates: {
+        texto: () => "Tes 3 bocadillos de queixo na mochila. A túa nai chega e gárdache outros 2 bocadillos de xamón. Cantos bocadillos tes para merendar en total?",
+        explicacion: () => "Xunta todos os bocadillos e cóntaos! 🥪"
+    },
+    tesoro_canicas: {
+        texto: () => "No recreo tiñas 8 canicas brillantes. Xogando cun amigo, perdes 3 canicas. Cantas canicas che quedan na bolsa?",
+        explicacion: () => "Lembra que perder é como restar! 🔵"
+    },
+    estrellas_pegatina: {
+        texto: () => "Hoxe portácheste moi ben e a profe deuche 5 pegatinas de estrelas douradas e 2 pegatinas de corazóns vermellos. Cantas pegatinas tes agora no teu caderno?",
+        explicacion: () => "Suma as estrelas e os corazóns! ⭐"
+    },
+    garaje_juguete: {
+        texto: () => "No teu garaxe de xoguete hai 7 coches aparcados. De repente, 2 coches saen a toda velocidade para ir a unha carreira. Cantos coches quedaron no garaxe?",
+        explicacion: () => "Se saen, hai menos coches dentro. 🏎️"
+    },
+    manzanas_cesta: {
+        texto: () => "Hai unha cesta con 10 mazás vermellas. Ao miralas de preto, ves que 4 teñen un verme e non se poden comer. Cantas mazás boas quedan?",
+        explicacion: () => "Quita as do verme para saber cantas quedan! 🍎"
+    },
 
     // LEVEL 2
     pastor_ovejas: {

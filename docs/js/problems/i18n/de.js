@@ -57,6 +57,26 @@ export const problemsDE = {
         texto: (articulo, precio, billete) => `Du gehst ins Schreibwarengeschäft und kaufst ${articulo.toLowerCase()}, das ${precio}€ kostet. Wenn du mit einem ${billete}€-Schein bezahlst, wie viel Wechselgeld bekommst du?`,
         explicacion: (precio, billete) => `Du musst den Preis vom Schein abziehen: ${billete} - ${precio} = ${billete - precio}€.`
     },
+    merienda_mates: {
+        texto: () => "Du hast 3 Käsesandwiches in deinem Rucksack. Deine Mutter kommt und legt 2 Schinkensandwiches dazu. Wie viele Sandwiches hast du insgesamt für den Snack?",
+        explicacion: () => "Lege alle Sandwiches zusammen und zähle sie! 🥪"
+    },
+    tesoro_canicas: {
+        texto: () => "In der Pause hattest du 8 glänzende Murmeln. Beim Spielen mit einem Freund verlierst du 3 Murmeln. Wie viele Murmeln bleiben in deiner Tasche?",
+        explicacion: () => "Denk daran: Verlieren ist wie Subtrahieren! 🔵"
+    },
+    estrellas_pegatina: {
+        texto: () => "Heute warst du sehr brav und die Lehrerin hat dir 5 goldene Sternaufkleber und 2 rote Herzaufkleber gegeben. Wie viele Aufkleber hast du jetzt?",
+        explicacion: () => "Addiere die Sterne und die Herzen! ⭐"
+    },
+    garaje_juguete: {
+        texto: () => "In deiner Spielzeuggarage stehen 7 Autos. Plötzlich fahren 2 Autos mit hoher Geschwindigkeit zu einem Rennen los. Wie viele Autos bleiben in der Garage?",
+        explicacion: () => "Wenn sie losfahren, sind weniger Autos drinnen. 🏎️"
+    },
+    manzanas_cesta: {
+        texto: () => "Es gibt einen Korb mit 10 roten Äpfeln. Beim genauen Hinsehen siehst du, dass 4 einen Wurm haben und nicht gegessen werden können. Wie viele gute Äpfel bleiben übrig?",
+        explicacion: () => "Nimm die mit dem Wurm weg, um zu wissen, wie viele übrig bleiben! 🍎"
+    },
 
     // LEVEL 2
     pastor_ovejas: {

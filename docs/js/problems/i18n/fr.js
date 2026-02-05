@@ -57,6 +57,26 @@ export const problemsFR = {
         texto: (articulo, precio, billete) => `Tu vas à la papeterie et tu achètes ${articulo.toLowerCase()} qui coûte ${precio}€. Si tu paies avec un billet de ${billete}€, combien de monnaie te rendent-ils?`,
         explicacion: (precio, billete) => `Tu dois soustraire le prix du billet: ${billete} - ${precio} = ${billete - precio}€.`
     },
+    merienda_mates: {
+        texto: () => "Tu as 3 sandwichs au fromage dans ton sac. Ta maman arrive et t'ajoute 2 sandwichs au jambon. Combien de sandwichs as-tu au total pour le goûter ?",
+        explicacion: () => "Mets tous les sandwichs ensemble et compte-les ! 🥪"
+    },
+    tesoro_canicas: {
+        texto: () => "À la récré, tu avais 8 billes brillantes. En jouant avec un ami, tu perds 3 billes. Combien de billes te restent dans la poche ?",
+        explicacion: () => "Souviens-toi que perdre, c'est comme soustraire ! 🔵"
+    },
+    estrellas_pegatina: {
+        texto: () => "Aujourd'hui tu t'es très bien comporté et la prof t'a donné 5 autocollants d'étoiles dorées et 2 autocollants de cœurs rouges. Combien d'autocollants as-tu maintenant ?",
+        explicacion: () => "Additionne les étoiles et les cœurs ! ⭐"
+    },
+    garaje_juguete: {
+        texto: () => "Dans ton garage de jouets, il y a 7 voitures garées. Soudain, 2 voitures partent à toute vitesse pour une course. Combien de voitures restent dans le garage ?",
+        explicacion: () => "Si elles partent, il y a moins de voitures à l'intérieur. 🏎️"
+    },
+    manzanas_cesta: {
+        texto: () => "Il y a un panier avec 10 pommes rouges. En regardant de près, tu vois que 4 ont un ver et ne peuvent pas être mangées. Combien de bonnes pommes restent ?",
+        explicacion: () => "Enlève celles avec le ver pour savoir combien il en reste ! 🍎"
+    },
 
     // LEVEL 2
     pastor_ovejas: {

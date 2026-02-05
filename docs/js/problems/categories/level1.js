@@ -110,8 +110,8 @@ export const level1Problems = [
         categorias: ['explorador'],
         i18n: "cesta_peras",
         generar: () => {
-            const inicial = 3;
-            const regaladas = 2;
+            const inicial = Math.floor(Math.random() * 6) + 4;
+            const regaladas = Math.floor(Math.random() * Math.min(3, inicial - 1)) + 1;
             const respuesta = inicial - regaladas;
 
             return {
@@ -120,7 +120,7 @@ export const level1Problems = [
                 explicacion: `Después de dar ${regaladas} peras de tu cesta de ${inicial}, te quedan: ${inicial} - ${regaladas} = ${respuesta} pera(s).`,
                 ecuacion: `${inicial} - ${regaladas} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, regaladas, inicial, inicial + regaladas]
+                opciones: [respuesta, respuesta + 1, inicial, inicial + regaladas]
             };
         }
     },
@@ -265,6 +265,106 @@ export const level1Problems = [
                 ecuacion: `${billete} - ${precio} = __`,
                 ecuacionValores: [respuesta],
                 opciones: [respuesta, precio, billete, billete + precio]
+            };
+        }
+    },
+    {
+        id: "merienda_mates",
+        tipo: "matematico",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "merienda_mates",
+        generar: () => {
+            const queso = Math.floor(Math.random() * 4) + 2;
+            const jamon = Math.floor(Math.random() * 4) + 1;
+            const respuesta = queso + jamon;
+            return {
+                texto: `Tienes ${queso} sándwiches de queso en tu mochila. Tu mamá llega y te guarda otros ${jamon} sándwiches de jamón. ¿Cuántos sándwiches tienes para merendar en total?`,
+                respuestaCorrecta: respuesta,
+                explicacion: "¡Junta todos los sándwiches y cuéntalos! 🥪",
+                ecuacion: `${queso} + ${jamon} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
+            };
+        }
+    },
+    {
+        id: "tesoro_canicas",
+        tipo: "matematico",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "tesoro_canicas",
+        generar: () => {
+            const inicial = Math.floor(Math.random() * 7) + 6;
+            const perdidas = Math.floor(Math.random() * Math.min(5, inicial - 1)) + 1;
+            const respuesta = inicial - perdidas;
+            return {
+                texto: `En el recreo tenías ${inicial} canicas brillantes. Jugando con un amigo, pierdes ${perdidas} canicas. ¿Cuántas canicas te quedan en la bolsa?`,
+                respuestaCorrecta: respuesta,
+                explicacion: "¡Recuerda que perder es como restar! 🔵",
+                ecuacion: `${inicial} − ${perdidas} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
+            };
+        }
+    },
+    {
+        id: "estrellas_pegatina",
+        tipo: "matematico",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "estrellas_pegatina",
+        generar: () => {
+            const estrellas = Math.floor(Math.random() * 5) + 3;
+            const corazones = Math.floor(Math.random() * 4) + 1;
+            const respuesta = estrellas + corazones;
+            return {
+                texto: `Hoy te has portado muy bien y la profe te ha dado ${estrellas} pegatinas de estrellas doradas y ${corazones} pegatinas de corazones rojos. ¿Cuántas pegatinas tienes ahora en tu cuaderno?`,
+                respuestaCorrecta: respuesta,
+                explicacion: "¡Suma las estrellas y los corazones! ⭐",
+                ecuacion: `${estrellas} + ${corazones} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
+            };
+        }
+    },
+    {
+        id: "garaje_juguete",
+        tipo: "matematico",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "garaje_juguete",
+        generar: () => {
+            const coches = Math.floor(Math.random() * 6) + 5;
+            const salen = Math.floor(Math.random() * Math.min(4, coches - 1)) + 1;
+            const respuesta = coches - salen;
+            return {
+                texto: `En tu garaje de juguete hay ${coches} coches aparcados. De repente, ${salen} coches salen a toda velocidad para ir a una carrera. ¿Cuántos coches se han quedado en el garaje?`,
+                respuestaCorrecta: respuesta,
+                explicacion: "Si salen, hay menos coches dentro. 🏎️",
+                ecuacion: `${coches} − ${salen} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
+            };
+        }
+    },
+    {
+        id: "manzanas_cesta",
+        tipo: "matematico",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "manzanas_cesta",
+        generar: () => {
+            const total = Math.floor(Math.random() * 5) + 8;
+            const gusano = Math.floor(Math.random() * Math.min(5, total - 1)) + 1;
+            const respuesta = total - gusano;
+            return {
+                texto: `Hay una cesta con ${total} manzanas rojas. Al mirarlas de cerca, ves que ${gusano} tienen un gusanito y no se pueden comer. ¿Cuántas manzanas ricas quedan?`,
+                respuestaCorrecta: respuesta,
+                explicacion: "¡Quita las del gusanito para saber cuántas quedan! 🍎",
+                ecuacion: `${total} − ${gusano} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
             };
         }
     }
