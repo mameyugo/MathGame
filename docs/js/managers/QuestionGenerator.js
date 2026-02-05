@@ -18,6 +18,8 @@ class QuestionGenerator {
         this.gameLevel = 1;
         this.problemType = 'matematico';
         this.gameEngine = gameEngine;
+        // Track initial level for problem filtering to keep pool consistent
+        this.initialProblemLevel = null;
     }
 
     /**
@@ -180,9 +182,15 @@ class QuestionGenerator {
             return null;
         }
 
-        // Filtrar problemas por tipo y nivel
+        // Use initial level to keep problem pool consistent throughout session
+        // Store initial level on first problem selection
+        if (this.initialProblemLevel === null) {
+            this.initialProblemLevel = this.gameLevel;
+        }
+
+        // Filtrar problemas por tipo y nivel usando el nivel inicial
         const candidates = window.bancoProblemas.filter(
-            p => p.tipo === this.problemType && p.nivelMin <= this.gameLevel
+            p => p.tipo === this.problemType && p.nivelMin <= this.initialProblemLevel
         );
 
         // Filtrar por categorías seleccionadas
@@ -457,6 +465,14 @@ class QuestionGenerator {
      */
     setProblemType(type) {
         this.problemType = type;
+    }
+
+    /**
+     * Resets the problem session (should be called when starting a new problem game)
+     * Resets the initial problem level tracking
+     */
+    resetProblemSession() {
+        this.initialProblemLevel = null;
     }
 
     /**
