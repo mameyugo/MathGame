@@ -256,6 +256,54 @@ pregunta.texto = i18nTexto;  // Si el problema usa i18n
 }
 ```
 
+## 📝 Tipos de Respuesta Soportados (Futuro)
+
+Aunque actualmente solo se soportan respuestas numéricas, el sistema fue diseñado para expandirse:
+
+### 1. **numero** (Actual)
+```javascript
+{
+  respuestaCorrecta: 15,
+  tipoRespuesta: "numero",
+  ecuacion: "5 × 3 = __",
+  ecuacionValores: [15]
+}
+```
+
+### 2. **opcion_multiple** (Planeado)
+```javascript
+{
+  respuestaCorrecta: "Juan",
+  tipoRespuesta: "opcion_multiple",
+  opciones: [
+    { id: "juan", texto: "Juan", icon: "👦" },
+    { id: "primero", texto: "Primero", icon: "1️⃣" },
+    { id: "segundo", texto: "Segundo", icon: "2️⃣" }
+  ]
+}
+```
+
+### 3. **texto** (Planeado)
+```javascript
+{
+  respuestaCorrecta: "Juan",
+  tipoRespuesta: "texto",
+  placeholder: "¿Cómo se llama?",
+  caseSensitive: false,
+  trim: true
+}
+```
+
+### 4. **drag_drop** (Futuro)
+```javascript
+{
+  respuestaCorrecta: ["lobo", "col", "oveja"],
+  tipoRespuesta: "drag_drop",
+  elementos: ["lobo", "col", "oveja"],
+  zonas: ["primero", "segundo", "tercero"]
+}
+```
+
 ## 🔍 Validación de Opciones
 
 Las opciones múltiples incluyen:

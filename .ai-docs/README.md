@@ -11,6 +11,13 @@ Bienvenido a la documentación técnica de MathGame. Esta carpeta contiene guía
   - Patrones de diseño
   - Flujos de datos
 
+### 📋 Políticas y Reglas
+- **[DOCUMENTATION_POLICY.md](DOCUMENTATION_POLICY.md)** - Reglas sobre dónde documentar
+  - Ubicaciones permitidas
+  - Cuándo actualizar documentación
+  - Checklist de mantenimiento
+  - Solución de conflictos de documentación
+
 ### 🎮 Módulos Principales
 
 #### Core Engine
