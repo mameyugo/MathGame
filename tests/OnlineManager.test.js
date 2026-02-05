@@ -40,7 +40,7 @@ describe('OnlineManager - Sistema de Duelo Online', () => {
             value: localStorageMock,
             writable: true
         });
-        
+
         // Ejecutar TranslationManager
         window.eval(`
             ${translationManagerCode}
