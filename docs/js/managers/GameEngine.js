@@ -257,6 +257,21 @@ class GameEngine {
             this.gameCoins += 10;
             this.timeLeft += 2;
 
+            // Online Sync
+            if (this.onlineMode && this.sendOnlineAction) {
+                this.sendOnlineAction('score_update', { score: this.gameCoins });
+
+                // Race Mode Check
+                if (this.onlineGameType === 'race') {
+                    const currentWins = this.gameCoins / 10; // Assuming 10 coins per win
+                    if (currentWins >= this.targetWins) {
+                        this.sendOnlineAction('game_over', { result: 'won' });
+                        this.handleOnlineGameOver('lost'); // Opponent lost (I won)
+                        return;
+                    }
+                }
+            }
+
             // Track achievement stats
             const user = this.userManager.getCurrentUser();
             if (user && this.achievementManager) {
@@ -366,9 +381,21 @@ class GameEngine {
 
     /**
      * Ends the current game session
+     * @param {boolean} forceEnd - Force end without checks (used by online logic)
      */
-    endGameSession() {
+    endGameSession(forceEnd = false) {
         clearInterval(this.timerInterval);
+
+        if (this.onlineMode) {
+            if (!forceEnd && this.sendOnlineAction) {
+                // If we ended naturally (timeout) in online mode -> We lost!
+                this.sendOnlineAction('game_over', { result: 'timeout' });
+                alert('😢 ¡Se acabó el tiempo! Perdiste.');
+                if (this.onOnlineGameOver) this.onOnlineGameOver();
+            }
+            // If forced end, it was handled by receiveRemoteAction
+            return;
+        }
 
         if (this.duelMode) {
             // Duel mode ending
@@ -522,6 +549,104 @@ class GameEngine {
     resetSolvedProblems() {
         this.solvedProblemsInSession.clear();
     }
+
+    // ==========================================
+    // Online Duel Implementation
+    // ==========================================
+
+    /**
+     * Sets callbacks for online interaction
+     */
+    setOnlineCallbacks(sendActionFn, onGameOverFn) {
+        this.sendOnlineAction = sendActionFn;
+        this.onOnlineGameOver = onGameOverFn;
+    }
+
+    /**
+     * Starts an online game session
+     */
+    startOnlineGameSession(config) {
+        this.duelMode = true; // Use existing duel flag for UI purposes
+        this.onlineMode = true; // New flag for logic distinction
+        this.onlineGameType = config.type || 'time'; // 'time' (Survival) or 'race' (First to X)
+        this.targetWins = config.targetWins || 10;
+
+        // Reset state
+        this.gameLevel = 1;
+        this.gameCoins = 0;
+        this.currentDuelIdx = 0; // Not used in online but kept for safety
+        this.duelScores = {}; // We will store opponent score here
+
+        // Use standard init
+        this.initGameSession(1, 0);
+
+        // Override timer for specific modes if needed
+        if (this.onlineGameType === 'race') {
+            this.timeLeft = 9999; // Effectively infinite for race mode
+            this.toggleProblemUI(false); // Usually race is rapid calculation? Or problems? Assumed calculation for now.
+        }
+    }
+
+    /**
+     * Handles incoming actions from remote player
+     */
+    receiveRemoteAction(action, payload) {
+        if (!this.onlineMode) return;
+
+        switch (action) {
+            case 'score_update':
+                // Update remote score display (could be added to UI)
+                console.log('Opponent score:', payload.score);
+                // Update duelScores for UI
+                if (this.onOpponentScoreUpdate) {
+                    this.onOpponentScoreUpdate(payload.score);
+                }
+                break;
+
+            case 'power_up':
+                if (payload.type === 'freeze') {
+                    // Apply freeze to local player
+                    this.applyFreezeEffect();
+                }
+                break;
+
+            case 'game_over':
+                // Opponent finished or lost
+                this.handleOnlineGameOver(payload.result); // 'won', 'lost', 'timeout'
+                break;
+        }
+    }
+
+    /**
+     * Applies freeze effect from opponent
+     */
+    applyFreezeEffect() {
+        // reuse existing logic or implement new
+        // For now, simpler version:
+        const showTimeEffect = window.showTimeEffect;
+        if (showTimeEffect) showTimeEffect('❄️ Opponent Froze You!', 'negative');
+
+        // Pause for 3 seconds
+        /* logic to pause input or timer */
+    }
+
+    /**
+     * Handles end of online game
+     */
+    handleOnlineGameOver(remoteResult) {
+        this.endGameSession(true); // Stop local game
+
+        let message = '';
+        if (remoteResult === 'won') {
+            message = '❌ ¡Tu oponente ha ganado!';
+        } else if (remoteResult === 'lost' || remoteResult === 'timeout') {
+            message = '🏆 ¡Has ganado! Tu oponente perdió.';
+        }
+
+        alert(message);
+        if (this.onOnlineGameOver) this.onOnlineGameOver();
+    }
+
 }
 
 // Export for both Node.js (tests) and browser

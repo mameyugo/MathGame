@@ -22,13 +22,34 @@ class QuestionGenerator {
     }
 
     /**
-     * Generates a random math question
+     * Sets the problem queue for synchronized play
+     * @param {Array} queue - Array of problem parameters
      */
-    generateQuestion() {
+    setProblemQueue(queue) {
+        this.problemQueue = queue || [];
+        this.currentQueueIndex = 0;
+    }
+
+    /**
+     * Generates a batch of math questions for the host
+     * @param {number} count - Number of questions to generate
+     * @returns {Array} Array of question parameters
+     */
+    generateMathQuestionBatch(count = 50) {
+        const batch = [];
+        for (let i = 0; i < count; i++) {
+            batch.push(this.generateMathQuestionParams());
+        }
+        return batch;
+    }
+
+    /**
+     * Generates parameters for a single math question
+     */
+    generateMathQuestionParams() {
         const user = this.userManager.getCurrentUser();
         if (!user || !user.ops || user.ops.length === 0) {
-            console.error('No user or operations available');
-            return;
+            return null; // Should handle error
         }
 
         const ops = user.ops;
@@ -49,12 +70,53 @@ class QuestionGenerator {
             n1 = n2 * quotient; // Ensure exact division
         }
 
-        this.currentAnswer = eval(`${n1}${op}${n2}`);
+        return { n1, n2, op, mode, gameLevel: this.gameLevel };
+    }
+
+    /**
+     * Generates a random math question (or uses queue)
+     */
+    generateQuestion() {
+        let params = null;
+
+        // Use queue if available
+        if (this.problemQueue && this.currentQueueIndex < this.problemQueue.length) {
+            params = this.problemQueue[this.currentQueueIndex++];
+        } else {
+            // Fallback to random generation
+            params = this.generateMathQuestionParams();
+        }
+
+        if (!params) {
+            console.error('No operations or params available');
+            return;
+        }
+
+        this.renderQuestionFromParams(params);
+    }
+
+    /**
+     * Renders a question from parameters
+     */
+    renderQuestionFromParams({ n1, n2, op, mode }) {
+        // Calculate answer safely without eval
+        let answer = 0;
+        switch (op) {
+            case '+': answer = n1 + n2; break;
+            case '-': answer = n1 - n2; break;
+            case '*': answer = n1 * n2; break;
+            case '/': answer = n1 / n2; break;
+            default: answer = 0;
+        }
+        this.currentAnswer = answer;
 
         const area = document.getElementById('question-area');
         if (!area) return;
 
         area.innerHTML = "";
+
+        // Use stored gameLevel if available in params, otherwise current
+        // Accessing this.gameLevel is fine for visual determination logic below
 
         if (mode < 0.3 && this.gameLevel < 8 && op !== '/') {
             // Visual mode (not for division)
@@ -177,39 +239,38 @@ class QuestionGenerator {
             this.initialProblemLevel = this.gameLevel;
         }
 
-        // Obtener categorías seleccionadas por el usuario
+        // Get selected categories
         const selectedCategories = this.userManager.getProblemCategories();
 
-        // Validar que hay al menos una categoría seleccionada
+        // Validate categories
         if (!this.problemCategoryManager.hasValidSelection(selectedCategories)) {
             console.warn('No problem categories selected');
             return null;
         }
 
-        // Filtrar problemas por tipo y nivel CONGELADO (no dinámico)
+        // Filter by type and level (FROZEN)
         const candidates = window.bancoProblemas.filter(
             p => p.tipo === this.problemType && p.nivelMin <= this.initialProblemLevel
         );
 
-        // Filtrar por categorías seleccionadas
+        // Filter by categories
         const filteredByCategory = this.problemCategoryManager.filterProblemsByCategories(
             candidates,
             selectedCategories
         );
 
-        // Si no hay problemas después de filtrar por categorías, usar todos los candidatos
+        // Fallback to all candidates if filtered is empty
         let pool = filteredByCategory.length ? filteredByCategory : candidates;
 
-        // Filtrar problemas ya resueltos en esta sesión
+        // Filter solved problems
         if (this.gameEngine) {
             const solvedProblems = this.gameEngine.getSolvedProblems();
             const unsolvedProblems = pool.filter(p => !solvedProblems.has(p.id));
 
-            // Si quedan problemas sin resolver, usarlos
             if (unsolvedProblems.length > 0) {
                 pool = unsolvedProblems;
             } else if (pool.length > 0) {
-                // Todos los problemas disponibles ya fueron resueltos
+                // All available problems solved
                 this.showCompletionMessage();
                 return null;
             }
@@ -248,7 +309,7 @@ class QuestionGenerator {
 
             const parts = line.split('__');
             parts.forEach((part, idx) => {
-                // Envolver el texto en un span para poder ocultarlo independientemente
+                // Wrap text in span to hide it independently
                 if (part.trim()) {
                     const textSpan = document.createElement('span');
                     textSpan.className = 'eq-text';
@@ -300,7 +361,7 @@ class QuestionGenerator {
             area.innerText = translatedText || this.currentProblem.texto;
         }
 
-        // Usar el nuevo renderProblemUI para soportar diferentes tipos de respuesta
+        // Using new renderProblemUI to support different response types
         this.renderProblemUI(this.currentProblem);
     }
 
@@ -318,8 +379,6 @@ class QuestionGenerator {
         try {
             // Get the generated problem data to extract parameters
             // For now, return the base text without parameters
-            // In a future enhancement, we could parse the generar() function
-            // to extract and pass the correct parameters
             const baseText = window.getTranslation(language, problemId, 'texto');
             return baseText || null;
         } catch (error) {
@@ -354,24 +413,24 @@ class QuestionGenerator {
 
         const tipoRespuesta = problem.tipoRespuesta || 'numero';
 
-        // Limpiar área
+        // Clear area
         equationArea.innerHTML = '';
 
         if (tipoRespuesta === 'numero') {
-            // Renderizar ecuación con inputs numéricos (comportamiento actual)
+            // Render equation with numeric inputs
             this.renderEquation(problem.ecuacion);
 
-            // Ocultar solo el texto de la ecuación inicialmente
+            // Hide only the equation text initially
             const equationTexts = document.querySelectorAll('#equation-area .eq-text');
             equationTexts.forEach(text => {
                 text.style.opacity = '0';
             });
 
-            // Focus first input inmediatamente
+            // Focus first input immediately
             const firstInput = document.querySelector('#equation-area .eq-input');
             if (firstInput) firstInput.focus();
 
-            // Mostrar texto de la ecuación después de 10 segundos
+            // Show equation text after 10 seconds
             setTimeout(() => {
                 equationTexts.forEach(text => {
                     text.style.transition = 'opacity 0.5s ease';
@@ -402,7 +461,7 @@ class QuestionGenerator {
             btn.dataset.value = opcion.id || opcion;
             btn.dataset.index = idx;
 
-            // Soportar objetos con propiedades o strings simples
+            // Support objects or simple strings
             if (typeof opcion === 'object') {
                 btn.innerHTML = `<span class="choice-icon">${opcion.icon || ''}</span> ${opcion.texto}`;
             } else {
@@ -410,13 +469,13 @@ class QuestionGenerator {
             }
 
             btn.addEventListener('click', () => {
-                // Deseleccionar otros
+                // Deselect others
                 document.querySelectorAll('.choice-btn').forEach(b => {
                     b.classList.remove('selected');
                 });
-                // Seleccionar este
+                // Select this one
                 btn.classList.add('selected');
-                // Guardar respuesta
+                // Save answer
                 window.selectedChoice = opcion.id || opcion;
             });
 
@@ -445,7 +504,7 @@ class QuestionGenerator {
         container.appendChild(input);
         equationArea.appendChild(container);
 
-        // Focus automático
+        // Auto focus
         setTimeout(() => input.focus(), 100);
     }
 
@@ -505,14 +564,13 @@ class QuestionGenerator {
             equationArea.innerHTML = '';
         }
 
-        // Ocultar botón de submit
+        // Hide submit button
         const submitBtn = document.getElementById('btn-submit-problem');
         if (submitBtn) {
             submitBtn.style.display = 'none';
         }
 
-        // Finalizar la sesión de juego para sumar monedas y actualizar logros
-        // Solo si estamos en el navegador y gameEngine está disponible
+        // End game session
         if (typeof window !== 'undefined' && this.gameEngine && typeof endGameSession === 'function') {
             endGameSession();
         }
