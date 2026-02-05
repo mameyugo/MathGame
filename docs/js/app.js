@@ -321,6 +321,11 @@ function generateProblem() {
     questionGenerator.setGameLevel(gameLevel);
     questionGenerator.generateProblem();
     currentProblem = questionGenerator.getCurrentProblem();
+    
+    // Si no hay problema (todos completados), finalizar la sesión
+    if (!currentProblem) {
+        endGameSession();
+    }
 }
 
 /**

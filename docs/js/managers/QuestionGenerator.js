@@ -488,6 +488,9 @@ class QuestionGenerator {
                             Lo implementaré lo más rápido posible 🚀
                         </p>
                     </div>
+                    <button id="btn-play-again" onclick="location.reload()" style="background: #3498db; color: white; padding: 12px 24px; border: none; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 20px; transition: background 0.3s;">
+                        🔄 Volver a Jugar
+                    </button>
                 </div>
             `;
         }
@@ -500,6 +503,12 @@ class QuestionGenerator {
         const submitBtn = document.getElementById('btn-submit-problem');
         if (submitBtn) {
             submitBtn.style.display = 'none';
+        }
+
+        // Finalizar la sesión de juego para sumar monedas y actualizar logros
+        // Solo si estamos en el navegador y gameEngine está disponible
+        if (typeof window !== 'undefined' && this.gameEngine && typeof endGameSession === 'function') {
+            endGameSession();
         }
     }
 }
