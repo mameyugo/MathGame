@@ -390,6 +390,57 @@ class UserManager {
     getUsers() {
         return this.users;
     }
+
+    /**
+     * Sincroniza datos remotos con el usuario local
+     * @param {Object} remoteData - Datos recibidos del servidor
+     */
+    mergeUserData(remoteData) {
+        if (!this.currentUser || !this.users[this.currentUser]) return;
+
+        // Si no hay datos remotos, no hacemos nada
+        if (!remoteData) return;
+
+        // Actualizar datos del usuario actual con los del servidor
+        // Como el servidor ya hizo el merge inteligente, confiamos en sus datos
+        const user = this.users[this.currentUser];
+
+        // Mezclar propiedades base
+        if (typeof remoteData.level === 'number') user.level = remoteData.level;
+        if (typeof remoteData.totalCoins === 'number') user.totalCoins = remoteData.totalCoins;
+
+        // Ops se prefiere local si existe, sino remoto
+        if (remoteData.ops && !user.ops) user.ops = remoteData.ops;
+
+        // Inventario
+        if (remoteData.inventory) {
+            user.inventory = remoteData.inventory;
+        }
+
+        // Categorías
+        if (remoteData.problemCategories) {
+            user.problemCategories = remoteData.problemCategories;
+        }
+
+        // Tema
+        if (remoteData.currentTheme) {
+            user.currentTheme = remoteData.currentTheme;
+        }
+
+        // Estadísticas
+        if (remoteData.achievementStats) {
+            user.achievementStats = remoteData.achievementStats;
+        }
+
+        // Logros
+        if (remoteData.achievements) {
+            user.achievements = remoteData.achievements;
+        }
+
+        // Guardar cambios
+        this.saveToStorage();
+        console.log('Datos de usuario sincronizados con el servidor');
+    }
 }
 
 // Exportar para uso en Node.js (tests)

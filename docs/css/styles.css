@@ -1285,3 +1285,91 @@ button.main-btn:active {
     outline: none;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
+
+/* Online Game UI Elements */
+
+.online-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.overlay-content {
+    animation: fadeIn 0.5s ease;
+}
+
+.overlay-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.overlay-subtitle {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.room-code-container {
+    background: #fff9e6;
+    border: 3px solid var(--gold);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.room-code-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary);
+    font-family: monospace;
+    letter-spacing: 5px;
+}
+
+.modal-body-centered {
+    padding: 20px;
+    text-align: center;
+}
+
+.message-box {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    display: none;
+}
+
+.message-box.error {
+    background-color: #fee;
+    color: #c33;
+    border-left: 4px solid #c33;
+}
+
+.message-box.success {
+    background-color: #efe;
+    color: #3c3;
+    border-left: 4px solid #3c3;
+}
+
+.message-box.loading {
+    background-color: #eef;
+    color: #33c;
+    border-left: 4px solid #33c;
+}
+
+.mb-20 { margin-bottom: 20px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-15 { margin-bottom: 15px; }
+.w-100 { width: 100%; }
+.font-1-1 { font-size: 1.1rem; }
+.text-muted { color: #666; }
+.text-sm { font-size: 0.9rem; }
