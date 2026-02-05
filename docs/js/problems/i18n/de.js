@@ -274,6 +274,27 @@ export const problemsDE = {
     monos_platanos: {
         texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Wenn ${monos_ini} Affen ${tiempo_ini} Minuten brauchen, um ${platanos_ini} Bananen zu essen, wie lange brauchen ${monos_fin} Affen, um ${platanos_fin} Bananen zu essen?`,
         explicacion: (tiempo_ini) => `Die Dreisatzfalle! Es wird versucht, einen direkten Anteil anzuwenden. Aber die Rate beträgt 1 Affe pro Banane alle ${tiempo_ini} Minuten. Wenn alle gleichzeitig anfangen zu essen, enden sie zur gleichen Zeit. Das Verhältnis Affen:Bananen ist gleich (1:1), also bleibt die Zeit konstant: ${tiempo_ini} Minuten.`
+    },
+    // NEUE PROBLEME STUFE 2
+    horno_galletas: {
+        texto: (chocolate, vainilla, vendidas) => `In der Bäckerei haben sie ${chocolate} Schokoladenplätzchen und ${vainilla} Vanilleplätzchen gebacken. Wenn sie bereits ${vendidas} Plätzchen verkauft haben, wie viele Plätzchen bleiben noch auf dem Tablett?`,
+        explicacion: (chocolate, vainilla, vendidas) => `Zähle zuerst alle Plätzchen zusammen: ${chocolate} + ${vainilla} = ${chocolate + vainilla}. Dann subtrahiere die verkauften: ${chocolate + vainilla} - ${vendidas} = ${chocolate + vainilla - vendidas} Plätzchen.`
+    },
+    estantes_biblioteca: {
+        texto: (estantes, libros_estante) => `In der Schulbibliothek gibt es ${estantes} Regale. Wenn jedes Regal genau ${libros_estante} Bücher hat, wie viele Bücher gibt es insgesamt in der Bibliothek?`,
+        explicacion: (estantes, libros_estante) => `Du kannst ${libros_estante} + ${libros_estante}... (${estantes} mal) addieren oder Multiplikation verwenden: ${estantes} × ${libros_estante} = ${estantes * libros_estante} Bücher.`
+    },
+    reparto_caramelos: {
+        texto: (caramelos_total, amigos) => `Du hast ${caramelos_total} Erdbeerbonbons und möchtest sie gleich auf deine ${amigos} besten Freunde verteilen. Wie viele Bonbons bekommt jeder Freund?`,
+        explicacion: (caramelos_total, amigos) => `Welche Zahl multipliziert mit ${amigos} ergibt ${caramelos_total}? Die Antwort ist: ${caramelos_total} ÷ ${amigos} = ${caramelos_total / amigos} Bonbons für jeden Freund.`
+    },
+    ahorro_juguete: {
+        texto: (precio, ahorros, regalo) => `Du möchtest ein ferngesteuertes Auto kaufen, das ${precio}€ kostet. Wenn du bereits ${ahorros}€ in deinem Sparschwein hast und deine Großmutter dir noch ${regalo}€ schenkt, wie viel Geld brauchst du noch?`,
+        explicacion: (precio, ahorros, regalo) => `Addiere, was du hast: ${ahorros} + ${regalo} = ${ahorros + regalo}€. Subtrahiere jetzt vom Preis: ${precio} - ${ahorros + regalo} = ${precio - (ahorros + regalo)}€. Du brauchst noch ${precio - (ahorros + regalo)}€.`
+    },
+    plantas_jardin: {
+        texto: (medida_inicial, crecimiento_dia, dias) => `Jeden Tag gießt du deine Pflanze und sie wächst ${crecimiento_dia} Zentimeter. Wenn sie am Montag ${medida_inicial} Zentimeter maß, wie groß wird sie nach ${dias} Tagen, wenn sie jeden Tag gleich wächst?`,
+        explicacion: (medida_inicial, crecimiento_dia, dias) => `Berechne das Gesamtwachstum: ${dias} Tage × ${crecimiento_dia} cm/Tag = ${dias * crecimiento_dia} cm Wachstum. Addiere die Anfangshöhe: ${medida_inicial} + ${dias * crecimiento_dia} = ${medida_inicial + dias * crecimiento_dia} cm.`
     }
 };
 

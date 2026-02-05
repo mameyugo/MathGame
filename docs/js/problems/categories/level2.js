@@ -227,6 +227,117 @@ export const level2Problems = [
                 opciones: [respuesta, 4, 5, 6]
             };
         }
+    },
+    // 5 NUEVOS PROBLEMAS DE NIVEL 2 - MATEMÁTICOS
+    {
+        id: "horno_galletas",
+        tipo: "matematico",
+        nivelMin: 2,
+        categorias: ['explorador', 'arquitecto'],
+        i18n: "horno_galletas",
+        generar: () => {
+            const chocolate = Math.floor(Math.random() * 20) + 15;     // 15-34
+            const vainilla = Math.floor(Math.random() * 15) + 10;      // 10-24
+            const vendidas = Math.floor(Math.random() * 10) + 5;       // 5-14
+            const total = chocolate + vainilla;
+            const respuesta = total - vendidas;
+
+            return {
+                texto: `En la pastelería han horneado ${chocolate} galletas de chocolate y ${vainilla} galletas de vainilla. Si ya han vendido ${vendidas} galletas, ¿cuántas galletas quedan todavía en la bandeja?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Primero junta todas las galletas: ${chocolate} + ${vainilla} = ${total}. Luego resta las vendidas: ${total} - ${vendidas} = ${respuesta} galletas.`,
+                ecuacion: `${chocolate} + ${vainilla} - ${vendidas} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, total, vendidas, chocolate + vendidas]
+            };
+        }
+    },
+    {
+        id: "estantes_biblioteca",
+        tipo: "matematico",
+        nivelMin: 2,
+        categorias: ['explorador', 'arquitecto'],
+        i18n: "estantes_biblioteca",
+        generar: () => {
+            const estantes = Math.floor(Math.random() * 4) + 2;        // 2-5 estantes
+            const libros_estante = Math.floor(Math.random() * 8) + 6;  // 6-13 libros por estante
+            const respuesta = estantes * libros_estante;
+
+            return {
+                texto: `En la biblioteca de clase hay ${estantes} estantes. Si en cada estante hay exactamente ${libros_estante} libros, ¿cuántos libros hay en total en la biblioteca?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Puedes sumar ${libros_estante} + ${libros_estante}... (${estantes} veces) o usar la multiplicación: ${estantes} × ${libros_estante} = ${respuesta} libros.`,
+                ecuacion: `${estantes} × ${libros_estante} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, estantes + libros_estante, estantes * (libros_estante - 1), estantes * libros_estante + 2]
+            };
+        }
+    },
+    {
+        id: "reparto_caramelos",
+        tipo: "matematico",
+        nivelMin: 2,
+        categorias: ['explorador', 'arquitecto'],
+        i18n: "reparto_caramelos",
+        generar: () => {
+            const amigos = Math.floor(Math.random() * 4) + 3;          // 3-6 amigos
+            const caramelos_total = amigos * (Math.floor(Math.random() * 5) + 4); // Asegurar división exacta
+            const respuesta = caramelos_total / amigos;
+
+            return {
+                texto: `Tienes ${caramelos_total} caramelos de fresa y quieres repartirlos en partes iguales entre tus ${amigos} mejores amigos. ¿Cuántos caramelos recibirá cada amigo?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¿Qué número multiplicado por ${amigos} nos da ${caramelos_total}? La respuesta es: ${caramelos_total} ÷ ${amigos} = ${respuesta} caramelos para cada amigo.`,
+                ecuacion: `${caramelos_total} ÷ ${amigos} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, caramelos_total - amigos, amigos, caramelos_total / 2]
+            };
+        }
+    },
+    {
+        id: "ahorro_juguete",
+        tipo: "matematico",
+        nivelMin: 2,
+        categorias: ['explorador', 'arquitecto'],
+        i18n: "ahorro_juguete",
+        generar: () => {
+            const precio = Math.floor(Math.random() * 30) + 30;        // 30-59€
+            const ahorros = Math.floor(Math.random() * 15) + 10;       // 10-24€
+            const regalo = Math.floor(Math.random() * 12) + 5;         // 5-16€
+            const tengo = ahorros + regalo;
+            const respuesta = precio - tengo;
+
+            return {
+                texto: `Quieres comprar un coche teledirigido que cuesta ${precio}€. Si ya tienes ahorrados ${ahorros}€ en tu hucha y tu abuela te regala ${regalo}€ más, ¿cuánto dinero te falta todavía para poder comprarlo?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Suma lo que tienes: ${ahorros} + ${regalo} = ${tengo}€. Ahora réstaselo al precio: ${precio} - ${tengo} = ${respuesta}€. Te falta ${respuesta}€.`,
+                ecuacion: `${precio} - (${ahorros} + ${regalo}) = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, precio - ahorros, regalo, tengo]
+            };
+        }
+    },
+    {
+        id: "plantas_jardin",
+        tipo: "matematico",
+        nivelMin: 2,
+        categorias: ['explorador', 'arquitecto'],
+        i18n: "plantas_jardin",
+        generar: () => {
+            const medida_inicial = Math.floor(Math.random() * 8) + 8;  // 8-15 cm
+            const crecimiento_dia = Math.floor(Math.random() * 3) + 2; // 2-4 cm/día
+            const dias = Math.floor(Math.random() * 4) + 3;            // 3-6 días
+            const respuesta = medida_inicial + (crecimiento_dia * dias);
+
+            return {
+                texto: `Cada día riegas tu planta y crece ${crecimiento_dia} centímetros. Si el lunes medía ${medida_inicial} centímetros, ¿cuánto medirá después de ${dias} días si sigue creciendo igual todos los días?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Cuenta el crecimiento total: ${dias} días × ${crecimiento_dia} cm/día = ${dias * crecimiento_dia} cm de crecimiento. Suma la medida inicial: ${medida_inicial} + ${dias * crecimiento_dia} = ${respuesta} cm.`,
+                ecuacion: `${medida_inicial} + (${crecimiento_dia} × ${dias}) = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, medida_inicial + crecimiento_dia, medida_inicial * dias, dias * crecimiento_dia]
+            };
+        }
     }
 ];
 

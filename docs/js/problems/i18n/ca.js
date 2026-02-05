@@ -272,6 +272,27 @@ export const problemsCA = {
     monos_platanos: {
         texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Si ${monos_ini} micos triguen ${tiempo_ini} minuts en menjar-se ${platanos_ini} plàtans, quant temps tardaran ${monos_fin} micos en menjar-se ${platanos_fin} plàtans?`,
         explicacion: (tiempo_ini) => `¡La trampa de la regla de tres! S'intenta aplicar una proporció directa. Però el ritme és d'1 mica per plàtan cada ${tiempo_ini} minuts. Si tots comencen a menjar al mateix temps, terminen al mateix temps. La relació micos:plàtans és la mateixa (1:1), així que el temps es manté constant: ${tiempo_ini} minuts.`
+    },
+    // NOUS PROBLEMES NIVELL 2
+    horno_galletas: {
+        texto: (chocolate, vainilla, vendidas) => `A la pastisseria han cuit al forn ${chocolate} galetes de xocolata i ${vainilla} galetes de vainilla. Si ja n'han venut ${vendidas}, quantes galetes queden a la safata ?`,
+        explicacion: (chocolate, vainilla, vendidas) => `Primer suma totes les galetes: ${chocolate} + ${vainilla} = ${chocolate + vainilla}. Després resta les venudes: ${chocolate + vainilla} - ${vendidas} = ${chocolate + vainilla - vendidas} galetes.`
+    },
+    estantes_biblioteca: {
+        texto: (estantes, libros_estante) => `A la biblioteca de la classe hi ha ${estantes} estants. Si cada estant té exactament ${libros_estante} llibres, quants llibres hi ha en total a la biblioteca?`,
+        explicacion: (estantes, libros_estante) => `Pots sumar ${libros_estante} + ${libros_estante}... (${estantes} vegades) o usar la multiplicació: ${estantes} × ${libros_estante} = ${estantes * libros_estante} llibres.`
+    },
+    reparto_caramelos: {
+        texto: (caramelos_total, amigos) => `Tens ${caramelos_total} caramels de mafressa i els vols repartir en parts iguals entre els teus ${amigos} millors amics. Quants caramels rebrà cada amic ?`,
+        explicacion: (caramelos_total, amigos) => `Quin número multiplicat per ${amigos} ens dona ${caramelos_total}? La resposta és: ${caramelos_total} ÷ ${amigos} = ${caramelos_total / amigos} caramels per a cada amic.`
+    },
+    ahorro_juguete: {
+        texto: (precio, ahorros, regalo) => `Vols comprar un cotxe teledirigit que costa ${precio}€. Si ja tens estalviats ${ahorros}€ a la teva poma i la teva àvia te'n regala ${regalo}€ més, quants diners te'n manquen encara per a poder comprar-lo?`,
+        explicacion: (precio, ahorros, regalo) => `Suma el que tens: ${ahorros} + ${regalo} = ${ahorros + regalo}€. Ara resta-ho del preu: ${precio} - ${ahorros + regalo} = ${precio - (ahorros + regalo)}€. Te'n manquen ${precio - (ahorros + regalo)}€.`
+    },
+    plantas_jardin: {
+        texto: (medida_inicial, crecimiento_dia, dias) => `Cada dia rellenes la teva planta i creix ${crecimiento_dia} centímetres. Si el dilluns mesura ${medida_inicial} centímetres, quant mesurarà després de ${dias} dies si continua creixent igual cada dia?`,
+        explicacion: (medida_inicial, crecimiento_dia, dias) => `Calcula el creixement total: ${dias} dies × ${crecimiento_dia} cm/dia = ${dias * crecimiento_dia} cm de creixement. Suma l'altura inicial: ${medida_inicial} + ${dias * crecimiento_dia} = ${medida_inicial + dias * crecimiento_dia} cm.`
     }
 };
 

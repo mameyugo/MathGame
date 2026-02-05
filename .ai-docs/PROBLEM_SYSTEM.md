@@ -266,6 +266,7 @@ pregunta.texto = i18nTexto; // Si el problema usa i18n
 El sistema soporta múltiples tipos de respuestas, implementadas en `app.js` en la función `submitProblem()`:
 
 ### 1. **numero** (✅ Implementado - Actual)
+
 ```javascript
 {
   respuestaCorrecta: 15,
@@ -274,9 +275,11 @@ El sistema soporta múltiples tipos de respuestas, implementadas en `app.js` en 
   ecuacionValores: [15]
 }
 ```
+
 **Validación**: Inputs numéricos en la ecuación. Compara array de valores ingresados con `ecuacionValores`.
 
 ### 2. **opcion_multiple** (✅ Implementado)
+
 ```javascript
 {
   respuestaCorrecta: "juan",
@@ -289,10 +292,12 @@ El sistema soporta múltiples tipos de respuestas, implementadas en `app.js` en 
   ]
 }
 ```
+
 **Validación**: Usuario selecciona una opción. Compara `window.selectedChoice` con `respuestaCorrecta` (string).
 **Nota**: Se guarda en `window.selectedChoice` al hacer clic en botón de opción.
 
 ### 3. **texto** (✅ Implementado)
+
 ```javascript
 {
   respuestaCorrecta: "Juan",
@@ -302,12 +307,15 @@ El sistema soporta múltiples tipos de respuestas, implementadas en `app.js` en 
   trim: true
 }
 ```
+
 **Validación**: Campo de entrada de texto. Compara valor ingresado con `respuestaCorrecta` (string).
 **Opciones**:
+
 - `caseSensitive: false` - Ignora mayúsculas/minúsculas
 - `trim: true` - Elimina espacios al inicio/final
 
 ### 4. **drag_drop** (🔲 Futuro)
+
 ```javascript
 {
   respuestaCorrecta: ["lobo", "col", "oveja"],
@@ -316,22 +324,23 @@ El sistema soporta múltiples tipos de respuestas, implementadas en `app.js` en 
   zonas: ["primero", "segundo", "tercero"]
 }
 ```
+
 **Validación**: No implementada aún. Usuario arrastra elementos a zonas.
 
 ## 🔍 Cómo Validar Respuestas (en app.js)
 
 ```javascript
 function submitProblem() {
-    const tipoRespuesta = currentProblem.tipoRespuesta || 'numero';
+    const tipoRespuesta = currentProblem.tipoRespuesta || "numero";
     let isCorrect = false;
 
-    if (tipoRespuesta === 'numero') {
+    if (tipoRespuesta === "numero") {
         // Valida inputs del equation-area
         // Compara con ecuacionValores
-    } else if (tipoRespuesta === 'opcion_multiple') {
+    } else if (tipoRespuesta === "opcion_multiple") {
         // Valida window.selectedChoice
         // Compara con respuestaCorrecta
-    } else if (tipoRespuesta === 'texto') {
+    } else if (tipoRespuesta === "texto") {
         // Valida #text-answer-input
         // Respeta caseSensitive y trim
     }

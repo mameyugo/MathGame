@@ -272,6 +272,27 @@ export const problemsPT = {
     monos_platanos: {
         texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Se ${monos_ini} macacos levam ${tiempo_ini} minutos para comer ${platanos_ini} bananas, quanto tempo levarão ${monos_fin} macacos para comer ${platanos_fin} bananas?`,
         explicacion: (tiempo_ini) => `A armadilha da regra de três! Tenta-se aplicar uma proporção direta. Mas a taxa é de 1 macaco por banana a cada ${tiempo_ini} minutos. Se todos começam a comer ao mesmo tempo, terminam ao mesmo tempo. A razão macacos:bananas é a mesma (1:1), então o tempo permanece constante: ${tiempo_ini} minutos.`
+    },
+    // NOVOS PROBLEMAS NÍVEL 2
+    horno_galletas: {
+        texto: (chocolate, vainilla, vendidas) => `Na padaria assaram ${chocolate} biscoitos de chocolate e ${vainilla} biscoitos de baunilha. Se já venderam ${vendidas} biscoitos, quantos biscoitos ainda restam na bandeja?`,
+        explicacion: (chocolate, vainilla, vendidas) => `Primeiro some todos os biscoitos: ${chocolate} + ${vainilla} = ${chocolate + vainilla}. Depois subtraia os vendidos: ${chocolate + vainilla} - ${vendidas} = ${chocolate + vainilla - vendidas} biscoitos.`
+    },
+    estantes_biblioteca: {
+        texto: (estantes, libros_estante) => `Na biblioteca da escola há ${estantes} prateleiras. Se cada prateleira tem exatamente ${libros_estante} livros, quantos livros há ao total na biblioteca?`,
+        explicacion: (estantes, libros_estante) => `Você pode somar ${libros_estante} + ${libros_estante}... (${estantes} vezes) ou usar multiplicação: ${estantes} × ${libros_estante} = ${estantes * libros_estante} livros.`
+    },
+    reparto_caramelos: {
+        texto: (caramelos_total, amigos) => `Você tem ${caramelos_total} balas de morango e quer reparti-las igualmente entre seus ${amigos} melhores amigos. Quantas balas cada amigo receberá?`,
+        explicacion: (caramelos_total, amigos) => `Qual número multiplicado por ${amigos} dá ${caramelos_total}? A resposta é: ${caramelos_total} ÷ ${amigos} = ${caramelos_total / amigos} balas para cada amigo.`
+    },
+    ahorro_juguete: {
+        texto: (precio, ahorros, regalo) => `Você quer comprar um carro com controle remoto que custa ${precio}€. Se já tem ${ahorros}€ poupados e sua avó lhe dá mais ${regalo}€, quanto dinheiro ainda falta para comprar?`,
+        explicacion: (precio, ahorros, regalo) => `Some o que tem: ${ahorros} + ${regalo} = ${ahorros + regalo}€. Agora subtraia do preço: ${precio} - ${ahorros + regalo} = ${precio - (ahorros + regalo)}€. Ainda faltam ${precio - (ahorros + regalo)}€.`
+    },
+    plantas_jardin: {
+        texto: (medida_inicial, crecimiento_dia, dias) => `Todos os dias você rega sua planta e ela cresce ${crecimiento_dia} centímetros. Se segunda-feira media ${medida_inicial} centímetros, quanto medirá após ${dias} dias se continuar crescendo igualmente?`,
+        explicacion: (medida_inicial, crecimiento_dia, dias) => `Calcule o crescimento total: ${dias} dias × ${crecimiento_dia} cm/dia = ${dias * crecimiento_dia} cm de crescimento. Some a altura inicial: ${medida_inicial} + ${dias * crecimiento_dia} = ${medida_inicial + dias * crecimiento_dia} cm.`
     }
 };
 

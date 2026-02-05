@@ -274,7 +274,30 @@ export const problemsES = {
     pescadores_familia: {
         texto: () => `Dos padres y dos hijos van de pesca. Pescan 3 peces y se reparten uno para cada uno sin que sobre ninguno. ¿Cuántas personas hay en total?`,
         explicacion: () => `¡Solo hay 3 personas! El abuelo y el padre son "dos padres", y el padre y el hijo son "dos hijos". En total: abuelo + padre + hijo = 3 personas. El error común es sumar 2+2=4 personas.`
+    },
+    pescadores_familia: {
+        texto: () => `Dos padres y dos hijos van de pesca. Pescan 3 peces y se reparten uno para cada uno sin que sobre ninguno. ¿Cuántas personas hay en total?`,
+        explicacion: () => `¡Solo hay 3 personas! El abuelo y el padre son "dos padres", y el padre y el hijo son "dos hijos". En total: abuelo + padre + hijo = 3 personas. El error común es sumar 2+2=4 personas.`
+    },
+    // NUEVOS PROBLEMAS NIVEL 2
+    horno_galletas: {
+        texto: (chocolate, vainilla, vendidas) => `En la pastelería han horneado ${chocolate} galletas de chocolate y ${vainilla} galletas de vainilla. Si ya han vendido ${vendidas} galletas, ¿cuántas galletas quedan todavía en la bandeja?`,
+        explicacion: (chocolate, vainilla, vendidas) => `¡Primero junta todas las galletas: ${chocolate} + ${vainilla} = ${chocolate + vainilla}. Luego resta las vendidas: ${chocolate + vainilla} - ${vendidas} = ${chocolate + vainilla - vendidas} galletas.`
+    },
+    estantes_biblioteca: {
+        texto: (estantes, libros_estante) => `En la biblioteca de clase hay ${estantes} estantes. Si en cada estante hay exactamente ${libros_estante} libros, ¿cuántos libros hay en total en la biblioteca?`,
+        explicacion: (estantes, libros_estante) => `Puedes sumar ${libros_estante} + ${libros_estante}... (${estantes} veces) o usar la multiplicación: ${estantes} × ${libros_estante} = ${estantes * libros_estante} libros.`
+    },
+    reparto_caramelos: {
+        texto: (caramelos_total, amigos) => `Tienes ${caramelos_total} caramelos de fresa y quieres repartirlos en partes iguales entre tus ${amigos} mejores amigos. ¿Cuántos caramelos recibirá cada amigo?`,
+        explicacion: (caramelos_total, amigos) => `¿Qué número multiplicado por ${amigos} nos da ${caramelos_total}? La respuesta es: ${caramelos_total} ÷ ${amigos} = ${caramelos_total / amigos} caramelos para cada amigo.`
+    },
+    ahorro_juguete: {
+        texto: (precio, ahorros, regalo) => `Quieres comprar un coche teledirigido que cuesta ${precio}€. Si ya tienes ahorrados ${ahorros}€ en tu hucha y tu abuela te regala ${regalo}€ más, ¿cuánto dinero te falta todavía para poder comprarlo?`,
+        explicacion: (precio, ahorros, regalo) => `Suma lo que tienes: ${ahorros} + ${regalo} = ${ahorros + regalo}€. Ahora réstaselo al precio: ${precio} - ${ahorros + regalo} = ${precio - (ahorros + regalo)}€. Te falta ${precio - (ahorros + regalo)}€.`
+    },
+    plantas_jardin: {
+        texto: (medida_inicial, crecimiento_dia, dias) => `Cada día riegas tu planta y crece ${crecimiento_dia} centímetros. Si el lunes medía ${medida_inicial} centímetros, ¿cuánto medirá después de ${dias} días si sigue creciendo igual todos los días?`,
+        explicacion: (medida_inicial, crecimiento_dia, dias) => `Cuenta el crecimiento total: ${dias} días × ${crecimiento_dia} cm/día = ${dias * crecimiento_dia} cm de crecimiento. Suma la medida inicial: ${medida_inicial} + ${dias * crecimiento_dia} = ${medida_inicial + dias * crecimiento_dia} cm.`
     }
 };
-
-export default problemsES;

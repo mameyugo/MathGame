@@ -274,6 +274,27 @@ export const problemsGL = {
     monos_platanos: {
         texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Se ${monos_ini} monos tardan ${tiempo_ini} minutos en comerse ${platanos_ini} plátanos, ¿canto tempo tardarán ${monos_fin} monos en comerse ${platanos_fin} plátanos?`,
         explicacion: (tiempo_ini) => `¡A trampa da regra de tres! Intenta aplicarse proporción directa. Pero o ritmo é de 1 mono por plátano cada ${tiempo_ini} minutos. Se todos comezas a comer á vez, rematan á vez. A relación monos:plátanos é a mesma (1:1), así que o tempo permanece constante: ${tiempo_ini} minutos.`
+    },
+    // NOVOS PROBLEMAS NIVEL 2
+    horno_galletas: {
+        texto: (chocolate, vainilla, vendidas) => `Na panadería asaron ${chocolate} galletas de chocolate e ${vainilla} galletas de baunilha. Se xa venderon ${vendidas} galletas, ¿cantas galletas quedan aínda na bandexa?`,
+        explicacion: (chocolate, vainilla, vendidas) => `Primeiro suma todas as galletas: ${chocolate} + ${vainilla} = ${chocolate + vainilla}. Despois resta as vendidas: ${chocolate + vainilla} - ${vendidas} = ${chocolate + vainilla - vendidas} galletas.`
+    },
+    estantes_biblioteca: {
+        texto: (estantes, libros_estante) => `Na biblioteca da escola hai ${estantes} estantes. Se cada estante ten exactamente ${libros_estante} libros, ¿cantos libros hai ao total na biblioteca?`,
+        explicacion: (estantes, libros_estante) => `Podes sumar ${libros_estante} + ${libros_estante}... (${estantes} veces) ou usar multiplicación: ${estantes} × ${libros_estante} = ${estantes * libros_estante} libros.`
+    },
+    reparto_caramelos: {
+        texto: (caramelos_total, amigos) => `Tes ${caramelos_total} caramelos de morango e queres repartilos en partes iguais entre os teus ${amigos} mellores amigos. ¿Cantos caramelos recibirá cada amigo?`,
+        explicacion: (caramelos_total, amigos) => `¿Qué número multiplicado por ${amigos} nos dá ${caramelos_total}? A resposta é: ${caramelos_total} ÷ ${amigos} = ${caramelos_total / amigos} caramelos para cada amigo.`
+    },
+    ahorro_juguete: {
+        texto: (precio, ahorros, regalo) => `Queres comprar un coche teledirixido que custa ${precio}€. Se xa tes ahorrados ${ahorros}€ na túa poma e a túa avoa che regala ${regalo}€ máis, ¿canto diñeiro che falta aínda para poder compralo?`,
+        explicacion: (precio, ahorros, regalo) => `Suma o que tes: ${ahorros} + ${regalo} = ${ahorros + regalo}€. Agora réstao do prezo: ${precio} - ${ahorros + regalo} = ${precio - (ahorros + regalo)}€. Che faltan ${precio - (ahorros + regalo)}€.`
+    },
+    plantas_jardin: {
+        texto: (medida_inicial, crecimiento_dia, dias) => `Cada día rega a túa planta e crece ${crecimiento_dia} centímetros. Se o luns media ${medida_inicial} centímetros, ¿canto medirá despois de ${dias} días se segue crecendo igual todos os días?`,
+        explicacion: (medida_inicial, crecimiento_dia, dias) => `Calcula o crecemento total: ${dias} días × ${crecimiento_dia} cm/día = ${dias * crecimiento_dia} cm de crecemento. Suma a altura inicial: ${medida_inicial} + ${dias * crecimiento_dia} = ${medida_inicial + dias * crecimiento_dia} cm.`
     }
 };
 
