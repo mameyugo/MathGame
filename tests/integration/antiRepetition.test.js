@@ -296,4 +296,148 @@ describe('Anti-Repetition System Integration', () => {
             expect(problem).toBeDefined();
         });
     });
+
+    describe('Fixed Problem Pool (Issue Fix)', () => {
+        test('problem pool should remain constant despite level increases', () => {
+            // Setup: Create problem bank with level 1 and level 2 problems
+            window.bancoProblemas = [
+                {
+                    id: 'level1_problem1',
+                    tipo: 'matematico',
+                    nivelMin: 1,
+                    categorias: ['explorador'],
+                    generar: () => ({
+                        id: 'level1_problem1',
+                        texto: 'Level 1 Problem 1',
+                        ecuacion: '1+1=__'
+                    })
+                },
+                {
+                    id: 'level1_problem2',
+                    tipo: 'matematico',
+                    nivelMin: 1,
+                    categorias: ['explorador'],
+                    generar: () => ({
+                        id: 'level1_problem2',
+                        texto: 'Level 1 Problem 2',
+                        ecuacion: '2+2=__'
+                    })
+                },
+                {
+                    id: 'level1_problem3',
+                    tipo: 'matematico',
+                    nivelMin: 1,
+                    categorias: ['explorador'],
+                    generar: () => ({
+                        id: 'level1_problem3',
+                        texto: 'Level 1 Problem 3',
+                        ecuacion: '3+3=__'
+                    })
+                },
+                {
+                    id: 'level2_problem1',
+                    tipo: 'matematico',
+                    nivelMin: 2,
+                    categorias: ['explorador'],
+                    generar: () => ({
+                        id: 'level2_problem1',
+                        texto: 'Level 2 Problem 1',
+                        ecuacion: '4+4=__'
+                    })
+                },
+                {
+                    id: 'level2_problem2',
+                    tipo: 'matematico',
+                    nivelMin: 2,
+                    categorias: ['explorador'],
+                    generar: () => ({
+                        id: 'level2_problem2',
+                        texto: 'Level 2 Problem 2',
+                        ecuacion: '5+5=__'
+                    })
+                }
+            ];
+
+            questionGenerator.problemType = 'matematico';
+            questionGenerator.gameLevel = 1;
+
+            // Select first problem at level 1
+            const problem1 = questionGenerator.selectProblem();
+            expect(problem1).toBeDefined();
+            expect(problem1.id).toMatch(/^level1_/);
+
+            // Mark as solved
+            gameEngine.markProblemAsSolved(problem1.id);
+
+            // Simulate level increase (this happens during gameplay)
+            questionGenerator.gameLevel = 2;
+
+            // Select second problem - should still only get level 1 problems
+            const problem2 = questionGenerator.selectProblem();
+            expect(problem2).toBeDefined();
+            expect(problem2.id).toMatch(/^level1_/);
+            expect(problem2.id).not.toBe(problem1.id);
+
+            // Continue - should still only get level 1 problems
+            gameEngine.markProblemAsSolved(problem2.id);
+            const problem3 = questionGenerator.selectProblem();
+            expect(problem3).toBeDefined();
+            expect(problem3.id).toMatch(/^level1_/);
+            expect(problem3.id).not.toBe(problem1.id);
+            expect(problem3.id).not.toBe(problem2.id);
+
+            // After all level 1 problems solved, should show completion
+            gameEngine.markProblemAsSolved(problem3.id);
+            const problem4 = questionGenerator.selectProblem();
+            expect(problem4).toBeNull();
+
+            // Verify completion message is shown
+            const questionArea = document.getElementById('question-area');
+            expect(questionArea.innerHTML).toContain('¡Enhorabuena!');
+        });
+
+        test('resetProblemSession should allow new problem pool after session restart', () => {
+            // Setup same problem bank as previous test
+            window.bancoProblemas = [
+                {
+                    id: 'level1_problem',
+                    tipo: 'matematico',
+                    nivelMin: 1,
+                    categorias: ['explorador'],
+                    generar: () => ({
+                        id: 'level1_problem',
+                        texto: 'Level 1 Problem',
+                        ecuacion: '1+1=__'
+                    })
+                },
+                {
+                    id: 'level2_problem',
+                    tipo: 'matematico',
+                    nivelMin: 2,
+                    categorias: ['explorador'],
+                    generar: () => ({
+                        id: 'level2_problem',
+                        texto: 'Level 2 Problem',
+                        ecuacion: '2+2=__'
+                    })
+                }
+            ];
+
+            // Session 1: Start at level 1
+            questionGenerator.problemType = 'matematico';
+            questionGenerator.gameLevel = 1;
+
+            const problem1 = questionGenerator.selectProblem();
+            expect(problem1.id).toBe('level1_problem');
+
+            // Session 2: Reset and start at level 2
+            questionGenerator.resetProblemSession();
+            gameEngine.resetSolvedProblems();
+            questionGenerator.gameLevel = 2;
+
+            const problem2 = questionGenerator.selectProblem();
+            // Should now have access to level 2 problems
+            expect(['level1_problem', 'level2_problem']).toContain(problem2.id);
+        });
+    });
 });

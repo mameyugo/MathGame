@@ -169,6 +169,10 @@ function startProblemGame(type) {
 
     problemType = type;
     gameEngine.problemType = type;
+    
+    // Reset problem session to ensure consistent problem pool
+    questionGenerator.resetProblemSession();
+    
     gameEngine.startProblemGame(type);
 
     // Sincronizar estado global después de iniciar
