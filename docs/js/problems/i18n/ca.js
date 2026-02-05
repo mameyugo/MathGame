@@ -58,24 +58,24 @@ export const problemsCA = {
         explicacion: (precio, billete) => `Has de restar el preu del bitllet: ${billete} - ${precio} = ${billete - precio}€.`
     },
     merienda_mates: {
-        texto: () => "Tens 3 entrepans de formatge a la motxilla. La teva mare arriba i et posa 2 entrepans més de pernil. Quants entrepans tens en total per berenar?",
-        explicacion: () => "Ajunta tots els entrepans i compta'ls! 🥪"
+        texto: (queso, jamon) => `Tens ${queso} entrepans de formatge a la motxilla. La teva mare arriba i et posa ${jamon} entrepans més de pernil. Quants entrepans tens en total per berenar?`,
+        explicacion: (queso, jamon) => `Ajunta tots els entrepans! ${queso} + ${jamon} = ${queso + jamon} entrepans. 🥪`
     },
     tesoro_canicas: {
-        texto: () => "Al pati tenies 8 bales brillants. Jugant amb un amic, en perds 3. Quantes bales et queden a la bossa?",
-        explicacion: () => "Recorda que perdre és com restar! 🔵"
+        texto: (inicial, perdidas) => `Al pati tenies ${inicial} bales brillants. Jugant amb un amic, en perds ${perdidas}. Quantes bales et queden a la bossa?`,
+        explicacion: (inicial, perdidas) => `Recorda que perdre és com restar! ${inicial} - ${perdidas} = ${inicial - perdidas} bales. 🔵`
     },
     estrellas_pegatina: {
-        texto: () => "Avui t'has portat molt bé i la profe t'ha donat 5 enganxines d'estrelles daurades i 2 enganxines de cors vermells. Quantes enganxines tens ara?",
-        explicacion: () => "Suma les estrelles i els cors! ⭐"
+        texto: (estrellas, corazones) => `Avui t'has portat molt bé i la profe t'ha donat ${estrellas} enganxines d'estrelles daurades i ${corazones} enganxines de cors vermells. Quantes enganxines tens ara?`,
+        explicacion: (estrellas, corazones) => `Suma les estrelles i els cors! ${estrellas} + ${corazones} = ${estrellas + corazones} enganxines. ⭐`
     },
     garaje_juguete: {
-        texto: () => "Al teu garatge de joguina hi ha 7 cotxes aparcats. De sobte, 2 cotxes surten a tota velocitat per anar a una cursa. Quants cotxes s'han quedat al garatge?",
-        explicacion: () => "Si surten, n'hi ha menys a dins. 🏎️"
+        texto: (coches, salen) => `Al teu garatge de joguina hi ha ${coches} cotxes aparcats. De sobte, ${salen} cotxes surten a tota velocitat per anar a una cursa. Quants cotxes s'han quedat al garatge?`,
+        explicacion: (coches, salen) => `Si surten, n'hi ha menys a dins. ${coches} - ${salen} = ${coches - salen} cotxes. 🏎️`
     },
     manzanas_cesta: {
-        texto: () => "Hi ha una cistella amb 10 pomes vermelles. Mirant-les de prop, veus que 4 tenen un cuc i no es poden menjar. Quantes pomes bones queden?",
-        explicacion: () => "Treu les del cuc per saber quantes en queden! 🍎"
+        texto: (total, gusanitos) => `Hi ha una cistella amb ${total} pomes vermelles. Mirant-les de prop, veus que ${gusanitos} tenen un cuc i no es poden menjar. Quantes pomes bones queden?`,
+        explicacion: (total, gusanitos) => `Treu les del cuc per saber quantes en queden! ${total} - ${gusanitos} = ${total - gusanitos} pomes bones. 🍎`
     },
 
     // LEVEL 2

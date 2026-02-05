@@ -58,24 +58,24 @@ export const problemsFR = {
         explicacion: (precio, billete) => `Tu dois soustraire le prix du billet: ${billete} - ${precio} = ${billete - precio}€.`
     },
     merienda_mates: {
-        texto: () => "Tu as 3 sandwichs au fromage dans ton sac. Ta maman arrive et t'ajoute 2 sandwichs au jambon. Combien de sandwichs as-tu au total pour le goûter ?",
-        explicacion: () => "Mets tous les sandwichs ensemble et compte-les ! 🥪"
+        texto: (queso, jamon) => `Tu as ${queso} sandwichs au fromage dans ton sac. Ta maman arrive et t'ajoute ${jamon} sandwichs au jambon. Combien de sandwichs as-tu au total pour le goûter ?`,
+        explicacion: (queso, jamon) => `Mets tous les sandwichs ensemble ! ${queso} + ${jamon} = ${queso + jamon} sandwichs. 🥪`
     },
     tesoro_canicas: {
-        texto: () => "À la récré, tu avais 8 billes brillantes. En jouant avec un ami, tu perds 3 billes. Combien de billes te restent dans la poche ?",
-        explicacion: () => "Souviens-toi que perdre, c'est comme soustraire ! 🔵"
+        texto: (inicial, perdidas) => `À la récré, tu avais ${inicial} billes brillantes. En jouant avec un ami, tu perds ${perdidas} billes. Combien de billes te restent dans la poche ?`,
+        explicacion: (inicial, perdidas) => `Souviens-toi que perdre, c'est comme soustraire ! ${inicial} - ${perdidas} = ${inicial - perdidas} billes. 🔵`
     },
     estrellas_pegatina: {
-        texto: () => "Aujourd'hui tu t'es très bien comporté et la prof t'a donné 5 autocollants d'étoiles dorées et 2 autocollants de cœurs rouges. Combien d'autocollants as-tu maintenant ?",
-        explicacion: () => "Additionne les étoiles et les cœurs ! ⭐"
+        texto: (estrellas, corazones) => `Aujourd'hui tu t'es très bien comporté et la prof t'a donné ${estrellas} autocollants d'étoiles dorées et ${corazones} autocollants de cœurs rouges. Combien d'autocollants as-tu maintenant ?`,
+        explicacion: (estrellas, corazones) => `Additionne les étoiles et les cœurs ! ${estrellas} + ${corazones} = ${estrellas + corazones} autocollants. ⭐`
     },
     garaje_juguete: {
-        texto: () => "Dans ton garage de jouets, il y a 7 voitures garées. Soudain, 2 voitures partent à toute vitesse pour une course. Combien de voitures restent dans le garage ?",
-        explicacion: () => "Si elles partent, il y a moins de voitures à l'intérieur. 🏎️"
+        texto: (coches, salen) => `Dans ton garage de jouets, il y a ${coches} voitures garées. Soudain, ${salen} voitures partent à toute vitesse pour une course. Combien de voitures restent dans le garage ?`,
+        explicacion: (coches, salen) => `Si elles partent, il y a moins de voitures à l'intérieur. ${coches} - ${salen} = ${coches - salen} voitures. 🏎️`
     },
     manzanas_cesta: {
-        texto: () => "Il y a un panier avec 10 pommes rouges. En regardant de près, tu vois que 4 ont un ver et ne peuvent pas être mangées. Combien de bonnes pommes restent ?",
-        explicacion: () => "Enlève celles avec le ver pour savoir combien il en reste ! 🍎"
+        texto: (total, gusanitos) => `Il y a un panier avec ${total} pommes rouges. En regardant de près, tu vois que ${gusanitos} ont un ver et ne peuvent pas être mangées. Combien de bonnes pommes restent ?`,
+        explicacion: (total, gusanitos) => `Enlève celles avec le ver pour savoir combien il en reste ! ${total} - ${gusanitos} = ${total - gusanitos} bonnes pommes. 🍎`
     },
 
     // LEVEL 2

@@ -58,24 +58,24 @@ export const problemsGL = {
         explicacion: (precio, billete) => `Tes que restar o prezo do billete: ${billete} - ${precio} = ${billete - precio}€.`
     },
     merienda_mates: {
-        texto: () => "Tes 3 bocadillos de queixo na mochila. A túa nai chega e gárdache outros 2 bocadillos de xamón. Cantos bocadillos tes para merendar en total?",
-        explicacion: () => "Xunta todos os bocadillos e cóntaos! 🥪"
+        texto: (queso, jamon) => `Tes ${queso} bocadillos de queixo na mochila. A túa nai chega e gárdache outros ${jamon} bocadillos de xamón. Cantos bocadillos tes para merendar en total?`,
+        explicacion: (queso, jamon) => `Xunta todos os bocadillos! ${queso} + ${jamon} = ${queso + jamon} bocadillos. 🥪`
     },
     tesoro_canicas: {
-        texto: () => "No recreo tiñas 8 canicas brillantes. Xogando cun amigo, perdes 3 canicas. Cantas canicas che quedan na bolsa?",
-        explicacion: () => "Lembra que perder é como restar! 🔵"
+        texto: (inicial, perdidas) => `No recreo tiñas ${inicial} canicas brillantes. Xogando cun amigo, perdes ${perdidas} canicas. Cantas canicas che quedan na bolsa?`,
+        explicacion: (inicial, perdidas) => `Lembra que perder é como restar! ${inicial} - ${perdidas} = ${inicial - perdidas} canicas. 🔵`
     },
     estrellas_pegatina: {
-        texto: () => "Hoxe portácheste moi ben e a profe deuche 5 pegatinas de estrelas douradas e 2 pegatinas de corazóns vermellos. Cantas pegatinas tes agora no teu caderno?",
-        explicacion: () => "Suma as estrelas e os corazóns! ⭐"
+        texto: (estrellas, corazones) => `Hoxe portácheste moi ben e a profe deuche ${estrellas} pegatinas de estrelas douradas e ${corazones} pegatinas de corazóns vermellos. Cantas pegatinas tes agora?`,
+        explicacion: (estrellas, corazones) => `Suma as estrelas e os corazóns! ${estrellas} + ${corazones} = ${estrellas + corazones} pegatinas. ⭐`
     },
     garaje_juguete: {
-        texto: () => "No teu garaxe de xoguete hai 7 coches aparcados. De repente, 2 coches saen a toda velocidade para ir a unha carreira. Cantos coches quedaron no garaxe?",
-        explicacion: () => "Se saen, hai menos coches dentro. 🏎️"
+        texto: (coches, salen) => `No teu garaxe de xoguete hai ${coches} coches aparcados. De repente, ${salen} coches saen a toda velocidade para ir a unha carreira. Cantos coches quedaron no garaxe?`,
+        explicacion: (coches, salen) => `Se saen, hai menos coches dentro. ${coches} - ${salen} = ${coches - salen} coches. 🏎️`
     },
     manzanas_cesta: {
-        texto: () => "Hai unha cesta con 10 mazás vermellas. Ao miralas de preto, ves que 4 teñen un verme e non se poden comer. Cantas mazás boas quedan?",
-        explicacion: () => "Quita as do verme para saber cantas quedan! 🍎"
+        texto: (total, gusanitos) => `Hai unha cesta con ${total} mazás vermellas. Ao miralas de preto, ves que ${gusanitos} teñen un verme e non se poden comer. Cantas mazás boas quedan?`,
+        explicacion: (total, gusanitos) => `Quita as do verme para saber cantas quedan! ${total} - ${gusanitos} = ${total - gusanitos} mazás boas. 🍎`
     },
 
     // LEVEL 2

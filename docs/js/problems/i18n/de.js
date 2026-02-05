@@ -58,24 +58,24 @@ export const problemsDE = {
         explicacion: (precio, billete) => `Du musst den Preis vom Schein abziehen: ${billete} - ${precio} = ${billete - precio}€.`
     },
     merienda_mates: {
-        texto: () => "Du hast 3 Käsesandwiches in deinem Rucksack. Deine Mutter kommt und legt 2 Schinkensandwiches dazu. Wie viele Sandwiches hast du insgesamt für den Snack?",
-        explicacion: () => "Lege alle Sandwiches zusammen und zähle sie! 🥪"
+        texto: (queso, jamon) => `Du hast ${queso} Käsesandwiches in deinem Rucksack. Deine Mutter kommt und legt ${jamon} Schinkensandwiches dazu. Wie viele Sandwiches hast du insgesamt für den Snack?`,
+        explicacion: (queso, jamon) => `Lege alle Sandwiches zusammen! ${queso} + ${jamon} = ${queso + jamon} Sandwiches. 🥪`
     },
     tesoro_canicas: {
-        texto: () => "In der Pause hattest du 8 glänzende Murmeln. Beim Spielen mit einem Freund verlierst du 3 Murmeln. Wie viele Murmeln bleiben in deiner Tasche?",
-        explicacion: () => "Denk daran: Verlieren ist wie Subtrahieren! 🔵"
+        texto: (inicial, perdidas) => `In der Pause hattest du ${inicial} glänzende Murmeln. Beim Spielen mit einem Freund verlierst du ${perdidas} Murmeln. Wie viele Murmeln bleiben in deiner Tasche?`,
+        explicacion: (inicial, perdidas) => `Denk daran: Verlieren ist wie Subtrahieren! ${inicial} - ${perdidas} = ${inicial - perdidas} Murmeln. 🔵`
     },
     estrellas_pegatina: {
-        texto: () => "Heute warst du sehr brav und die Lehrerin hat dir 5 goldene Sternaufkleber und 2 rote Herzaufkleber gegeben. Wie viele Aufkleber hast du jetzt?",
-        explicacion: () => "Addiere die Sterne und die Herzen! ⭐"
+        texto: (estrellas, corazones) => `Heute warst du sehr brav und die Lehrerin hat dir ${estrellas} goldene Sternaufkleber und ${corazones} rote Herzaufkleber gegeben. Wie viele Aufkleber hast du jetzt?`,
+        explicacion: (estrellas, corazones) => `Addiere die Sterne und die Herzen! ${estrellas} + ${corazones} = ${estrellas + corazones} Aufkleber. ⭐`
     },
     garaje_juguete: {
-        texto: () => "In deiner Spielzeuggarage stehen 7 Autos. Plötzlich fahren 2 Autos mit hoher Geschwindigkeit zu einem Rennen los. Wie viele Autos bleiben in der Garage?",
-        explicacion: () => "Wenn sie losfahren, sind weniger Autos drinnen. 🏎️"
+        texto: (coches, salen) => `In deiner Spielzeuggarage stehen ${coches} Autos. Plötzlich fahren ${salen} Autos mit hoher Geschwindigkeit zu einem Rennen los. Wie viele Autos bleiben in der Garage?`,
+        explicacion: (coches, salen) => `Wenn sie losfahren, sind weniger Autos drinnen. ${coches} - ${salen} = ${coches - salen} Autos. 🏎️`
     },
     manzanas_cesta: {
-        texto: () => "Es gibt einen Korb mit 10 roten Äpfeln. Beim genauen Hinsehen siehst du, dass 4 einen Wurm haben und nicht gegessen werden können. Wie viele gute Äpfel bleiben übrig?",
-        explicacion: () => "Nimm die mit dem Wurm weg, um zu wissen, wie viele übrig bleiben! 🍎"
+        texto: (total, gusanitos) => `Es gibt einen Korb mit ${total} roten Äpfeln. Beim genauen Hinsehen siehst du, dass ${gusanitos} einen Wurm haben und nicht gegessen werden können. Wie viele gute Äpfel bleiben übrig?`,
+        explicacion: (total, gusanitos) => `Nimm die mit dem Wurm weg, um zu wissen, wie viele übrig bleiben! ${total} - ${gusanitos} = ${total - gusanitos} gute Äpfel. 🍎`
     },
 
     // LEVEL 2
