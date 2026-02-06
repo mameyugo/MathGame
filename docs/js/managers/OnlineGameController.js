@@ -23,10 +23,12 @@ class OnlineGameController {
         // Bind methods
         this.onPeerConnected = this.onPeerConnected.bind(this);
         this.onGameEvent = this.onGameEvent.bind(this);
+        this.onServerMessage = this.onServerMessage.bind(this);
 
         // Setup listeners
         this.onlineManager.onPeerConnected = this.onPeerConnected;
         this.onlineManager.onGameEvent = this.onGameEvent;
+        this.onlineManager.onMessage = this.onServerMessage;
     }
 
     /**
@@ -78,6 +80,27 @@ class OnlineGameController {
     }
 
     /**
+     * Handles general messages from the Signaling Server
+     */
+    onServerMessage(data) {
+        // console.log('🔔 Server Message:', data);
+        if (data.type === 'room_joined') {
+            console.log('✅ Joined room successfully:', data.roomId);
+            const messageDiv = document.getElementById('online-credentials-message');
+            if (messageDiv) {
+                this.showMessage(messageDiv, '✅ Unido a sala. Esperando oponente...', 'success');
+            }
+
+            // Show overlay only if we are the guest (peerId is set)
+            // But actually, we want to show it for both, but host usually sees "Share Code" modal.
+            // Guest sees "Joining..." then this.
+            if (!this.isHost) {
+                this.showWaitingOverlay();
+            }
+        }
+    }
+
+    /**
      * Starts the synchronized game session
      */
     startSynchronizedOnlineGame(queue, config) {
@@ -107,6 +130,22 @@ class OnlineGameController {
     // ==========================================
     // UI Management (Modals & Overlays)
     // ==========================================
+
+    showWaitingOverlay() {
+        const existing = document.getElementById('online-start-overlay');
+        if (existing) existing.remove();
+
+        const msg = document.createElement('div');
+        msg.id = 'online-start-overlay';
+        msg.className = 'online-overlay';
+        msg.innerHTML = `
+            <div class="overlay-content">
+                <div class="overlay-title">⏳ Esperando Oponente</div>
+                <div class="overlay-subtitle">Conectado a la sala. Esperando a que el anfitrión inicie...</div>
+                <button class="btn-back" style="margin-top: 20px; background: rgba(255,255,255,0.2);" onclick="document.getElementById('online-start-overlay').remove()">Cancelar</button>
+            </div>`;
+        document.body.appendChild(msg);
+    }
 
     showOnlineStartOverlay() {
         const msg = document.createElement('div');
