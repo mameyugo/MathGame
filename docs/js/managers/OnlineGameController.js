@@ -134,7 +134,10 @@ class OnlineGameController {
      */
     async createAndShareGameRoom() {
         const messageDiv = document.getElementById('online-credentials-message');
-        this.showMessage(messageDiv, 'Creando sala...', 'loading');
+        this.showMessage(messageDiv, 'Sincronizando y creando sala...', 'loading');
+
+        // Sync before creating
+        await this.syncWithServer();
 
         try {
             const result = await this.onlineManager.createRoom();
@@ -163,7 +166,10 @@ class OnlineGameController {
             return;
         }
 
-        this.showMessage(messageDiv, 'Uniéndose a la sala...', 'loading');
+        this.showMessage(messageDiv, 'Sincronizando y uniéndose...', 'loading');
+
+        // Sync before joining
+        await this.syncWithServer();
 
         try {
             const result = await this.onlineManager.joinRoom(roomCode);
@@ -213,16 +219,8 @@ class OnlineGameController {
                     this.userManager.mergeUserData(result.game_data);
                 }
 
-                // Sync Up
-                const currentUserData = this.userManager.getCurrentUser();
-                if (currentUserData) {
-                    try {
-                        const syncResult = await this.onlineManager.syncUserData(currentUserData);
-                        if (syncResult.ok && syncResult.game_data) {
-                            this.userManager.mergeUserData(syncResult.game_data);
-                        }
-                    } catch (e) { console.warn('Sync error', e); }
-                }
+                // Sync Up (using helper)
+                await this.syncWithServer();
 
                 setTimeout(() => {
                     this.closeOnlineCredentialsModal();
@@ -253,6 +251,28 @@ class OnlineGameController {
         }
     }
 
+    /**
+     * Helper to sync local data with server
+     */
+    async syncWithServer() {
+        const currentUserData = this.userManager.getCurrentUser();
+        if (currentUserData) {
+            try {
+                // console.log('🔄 Syncing with server...');
+                const syncResult = await this.onlineManager.syncUserData(currentUserData);
+                if (syncResult.ok && syncResult.game_data) {
+                    this.userManager.mergeUserData(syncResult.game_data);
+                    // console.log('✅ Sync successful');
+                    window.dispatchEvent(new CustomEvent('update-ui'));
+                    return true;
+                }
+            } catch (e) {
+                console.warn('Sync error:', e);
+            }
+        }
+        return false;
+    }
+
     async checkAndSync(username, password) {
         // Ensure we are connected/authenticated context mostly
         // Perform Sync
@@ -265,17 +285,7 @@ class OnlineGameController {
             this.onlineManager.username = username;
 
             // 2. Sync
-            const currentUserData = this.userManager.getCurrentUser();
-            if (currentUserData) {
-                const syncResult = await this.onlineManager.syncUserData(currentUserData);
-                if (syncResult.ok && syncResult.game_data) {
-                    this.userManager.mergeUserData(syncResult.game_data);
-                    console.log('✅ Sync successful on auto-login');
-
-                    // Refresh UI just in case
-                    window.dispatchEvent(new CustomEvent('update-ui'));
-                }
-            }
+            await this.syncWithServer();
 
             // 3. Connect socket immediately
             await this.connectAndShowOptions(username, password);
