@@ -198,7 +198,8 @@ class OnlineManager {
                     this.ws.send(JSON.stringify({
                         type: 'login',
                         user: username,
-                        pass: password
+                        pass: password,
+                        token: this.authToken || localStorage.getItem('math_online_token')
                     }));
                 };
 
@@ -366,6 +367,7 @@ class OnlineManager {
      * Maneja mensajes del WebSocket
      */
     _handleMessage(data, resolve, reject) {
+        console.log('📥 RECV WS:', data);
         if (data.type === 'login_success') {
             console.log('Login exitoso en WebSocket', data.iceServers);
             this.isConnected = true;
@@ -375,6 +377,8 @@ class OnlineManager {
             console.error('Error en WebSocket:', data.message);
             this.isConnected = false;
             reject(new Error(data.message || 'Error de autenticación'));
+        } else if (['offer', 'answer', 'ice-candidate'].includes(data.type)) {
+            this.handleSignalingMessage(data);
         } else {
             // Procesar otros tipos de mensajes
             if (this.onMessage) {
@@ -388,9 +392,11 @@ class OnlineManager {
      */
     send(message) {
         if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            console.log('📤 SEND WS:', message);
             this.ws.send(JSON.stringify(message));
             return true;
         }
+        console.warn('⚠️ No se pudo enviar mensaje WS (desconectado):', message);
         return false;
     }
 
