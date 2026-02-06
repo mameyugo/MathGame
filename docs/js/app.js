@@ -349,8 +349,27 @@ gameEngine = new GameEngine(
     (enabled) => toggleProblemUI(enabled),
     () => updatePowerUpDisplay(),
     () => applyTheme(),
-    () => showUsers()
+    () => handleGameEnd()
 );
+
+/**
+ * Maneja el fin del juego (intercepta llamada de GameEngine)
+ */
+function handleGameEnd() {
+    // Si estamos en modo Cifras y se acabó el tiempo
+    if (gameEngine.problemType === 'numbers_game' && currentProblem) {
+        const solution = numbersGameManager.findBestSolution(currentProblem.target, currentProblem.numbers);
+        const emoji = solution.diff === 0 ? '✨' : '🤔';
+        const msg = solution.diff === 0
+            ? `¡Se acabó el tiempo!\nSolución exacta posible:\n${solution.expression} = ${solution.value}`
+            : `¡Se acabó el tiempo!\nNo encontramos exacto. Lo más cercano (${Math.abs(currentProblem.target - solution.value)} de dif):\n${solution.expression} = ${solution.value}`;
+
+        alert(emoji + " " + msg);
+    }
+
+    // Comportamiento default
+    showUsers();
+}
 
 // Update managers with gameEngine dependency
 localDuelManager.gameEngine = gameEngine;

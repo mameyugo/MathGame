@@ -108,12 +108,81 @@ class NumbersGameManager {
 
     /**
      * Intenta encontrar una solución (solver simple)
-     * Utiliza backtrack o fuerza bruta limitada. (Opcional para pistas)
-     * Por ahora placeholder.
+     * Utiliza búsqueda recursiva para encontrar la solución más cercana.
+     * @param {number} target - Objetivo
+     * @param {number[]} numbers - Números disponibles
+     * @returns {Object} { value: number, expression: string, diff: number }
      */
     findBestSolution(target, numbers) {
-        // TODO: Implementar solver si es necesario para pistas
-        return null;
+        let bestSolution = {
+            value: 0,
+            expression: '',
+            diff: Infinity
+        };
+
+        // Función auxiliar para recursión
+        // currentNums: array de objetos { val: number, expr: string }
+        const solve = (currentNums) => {
+            // Verificar cada número actual
+            for (const n of currentNums) {
+                const diff = Math.abs(n.val - target);
+                if (diff < bestSolution.diff) {
+                    bestSolution = {
+                        value: n.val,
+                        expression: n.expr,
+                        diff: diff
+                    };
+                }
+                if (diff === 0) return; // Solución exacta encontrada
+            }
+
+            // Si solo queda 1 número, no podemos operar más
+            if (currentNums.length <= 1) return;
+
+            // Intentar combinar cada par de números
+            for (let i = 0; i < currentNums.length; i++) {
+                for (let j = 0; j < currentNums.length; j++) {
+                    if (i === j) continue;
+
+                    const a = currentNums[i];
+                    const b = currentNums[j];
+
+                    // Optimización: Conmutatividad (asumimos i < j para + y *)
+                    // Pero necesitamos probar a-b y b-a, a/b y b/a
+
+                    // Lista restante sin i ni j
+                    const nextNumsBase = currentNums.filter((_, idx) => idx !== i && idx !== j);
+
+                    const ops = [
+                        { op: '+', res: a.val + b.val, expr: `(${a.expr} + ${b.expr})` },
+                        { op: '-', res: a.val - b.val, expr: `(${a.expr} - ${b.expr})` },
+                        { op: '*', res: a.val * b.val, expr: `(${a.expr} * ${b.expr})` },
+                        { op: '/', res: b.val !== 0 && a.val % b.val === 0 ? a.val / b.val : null, expr: `(${a.expr} / ${b.expr})` }
+                    ];
+
+                    for (const op of ops) {
+                        // Reglas Cifras: Resultados intermedios positivos y enteros
+                        if (op.res !== null && op.res > 0 && Number.isInteger(op.res)) {
+                            // Optimización: evitar x*1, x/1
+                            if ((op.op === '*' || op.op === '/') && (a.val === 1 || b.val === 1)) continue;
+
+                            // Optimización conmutativa para suma y mult: solo si i < j (evita duplicados simétricos)
+                            if ((op.op === '+' || op.op === '*') && i > j) continue;
+
+                            solve([...nextNumsBase, { val: op.res, expr: op.expr }]);
+                            if (bestSolution.diff === 0) return;
+                        }
+                    }
+                }
+            }
+        };
+
+        // Iniciar recursión con números iniciales
+        // Convertir a objetos { val, expr }
+        const initialObjs = numbers.map(n => ({ val: n, expr: String(n) }));
+        solve(initialObjs);
+
+        return bestSolution;
     }
 }
 
