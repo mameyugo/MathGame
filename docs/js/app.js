@@ -10,6 +10,7 @@ const userManager = new UserManager(translationManager);
 const storeManager = new StoreManager(userManager, translationManager);
 const problemCategoryManager = new ProblemCategoryManager(translationManager);
 const dailyChallengeManager = new DailyChallengeManager(translationManager);
+const numbersGameManager = new NumbersGameManager();
 const onlineManager = new OnlineManager(translationManager);
 const localDuelManager = new LocalDuelManager(null, userManager, t); // GameEngine not ready yet
 
@@ -184,6 +185,81 @@ function startProblemGame(type) {
     gameCoins = gameEngine.gameCoins;
     timeLeft = gameEngine.timeLeft;
     problemMode = gameEngine.problemMode;
+}
+
+/**
+ * Inicia el modo de juego "Cifras"
+ */
+function startNumbersGame() {
+    // Generar nivel
+    const level = numbersGameManager.generateLevel();
+
+    // Configurar entorno de problema
+    gameEngine.problemMode = true;
+    gameEngine.problemType = 'numbers_game';
+    gameEngine.initGameSession(gameLevel, gameCoins); // Re-init session logic
+
+    // Configurar objeto "problema actual" para compatibilidad
+    currentProblem = {
+        id: 'numbers_game_' + Date.now(),
+        tipoRespuesta: 'numbers_game',
+        target: level.target,
+        numbers: level.numbers,
+        explicacion: `Objetivo: ${level.target} con [${level.numbers.join(', ')}]`
+    };
+
+    // Renderizar UI
+    const questionArea = document.getElementById('question-area');
+    questionArea.innerHTML = `
+        <div class="numbers-game-container" style="text-align: center;">
+            <div class="target-number" style="font-size: 3rem; color: var(--primary); font-weight: bold; margin-bottom: 20px;">
+                ${level.target}
+            </div>
+            <div class="available-numbers" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+                ${level.numbers.map(n => `<div class="number-card" style="
+                    background: white; 
+                    padding: 15px; 
+                    border-radius: 10px; 
+                    font-size: 1.5rem; 
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    border: 2px solid #ddd;
+                ">${n}</div>`).join('')}
+            </div>
+            <p style="color: #666; margin-bottom: 10px;" data-i18n="numbers_game_instruction">
+                Escribe una operación exacta usando estos números (+, -, *, /, paréntesis)
+            </p>
+        </div>
+    `;
+
+    // Configurar área de respuesta (reutilizando equation-area pero customizado)
+    const equationArea = document.getElementById('equation-area');
+    equationArea.style.display = 'block';
+    equationArea.innerHTML = `
+        <input type="text" id="numbers-game-input" placeholder="Ej: (25 * 4) + 1" 
+        style="
+            width: 100%; 
+            padding: 15px; 
+            font-size: 1.5rem; 
+            text-align: center; 
+            border: 2px solid var(--primary); 
+            border-radius: 10px;
+            margin-bottom: 20px;
+        " autocomplete="off" autocorrect="off">
+    `;
+
+    // Mostrar botón de enviar
+    const submitBtn = document.getElementById('btn-submit-problem');
+    submitBtn.style.display = 'block';
+
+    // Ocultar área de opciones
+    document.getElementById('answers-area').style.display = 'none';
+
+    // Timer un poco más largo para jugar cifras
+    gameEngine.timeLeft = 120; // 2 minutos
+    gameEngine.setTimeLeft(120);
+
+    // Auto-focus input
+    setTimeout(() => document.getElementById('numbers-game-input')?.focus(), 100);
 }
 
 /**
@@ -384,6 +460,50 @@ function submitProblem() {
         }
 
         isCorrect = userAnswer === correctAnswer;
+    } else if (tipoRespuesta === 'numbers_game') {
+        // Validación para Cifras (Numbers Game)
+        const input = document.getElementById('numbers-game-input');
+        if (!input || input.value.trim() === '') {
+            showFeedbackMessage('Por favor, escribe una operación');
+            return;
+        }
+
+        const expression = input.value.trim();
+        const result = numbersGameManager.checkSolution(currentProblem.target, currentProblem.numbers, expression);
+
+        if (result.valid && result.exact) {
+            isCorrect = true;
+            // Bonus achievements logic handled in validation result?
+        } else {
+            isCorrect = false;
+            let reason = result.reason || 'Incorrecto';
+            if (result.valid && !result.exact) {
+                reason = `Resultado: ${result.value} (Objetivo: ${currentProblem.target})`;
+            }
+            showFeedbackMessage(reason);
+        }
+
+        // Track specific stats for Cifras
+        const user = userManager.getCurrentUser();
+        if (user && achievementManager) {
+            user.achievementStats = user.achievementStats || {};
+
+            if (isCorrect) {
+                user.achievementStats.exactSolutions = (user.achievementStats.exactSolutions || 0) + 1;
+                user.achievementStats.numbersGameStreak = (user.achievementStats.numbersGameStreak || 0) + 1;
+
+                // Chequear full house (usar todos los números)
+                // Contar números en expresión
+                const usedNumbers = expression.match(/\d+/g);
+                if (usedNumbers && usedNumbers.length === 6) {
+                    user.achievementStats.fullHouseSolutions = (user.achievementStats.fullHouseSolutions || 0) + 1;
+                    showTimeEffect('🃏 Full House!', 'positive');
+                }
+            } else {
+                user.achievementStats.numbersGameStreak = 0;
+            }
+            userManager.saveToStorage();
+        }
     }
 
     // Procesar resultado
