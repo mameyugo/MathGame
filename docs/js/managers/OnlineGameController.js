@@ -246,12 +246,43 @@ class OnlineGameController {
         try {
             const result = await this.onlineManager.connect(username, password);
             if (result && result.type === 'login_success') {
-                // Connection established, now we can show the online menu
-                // Dispatch event to ask UI to show the screen
                 window.dispatchEvent(new CustomEvent('online-connected'));
             }
         } catch (error) {
             alert(error.message);
+        }
+    }
+
+    async checkAndSync(username, password) {
+        // Ensure we are connected/authenticated context mostly
+        // Perform Sync
+        const messageDiv = document.getElementById('online-credentials-message');
+        // If modal not open, where to show feedback? 
+        // Maybe just console or toast? For now console.
+
+        try {
+            // 1. Ensure Local Auth state matches
+            this.onlineManager.username = username;
+
+            // 2. Sync
+            const currentUserData = this.userManager.getCurrentUser();
+            if (currentUserData) {
+                const syncResult = await this.onlineManager.syncUserData(currentUserData);
+                if (syncResult.ok && syncResult.game_data) {
+                    this.userManager.mergeUserData(syncResult.game_data);
+                    console.log('✅ Sync successful on auto-login');
+
+                    // Refresh UI just in case
+                    window.dispatchEvent(new CustomEvent('update-ui'));
+                }
+            }
+
+            // 3. Connect socket immediately
+            await this.connectAndShowOptions(username, password);
+
+        } catch (e) {
+            console.error('Auto-sync failed:', e);
+            // Optionally force re-login if password wrong?
         }
     }
 

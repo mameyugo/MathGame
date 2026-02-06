@@ -770,13 +770,13 @@ function joinRoomByCode() {
 }
 
 function prepareOnlineDuel() {
-    // Check credentials via manager, logic in controller?? 
-    // Usually UI logic stays here or delegates. 
-    // Let's delegate checking logic or keep simple UI switch here.
     if (onlineManager.hasStoredCredentials()) {
         const credentials = onlineManager.getStoredCredentials();
         console.log('Usando credenciales:', credentials.username);
         showOnlineDuelOptions();
+
+        // Background sync and connect
+        onlineGameController.checkAndSync(credentials.username, credentials.password);
     } else {
         openOnlineCredentialsModal();
     }
