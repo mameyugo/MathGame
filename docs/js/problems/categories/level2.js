@@ -338,6 +338,216 @@ export const level2Problems = [
                 opciones: [respuesta, medida_inicial + crecimiento_dia, medida_inicial * dias, dias * crecimiento_dia]
             };
         }
+    },
+    // NUEVOS PROBLEMAS L2 (Pack 2)
+    {
+        id: "l2_suma_resta_dinero",
+        tipo: "matematico",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "l2_suma_resta_dinero",
+        generar: () => {
+            const inicial = Math.floor(Math.random() * 40) + 30; // 30-69
+            const gasto = Math.floor(Math.random() * 15) + 5;   // 5-19
+            const encontrado = Math.floor(Math.random() * 10) + 5; // 5-14
+            const respuesta = inicial - gasto + encontrado;
+            return {
+                texto: `Tenías ${inicial}€, gastaste ${gasto}€ en un libro y luego te encontraste ${encontrado}€. ¿Cuánto dinero tienes ahora?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Resta lo gastado y suma lo encontrado: ${inicial} - ${gasto} + ${encontrado} = ${respuesta}. 💶`,
+                ecuacion: `${inicial} - ${gasto} + ${encontrado} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, inicial - gasto, inicial + encontrado, respuesta - 10]
+            };
+        }
+    },
+    {
+        id: "l2_patas_animales",
+        tipo: "matematico",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "l2_patas_animales",
+        generar: () => {
+            const perros = Math.floor(Math.random() * 4) + 2; // 2-5
+            const gatos = Math.floor(Math.random() * 4) + 2;  // 2-5
+            const respuesta = (perros + gatos) * 4;
+            return {
+                texto: `En una granja hay ${perros} perros y ${gatos} gatos. ¿Cuántas patas hay en total?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Suma los animales (${perros} + ${gatos} = ${perros + gatos}) y multiplica por 4 patas: ${perros + gatos} x 4 = ${respuesta}. 🐾`,
+                ecuacion: `(${perros} + ${gatos}) x 4 = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, perros * 4, gatos * 4, respuesta + 2]
+            };
+        }
+    },
+    {
+        id: "l2_doble_cromos",
+        tipo: "matematico",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "l2_doble_cromos",
+        generar: () => {
+            const tuyos = Math.floor(Math.random() * 10) + 5; // 5-14
+            const respuesta = tuyos * 2;
+            return {
+                texto: `Tienes ${tuyos} cromos y tu amigo tiene el doble que tú. ¿Cuántos cromos tiene tu amigo?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `El doble significa multiplicar por 2: ${tuyos} x 2 = ${respuesta}.`,
+                ecuacion: `${tuyos} x 2 = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, tuyos + 2, tuyos * 3, 10]
+            };
+        }
+    },
+    {
+        id: "l2_mitad_galletas",
+        tipo: "matematico",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "l2_mitad_galletas",
+        generar: () => {
+            const total = (Math.floor(Math.random() * 10) + 2) * 2; // Par 4-22
+            const respuesta = total / 2;
+            return {
+                texto: `Tienes ${total} galletas y te comes la mitad. ¿Cuántas galletas quedan?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `La mitad es dividir por 2: ${total} / 2 = ${respuesta}. 🍪`,
+                ecuacion: `${total} / 2 = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, total - 1, total * 2, 0]
+            };
+        }
+    },
+    {
+        id: "l2_bolsas_caramelos",
+        tipo: "matematico",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "l2_bolsas_caramelos",
+        generar: () => {
+            const bolsas = Math.floor(Math.random() * 4) + 3; // 3-6
+            const caramelos = Math.floor(Math.random() * 5) + 3; // 3-7
+            const respuesta = bolsas * caramelos;
+            return {
+                texto: `Tienes ${bolsas} bolsas con ${caramelos} caramelos en cada una. ¿Cuántos caramelos tienes en total?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Multiplica bolsas por caramelos: ${bolsas} x ${caramelos} = ${respuesta}. 🍬`,
+                ecuacion: `${bolsas} x ${caramelos} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, bolsas + caramelos, respuesta + 5, 10]
+            };
+        }
+    },
+    {
+        id: "l2_secuencia_simple",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "l2_secuencia_simple",
+        generar: () => {
+            const inicio = Math.floor(Math.random() * 5) + 2; // 2-6
+            const salto = Math.floor(Math.random() * 4) + 2; // 2-5
+            const n1 = inicio;
+            const n2 = inicio + salto;
+            const n3 = inicio + salto * 2;
+            const n4 = inicio + salto * 3;
+            const respuesta = inicio + salto * 4;
+            return {
+                texto: `¿Qué número sigue en la serie? ${n1}, ${n2}, ${n3}, ${n4}...`,
+                respuestaCorrecta: respuesta,
+                explicacion: `La serie va saltando de ${salto} en ${salto}. ${n4} + ${salto} = ${respuesta}.`,
+                tipoRespuesta: 'opcion_multiple',
+                data: [n1, n2, n3, n4], // Para i18n si se necesita
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [respuesta, respuesta - 1, respuesta + salto, n4 + 1].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l2_hermana_nosoy",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "l2_hermana_nosoy",
+        generar: () => {
+            // 0: Hermana, 1: Hermano, 2: Tía, 3: Prima
+            const respuesta = 0;
+            return {
+                texto: "", // i18n lo llenará
+                respuestaCorrecta: respuesta,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l2_mapa_ciudades",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "l2_mapa_ciudades",
+        generar: () => {
+            // 0: Mapa, 1: Libro, 2: Sueño, 3: Televisión
+            const respuesta = 0;
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: respuesta,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l2_esponja_agua",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "l2_esponja_agua",
+        generar: () => {
+            // 0: Esponja, 1: Cubo, 2: Red, 3: Botella
+            const respuesta = 0;
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: respuesta,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l2_romper_silencio",
+        tipo: "logica",
+        nivelMin: 2,
+        categorias: ['explorador'],
+        i18n: "l2_romper_silencio",
+        generar: () => {
+            // 0: Silencio, 1: Cristal, 2: Promesa, 3: Espejo
+            const respuesta = 0;
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: respuesta,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
     }
 ];
 

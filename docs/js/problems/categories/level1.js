@@ -367,5 +367,222 @@ export const level1Problems = [
                 opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
             };
         }
+    },
+    // NUEVOS PROBLEMAS (Pack 1)
+    {
+        id: "l1_suma_juguetes",
+        tipo: "matematico",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "l1_suma_juguetes",
+        generar: () => {
+            const coches = Math.floor(Math.random() * 5) + 1;
+            const motos = Math.floor(Math.random() * 5) + 1;
+            const respuesta = coches + motos;
+            return {
+                texto: `Tienes ${coches} coches de juguete y te regalan ${motos} motos. ¿Cuántos vehículos tienes ahora en total?`,
+                respuestaCorrecta: respuesta,
+                explicacion: "Suma los coches y las motos para saber el total. 🚗🏍️",
+                ecuacion: `${coches} + ${motos} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
+            };
+        }
+    },
+    {
+        id: "l1_resta_caramelos",
+        tipo: "matematico",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "l1_resta_caramelos",
+        generar: () => {
+            const inicial = Math.floor(Math.random() * 5) + 5; // 5-9
+            const comidos = Math.floor(Math.random() * 3) + 1; // 1-3
+            const respuesta = inicial - comidos;
+            return {
+                texto: `En una bolsa hay ${inicial} caramelos. Si te comes ${comidos}, ¿cuántos quedan dentro de la bolsa?`,
+                respuestaCorrecta: respuesta,
+                explicacion: "Si te los comes, ya no están en la bolsa. Resta los que te comiste. 🍬",
+                ecuacion: `${inicial} - ${comidos} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, inicial, comidos, respuesta - 1]
+            };
+        }
+    },
+    {
+        id: "l1_patas_bancos",
+        tipo: "matematico",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "l1_patas_bancos",
+        generar: () => {
+            const bancos = Math.floor(Math.random() * 3) + 1; // 1-3
+            const patasPorBanco = 4;
+            const respuesta = bancos * patasPorBanco;
+            return {
+                texto: `En el parque hay ${bancos} bancos para sentarse. Si cada banco tiene 4 patas, ¿cuántas patas hay en total?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Cuenta 4 patas por cada banco: ${bancos} x 4 = ${respuesta}. 🪑`,
+                ecuacion: `${bancos} x 4 = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, bancos + 4, respuesta - 1, 3]
+            };
+        }
+    },
+    {
+        id: "l1_autobus_bajan",
+        tipo: "matematico",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "l1_autobus_bajan",
+        generar: () => {
+            const total = Math.floor(Math.random() * 6) + 4; // 4-9
+            const bajan = Math.floor(Math.random() * 3) + 1; // 1-3
+            const respuesta = total - bajan;
+            return {
+                texto: `En un autobús van ${total} personas. En la parada bajan ${bajan} personas. ¿Cuántas personas quedan en el autobús?`,
+                respuestaCorrecta: respuesta,
+                explicacion: "Resta a las personas que se han bajado. 🚌",
+                ecuacion: `${total} - ${bajan} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, total, total + bajan, 0]
+            };
+        }
+    },
+    {
+        id: "l1_total_libros",
+        tipo: "matematico",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "l1_total_libros",
+        generar: () => {
+            const rojos = Math.floor(Math.random() * 4) + 1;
+            const azules = Math.floor(Math.random() * 4) + 1;
+            const respuesta = rojos + azules;
+            return {
+                texto: `En un estante hay ${rojos} libros rojos y ${azules} libros azules. ¿Cuántos libros hay por todo?`,
+                respuestaCorrecta: respuesta,
+                explicacion: "Junta los libros rojos y azules para saber el total. 📚",
+                ecuacion: `${rojos} + ${azules} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, rojos, azules, 10]
+            };
+        }
+    },
+    {
+        id: "l1_conductor_nombre",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "l1_conductor_nombre",
+        generar: () => {
+            const pasajeros = Math.floor(Math.random() * 10) + 5;
+            // 0: Yo/Tú (Correcta), 1: Pepe/Nombre Random, 2: El autobús, 3: Nadie
+            const respuesta = 0;
+
+            return {
+                texto: "", // Se llenará desde i18n
+                respuestaCorrecta: respuesta,
+                explicacion: "", // Se llenará desde i18n
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                data: [pasajeros],
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l1_agujero_profundo",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "l1_agujero_profundo",
+        generar: () => {
+            const metros = Math.floor(Math.random() * 3) + 1;
+            const respuesta = 0;
+            return {
+                texto: `Haces un agujero de ${metros} metros de profundidad en la arena. ¿Cuánta tierra hay dentro del agujero?`,
+                respuestaCorrecta: respuesta,
+                explicacion: "¡Es un agujero! Si tuviera tierra dentro, no sería un agujero de esa profundidad. Está vacío.",
+                ecuacion: "Cantidad de tierra = __",
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, metros, 10, 1]
+            };
+        }
+    },
+    {
+        id: "l1_caja_vacia",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "l1_caja_vacia",
+        generar: () => {
+            const melones = 1;
+            const respuesta = 1;
+            return {
+                texto: `¿Cuántos melones caben en una caja vacía?`,
+                respuestaCorrecta: respuesta,
+                explicacion: "Solo cabe 1. Después de meter el primero, la caja ya no está vacía. 📦",
+                ecuacion: "Melones = __",
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, 10, 0, 5]
+            };
+        }
+    },
+    {
+        id: "l1_dia_siguiente",
+        tipo: "logica", // Relacionado con tiempo/secuencia
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "l1_dia_siguiente",
+        generar: () => {
+            // 0: Lunes, 1: Martes, ..., 6: Domingo
+            const hoyIndex = Math.floor(Math.random() * 7);
+            const ayerIndex = (hoyIndex - 1 + 7) % 7;
+            const mananaIndex = (hoyIndex + 1) % 7;
+
+            // Generar opciones (4 opciones únicas)
+            const opcionesIndices = new Set([mananaIndex]);
+            while (opcionesIndices.size < 4) {
+                const rand = Math.floor(Math.random() * 7);
+                opcionesIndices.add(rand);
+            }
+            const opciones = Array.from(opcionesIndices).sort(() => Math.random() - 0.5);
+
+            return {
+                texto: "", // Se llenará desde i18n usando los params data
+                respuestaCorrecta: mananaIndex,
+                explicacion: "", // Se llenará desde i18n
+                // tipoRespuesta: 'opcion_multiple' activa la UI de botones
+                tipoRespuesta: 'opcion_multiple',
+                // i18nOptions: true le dice al generador que busque 'opciones' en el archivo de idioma para las etiquetas
+                i18nOptions: true,
+                // data se pasa a las funciones de traducción
+                data: [ayerIndex, mananaIndex],
+                ecuacion: "", // No aplica para lógica visual/texto
+                ecuacionValores: [],
+                opciones: opciones
+            };
+        }
+    },
+    {
+        id: "l1_hijo_padre",
+        tipo: "logica",
+        nivelMin: 1,
+        categorias: ['explorador'],
+        i18n: "l1_hijo_padre",
+        generar: () => {
+            const respuesta = 1;
+            return {
+                texto: `Tomás es hijo de mi padre, pero no es mi hermano. ¿Cuántos hermanos tengo?`,
+                respuestaCorrecta: 0,
+                explicacion: "¡Tomás soy YO! Si es hijo de mi padre y no es mi hermano, tengo que ser yo mismo. (Asumiendo que soy chico).",
+                ecuacion: "Hermanos = __",
+                ecuacionValores: [0],
+                opciones: [0, 1, 2, 3]
+            };
+        }
     }
 ];

@@ -352,13 +352,33 @@ class QuestionGenerator {
             const userLanguage = user?.idioma || 'es';
 
             // Try to get translated text using i18n system
+            // Pass the parameters (data) from the generated problem if available
+            const params = this.currentProblem.data || [];
+            const serializedParams = Array.isArray(params) ? params : [params];
+
             const translatedText = this.getTranslatedProblemText(
                 this.currentProblem.id || '',
-                userLanguage
+                userLanguage,
+                ...serializedParams
             );
 
             // Use translated text if available, otherwise use original
-            area.innerText = translatedText || this.currentProblem.texto;
+            // Also store the explanation translation for later use if needed
+            if (translatedText) {
+                this.currentProblem.texto = translatedText;
+
+                const translatedExplanation = this.getTranslatedProblemText(
+                    this.currentProblem.id || '',
+                    userLanguage,
+                    'explicacion', // Special field check
+                    ...serializedParams
+                );
+                if (translatedExplanation) {
+                    this.currentProblem.explicacion = translatedExplanation;
+                }
+            }
+
+            area.innerText = this.currentProblem.texto;
         }
 
         // Using new renderProblemUI to support different response types
@@ -369,18 +389,25 @@ class QuestionGenerator {
      * Gets translated text for a problem using i18n system
      * @param {string} problemId - ID of the problem
      * @param {string} language - Language code (es/gl/en/fr/ca/pt/de)
+     * @param {...any} args - Arguments for the translation function
      * @returns {string|null} Translated text or null if not available
      */
-    getTranslatedProblemText(problemId, language) {
+    getTranslatedProblemText(problemId, language, ...args) {
         if (!window.getTranslation || typeof window.getTranslation !== 'function') {
             return null;
         }
 
+        // Handle the case where the third argument might be the field name override
+        let field = 'texto';
+        let cleanArgs = args;
+
+        if (args.length > 0 && args[0] === 'explicacion') {
+            field = 'explicacion';
+            cleanArgs = args.slice(1);
+        }
+
         try {
-            // Get the generated problem data to extract parameters
-            // For now, return the base text without parameters
-            const baseText = window.getTranslation(language, problemId, 'texto');
-            return baseText || null;
+            return window.getTranslation(language, problemId, field, ...cleanArgs);
         } catch (error) {
             console.warn(`Translation not available for problem: ${problemId}, language: ${language}`);
             return null;
@@ -455,18 +482,37 @@ class QuestionGenerator {
         const container = document.createElement('div');
         container.className = 'multiple-choice-container';
 
+        // Get user language for option translation
+        const user = this.userManager.getCurrentUser();
+        const userLanguage = user?.idioma || 'es';
+
         problem.opciones.forEach((opcion, idx) => {
             const btn = document.createElement('button');
             btn.className = 'choice-btn';
-            btn.dataset.value = opcion.id || opcion;
+
+            // Value determination
+            let value = opcion;
+            if (typeof opcion === 'object' && opcion.id !== undefined) {
+                value = opcion.id;
+            }
+
+            btn.dataset.value = value;
             btn.dataset.index = idx;
 
-            // Support objects or simple strings
-            if (typeof opcion === 'object') {
-                btn.innerHTML = `<span class="choice-icon">${opcion.icon || ''}</span> ${opcion.texto}`;
-            } else {
-                btn.textContent = opcion;
+            // Label determination
+            let label = opcion;
+
+            // If the problem requests translated options, try to translate
+            if (problem.i18nOptions) {
+                const translatedLabel = window.getTranslation(userLanguage, problem.id, 'opciones', value);
+                if (translatedLabel) {
+                    label = translatedLabel;
+                }
+            } else if (typeof opcion === 'object') {
+                label = `<span class="choice-icon">${opcion.icon || ''}</span> ${opcion.texto}`;
             }
+
+            btn.innerHTML = label;
 
             btn.addEventListener('click', () => {
                 // Deselect others
@@ -475,8 +521,15 @@ class QuestionGenerator {
                 });
                 // Select this one
                 btn.classList.add('selected');
-                // Save answer
-                window.selectedChoice = opcion.id || opcion;
+                // Save answer (global for now, but should ideally be passed to checkFn)
+                window.selectedChoice = value;
+
+                // Auto-submit for better UX? Or wait for check button?
+                // For now, let's keep it consistent with UI flow (user clicks check)
+                // But we can trigger check immediately if desired
+                if (this.check) {
+                    this.check(value);
+                }
             });
 
             container.appendChild(btn);

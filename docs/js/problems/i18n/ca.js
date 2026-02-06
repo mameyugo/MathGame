@@ -77,8 +77,104 @@ export const problemsCA = {
         texto: (total, gusanitos) => `Hi ha una cistella amb ${total} pomes vermelles. Mirant-les de prop, veus que ${gusanitos} tenen un cuc i no es poden menjar. Quantes pomes bones queden?`,
         explicacion: (total, gusanitos) => `Treu les del cuc per saber quantes en queden! ${total} - ${gusanitos} = ${total - gusanitos} pomes bones. 🍎`
     },
+    // NOUS L1 CA
+    l1_suma_juguetes: {
+        texto: (coches, motos) => `Tens ${coches} cotxes de joguina i et regalen ${motos} motos. Quants vehicles tens ara en total?`,
+        explicacion: (coches, motos) => `Suma els cotxes i les motos per saber el total: ${coches} + ${motos} = ${coches + motos}. 🚗🏍️`
+    },
+    l1_resta_caramelos: {
+        texto: (inicial, comidos) => `En una bossa hi ha ${inicial} caramels. Si te'n menges ${comidos}, quants en queden a la bossa?`,
+        explicacion: (inicial, comidos) => `Si te'ls menges, ja no són a la bossa. ${inicial} - ${comidos} = ${inicial - comidos}. 🍬`
+    },
+    l1_patas_bancos: {
+        texto: (bancos) => `Al parc hi ha ${bancos} bancs per seure. Si cada banc té 4 potes, quantes potes hi ha en total?`,
+        explicacion: (bancos) => `Compta 4 potes per cada banc: ${bancos} x 4 = ${bancos * 4}. 🪑`
+    },
+    l1_autobus_bajan: {
+        texto: (total, bajan) => `En un autobús hi van ${total} persones. A la parada baixen ${bajan} persones. Quantes persones queden a l'autobús?`,
+        explicacion: (total, bajan) => `Resta les persones que han baixat: ${total} - ${bajan} = ${total - bajan}. 🚌`
+    },
+    l1_total_libros: {
+        texto: (rojos, azules) => `En un prestatge hi ha ${rojos} llibres vermells i ${azules} llibres blaus. Quants llibres hi ha en total?`,
+        explicacion: (rojos, azules) => `Ajunta els llibres vermells i blaus per saber el total: ${rojos} + ${azules} = ${rojos + azules}. 📚`
+    },
+    l1_conductor_nombre: {
+        opciones: ["Jo", "En Pere", "L'autobús", "Ningú"],
+        texto: (pasajeros) => `Imagina que tu condueixes un autobús amb ${pasajeros} passatgers. Qui és el conductor?`,
+        explicacion: () => `El conductor ets TU! La pregunta diu "Imagina que tu condueixes...". 🚌`
+    },
+    l1_agujero_profundo: {
+        texto: (metros) => `Fas un forat de ${metros} metres de profunditat a la sorra. Quanta terra hi ha dins del forat?`,
+        explicacion: () => `És un forat! Si tingués terra a dins, no seria un forat d'aquesta profunditat. Està buit (0).`
+    },
+    l1_caja_vacia: {
+        texto: () => `Quants melons caben en una caixa buida?`,
+        explicacion: () => `Només n'hi cap 1. Després de posar el primer, la caixa ja no està buida. 📦`
+    },
+    l1_dia_siguiente: {
+        dias: ["Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte", "Diumenge"],
+        texto: function (ayer, manana) {
+            return `Si ahir va ser ${this.dias[ayer]}, quin dia serà demà?`;
+        },
+        explicacion: function (ayer, manana) {
+            const hoy = (ayer + 1) % 7;
+            return `Si ahir va ser ${this.dias[ayer]}, avui és ${this.dias[hoy]}. I si avui és ${this.dias[hoy]}, demà serà ${this.dias[manana]}!`;
+        },
+        opciones: function (indice) {
+            return this.dias[indice];
+        }
+    },
+    l1_hijo_padre: {
+        texto: () => `El Tomàs és fill del meu pare, però no és el meu germà. Quants germans tinc?`,
+        explicacion: () => `El Tomàs soc JO! Si és fill del meu pare i no és el meu germà, he de ser jo mateix. (0 germans).`
+    },
 
     // LEVEL 2
+    l2_suma_resta_dinero: {
+        texto: (inicial, gasto, encontrado) => `Tenies ${inicial}€, vas gastar ${gasto}€ en un llibre i després vas trobar ${encontrado}€. Quants diners tens ara?`,
+        explicacion: (inicial, gasto, encontrado) => `Resta el que has gastat i suma el que has trobat: ${inicial} - ${gasto} + ${encontrado} = ${inicial - gasto + encontrado}. 💶`
+    },
+    l2_patas_animales: {
+        texto: (perros, gatos) => `En una granja hi ha ${perros} gossos i ${gatos} gats. Quantes potes hi ha en total?`,
+        explicacion: (perros, gatos) => `Suma els animals (${perros} + ${gatos}) i multiplica per 4 potes: (${perros + gatos}) x 4 = ${(perros + gatos) * 4}. 🐾`
+    },
+    l2_doble_cromos: {
+        texto: (tuyos) => `Tens ${tuyos} cromos i el teu amic en té el doble que tu. Quants cromos té el teu amic?`,
+        explicacion: (tuyos) => `El doble significa multiplicar per 2: ${tuyos} x 2 = ${tuyos * 2}.`
+    },
+    l2_mitad_galletas: {
+        texto: (total) => `Tens ${total} galetes i te'n menges la meitat. Quantes galetes queden?`,
+        explicacion: (total) => `La meitat és dividir per 2: ${total} / 2 = ${total / 2}. 🍪`
+    },
+    l2_bolsas_caramelos: {
+        texto: (bolsas, caramelos) => `Tens ${bolsas} bosses amb ${caramelos} caramels a cadascuna. Quants caramels tens en total?`,
+        explicacion: (bolsas, caramelos) => `Multiplica bosses per caramels: ${bolsas} x ${caramelos} = ${bolsas * caramelos}. 🍬`
+    },
+    l2_secuencia_simple: {
+        texto: (n1, n2, n3, n4) => `Quin número segueix a la sèrie? ${n1}, ${n2}, ${n3}, ${n4}...`,
+        explicacion: (n1, n2, n3, n4) => `Fixa't en quant augmenta cada número. Aquest és el salt!`
+    },
+    l2_hermana_nosoy: {
+        opciones: ["Germana", "Germà", "Tia", "Cosina"],
+        texto: () => `Si jo soc el teu germà, però tu no ets el meu germà, què ets?`,
+        explicacion: () => `Ets la meva GERMANA! Si no ets el meu germà (noi), has de ser una noia.`
+    },
+    l2_mapa_ciudades: {
+        opciones: ["Mapa", "Llibre", "Somni", "Tele"],
+        texto: () => `Tinc ciutats però no cases, muntanyes però no arbres, i aigua però no peixos. Què soc?`,
+        explicacion: () => `Un mapa. Representa tot això sense tenir-ho físicament.`
+    },
+    l2_esponja_agua: {
+        opciones: ["Esponja", "Cubell", "Xarxa", "Ampolla"],
+        texto: () => `Estic plena de forats però així i tot puc retenir l'aigua. Què soc?`,
+        explicacion: () => `Una esponja. Els seus porus (forats) absorbeixen i mantenen l'aigua.`
+    },
+    l2_romper_silencio: {
+        opciones: ["El Silenci", "Un Cristall", "Una Promesa", "Un Mirall"],
+        texto: () => `Soc tan fràgil que si dius el meu nom, em trenques. Què soc?`,
+        explicacion: () => `El Silenci. En parlar (dir el seu nom), deixes d'estar en silenci.`
+    },
+
     pastor_ovejas: {
         texto: (totales, vivas) => `Un pastor té ${totales} ovelles. Un llamp colpeja i moren totes excepte ${vivas}. Quantes ovelles li queden?`,
         explicacion: (totales, vivas) => `Trampa desactivada! El problema diu "totes excepte ${vivas}", així que li en queden exactament ${vivas}. No és ${totales} - ${vivas} = ${totales - vivas}.`
@@ -125,6 +221,53 @@ export const problemsCA = {
     },
 
     // LEVEL 3
+    // LEVEL 3
+    l3_jerarquia_ops: {
+        texto: (a, b, c) => `Resol: ${a} + ${b} × ${c} = ?`,
+        explicacion: (a, b, c) => `Recorda la jerarquia! Primer la multiplicació, després la suma: ${b}×${c}=${b * c}, després ${a}+${b * c}=${a + (b * c)}. No facis (${a}+${b})×${c}.`
+    },
+    l3_horas_minutos: {
+        texto: (horas, minutos) => `Una pel·lícula dura ${horas} hora(s) i ${minutos} minuts. Quants minuts dura en total?`,
+        explicacion: (horas, minutos) => `1 hora són 60 minuts. ${horas}h × 60 = ${horas * 60} min. Suma els ${minutos} min restants: ${horas * 60} + ${minutos} = ${(horas * 60) + minutos}. ⏱️`
+    },
+    l3_gramos_kilos: {
+        texto: (kilos, gramos) => `Has comprat ${kilos}kg i ${gramos}g de farina. Quants grams són en total?`,
+        explicacion: (kilos, gramos) => `1 quilo són 1000 grams. ${kilos}kg = ${kilos * 1000}g. Total: ${kilos * 1000} + ${gramos} = ${(kilos * 1000) + gramos}g.`
+    },
+    l3_triple_suma: {
+        texto: (base) => `Un bolígraf costa ${base}€. Una llibreta costa el triple. Quant costen les dues coses juntes?`,
+        explicacion: (base) => `Llibreta: ${base} x 3 = ${base * 3}€. Bolígraf: ${base}€. Total: ${base * 3} + ${base} = ${base * 4}€.`
+    },
+    l3_dias_semanas: {
+        texto: (semanas, dias) => `Te'n vas de vacances ${semanas} setmanes i ${dias} dies. Quants dies són en total?`,
+        explicacion: (semanas, dias) => `Una setmana té 7 dies. ${semanas} setmanes = ${semanas * 7} dies. Suma ${dias}: ${semanas * 7} + ${dias} = ${(semanas * 7) + dias}.`
+    },
+    l3_logica_carrera: {
+        opciones: ["Segon", "Primer", "Penúltim", "Últim"],
+        texto: () => `Vas en una cursa i adelantes al segon. En quina posició vas ara?`,
+        explicacion: () => `Segon! Si passes al que anava segon, tu ocupes el seu lloc. No ets el primer encara.`
+    },
+    l3_logica_meses_28: {
+        opciones: ["12", "1", "6", "0"],
+        texto: () => `Quants mesos de l'any tenen 28 dies?`,
+        explicacion: () => `Tots els 12! Gener en té 31 (així que en té 28), Febrer en té 28, etc. La pregunta no deia "només" 28.`
+    },
+    l3_logica_padre_hijo: {
+        opciones: ["Mare", "Pare", "Àvia", "Oncle"],
+        texto: () => `El pare d'en Joan li diu al seu fill: "Assenyala aquella senyora, és la mare de la teva mare". Qui és la senyora per a en Joan?`,
+        explicacion: () => `L'Àvia! La mare de la seva mare és la seva àvia materna.`
+    },
+    l3_logica_paraguas: {
+        opciones: ["No plovia", "Tenien paraigües", "Eren peixos", "Corrien molt"],
+        texto: (personas) => `${personas} persones van sota un mateix paraigua petit però cap es mulla. Com és possible?`,
+        explicacion: () => `Perquè no plovia! El context suggereix pluja, però no ho diu explícitament.`
+    },
+    l3_logica_globo: {
+        opciones: ["Forats", "Aire", "Pedres", "Aigua"],
+        texto: () => `Què pots posar en un barril perquè pesi menys?`,
+        explicacion: () => `Forats! En treure material per fer el forat, el barril perd pes.`
+    },
+
     manzanas_rotas_logica: {
         texto: (n1, n2, precio, p1, p2) => `${p1} té ${n1} pomes. ${p2} xoca amb ell, ${p1} cau i es trenquen ${n2}. Si cada poma costa ${precio}€, quants diners deu ${p1} a ${p2}?`,
         explicacion: (n2, precio, p1, p2) => `Atenció! Les pomes són de ${p1}. És ${p2} qui hauria de pagar ${p1} ${n2 * precio}€.`
@@ -173,6 +316,53 @@ export const problemsCA = {
         explicacion: (pinasParaManzanas, pesoDeManzana, numeroDePinas, pesoTotal) => `És un problema de substitució. Primer troba el pes de la pinya: ${pinasParaManzanas} × ${pesoDeManzana} = ${pinasParaManzanas * pesoDeManzana} grams. Llavors multiplica per ${numeroDePinas} pinyes: ${pinasParaManzanas * pesoDeManzana} × ${numeroDePinas} = ${pesoTotal} grams.`
     },
     // LEVEL 4
+    // LEVEL 4
+    l4_fracciones_visuales: {
+        texto: (num) => `Tens ${num} bales. Si en perds un quart (1/4), quantes n'has perdut?`,
+        explicacion: (respuesta) => `Un quart significa dividir per 4. La resposta és ${respuesta}.`
+    },
+    l4_decimales_dinero: {
+        texto: (p1, p2) => `Compres un gelat per ${p1}€ i un refresc per ${p2}€. Quant pagues en total?`,
+        explicacion: (total) => `Suma els preus: ${total}€. Recorda alinear la coma decimal.`
+    },
+    l4_ecuacion_simple: {
+        texto: (suma, total) => `Penso en un nombre. Si li sumo ${suma}, obtingo ${total}. En quin nombre he pensat?`,
+        explicacion: (x, suma) => `Si sumant ${suma} al nombre dóna ${x + suma}, fes la inversa: resta ${suma}.`
+    },
+    l4_area_rectangulo: {
+        texto: (ancho, alto) => `Una habitació fa ${ancho} metres d'ample i ${alto} metres de llarg. Quina és la seva àrea en m²?`,
+        explicacion: (area) => `L'àrea és ample x alt = ${area} m².`
+    },
+    l4_mitad_doble: {
+        texto: (num) => `Si multipliques ${num} per 2 i després divideixes el resultat per 2, què obtens?`,
+        explicacion: () => `El mateix nombre! Multiplicar i dividir per 2 s'anul·len mútuament.`
+    },
+    l4_hija_teresa: {
+        opciones: ["La meva filla", "La meva mare", "Jo", "La meva àvia"],
+        texto: () => `La filla de la Teresa és la mare de la meva filla. Qui sóc jo? (Sóc una dona)`,
+        explicacion: () => `Sóc la Teresa! Si la filla de la Teresa és la mare de la meva filla, i jo sóc la mare de la meva filla... jo sóc la filla de la Teresa.`
+    },
+    l4_auto_ruedas: {
+        opciones: ["La de recanvi", "Davantera dreta", "Darrera esquerra", "Totes giren"],
+        texto: () => `Un cotxe va per una carretera recta cap al nord. Quina roda no gira?`,
+        explicacion: () => `La roda de recanvi! Les altres quatre han de girar per avançar.`
+    },
+    l4_meses_frio: {
+        opciones: ["El termòmetre", "El calendari", "La neu", "L'hivern"],
+        texto: () => `Pujo quan fa calor i baixo quan fa fred. Què sóc?`,
+        explicacion: () => `El termòmetre! El líquid es dilata amb la calor i puja.`
+    },
+    l4_pato_huevo: {
+        opciones: ["Cap", "Un", "Dos", "Tres"],
+        texto: () => `Un ànec pon un ou just a la frontera entre Espanya i França. A quin país pertany l'ou?`,
+        explicacion: () => `A cap! Els ànecs (mascles) no ponen ous.`
+    },
+    l4_quien_soy: {
+        opciones: ["El teu nom", "La teva edat", "La teva veu", "La teva ombra"],
+        texto: () => `Et pertany, però els altres l'utilitzen més que tu. Què és?`,
+        explicacion: () => `El teu nom! La gent et crida per ell, tu rarament et crides a tu mateix.`
+    },
+
     patas_mesa: {
         texto: (mesas, patas_m, sillas, patas_s, perros, patas_p) =>
             `En una habitació hi ha ${mesas} taules amb ${patas_m} potes cadascuna i ${sillas} cadires amb ${patas_s} potes. Quantes potes hi ha en total si entren ${perros} gossos?`,
@@ -225,6 +415,51 @@ export const problemsCA = {
     },
 
     // LEVEL 5
+    // LEVEL 5
+    l5_sistema_ecuaciones: {
+        texto: (A, B) => `Resol el sistema: \n2x + y = ${A} \nx - y = ${B} \nQuant val x?`,
+        explicacion: (x) => `Suma les equacions: (2x + y) + (x - y) = 3x. Llavors 3x dividit per 3 dóna ${x}.`
+    },
+    l5_probabilidad_dados: {
+        opciones: ["1/6", "1/12", "1/36", "5/36"],
+        texto: () => `Llances dos daus de 6 cares. Quina és la probabilitat que la suma sigui 7?`,
+        explicacion: () => `Hi ha 6 casos favorables i 36 totals. 6/36 simplificat és 1/6.`
+    },
+    l5_velocidad_relativa: {
+        texto: (v1, v2, dist) => `Un tren surt d'A a ${v1} km/h cap a B i un altre de B a ${v2} km/h cap a A. Distància ${dist} km. Quan es creuen?`,
+        explicacion: (t) => `Velocitat relativa = ${v1 + v2} km/h. Temps = ${dist} / ${v1 + v2} = ${t} hores.`
+    },
+    l5_combinatoria_saludos: {
+        texto: (p) => `${p} amics es reuneixen i es donen la mà tots amb tots. Quantes encaixades hi ha?`,
+        explicacion: (s) => `Fórmula: n(n-1)/2. Cadascú saluda a tots els altres, però la relació és recíproca.`
+    },
+    l5_porcentaje_compuesto: {
+        opciones: ["Baixa un 1%", "Igual", "Puja un 1%", "Baixa un 10%"],
+        texto: () => `Una acció puja un 10% i després baixa un 10%. Com queda?`,
+        explicacion: () => `Exemple: 100 + 10% = 110. 110 - 10% = 99. Perd un 1% respecte a 100.`
+    },
+    l5_logica_ascensor: {
+        opciones: ["És baixet", "Fa esport", "Superstició", "Avariat"],
+        texto: () => `Un home viu al 10è pis. Baixa en ascensor, però per pujar només arriba al 7è i puja caminant (tret que plogui). Per què?`,
+        explicacion: () => `És baixet! No arriba al botó del 10. Si plou, fa servir el paraigua.`
+    },
+    l5_logica_meses: {},
+    l5_logica_secuencia_letras: {
+        opciones: ["D", "N", "O", "P"],
+        texto: () => `Quina lletra segueix? G, F, M, A, M, J, J, A, S, O, N ...`,
+        explicacion: () => `D de Desembre! Inicials dels mesos.`
+    },
+    l5_logica_padre_juan: {
+        opciones: ["Joan", "Quart", "Lluc", "Josep"],
+        texto: () => `El pare d'en Joan té 4 fills: Prim, Segon, Tercer... Com es diu el quart?`,
+        explicacion: () => `Joan! La pregunta ho diu al principi.`
+    },
+    l5_logica_interruptores: {
+        opciones: ["Per temperatura", "Mirant", "A l'atzar", "Impossible"],
+        texto: () => `3 interruptors fora d'una sala tancada. Només un encén el llum. Entrant un sol cop, com saps quin és?`,
+        explicacion: () => `Toca la bombeta. Encén l'1 una estona, apaga'l. Encén el 2 i entra. Enceesa -> 2. Calenta -> 1. Freda -> 3.`
+    },
+
     peso_ladrillo: {
         texto: (extra) => `Si una rajola pesa ${extra} kg més mitja rajola, quant pesen una rajola i mitja?`,
         explicacion: (extra, ladrillo, resultado) => `Desafiament desactivat! Si X = pes d'una rajola, aleshores X = ${extra} + X/2, així que X = ${ladrillo} kg. Una rajola i mitja pesa ${ladrillo} + ${ladrillo / 2} = ${resultado} kg.`

@@ -266,5 +266,224 @@ export const level5Problems = [
                 opciones: [respuesta, 100, 300, 10]
             };
         }
+    },
+    // NUEVOS PROBLEMAS L5 (Pack 2)
+    {
+        id: "l5_sistema_ecuaciones",
+        tipo: "matematico",
+        nivelMin: 5,
+        categorias: ['cientifico', 'arquitecto'],
+        i18n: "l5_sistema_ecuaciones",
+        generar: () => {
+            // 2x + y = A
+            // x - y = B
+            // Suma: 3x = A+B -> x = (A+B)/3
+            const x = Math.floor(Math.random() * 5) + 3; // 3 to 7
+            const y = Math.floor(Math.random() * 5) + 1; // 1 to 5
+            const A = 2 * x + y;
+            const B = x - y;
+            return {
+                texto: `Resuelve el sistema: \n1) 2x + y = ${A} \n2) x - y = ${B} \n¿Cuánto vale x?`,
+                respuestaCorrecta: x,
+                explicacion: `Suma ambas ecuaciones: (2x+y) + (x-y) = ${A}+${B} → 3x = ${A + B} → x = ${x}.`,
+                tipoRespuesta: 'opcion_multiple',
+                ecuacion: `3x = ${A + B} → x = __`,
+                ecuacionValores: [x],
+                opciones: [x, y, x + y, Math.floor((A + B) / 2)].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l5_probabilidad_dados",
+        tipo: "matematico",
+        nivelMin: 5,
+        categorias: ['cientifico'],
+        i18n: "l5_probabilidad_dados",
+        generar: () => {
+            // Suma 7 siempre es 1/6
+            // Suma 2 (1+1) es 1/36
+            const targets = [
+                { val: 7, prob: "1/6", cases: 6 }, // 1+6, 2+5, 3+4, 4+3, 5+2, 6+1
+                { val: 2, prob: "1/36", cases: 1 },
+                { val: 12, prob: "1/36", cases: 1 },
+                { val: 3, prob: "1/18", cases: 2 } // 1+2, 2+1 -> 2/36 = 1/18
+            ];
+            const t = targets[Math.floor(Math.random() * 2)]; // 7 or 2/12/3 to keep it simple? Let's stick to 7 mostly or mix.
+            // Let's force sum 7 for consistency in difficulty or random.
+            // Simplified: Always sum 7 for clarity in MC options distraction
+            return {
+                texto: `Lanzas dos dados de 6 caras. ¿Cuál es la probabilidad de que la suma sea 7?`,
+                respuestaCorrecta: 0, // Index 0 is correct
+                explicacion: `Hay 6 combinaciones que suman 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1). Total combinaciones: 6x6=36. Probabilidad: 6/36 = 1/6.`,
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true, // Options are strings "1/6", etc.
+                ecuacion: `Casos farobables / Casos totales = __`,
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l5_velocidad_relativa",
+        tipo: "matematico",
+        nivelMin: 5,
+        categorias: ['cientifico'],
+        i18n: "l5_velocidad_relativa",
+        generar: () => {
+            const v1 = (Math.floor(Math.random() * 3) + 4) * 10; // 40, 50, 60
+            const v2 = (Math.floor(Math.random() * 3) + 4) * 10;
+            const t = Math.floor(Math.random() * 2) + 1; // 1 or 2 hours
+            const dist = (v1 + v2) * t;
+            return {
+                texto: `Un tren sale de A a ${v1} km/h hacia B. Otro sale de B a ${v2} km/h hacia A. Si están a ${dist} km, ¿cuánto tardan en cruzarse?`,
+                respuestaCorrecta: t,
+                explicacion: `Velocidad relativa: se acercan a ${v1}+${v2} = ${v1 + v2} km/h. Tiempo = Distancia / Velocidad = ${dist} / ${v1 + v2} = ${t} horas.`,
+                tipoRespuesta: 'opcion_multiple',
+                ecuacion: `${dist} / (${v1}+${v2}) = __ h`,
+                ecuacionValores: [t],
+                opciones: [t, t + 0.5, t * 2, dist / 100].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l5_combinatoria_saludos",
+        tipo: "matematico",
+        nivelMin: 5,
+        categorias: ['explorador'],
+        i18n: "l5_combinatoria_saludos",
+        generar: () => {
+            const personas = Math.floor(Math.random() * 3) + 4; // 4, 5, 6
+            const saludos = (personas * (personas - 1)) / 2;
+            return {
+                texto: `${personas} amigos se reúnen y todos se estrechan la mano entre sí una vez. ¿Cuántos apretones de manos hay en total?`,
+                respuestaCorrecta: saludos,
+                explicacion: `Fórmula: n(n-1)/2. Cada una de las ${personas} personas saluda a las otras ${personas - 1}. Pero el saludo A-B es el mismo que B-A, así que dividimos por 2. ${personas}x${personas - 1}/2 = ${saludos}.`,
+                tipoRespuesta: 'opcion_multiple',
+                ecuacion: `(${personas} × ${personas - 1}) / 2 = __`,
+                ecuacionValores: [saludos],
+                opciones: [saludos, personas * (personas - 1), personas * 2, saludos + 2].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l5_porcentaje_compuesto",
+        tipo: "matematico",
+        nivelMin: 5,
+        categorias: ['cientifico', 'arquitecto'],
+        i18n: "l5_porcentaje_compuesto",
+        generar: () => {
+            return {
+                texto: ``, // i18n handled
+                respuestaCorrecta: 0, // "Baja un 1%"
+                explicacion: ``, // i18n
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: `100 + 10% = 110; 110 - 10% = 99`,
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    // LOGICA NIVEL 5
+    {
+        id: "l5_logica_ascensor",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['explorador'],
+        i18n: "l5_logica_ascensor",
+        generar: () => {
+            return {
+                texto: "",
+                respuestaCorrecta: 0, // Bajito
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l5_logica_meses",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['cientifico'],
+        i18n: "l5_logica_meses",
+        generar: () => {
+            const respuesta = 12;
+            return {
+                texto: `Algunos meses tienen 31 días, otros tienen 30. ¿Cuántos meses tienen 28 días?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Todos! Los 12 meses tienen al menos 28 días.`,
+                tipoRespuesta: 'opcion_multiple',
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [12, 1, 6, 11].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l5_logica_secuencia_letras",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['cientifico'],
+        i18n: "l5_logica_secuencia_letras",
+        generar: () => {
+            return {
+                texto: "", // i18n needs to differ per language! Warning: Sequence U, D, T depends on language.
+                // We will handle this by making the problem language-specific in translation or choosing a universal sequence?
+                // Universal sequence: Months? J, F, M, A, M, J, J, A, S, O, N, __ (D) - Works in EN, ES, FR, PT, CA, GL usually starts same.
+                // DE: J, F, M, A, M, J, J, A, S, O, N, __ (D - Dezember).
+                // Let's use Months sequence.
+                respuestaCorrecta: 0, // D
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l5_logica_padre_juan",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['explorador'],
+        i18n: "l5_logica_padre_juan",
+        generar: () => {
+            return {
+                texto: "",
+                respuestaCorrecta: 0, // Juan
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l5_logica_interruptores",
+        tipo: "logica",
+        nivelMin: 5,
+        categorias: ['cientifico', 'arquitecto'],
+        i18n: "l5_logica_interruptores",
+        generar: () => {
+            return {
+                texto: "",
+                respuestaCorrecta: 0, // Temperatura
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
     }
 ];
+
+export default level5Problems;

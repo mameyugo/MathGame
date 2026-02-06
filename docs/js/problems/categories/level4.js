@@ -257,5 +257,212 @@ export const level4Problems = [
                 opciones: [respuesta, 1.5, 2, 2.5]
             };
         }
+    },
+    // NUEVOS PROBLEMAS L4 (Pack 2)
+    {
+        id: "l4_fracciones_visuales",
+        tipo: "matematico",
+        nivelMin: 4,
+        categorias: ['cientifico', 'arquitecto'],
+        i18n: "l4_fracciones_visuales",
+        generar: () => {
+            const total = Math.floor(Math.random() * 8) + 4; // 4 a 12
+            // Aseguramos que sea par para media fácil o múltiplo de 4 para cuarto
+            const num = total * 4;
+            const cuarto = num / 4;
+            const mitad = num / 2;
+            const respuesta = cuarto;
+            return {
+                texto: `Tienes ${num} canicas. Si pierdes un cuarto (1/4) de ellas, ¿cuántas has perdido?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Un cuarto significa dividir por 4. ${num} ÷ 4 = ${respuesta}.`,
+                tipoRespuesta: 'opcion_multiple',
+                ecuacion: `${num} × 1/4 = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, mitad, num - cuarto, 4].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l4_decimales_dinero",
+        tipo: "matematico",
+        nivelMin: 4,
+        categorias: ['explorador'],
+        i18n: "l4_decimales_dinero",
+        generar: () => {
+            const precio1 = (Math.floor(Math.random() * 50) + 50) / 10; // 5.0 - 10.0
+            const precio2 = (Math.floor(Math.random() * 50) + 10) / 10;
+            const total = Math.round((precio1 + precio2) * 10) / 10;
+            return {
+                texto: `Compras un helado por ${precio1}€ y un refresco por ${precio2}€. ¿Cuánto pagas en total?`,
+                respuestaCorrecta: total,
+                explicacion: `Suma los precios: ${precio1} + ${precio2} = ${total}€.`,
+                tipoRespuesta: 'opcion_multiple',
+                ecuacion: `${precio1} + ${precio2} = __`,
+                ecuacionValores: [total],
+                opciones: [total, Math.round((precio1 + precio2 + 0.5) * 10) / 10, Math.round((total - 1) * 10) / 10, Math.round((precio1 * 2) * 10) / 10].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l4_ecuacion_simple",
+        tipo: "matematico",
+        nivelMin: 4,
+        categorias: ['cientifico'],
+        i18n: "l4_ecuacion_simple",
+        generar: () => {
+            const x = Math.floor(Math.random() * 10) + 2;
+            const suma = Math.floor(Math.random() * 10) + 5;
+            const total = x + suma;
+            return {
+                texto: `Pienso en un número. Si le sumo ${suma}, obtengo ${total}. ¿En qué número pensé?`,
+                respuestaCorrecta: x,
+                explicacion: `Es una ecuación: x + ${suma} = ${total}. Para despejar x, restamos ${suma}: ${total} - ${suma} = ${x}.`,
+                tipoRespuesta: 'opcion_multiple',
+                ecuacion: `x + ${suma} = ${total} → x = __`,
+                ecuacionValores: [x],
+                opciones: [x, total + suma, total, x + 1].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l4_area_rectangulo",
+        tipo: "matematico",
+        nivelMin: 4,
+        categorias: ['arquitecto'],
+        i18n: "l4_area_rectangulo",
+        generar: () => {
+            const ancho = Math.floor(Math.random() * 5) + 3;
+            const alto = Math.floor(Math.random() * 5) + 3;
+            const area = ancho * alto;
+            const perimetro = (ancho + alto) * 2;
+            return {
+                texto: `Una habitación mide ${ancho} metros de ancho y ${alto} metros de largo. ¿Cuál es su área en metros cuadrados?`,
+                respuestaCorrecta: area,
+                explicacion: `El área de un rectángulo es base x altura: ${ancho} x ${alto} = ${area} m².`,
+                tipoRespuesta: 'opcion_multiple',
+                ecuacion: `${ancho}m × ${alto}m = __ m²`,
+                ecuacionValores: [area],
+                opciones: [area, perimetro, ancho + alto, area * 2].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l4_mitad_doble",
+        tipo: "matematico",
+        nivelMin: 4,
+        categorias: ['cientifico'],
+        i18n: "l4_mitad_doble",
+        generar: () => {
+            const num = Math.floor(Math.random() * 10) + 4;
+            const respuesta = num; // (x * 2) / 2 = x
+            return {
+                texto: `Si multiplicas un número por 2 y luego divides el resultado entre 2, ¿qué obtienes? (El número es ${num})`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Vuelves al principio! Multiplicar por 2 y dividir entre 2 son operaciones opuestas que se cancelan.`,
+                tipoRespuesta: 'opcion_multiple',
+                ecuacion: `(${num} × 2) ÷ 2 = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, num * 2, num / 2, 0].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    // LOGICA NIVEL 4
+    {
+        id: "l4_hija_teresa",
+        tipo: "logica",
+        nivelMin: 4,
+        categorias: ['cientifico'],
+        i18n: "l4_hija_teresa",
+        generar: () => {
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: 0, // "Mi hija"
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l4_auto_ruedas",
+        tipo: "logica",
+        nivelMin: 4,
+        categorias: ['explorador'],
+        i18n: "l4_auto_ruedas",
+        generar: () => {
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: 0, // "La de repuesto"
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l4_meses_frio",
+        tipo: "logica",
+        nivelMin: 4,
+        categorias: ['explorador'],
+        i18n: "l4_meses_frio",
+        generar: () => {
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: 0,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l4_pato_huevo",
+        tipo: "logica",
+        nivelMin: 4,
+        categorias: ['explorador'],
+        i18n: "l4_pato_huevo",
+        generar: () => {
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: 0,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l4_quien_soy",
+        tipo: "logica",
+        nivelMin: 4,
+        categorias: ['cientifico'],
+        i18n: "l4_quien_soy",
+        generar: () => {
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: 0,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
     }
 ];
+
+export default level4Problems;

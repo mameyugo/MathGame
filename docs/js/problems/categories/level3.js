@@ -249,6 +249,226 @@ export const level3Problems = [
                 opciones: [pesoTotal, pesoDePina, pesoDeManzana * numeroDePinas, pesoDeManzana * pinasParaManzanas]
             };
         }
+    },
+    // NUEVOS PROBLEMAS L3 (Pack 2)
+    {
+        id: "l3_jerarquia_ops",
+        tipo: "matematico",
+        nivelMin: 3,
+        categorias: ['cientifico', 'arquitecto'],
+        i18n: "l3_jerarquia_ops",
+        generar: () => {
+            const a = Math.floor(Math.random() * 5) + 2;
+            const b = Math.floor(Math.random() * 4) + 2;
+            const c = Math.floor(Math.random() * 5) + 3;
+            // a + b x c
+            const respuesta = a + (b * c);
+
+            return {
+                texto: `Resuelve: ${a} + ${b} × ${c} = ?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `¡Recuerda la jerarquía! Primero la multiplicación, luego la suma: ${b}×${c}=${b * c}, luego ${a}+${b * c}=${respuesta}. No hagas (${a}+${b})×${c}.`,
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: false,
+                ecuacion: `${a} + ${b} × ${c} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, (a + b) * c, a * b + c, respuesta + 2].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l3_horas_minutos",
+        tipo: "matematico",
+        nivelMin: 3,
+        categorias: ['explorador'],
+        i18n: "l3_horas_minutos",
+        generar: () => {
+            const horas = Math.floor(Math.random() * 2) + 1; // 1-2 horas
+            const minutosExtra = Math.floor(Math.random() * 20) + 10;
+            const totalMinutos = (horas * 60) + minutosExtra;
+            // Convertir a minutos
+            return {
+                texto: `Una película dura ${horas} hora(s) y ${minutosExtra} minutos. ¿Cuántos minutos dura en total?`,
+                respuestaCorrecta: totalMinutos,
+                explicacion: `1 hora son 60 minutos. ${horas}h × 60 = ${horas * 60} min. Suma los ${minutosExtra} min restantes: ${horas * 60} + ${minutosExtra} = ${totalMinutos}. ⏱️`,
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: false,
+                ecuacion: `${horas}h ${minutosExtra}min -> __ min`,
+                ecuacionValores: [totalMinutos],
+                opciones: [totalMinutos, (horas * 100) + minutosExtra, totalMinutos - 10, 100].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l3_gramos_kilos",
+        tipo: "matematico",
+        nivelMin: 3,
+        categorias: ['cientifico'],
+        i18n: "l3_gramos_kilos",
+        generar: () => {
+            const kilos = Math.floor(Math.random() * 3) + 1;
+            const gramosExtra = [250, 500, 750][Math.floor(Math.random() * 3)];
+            const totalGramos = (kilos * 1000) + gramosExtra;
+            const respuesta = totalGramos;
+            return {
+                texto: `Has comprado ${kilos}kg y ${gramosExtra}g de harina. ¿Cuántos gramos son en total?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `1 kilo son 1000 gramos. ${kilos}kg = ${kilos * 1000}g. Total: ${kilos * 1000} + ${gramosExtra} = ${respuesta}g.`,
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: false,
+                ecuacion: `${kilos}kg ${gramosExtra}g = __ g`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, (kilos * 100) + gramosExtra, 1000 + gramosExtra, respuesta / 10].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l3_triple_suma",
+        tipo: "matematico",
+        nivelMin: 3,
+        categorias: ['cientifico'],
+        i18n: "l3_triple_suma",
+        generar: () => {
+            const base = Math.floor(Math.random() * 5) + 5;
+            // 3x + x = 4x
+            const total = base * 4;
+            const respuesta = total;
+            return {
+                texto: `Un bolígrafo cuesta ${base}€. Un cuaderno cuesta el triple. ¿Cuánto cuestan las dos cosas juntas?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Cuaderno: ${base} x 3 = ${base * 3}€. Bolígrafo: ${base}€. Total: ${base * 3} + ${base} = ${respuesta}€.`,
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: false,
+                ecuacion: `(${base} x 3) + ${base} = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, base * 3, base * 2, base * 5].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l3_dias_semanas",
+        tipo: "matematico",
+        nivelMin: 3,
+        categorias: ['explorador'],
+        i18n: "l3_dias_semanas",
+        generar: () => {
+            const semanas = Math.floor(Math.random() * 5) + 3; // 3-7
+            const diasExtra = Math.floor(Math.random() * 5) + 1; // 1-5
+            const respuesta = (semanas * 7) + diasExtra;
+            return {
+                texto: `Te vas de vacaciones ${semanas} semanas y ${diasExtra} días. ¿Cuántos días son en total?`,
+                respuestaCorrecta: respuesta,
+                explicacion: `Una semana tiene 7 días. ${semanas} semanas = ${semanas * 7} días. Suma ${diasExtra}: ${semanas * 7} + ${diasExtra} = ${respuesta}.`,
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: false,
+                ecuacion: `${semanas} sem + ${diasExtra} días = __`,
+                ecuacionValores: [respuesta],
+                opciones: [respuesta, semanas * 10 + diasExtra, respuesta + 7, semanas + diasExtra].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l3_logica_carrera",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['explorador'],
+        i18n: "l3_logica_carrera",
+        generar: () => {
+            // 0: Segundo, 1: Primero, 2: Penúltimo, 3: Último
+            const respuesta = 0;
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: respuesta,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l3_logica_meses_28",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['cientifico'],
+        i18n: "l3_logica_meses_28",
+        generar: () => {
+            const respuesta = 0; // 0: 12, 1: 1, 2: 6, 3: 0
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: respuesta,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l3_logica_padre_hijo",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['cientifico'],
+        i18n: "l3_logica_padre_hijo",
+        generar: () => {
+            const respuesta = 0; // "Madre"
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: respuesta,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l3_logica_paraguas",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['explorador'],
+        i18n: "l3_logica_paraguas",
+        generar: () => {
+            const personas = Math.floor(Math.random() * 3) + 2;
+            const respuesta = 0; // "No llovía"
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: respuesta,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                data: [personas],
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
+    },
+    {
+        id: "l3_logica_globo",
+        tipo: "logica",
+        nivelMin: 3,
+        categorias: ['cientifico'],
+        i18n: "l3_logica_globo",
+        generar: () => {
+            const respuesta = 0; // "Agujeros"
+            return {
+                texto: "", // i18n
+                respuestaCorrecta: respuesta,
+                explicacion: "",
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: "",
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
+            };
+        }
     }
 ];
 

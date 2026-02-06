@@ -77,8 +77,104 @@ export const problemsPT = {
         texto: (total, gusanitos) => `Há uma cesta com ${total} maçãs vermelhas. Ao olhar de perto, você vê que ${gusanitos} têm um verme e não podem ser comidas. Quantas maçãs boas restam?`,
         explicacion: (total, gusanitos) => `Tire as que têm verme para saber quantas restam! ${total} - ${gusanitos} = ${total - gusanitos} maçãs boas. 🍎`
     },
+    // NOVOS L1 PT
+    l1_suma_juguetes: {
+        texto: (coches, motos) => `Tens ${coches} carros de brincar e oferecem-te ${motos} motas. Quantos veículos tens agora no total?`,
+        explicacion: (coches, motos) => `Soma os carros e as motas para saber o total: ${coches} + ${motos} = ${coches + motos}. 🚗🏍️`
+    },
+    l1_resta_caramelos: {
+        texto: (inicial, comidos) => `Num saco há ${inicial} rebuçados. Se comeres ${comidos}, quantos ficam dentro do saco?`,
+        explicacion: (inicial, comidos) => `Se os comeres, já não estão no saco. ${inicial} - ${comidos} = ${inicial - comidos}. 🍬`
+    },
+    l1_patas_bancos: {
+        texto: (bancos) => `No parque há ${bancos} bancos para sentar. Se cada banco tiver 4 pernas, quantas pernas há no total?`,
+        explicacion: (bancos) => `Conta 4 pernas por cada banco: ${bancos} x 4 = ${bancos * 4}. 🪑`
+    },
+    l1_autobus_bajan: {
+        texto: (total, bajan) => `Num autocarro vão ${total} pessoas. Na paragem descem ${bajan} pessoas. Quantas pessoas ficam no autocarro?`,
+        explicacion: (total, bajan) => `Subtrai as pessoas que desceram: ${total} - ${bajan} = ${total - bajan}. 🚌`
+    },
+    l1_total_libros: {
+        texto: (rojos, azules) => `Numa estante há ${rojos} livros vermelhos e ${azules} livros azuis. Quantos livros há ao todo?`,
+        explicacion: (rojos, azules) => `Junta os livros vermelhos e azuis para saber o total: ${rojos} + ${azules} = ${rojos + azules}. 📚`
+    },
+    l1_conductor_nombre: {
+        opciones: ["Eu", "João", "O autocarro", "Ninguém"],
+        texto: (pasajeros) => `Imagina que conduzes um autocarro com ${pasajeros} passageiros. Quem é o condutor?`,
+        explicacion: () => `O condutor és TU! A pergunta diz "Imagina que conduzes...". 🚌`
+    },
+    l1_agujero_profundo: {
+        texto: (metros) => `Fazes um buraco de ${metros} metros de profundidade na areia. Quanta terra há dentro do buraco?`,
+        explicacion: () => `É um buraco! Se tivesse terra dentro, não seria um buraco dessa profundidade. Está vazio (0).`
+    },
+    l1_caja_vacia: {
+        texto: () => `Quantos melões cabem numa caixa vazia?`,
+        explicacion: () => `Só cabe 1. Depois de meteres o primeiro, a caixa já não está vazia. 📦`
+    },
+    l1_dia_siguiente: {
+        dias: ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"],
+        texto: function (ayer, manana) {
+            return `Se ontem foi ${this.dias[ayer]}, que dia será amanhã?`;
+        },
+        explicacion: function (ayer, manana) {
+            const hoy = (ayer + 1) % 7;
+            return `Se ontem foi ${this.dias[ayer]}, hoje é ${this.dias[hoy]}. E se hoje é ${this.dias[hoy]}, amanhã será ${this.dias[manana]}!`;
+        },
+        opciones: function (indice) {
+            return this.dias[indice];
+        }
+    },
+    l1_hijo_padre: {
+        texto: () => `O Tomás é filho do meu pai, mas não é meu irmão. Quantos irmãos tenho?`,
+        explicacion: () => `O Tomás sou EU! Se é filho do meu pai e não é meu irmão, tenho de ser eu mesmo. (0 irmãos).`
+    },
 
     // LEVEL 2
+    l2_suma_resta_dinero: {
+        texto: (inicial, gasto, encontrado) => `Tinhas ${inicial}€, gastaste ${gasto}€ num livro e depois encontraste ${encontrado}€. Quanto dinheiro tens agora?`,
+        explicacion: (inicial, gasto, encontrado) => `Subtrai o que gastaste e soma o que encontraste: ${inicial} - ${gasto} + ${encontrado} = ${inicial - gasto + encontrado}. 💶`
+    },
+    l2_patas_animales: {
+        texto: (perros, gatos) => `Numa quinta há ${perros} cães e ${gatos} gatos. Quantas patas há no total?`,
+        explicacion: (perros, gatos) => `Soma os animais (${perros} + ${gatos}) e multiplica por 4 patas: (${perros + gatos}) x 4 = ${(perros + gatos) * 4}. 🐾`
+    },
+    l2_doble_cromos: {
+        texto: (tuyos) => `Tens ${tuyos} autocolantes e o teu amigo tem o dobro que tu. Quantos autocolantes tem o teu amigo?`,
+        explicacion: (tuyos) => `O dobro significa multiplicar por 2: ${tuyos} x 2 = ${tuyos * 2}.`
+    },
+    l2_mitad_galletas: {
+        texto: (total) => `Tens ${total} bolachas e comes metade. Quantas bolachas ficam?`,
+        explicacion: (total) => `Metade significa dividir por 2: ${total} / 2 = ${total / 2}. 🍪`
+    },
+    l2_bolsas_caramelos: {
+        texto: (bolsas, caramelos) => `Tens ${bolsas} sacos com ${caramelos} rebuçados em cada um. Quantos rebuçados tens no total?`,
+        explicacion: (bolsas, caramelos) => `Multiplica sacos por rebuçados: ${bolsas} x ${caramelos} = ${bolsas * caramelos}. 🍬`
+    },
+    l2_secuencia_simple: {
+        texto: (n1, n2, n3, n4) => `Que número segue na série? ${n1}, ${n2}, ${n3}, ${n4}...`,
+        explicacion: (n1, n2, n3, n4) => `Vê quanto aumenta cada número. Esse é o salto!`
+    },
+    l2_hermana_nosoy: {
+        opciones: ["Irmã", "Irmão", "Tia", "Prima"],
+        texto: () => `Se eu sou teu irmão, mas tu não és meu irmão, o que és?`,
+        explicacion: () => `És a minha IRMÃ! Se não és meu irmão (rapaz), tens de ser rapariga.`
+    },
+    l2_mapa_ciudades: {
+        opciones: ["Mapa", "Livro", "Sonho", "TV"],
+        texto: () => `Tenho cidades mas não casas, montanhas mas não árvores, e água mas não peixes. O que sou?`,
+        explicacion: () => `Um mapa. Representa tudo isso sem o ter fisicamente.`
+    },
+    l2_esponja_agua: {
+        opciones: ["Esponja", "Balde", "Rede", "Garrafa"],
+        texto: () => `Estou cheia de buracos mas ainda assim consigo reter água. O que sou?`,
+        explicacion: () => `Uma esponja. Os seus poros (buracos) absorvem e retêm a água.`
+    },
+    l2_romper_silencio: {
+        opciones: ["O Silêncio", "Um Vidro", "Uma Promessa", "Um Espelho"],
+        texto: () => `Sou tão frágil que se dizes o meu nome, quebras-me. O que sou?`,
+        explicacion: () => `O Silêncio. Ao falar (dizer o seu nome), deixas de estar em silêncio.`
+    },
+
     pastor_ovejas: {
         texto: (totales, vivas) => `Um pastor tem ${totales} ovelhas. Um raio atinge e todas morrem exceto ${vivas}. Quantas ovelhas lhe restam?`,
         explicacion: (totales, vivas) => `Armadilha desativada! O problema diz "todas exceto ${vivas}", então ele tem exatamente ${vivas} ovelhas. Não é ${totales} - ${vivas} = ${totales - vivas}.`
@@ -125,6 +221,53 @@ export const problemsPT = {
     },
 
     // LEVEL 3
+    // LEVEL 3
+    l3_jerarquia_ops: {
+        texto: (a, b, c) => `Resolve: ${a} + ${b} × ${c} = ?`,
+        explicacion: (a, b, c) => `Lembra a hierarquia! Primeiro a multiplicação, depois a soma: ${b}×${c}=${b * c}, depois ${a}+${b * c}=${a + (b * c)}. Não faças (${a}+${b})×${c}.`
+    },
+    l3_horas_minutos: {
+        texto: (horas, minutos) => `Um filme dura ${horas} hora(s) e ${minutos} minutos. Quantos minutos dura no total?`,
+        explicacion: (horas, minutos) => `1 hora são 60 minutos. ${horas}h × 60 = ${horas * 60} min. Soma os ${minutos} min restantes: ${horas * 60} + ${minutos} = ${(horas * 60) + minutos}. ⏱️`
+    },
+    l3_gramos_kilos: {
+        texto: (kilos, gramos) => `Compraste ${kilos}kg e ${gramos}g de farinha. Quantos gramas são no total?`,
+        explicacion: (kilos, gramos) => `1 quilo são 1000 gramas. ${kilos}kg = ${kilos * 1000}g. Total: ${kilos * 1000} + ${gramos} = ${(kilos * 1000) + gramos}g.`
+    },
+    l3_triple_suma: {
+        texto: (base) => `Uma caneta custa ${base}€. Um caderno custa o triplo. Quanto custam as duas coisas juntas?`,
+        explicacion: (base) => `Caderno: ${base} x 3 = ${base * 3}€. Caneta: ${base}€. Total: ${base * 3} + ${base} = ${base * 4}€.`
+    },
+    l3_dias_semanas: {
+        texto: (semanas, dias) => `Vais de férias ${semanas} semanas e ${dias} dias. Quantos dias são no total?`,
+        explicacion: (semanas, dias) => `Uma semana tem 7 dias. ${semanas} semanas = ${semanas * 7} dias. Soma ${dias}: ${semanas * 7} + ${dias} = ${(semanas * 7) + dias}.`
+    },
+    l3_logica_carrera: {
+        opciones: ["Segundo", "Primeiro", "Penúltimo", "Último"],
+        texto: () => `Vais numa corrida e ultrapassas o segundo. Em que posição vais agora?`,
+        explicacion: () => `Segundo! Se passas o que ia em segundo, tu ocupas o lugar dele. Não és o primeiro ainda.`
+    },
+    l3_logica_meses_28: {
+        opciones: ["12", "1", "6", "0"],
+        texto: () => `Quantos meses do ano têm 28 dias?`,
+        explicacion: () => `Todos os 12! Janeiro tem 31 (por isso tem 28), Fevereiro tem 28, etc. A pergunta não dizia "apenas" 28.`
+    },
+    l3_logica_padre_hijo: {
+        opciones: ["Mãe", "Pai", "Avó", "Tio"],
+        texto: () => `O pai do João diz ao seu filho: "Aponta para aquela senhora, é a mãe da tua mãe". Quem é a senhora para o João?`,
+        explicacion: () => `A Avó! A mãe da sua mãe é a sua avó materna.`
+    },
+    l3_logica_paraguas: {
+        opciones: ["Não chovia", "Tinham guarda-chuvas", "Eram peixes", "Corriam muito"],
+        texto: (personas) => `${personas} pessoas vão debaixo de um mesmo guarda-chuva pequeno mas nenhuma se molha. Como é possível?`,
+        explicacion: () => `Porque não chovia! O contexto sugere chuva, mas não o diz explicitamente.`
+    },
+    l3_logica_globo: {
+        opciones: ["Buracos", "Ar", "Pedras", "Água"],
+        texto: () => `O que podes pôr num barril para que pese menos?`,
+        explicacion: () => `Buracos! Ao tirar material para fazer o buraco, o barril perde peso.`
+    },
+
     manzanas_rotas_logica: {
         texto: (n1, n2, precio, p1, p2) => `${p1} tem ${n1} maçãs. ${p2} bate nele, ${p1} cai e ${n2} quebram. Se cada maçã custa ${precio}€, quanto dinheiro ${p1} deve a ${p2}?`,
         explicacion: (n2, precio, p1, p2) => `Cuidado! As maçãs pertencem a ${p1}. É ${p2} quem deveria pagar a ${p1} ${n2 * precio}€.`
@@ -173,6 +316,53 @@ export const problemsPT = {
         explicacion: (pinasParaManzanas, pesoDeManzana, numeroDePinas, pesoTotal) => `É um problema de substituição. Primeiro encontre o peso do abacaxi: ${pinasParaManzanas} × ${pesoDeManzana} = ${pinasParaManzanas * pesoDeManzana} gramas. Depois multiplique por ${numeroDePinas} abacaxis: ${pinasParaManzanas * pesoDeManzana} × ${numeroDePinas} = ${pesoTotal} gramas.`
     },
     // LEVEL 4
+    // LEVEL 4
+    l4_fracciones_visuales: {
+        texto: (num) => `Tens ${num} berlindes. Se perdes um quarto (1/4) deles, quantos perdeste?`,
+        explicacion: (respuesta) => `Um quarto significa dividir por 4. A resposta é ${respuesta}.`
+    },
+    l4_decimales_dinero: {
+        texto: (p1, p2) => `Compras um gelado por ${p1}€ e um refrigerante por ${p2}€. Quanto pagas no total?`,
+        explicacion: (total) => `Soma os preços: ${total}€. Lembra alinhar a vírgula decimal.`
+    },
+    l4_ecuacion_simple: {
+        texto: (suma, total) => `Penso num número. Se lhe somo ${suma}, obtenho ${total}. Em que número pensei?`,
+        explicacion: (x, suma) => `Se ao somar ${suma} ao número dá ${x + suma}, faz o inverso: subtrai ${suma}.`
+    },
+    l4_area_rectangulo: {
+        texto: (ancho, alto) => `Um quarto mede ${ancho} metros de largura e ${alto} metros de comprimento. Qual é a sua área em m²?`,
+        explicacion: (area) => `A área é largura x altura = ${area} m².`
+    },
+    l4_mitad_doble: {
+        texto: (num) => `Se multiplicas ${num} por 2 e depois divides o resultado por 2, o que obténs?`,
+        explicacion: () => `O mesmo número! Multiplicar e dividir por 2 anulam-se mutuamente.`
+    },
+    l4_hija_teresa: {
+        opciones: ["A minha filha", "A minha mãe", "Eu", "A minha avó"],
+        texto: () => `A filha da Teresa é a mãe da minha filha. Quem sou eu? (Sou uma mulher)`,
+        explicacion: () => `Sou a Teresa! Se a filha da Teresa é a mãe da minha filha, e eu sou a mãe da minha filha... eu sou a filha da Teresa.`
+    },
+    l4_auto_ruedas: {
+        opciones: ["A de substituição", "Dianteira direita", "Traseira esquerda", "Todas giram"],
+        texto: () => `Um carro vai numa estrada reta para norte. Que roda não gira?`,
+        explicacion: () => `A roda de substituição! As outras quatro precisam de girar para avançar.`
+    },
+    l4_meses_frio: {
+        opciones: ["O termómetro", "O calendário", "A neve", "O inverno"],
+        texto: () => `Subo quando faz calor e desço quando faz frio. O que sou?`,
+        explicacion: () => `O termómetro! O líquido dilata-se com o calor e sobe.`
+    },
+    l4_pato_huevo: {
+        opciones: ["Nenhum", "Um", "Dois", "Três"],
+        texto: () => `Um pato põe um ovo mesmo na fronteira entre Espanha e França. A que país pertence o ovo?`,
+        explicacion: () => `A nenhum! Os patos (machos) não põem ovos.`
+    },
+    l4_quien_soy: {
+        opciones: ["O teu nome", "A tua idade", "A tua voz", "A tua sombra"],
+        texto: () => `Pertence-te, mas os outros usam-no mais do que tu. O que é?`,
+        explicacion: () => `O teu nome! As pessoas chamam-te por ele, tu raramente te chamas a ti mesmo.`
+    },
+
     patas_mesa: {
         texto: (mesas, patas_m, sillas, patas_s, perros, patas_p) =>
             `Em um quarto há ${mesas} mesas com ${patas_m} pernas cada uma e ${sillas} cadeiras com ${patas_s} pernas. Quantas pernas há no total se ${perros} cães entram?`,
@@ -225,6 +415,51 @@ export const problemsPT = {
     },
 
     // LEVEL 5
+    // LEVEL 5
+    l5_sistema_ecuaciones: {
+        texto: (A, B) => `Resolve o sistema: \n2x + y = ${A} \nx - y = ${B} \nQuanto vale x?`,
+        explicacion: (x) => `Soma as equações: (2x + y) + (x - y) = 3x. Então 3x dividido por 3 dá ${x}.`
+    },
+    l5_probabilidad_dados: {
+        opciones: ["1/6", "1/12", "1/36", "5/36"],
+        texto: () => `Lanças dois dados de 6 faces. Qual é a probabilidade de a soma ser 7?`,
+        explicacion: () => `Há 6 casos favoráveis e 36 totais. 6/36 simplificado é 1/6.`
+    },
+    l5_velocidad_relativa: {
+        texto: (v1, v2, dist) => `Um comboio parte de A a ${v1} km/h para B, outro de B a ${v2} km/h para A. Distância ${dist} km. Quando se cruzam?`,
+        explicacion: (t) => `Velocidade relativa = ${v1 + v2} km/h. Tempo = ${dist} / ${v1 + v2} = ${t} horas.`
+    },
+    l5_combinatoria_saludos: {
+        texto: (p) => `${p} amigos reúnem-se e apertam as mãos a todos. Quantos apertos de mão existem?`,
+        explicacion: (s) => `Fórmula: n(n-1)/2. Cada um cumprimenta todos os outros, mas a relação é recíproca.`
+    },
+    l5_porcentaje_compuesto: {
+        opciones: ["Desce 1%", "Igual", "Sobee 1%", "Desce 10%"],
+        texto: () => `Uma ação sobe 10% e depois desce 10%. Como fica?`,
+        explicacion: () => `Exemplo: 100 + 10% = 110. 110 - 10% = 99. Perde 1% em relação a 100.`
+    },
+    l5_logica_ascensor: {
+        opciones: ["É baixinho", "Desportista", "Superstição", "Avariado"],
+        texto: () => `Um homem vive no 10º andar. Desce de elevador, mas para subir só vai até ao 7º e vai a pé (a não ser que chova). Porquê?`,
+        explicacion: () => `É baixinho! Não chega ao botão do 10. Se chove, usa o guarda-chuva.`
+    },
+    l5_logica_meses: {},
+    l5_logica_secuencia_letras: {
+        opciones: ["D", "N", "O", "P"],
+        texto: () => `Que letra se segue? J, F, M, A, M, J, J, A, S, O, N ...`,
+        explicacion: () => `D de Dezembro! Iniciais dos meses.`
+    },
+    l5_logica_padre_juan: {
+        opciones: ["João", "Quarto", "Lucas", "José"],
+        texto: () => `O pai do João tem 4 filhos: Um, Dois, Três... Como se chama o quarto?`,
+        explicacion: () => `João! A pergunta o diz no início.`
+    },
+    l5_logica_interruptores: {
+        opciones: ["Por temperatura", "Olhando", "Ao acaso", "Impossível"],
+        texto: () => `3 interruptores fora de uma sala fechada. Só um acende a luz. Entrando uma só vez, como sabes qual é?`,
+        explicacion: () => `Toca a lâmpada. Liga o 1 um pouco, desliga. Liga o 2 e entra. Acesa -> 2. Quente -> 1. Fria -> 3.`
+    },
+
     peso_ladrillo: {
         texto: (extra) => `Se um tijolo pesa ${extra} kg mais meio tijolo, quanto pesam um tijolo e meio?`,
         explicacion: (extra, ladrillo, resultado) => `Desafio desativado! Se X = peso de um tijolo, então X = ${extra} + X/2, então X = ${ladrillo} kg. Um tijolo e meio pesa ${ladrillo} + ${ladrillo / 2} = ${resultado} kg.`

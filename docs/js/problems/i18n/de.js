@@ -77,8 +77,104 @@ export const problemsDE = {
         texto: (total, gusanitos) => `Es gibt einen Korb mit ${total} roten Äpfeln. Beim genauen Hinsehen siehst du, dass ${gusanitos} einen Wurm haben und nicht gegessen werden können. Wie viele gute Äpfel bleiben übrig?`,
         explicacion: (total, gusanitos) => `Nimm die mit dem Wurm weg, um zu wissen, wie viele übrig bleiben! ${total} - ${gusanitos} = ${total - gusanitos} gute Äpfel. 🍎`
     },
+    // NEUE L1 DE
+    l1_suma_juguetes: {
+        texto: (coches, motos) => `Du hast ${coches} Spielzeugautos und bekommst ${motos} Motorräder geschenkt. Wie viele Fahrzeuge hast du jetzt insgesamt?`,
+        explicacion: (coches, motos) => `Addiere die Autos und die Motorräder, um die Gesamtzahl zu kennen: ${coches} + ${motos} = ${coches + motos}. 🚗🏍️`
+    },
+    l1_resta_caramelos: {
+        texto: (inicial, comidos) => `In einer Tüte sind ${inicial} Bonbons. Wenn du ${comidos} isst, wie viele bleiben in der Tüte?`,
+        explicacion: (inicial, comidos) => `Wenn du sie isst, sind sie nicht mehr in der Tüte. ${inicial} - ${comidos} = ${inicial - comidos}. 🍬`
+    },
+    l1_patas_bancos: {
+        texto: (bancos) => `Im Park gibt es ${bancos} Bänke zum Sitzen. Wenn jede Bank 4 Beine hat, wie viele Beine gibt es insgesamt?`,
+        explicacion: (bancos) => `Zähle 4 Beine für jede Bank: ${bancos} x 4 = ${bancos * 4}. 🪑`
+    },
+    l1_autobus_bajan: {
+        texto: (total, bajan) => `In einem Bus sitzen ${total} Personen. An der Haltestelle steigen ${bajan} Personen aus. Wie viele Personen bleiben im Bus?`,
+        explicacion: (total, bajan) => `Subtrahiere die Personen, die ausgestiegen sind: ${total} - ${bajan} = ${total - bajan}. 🚌`
+    },
+    l1_total_libros: {
+        texto: (rojos, azules) => `In einem Regal stehen ${rojos} rote Bücher und ${azules} blaue Bücher. Wie viele Bücher gibt es insgesamt?`,
+        explicacion: (rojos, azules) => `Füge die roten und blauen Bücher zusammen, um die Gesamtzahl zu finden: ${rojos} + ${azules} = ${rojos + azules}. 📚`
+    },
+    l1_conductor_nombre: {
+        opciones: ["Ich", "Hans", "Der Bus", "Niemand"],
+        texto: (pasajeros) => `Stell dir vor, du fährst einen Bus mit ${pasajeros} Fahrgästen. Wer ist der Fahrer?`,
+        explicacion: () => `Der Fahrer bist DU! Die Frage sagt "Stell dir vor, du fährst...". 🚌`
+    },
+    l1_agujero_profundo: {
+        texto: (metros) => `Du gräbst ein ${metros} Meter tiefes Loch in den Sand. Wie viel Erde ist in dem Loch?`,
+        explicacion: () => `Es ist ein Loch! Wenn Erde darin wäre, wäre es kein Loch dieser Tiefe. Es ist leer (0).`
+    },
+    l1_caja_vacia: {
+        texto: () => `Wie viele Melonen passen in eine leere Kiste?`,
+        explicacion: () => `Es passt nur 1. Nachdem du die erste hineingelegt hast, ist die Kiste nicht mehr leer. 📦`
+    },
+    l1_dia_siguiente: {
+        dias: ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"],
+        texto: function (ayer, manana) {
+            return `Wenn gestern ${this.dias[ayer]} war, welcher Tag ist morgen?`;
+        },
+        explicacion: function (ayer, manana) {
+            const hoy = (ayer + 1) % 7;
+            return `Wenn gestern ${this.dias[ayer]} war, ist heute ${this.dias[hoy]}. Und wenn heute ${this.dias[hoy]} ist, ist morgen ${this.dias[manana]}!`;
+        },
+        opciones: function (indice) {
+            return this.dias[indice];
+        }
+    },
+    l1_hijo_padre: {
+        texto: () => `Thomas ist der Sohn meines Vaters, aber er ist nicht mein Bruder. Wie viele Brüder habe ich?`,
+        explicacion: () => `Thomas bin ICH! Wenn er der Sohn meines Vaters und nicht mein Bruder, muss ich es selbst sein. (0 Brüder).`
+    },
 
     // LEVEL 2
+    l2_suma_resta_dinero: {
+        texto: (inicial, gasto, encontrado) => `Du hattest ${inicial}€, hast ${gasto}€ für ein Buch ausgegeben und dann ${encontrado}€ gefunden. Wie viel Geld hast du jetzt?`,
+        explicacion: (inicial, gasto, encontrado) => `Subtrahiere das Ausgegebene und addiere das Gefundene: ${inicial} - ${gasto} + ${encontrado} = ${inicial - gasto + encontrado}. 💶`
+    },
+    l2_patas_animales: {
+        texto: (perros, gatos) => `Auf einem Bauernhof gibt es ${perros} Hunde und ${gatos} Katzen. Wie viele Beine gibt es insgesamt?`,
+        explicacion: (perros, gatos) => `Addiere die Tiere (${perros} + ${gatos}) und multipliziere mit 4 Beinen: (${perros + gatos}) x 4 = ${(perros + gatos) * 4}. 🐾`
+    },
+    l2_doble_cromos: {
+        texto: (tuyos) => `Du hast ${tuyos} Sticker und dein Freund hat doppelt so viele wie du. Wie viele Sticker hat dein Freund?`,
+        explicacion: (tuyos) => `Das Doppelte bedeutet mit 2 multiplizieren: ${tuyos} x 2 = ${tuyos * 2}.`
+    },
+    l2_mitad_galletas: {
+        texto: (total) => `Du hast ${total} Kekse und isst die Hälfte. Wie viele Kekse bleiben übrig?`,
+        explicacion: (total) => `Die Hälfte bedeutet durch 2 teilen: ${total} / 2 = ${total / 2}. 🍪`
+    },
+    l2_bolsas_caramelos: {
+        texto: (bolsas, caramelos) => `Du hast ${bolsas} Tüten mit je ${caramelos} Bonbons. Wie viele Bonbons hast du insgesamt?`,
+        explicacion: (bolsas, caramelos) => `Multipliziere Tüten mit Bonbons: ${bolsas} x ${caramelos} = ${bolsas * caramelos}. 🍬`
+    },
+    l2_secuencia_simple: {
+        texto: (n1, n2, n3, n4) => `Welche Zahl folgt in der Reihe? ${n1}, ${n2}, ${n3}, ${n4}...`,
+        explicacion: (n1, n2, n3, n4) => `Schau, um wie viel jede Zahl steigt. Das ist der Schritt!`
+    },
+    l2_hermana_nosoy: {
+        opciones: ["Schwester", "Bruder", "Tante", "Cousine"],
+        texto: () => `Wenn ich dein Bruder bin, aber du nicht mein Bruder bist, was bist du?`,
+        explicacion: () => `Du bist meine SCHWESTER! Wenn du nicht mein Bruder (Junge) bist, musst du ein Mädchen sein.`
+    },
+    l2_mapa_ciudades: {
+        opciones: ["Karte", "Buch", "Traum", "Fernseher"],
+        texto: () => `Ich habe Städte, aber keine Häuser, Berge, aber keine Bäume, und Wasser, aber keine Fische. Was bin ich?`,
+        explicacion: () => `Eine Karte. Sie stellt all das dar, ohne es physisch zu haben.`
+    },
+    l2_esponja_agua: {
+        opciones: ["Schwamm", "Eimer", "Netz", "Flasche"],
+        texto: () => `Ich bin voller Löcher, kann aber trotzdem Wasser halten. Was bin ich?`,
+        explicacion: () => `Ein Schwamm. Seine Poren (Löcher) saugen das Wasser auf und halten es.`
+    },
+    l2_romper_silencio: {
+        opciones: ["Die Stille", "Ein Glas", "Ein Versprechen", "Ein Spiegel"],
+        texto: () => `Ich bin so zerbrechlich, dass du mich zerbrichst, wenn du meinen Namen sagst. Was bin ich?`,
+        explicacion: () => `Die Stille. Wenn du sprichst (ihren Namen sagst), ist es nicht mehr still.`
+    },
+
     pastor_ovejas: {
         texto: (totales, vivas) => `Ein Schafhirt hat ${totales} Schafe. Ein Blitz schlägt ein und alle sterben außer ${vivas}. Wie viele Schafe bleiben ihm?`,
         explicacion: (totales, vivas) => `Falle entschärft! Das Problem sagt "alle außer ${vivas}", also bleiben ihm genau ${vivas} Schafe. Es ist nicht ${totales} - ${vivas} = ${totales - vivas}.`
@@ -125,6 +221,53 @@ export const problemsDE = {
     },
 
     // LEVEL 3
+    // LEVEL 3
+    l3_jerarquia_ops: {
+        texto: (a, b, c) => `Löse: ${a} + ${b} × ${c} = ?`,
+        explicacion: (a, b, c) => `Denk an die Rangfolge! Erst Multiplikation, dann Addition: ${b}×${c}=${b * c}, dann ${a}+${b * c}=${a + (b * c)}. Mach nicht (${a}+${b})×${c}.`
+    },
+    l3_horas_minutos: {
+        texto: (horas, minutos) => `Ein Film dauert ${horas} Stunde(n) und ${minutos} Minuten. Wie viele Minuten sind das insgesamt?`,
+        explicacion: (horas, minutos) => `1 Stunde sind 60 Minuten. ${horas}h × 60 = ${horas * 60} min. Addiere die restlichen ${minutos} min: ${horas * 60} + ${minutos} = ${(horas * 60) + minutos}. ⏱️`
+    },
+    l3_gramos_kilos: {
+        texto: (kilos, gramos) => `Du hast ${kilos}kg und ${gramos}g Mehl gekauft. Wie viele Gramm sind das insgesamt?`,
+        explicacion: (kilos, gramos) => `1 Kilo sind 1000 Gramm. ${kilos}kg = ${kilos * 1000}g. Gesamt: ${kilos * 1000} + ${gramos} = ${(kilos * 1000) + gramos}g.`
+    },
+    l3_triple_suma: {
+        texto: (base) => `Ein Stift kostet ${base}€. Ein Heft kostet das Dreifache. Wie viel kosten beide zusammen?`,
+        explicacion: (base) => `Heft: ${base} x 3 = ${base * 3}€. Stift: ${base}€. Gesamt: ${base * 3} + ${base} = ${base * 4}€.`
+    },
+    l3_dias_semanas: {
+        texto: (semanas, dias) => `Du fährst für ${semanas} Wochen und ${dias} Tage in den Urlaub. Wie viele Tage sind das insgesamt?`,
+        explicacion: (semanas, dias) => `Eine Woche hat 7 Tage. ${semanas} Wochen = ${semanas * 7} Tage. Addiere ${dias}: ${semanas * 7} + ${dias} = ${(semanas * 7) + dias}.`
+    },
+    l3_logica_carrera: {
+        opciones: ["Zweiter", "Erster", "Vorletzter", "Letzter"],
+        texto: () => `Du bist in einem Rennen und überholst den Zweiten. An welcher Position bist du jetzt?`,
+        explicacion: () => `Zweiter! Wenn du den Zweiten überholst, nimmst du seinen Platz ein. Du bist noch nicht Erster.`
+    },
+    l3_logica_meses_28: {
+        opciones: ["12", "1", "6", "0"],
+        texto: () => `Wie viele Monate im Jahr haben 28 Tage?`,
+        explicacion: () => `Alle 12! Januar hat 31 (also hat er 28), Februar hat 28, usw. Die Frage sagte nicht "nur" 28.`
+    },
+    l3_logica_padre_hijo: {
+        opciones: ["Mutter", "Vater", "Großmutter", "Onkel"],
+        texto: () => `Juans Vater sagt zu seinem Sohn: "Zeig auf diese Dame, sie ist die Mutter deiner Mutter". Wer ist die Dame für Juan?`,
+        explicacion: () => `Die Großmutter! Die Mutter seiner Mutter ist seine Großmutter mütterlicherseits.`
+    },
+    l3_logica_paraguas: {
+        opciones: ["Es regnete nicht", "Sie hatten Schirme", "Sie waren Fische", "Sie rannten schnell"],
+        texto: (personas) => `${personas} Personen gehen unter einem kleinen Regenschirm, aber niemand wird nass. Wie ist das möglich?`,
+        explicacion: () => `Weil es nicht regnete! Der Kontext deutet auf Regen hin, sagt es aber nicht ausdrücklich.`
+    },
+    l3_logica_globo: {
+        opciones: ["Löcher", "Luft", "Steine", "Wasser"],
+        texto: () => `Was kannst du in ein Fass geben, damit es weniger wiegt?`,
+        explicacion: () => `Löcher! Indem man Material entfernt, um das Loch zu machen, verliert das Fass an Gewicht.`
+    },
+
     manzanas_rotas_logica: {
         texto: (n1, n2, precio, p1, p2) => `${p1} hat ${n1} Äpfel. ${p2} stößt ihn an, ${p1} fällt und ${n2} zerbrechen. Wenn jeder Apfel ${precio}€ kostet, wie viel Geld schuldet ${p1} dem ${p2}?`,
         explicacion: (n2, precio, p1, p2) => `Achtung! Die Äpfel gehören ${p1}. Es ist ${p2}, der ${p1} ${n2 * precio}€ zahlen sollte.`
@@ -175,6 +318,53 @@ export const problemsDE = {
     },
 
     // LEVEL 4
+    // LEVEL 4
+    l4_fracciones_visuales: {
+        texto: (num) => `Du hast ${num} Murmeln. Wenn du ein Viertel (1/4) davon verlierst, wie viele hast du verloren?`,
+        explicacion: (respuesta) => `Ein Viertel bedeutet durch 4 teilen. Die Antwort ist ${respuesta}.`
+    },
+    l4_decimales_dinero: {
+        texto: (p1, p2) => `Du kaufst ein Eis für ${p1}€ und eine Limo für ${p2}€. Wie viel zahlst du insgesamt?`,
+        explicacion: (total) => `Addiere die Preise: ${total}€. Denk daran, das Komma auszurichten.`
+    },
+    l4_ecuacion_simple: {
+        texto: (suma, total) => `Ich denke an eine Zahl. Wenn ich ${suma} addiere, erhalte ich ${total}. An welche Zahl habe ich gedacht?`,
+        explicacion: (x, suma) => `Wenn das Hinzufügen von ${suma} ${x + suma} ergibt, mach das Gegenteil: subtrahiere ${suma}.`
+    },
+    l4_area_rectangulo: {
+        texto: (ancho, alto) => `Ein Zimmer ist ${ancho} Meter breit und ${alto} Meter lang. Was ist seine Fläche in m²?`,
+        explicacion: (area) => `Die Fläche ist Breite x Höhe = ${area} m².`
+    },
+    l4_mitad_doble: {
+        texto: (num) => `Wenn du ${num} mit 2 multiplizierst und das Ergebnis dann durch 2 teilst, was erhältst du?`,
+        explicacion: () => `Dieselbe Zahl! Multiplizieren und Dividieren durch 2 heben sich gegenseitig auf.`
+    },
+    l4_hija_teresa: {
+        opciones: ["Meine Tochter", "Meine Mutter", "Ich", "Meine Großmutter"],
+        texto: () => `Teresas Tochter ist die Mutter meiner Tochter. Wer bin ich? (Ich bin eine Frau)`,
+        explicacion: () => `Ich bin Teresa! Wenn Teresas Tochter die Mutter meiner Tochter ist, und ich die Mutter meiner Tochter bin... bin ich Teresas Tochter. Also bin ich Teresa.`
+    },
+    l4_auto_ruedas: {
+        opciones: ["Das Reserverad", "Vorne rechts", "Hinten links", "Alle drehen sich"],
+        texto: () => `Ein Auto fährt auf einer geraden Straße nach Norden. Welches Rad dreht sich nicht?`,
+        explicacion: () => `Das Reserverad! Die anderen vier müssen sich drehen, um vorwärts zu kommen.`
+    },
+    l4_meses_frio: {
+        opciones: ["Das Thermometer", "Der Kalender", "Der Schnee", "Der Winter"],
+        texto: () => `Ich steige, wenn es heiß ist, und falle, wenn es kalt ist. Was bin ich?`,
+        explicacion: () => `Das Thermometer! Die Flüssigkeit dehnt sich bei Hitze aus und steigt.`
+    },
+    l4_pato_huevo: {
+        opciones: ["Keines", "Eines", "Zwei", "Drei"],
+        texto: () => `Eine Ente legt ein Ei genau auf die Grenze zwischen Spanien und Frankreich. Zu welchem Land gehört das Ei?`,
+        explicacion: () => `Zu keinem! Enten (Erpel) legen keine Eier.`
+    },
+    l4_quien_soy: {
+        opciones: ["Dein Name", "Dein Alter", "Deine Stimme", "Dein Schatten"],
+        texto: () => `Es gehört dir, aber andere benutzen es öfter als du. Was ist es?`,
+        explicacion: () => `Dein Name! Leute rufen dich dabei, du rufst dich selten selbst.`
+    },
+
     patas_mesa: {
         texto: (mesas, patas_m, sillas, patas_s, perros, patas_p) =>
             `In einem Zimmer sind ${mesas} Tische mit je ${patas_m} Beinen und ${sillas} Stühle mit je ${patas_s} Beinen. Wie viele Beine sind es insgesamt, wenn ${perros} Hunde eintreten?`,
@@ -227,6 +417,51 @@ export const problemsDE = {
     },
 
     // LEVEL 5
+    // LEVEL 5
+    l5_sistema_ecuaciones: {
+        texto: (A, B) => `Löse das System: \n2x + y = ${A} \nx - y = ${B} \nWie viel ist x?`,
+        explicacion: (x) => `Addiere die Gleichungen: (2x + y) + (x - y) = 3x. Dann ergibt 3x geteilt durch 3 gleich ${x}.`
+    },
+    l5_probabilidad_dados: {
+        opciones: ["1/6", "1/12", "1/36", "5/36"],
+        texto: () => `Du wirfst zwei 6-seitige Würfel. Wie hoch ist die Wahrscheinlichkeit, dass die Summe 7 ist?`,
+        explicacion: () => `Es gibt 6 günstige Fälle und 36 insgesamt. 6/36 vereinfacht ist 1/6.`
+    },
+    l5_velocidad_relativa: {
+        texto: (v1, v2, dist) => `Ein Zug fährt von A mit ${v1} km/h nach B, ein anderer von B mit ${v2} km/h nach A. Abstand ${dist} km. Wann treffen sie sich?`,
+        explicacion: (t) => `Relativgeschwindigkeit = ${v1 + v2} km/h. Zeit = ${dist} / ${v1 + v2} = ${t} Stunden.`
+    },
+    l5_combinatoria_saludos: {
+        texto: (p) => `${p} Freunde treffen sich und jeder schüttelt jedem die Hand. Wie viele Handschläge?`,
+        explicacion: (s) => `Formel: n(n-1)/2. Jeder grüßt jeden, aber die Beziehung ist wechselseitig.`
+    },
+    l5_porcentaje_compuesto: {
+        opciones: ["Sinkt um 1%", "Gleich", "Steigt um 1%", "Sinkt um 10%"],
+        texto: () => `Eine Aktie steigt um 10% und fällt dann um 10%. Wie steht sie nun?`,
+        explicacion: () => `Beispiel: 100 + 10% = 110. 110 - 10% = 99. Sie verliert 1% gegenüber 100.`
+    },
+    l5_logica_ascensor: {
+        opciones: ["Er ist klein", "Er ist sportlich", "Aberglaube", "Kaputt"],
+        texto: () => `Ein Mann wohnt im 10. Stock. Er nimmt den Aufzug nach unten, aber nach oben nur bis zum 7. und läuft den Rest (außer es regnet). Warum?`,
+        explicacion: () => `Er ist klein! Er kommt nicht an den Knopf für den 10. Stock. Wenn es regnet, benutzt er seinen Regenschirm.`
+    },
+    l5_logica_meses: {},
+    l5_logica_secuencia_letras: {
+        opciones: ["D", "N", "O", "P"],
+        texto: () => `Welcher Buchstabe folgt? J, F, M, A, M, J, J, A, S, O, N ...`,
+        explicacion: () => `D für Dezember! Anfangsbuchstaben der Monate.`
+    },
+    l5_logica_padre_juan: {
+        opciones: ["Johannes", "Vierter", "Lukas", "Josef"],
+        texto: () => `Johannes' Vater hat 4 Söhne: Eins, Zwei, Drei... Wie heißt der vierte?`,
+        explicacion: () => `Johannes! Die Frage sagt es am Anfang.`
+    },
+    l5_logica_interruptores: {
+        opciones: ["Durch Temperatur", "Schauen", "Zufall", "Unmöglich"],
+        texto: () => `3 Schalter für eine geschlossene Lampe. Nur einmal eintreten. Woher weißt du, welcher es ist?`,
+        explicacion: () => `Fühle die Glühbirne. Schalte 1 an, warte, aus. Schalte 2 an, geh rein. Licht an -> 2. Heiß -> 1. Kalt -> 3.`
+    },
+
     peso_ladrillo: {
         texto: (extra) => `Wenn ein Ziegel ${extra} kg plus einen halben Ziegel wiegt, wie viel wiegen eineinhalb Ziegel?`,
         explicacion: (extra, ladrillo, resultado) => `Herausforderung deaktiviert! Wenn X = Gewicht eines Ziegels, dann X = ${extra} + X/2, also X = ${ladrillo} kg. Eineinhalb Ziegel wiegen ${ladrillo} + ${ladrillo / 2} = ${resultado} kg.`
