@@ -227,9 +227,9 @@ function startNumbersGame() {
     // Ocultar área de opciones
     document.getElementById('answers-area').style.display = 'none';
 
-    // Timer de 45 segundos
-    gameEngine.timeLeft = 45;
-    gameEngine.setTimeLeft(45);
+    // Timer de 60 segundos
+    gameEngine.timeLeft = 60;
+    gameEngine.setTimeLeft(60);
 
     // Auto-focus input
     setTimeout(() => document.getElementById('numbers-game-input')?.focus(), 100);
@@ -356,6 +356,13 @@ gameEngine = new GameEngine(
 function handleGameEnd() {
     // Si estamos en modo Cifras y se acabó el tiempo
     if (gameEngine.problemType === 'numbers_game' && currentProblem) {
+        // Verificar integridad del problema
+        if (!currentProblem.numbers) {
+            console.warn('handleGameEnd: currentProblem.numbers es undefined. Ignorando cálculo de solución.');
+            showUsers();
+            return;
+        }
+
         // Usamos la solución pre-calculada
         let solution = currentProblem.solution;
 
@@ -410,6 +417,12 @@ function renderEquation(equation) {
 }
 
 function generateProblem() {
+    // Si estamos en modo Cifras, generamos un nuevo nivel de Cifras
+    if (problemType === 'numbers_game') {
+        startNumbersGame();
+        return;
+    }
+
     questionGenerator.setProblemType(problemType);
     questionGenerator.setGameLevel(gameLevel);
     questionGenerator.generateProblem();
