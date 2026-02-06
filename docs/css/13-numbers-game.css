@@ -13,9 +13,11 @@
 
 .numbers-game-container .available-numbers {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
     margin-bottom: 20px;
+    padding: 0 10px;
 }
 
 .numbers-game-container .number-card {
