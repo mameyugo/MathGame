@@ -182,7 +182,10 @@ class GameEngine {
         // Generate appropriate content
         if (this.problemMode) {
             this.toggleProblemUI(true);
-            this.generateProblem();
+            // Don't generate generic problem for numbers_game, it handles its own generation
+            if (this.problemType !== 'numbers_game') {
+                this.generateProblem();
+            }
         } else {
             this.toggleProblemUI(false);
             this.generateQuestion();

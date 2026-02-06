@@ -74,9 +74,9 @@ class AchievementManager {
                 icon: '🖼️',
                 condition: (stats) => {
                     const availableThemes = ['theme_space', 'theme_jungle', 'theme_underwater', 'theme_forest', 'theme_desert', 'theme_arctic'];
-                    return availableThemes.every(theme => stats.themes.includes(theme));
+                    return availableThemes.every(theme => (stats.themes || []).includes(theme));
                 },
-                secret: false
+                secret: false,
             },
 
             // 🧠 Categoría 2: Lógica y Astucia (Los "Sherlock")
@@ -265,51 +265,58 @@ class AchievementManager {
         if (!user.achievements) {
             user.achievements = {};
         }
+
+        const defaultStats = {
+            // Progreso
+            totalAnswered: 0,
+            level: 1,
+            themes: [],
+
+            // Lógica
+            logicStreakMax: 0,
+            advancedProblemsCompleted: 0,
+            fastestLogicTime: 0,
+            equationsCompleted: 0,
+
+            // Cifras
+            exactSolutions: 0,
+            numbersGameStreak: 0,
+            fullHouseSolutions: 0,
+
+            // Maestría
+            streakMax: 0,
+            shieldUsedInStreak: 0,
+            fastestHardTime: 0,
+            perfectSessions: 0,
+
+            // Economía
+            coins: 0,
+            totalCoinsEarned: 0,
+            itemsBought: 0,
+            potions: 0,
+            shields: 0,
+            totalCoinsSpent: 0, // Added missing field
+
+            // Social
+            duelsWon: 0,
+            duelStreakMax: 0,
+            multiplayerConnections: 0,
+
+            // Secretos
+            mondayMorningPlays: 0,
+            midnightPlays: 0,
+            consecutiveDays: 0,
+            categoriesCompleted: 0,
+            lastPlayDate: null
+        };
+
         if (!user.achievementStats) {
-            user.achievementStats = {
-                // Progreso
-                totalAnswered: 0,
-                level: 1,
-                themes: [],
-
-                // Lógica
-                logicStreakMax: 0,
-                advancedProblemsCompleted: 0,
-                fastestLogicTime: 0,
-                advancedProblemsCompleted: 0,
-                fastestLogicTime: 0,
-                equationsCompleted: 0,
-
-                // Cifras
-                exactSolutions: 0,
-                numbersGameStreak: 0,
-                fullHouseSolutions: 0,
-
-                // Maestría
-                streakMax: 0,
-                shieldUsedInStreak: 0,
-                fastestHardTime: 0,
-                perfectSessions: 0,
-
-                // Economía
-                coins: 0,
-                totalCoinsEarned: 0,
-                itemsBought: 0,
-                potions: 0,
-                shields: 0,
-
-                // Social
-                duelsWon: 0,
-                duelStreakMax: 0,
-                multiplayerConnections: 0,
-
-                // Secretos
-                mondayMorningPlays: 0,
-                midnightPlays: 0,
-                consecutiveDays: 0,
-                categoriesCompleted: 0,
-                lastPlayDate: null
-            };
+            user.achievementStats = defaultStats;
+        } else {
+            // Merge defaults for existing users (migration)
+            user.achievementStats = { ...defaultStats, ...user.achievementStats };
+            // Ensure array fields are arrays (in case of corruption or strict merge issues with null)
+            if (!Array.isArray(user.achievementStats.themes)) user.achievementStats.themes = [];
         }
 
         // Inicializar todos los logros como no conseguidos
