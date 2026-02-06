@@ -22,6 +22,7 @@ class MockOnlineManager {
     }
     async registerOrLogin() { return { ok: true }; }
     initPeerConnection(isInit) { this.peerInit = isInit; }
+    async joinRoomWebSocket() { return true; }
 }
 
 class MockGameEngine {
@@ -53,7 +54,7 @@ describe('OnlineGameController', () => {
             mockOnlineManager,
             mockGameEngine,
             {}, // QuestionGenerator
-            {}, // UserManager
+            { getCurrentUser: () => ({ username: 'mockUser' }) }, // UserManager
             (k) => k
         );
     });

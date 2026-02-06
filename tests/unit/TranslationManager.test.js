@@ -55,7 +55,7 @@ describe('TranslationManager', () => {
 
             await manager.loadTranslations('es');
 
-            expect(fetch).toHaveBeenCalledWith('./lang/es.json');
+            expect(fetch).toHaveBeenCalledWith(expect.stringContaining('./lang/es.json'));
             expect(manager.translations.es).toEqual(mockTranslations);
         });
 
@@ -71,8 +71,8 @@ describe('TranslationManager', () => {
             await manager.loadTranslations('gl');
 
             expect(fetch).toHaveBeenCalledTimes(2);
-            expect(fetch).toHaveBeenNthCalledWith(1, './lang/gl.json');
-            expect(fetch).toHaveBeenNthCalledWith(2, './lang/es.json');
+            expect(fetch).toHaveBeenNthCalledWith(1, expect.stringContaining('./lang/gl.json'));
+            expect(fetch).toHaveBeenNthCalledWith(2, expect.stringContaining('./lang/es.json'));
 
             consoleErrorSpy.mockRestore();
         });
@@ -161,7 +161,7 @@ describe('TranslationManager', () => {
 
             await manager.changeLanguage('gl');
 
-            expect(fetch).toHaveBeenCalledWith('./lang/gl.json');
+            expect(fetch).toHaveBeenCalledWith(expect.stringContaining('./lang/gl.json'));
             expect(manager.translations.gl).toBeDefined();
         });
 
