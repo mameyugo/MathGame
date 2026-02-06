@@ -5,7 +5,9 @@ const localStorageMock = {
     removeItem: jest.fn(),
     clear: jest.fn(),
 };
-Object.defineProperty(window, 'localStorage', {
-    value: localStorageMock,
-    writable: true
-});
+if (typeof window !== 'undefined') {
+    Object.defineProperty(window, 'localStorage', {
+        value: localStorageMock,
+        writable: true
+    });
+}
