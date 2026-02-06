@@ -25,6 +25,8 @@
     "btn_close_store": "⬅ Tancar",
     "btn_problem_math": "🧮 Problemes matemàtics",
     "btn_problem_logic": "🧠 Problemes de lògica",
+    "btn_numbers_game": "🔢 Xifres",
+    "numbers_game_instruction": "Escriu una operació exacta utilitzant aquests nombres (+, -, *, /)",
     "btn_submit_answer": "✅ Respondre",
     "alert_fill_equation": "Completa tots els camps de l'equació",
     "label_level": "Nivell",

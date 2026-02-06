@@ -25,6 +25,8 @@
     "btn_close_store": "⬅ Schließen",
     "btn_problem_math": "🧮 Mathematische Probleme",
     "btn_problem_logic": "🧠 Logikprobleme",
+    "btn_numbers_game": "🔢 Zahlenspiel",
+    "numbers_game_instruction": "Schreibe eine genaue Operation mit diesen Zahlen (+, -, *, /)",
     "btn_submit_answer": "✅ Antworten",
     "alert_fill_equation": "Füllen Sie alle Gleichungsfelder aus",
     "label_level": "Stufe",
