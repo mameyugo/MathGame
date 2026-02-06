@@ -190,8 +190,7 @@ function startProblemGame(type) {
  * Configura el modo duelo
  */
 function setupDuel() {
-    localDuelManager.setupDuel();
-    currentUser = userManager.getCurrentUserName();
+    showDuelModeSelector();
 }
 
 /**
