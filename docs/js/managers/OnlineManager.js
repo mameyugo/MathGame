@@ -16,6 +16,11 @@ class OnlineManager {
         this.roomId = null;
         this.peerId = null;
         this.remotePeerId = null;
+
+        // Cargar token guardado
+        if (typeof localStorage !== 'undefined') {
+            this.authToken = localStorage.getItem('math_online_token');
+        }
     }
 
     /**
@@ -156,9 +161,15 @@ class OnlineManager {
             }
 
             if (result.ok) {
-                // Guardar credenciales
+                // Guardar credenciales y token
                 this.saveCredentials(username, password);
                 this.username = username;
+
+                if (result.token) {
+                    this.authToken = result.token;
+                    localStorage.setItem('math_online_token', result.token);
+                }
+
                 // Retornar el resultado completo (incluyendo game_data si existe)
                 return result;
             } else {
@@ -225,7 +236,8 @@ class OnlineManager {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    username: this.username
+                    username: this.username,
+                    authToken: this.authToken
                 })
             });
 
@@ -260,7 +272,8 @@ class OnlineManager {
                 },
                 body: JSON.stringify({
                     token: token.toUpperCase(),
-                    username: this.username
+                    username: this.username,
+                    authToken: this.authToken
                 })
             });
 
