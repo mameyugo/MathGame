@@ -715,6 +715,11 @@ async function initApp() {
     // Cargar traducciones del idioma actual
     await translationManager.loadTranslations(currentLanguage);
 
+    // Asegurar que se cargan las traducciones fallback (es) si estamos en otro idioma
+    if (currentLanguage !== 'es') {
+        await translationManager.loadTranslations('es');
+    }
+
     // Inicializar idioma
     await changeLanguage(currentLanguage);
 
