@@ -229,14 +229,15 @@ class OnlineGameController {
                 // Sync Up (using helper)
                 await this.syncWithServer();
 
-                setTimeout(() => {
+                setTimeout(async () => {
                     this.closeOnlineCredentialsModal();
+
+                    // Asegurar conexión WebSocket antes de cualquier acción
+                    await this.connectAndShowOptions(username, password);
+
                     if (this.pendingOnlineAction === 'create') {
                         this.createAndShareGameRoom();
                         this.pendingOnlineAction = null;
-                    } else {
-                        // Connect socket and show options
-                        this.connectAndShowOptions(username, password);
                     }
                 }, 1000);
             } else {
