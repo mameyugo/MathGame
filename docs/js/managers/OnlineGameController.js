@@ -146,6 +146,9 @@ class OnlineGameController {
                 this.isHost = true;
                 this.showMessage(messageDiv, '✅ Sala creada', 'success');
                 this.showShareRoomToken(result.token);
+
+                // IMPORTANT: Register WS connection to the room for signaling
+                this.onlineManager.joinRoomWebSocket();
             } else {
                 this.showMessage(messageDiv, result.error || 'Error desconocido', 'error');
             }
@@ -180,6 +183,10 @@ class OnlineGameController {
 
                 setTimeout(() => {
                     this.closeOnlineCredentialsModal();
+
+                    // IMPORTANT: Register WS connection to the room for signaling
+                    this.onlineManager.joinRoomWebSocket();
+
                     // INITIATE P2P CONNECTION AS GUEST (Initiator)
                     // Important: The joiner initiates the P2P connection in this pattern
                     this.onlineManager.initPeerConnection(true);
