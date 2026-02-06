@@ -38,8 +38,7 @@ class NumbersGameManager {
 
         return {
             target: target,
-            numbers: selectedNumbers.sort((a, b) => a - b), // Ordenar para presentación
-            solution: this.findBestSolution(target, selectedNumbers)
+            numbers: selectedNumbers.sort((a, b) => a - b) // Ordenar para presentación
         };
     }
 
@@ -82,16 +81,10 @@ class NumbersGameManager {
         // 4. Evaluar la expresión de forma segura
         let result;
         try {
-            // Usamos Function para evaluar, pero ya hemos sanitizado con regex arriba
-            // Aún así, es mejor un evaluador paso a paso para verificar reglas de "Cifras" 
-            // (no negativos, no fracciones en pasos intermedios), pero para MVP usaremos eval estándar.
-            // NOTA: Para Cifras estricto, cada operación debe dar entero positivo. 
-            // Eval JS estándar permite decimales y negativos.
-
             // Implementación simple con eval para prototipo
             result = new Function('return ' + expression)();
 
-            // Verificar si es entero (algunas reglas de Cifras requieren pasos enteros)
+            // Verificar si es entero
             if (!Number.isInteger(result)) {
                 return { valid: false, value: result, reason: 'El resultado no es un número entero' };
             }
@@ -108,6 +101,24 @@ class NumbersGameManager {
     }
 
     /**
+     * Intenta encontrar una solución de forma asíncrona (Promise)
+     * para no bloquear el hilo principal de la UI.
+     * @param {number} target 
+     * @param {number[]} numbers 
+     * @returns {Promise<Object>}
+     */
+    findBestSolutionAsync(target, numbers) {
+        return new Promise((resolve) => {
+            // Usamos setTimeout para mover la ejecución al final de la cola de eventos
+            // permitiendo que la UI se renderice antes de procesar esto.
+            setTimeout(() => {
+                const solution = this.findBestSolution(target, numbers);
+                resolve(solution);
+            }, 100);
+        });
+    }
+
+    /**
      * Intenta encontrar una solución (solver simple)
      * Utiliza búsqueda recursiva para encontrar la solución más cercana.
      * @param {number} target - Objetivo
@@ -121,8 +132,6 @@ class NumbersGameManager {
             diff: Infinity
         };
 
-        // Función auxiliar para recursión
-        // currentNums: array de objetos { val: number, expr: string }
         const solve = (currentNums) => {
             // Verificar cada número actual
             for (const n of currentNums) {
@@ -137,7 +146,6 @@ class NumbersGameManager {
                 if (diff === 0) return; // Solución exacta encontrada
             }
 
-            // Si solo queda 1 número, no podemos operar más
             if (currentNums.length <= 1) return;
 
             // Intentar combinar cada par de números
@@ -147,11 +155,6 @@ class NumbersGameManager {
 
                     const a = currentNums[i];
                     const b = currentNums[j];
-
-                    // Optimización: Conmutatividad (asumimos i < j para + y *)
-                    // Pero necesitamos probar a-b y b-a, a/b y b/a
-
-                    // Lista restante sin i ni j
                     const nextNumsBase = currentNums.filter((_, idx) => idx !== i && idx !== j);
 
                     const ops = [
@@ -162,12 +165,8 @@ class NumbersGameManager {
                     ];
 
                     for (const op of ops) {
-                        // Reglas Cifras: Resultados intermedios positivos y enteros
                         if (op.res !== null && op.res > 0 && Number.isInteger(op.res)) {
-                            // Optimización: evitar x*1, x/1
                             if ((op.op === '*' || op.op === '/') && (a.val === 1 || b.val === 1)) continue;
-
-                            // Optimización conmutativa para suma y mult: solo si i < j (evita duplicados simétricos)
                             if ((op.op === '+' || op.op === '*') && i > j) continue;
 
                             solve([...nextNumsBase, { val: op.res, expr: op.expr }]);
@@ -178,8 +177,6 @@ class NumbersGameManager {
             }
         };
 
-        // Iniciar recursión con números iniciales
-        // Convertir a objetos { val, expr }
         const initialObjs = numbers.map(n => ({ val: n, expr: String(n) }));
         solve(initialObjs);
 

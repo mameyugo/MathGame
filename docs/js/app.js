@@ -201,12 +201,13 @@ function startNumbersGame() {
 
     // Configurar objeto "problema actual" para compatibilidad
     // Configurar objeto "problema actual" para compatibilidad
+    // Configurar objeto "problema actual" para compatibilidad
     currentProblem = {
         id: 'numbers_game_' + Date.now(),
         tipoRespuesta: 'numbers_game',
         target: level.target,
         numbers: level.numbers,
-        solution: level.solution,
+        solution: null, // Se calculará asíncronamente
         explicacion: `Objetivo: ${level.target} con [${level.numbers.join(', ')}]`
     };
 
@@ -246,6 +247,16 @@ function startNumbersGame() {
 
     // Auto-focus input
     setTimeout(() => document.getElementById('numbers-game-input')?.focus(), 100);
+
+    // Calcular solución asíncronamente para no bloquear UI
+    numbersGameManager.findBestSolutionAsync(level.target, level.numbers)
+        .then(solution => {
+            if (currentProblem && currentProblem.id) {
+                currentProblem.solution = solution;
+                // console.log('Solución calculada:', solution);
+            }
+        })
+        .catch(err => console.error('Error calculando solución:', err));
 }
 
 /**
@@ -362,7 +373,14 @@ function handleGameEnd() {
     // Si estamos en modo Cifras y se acabó el tiempo
     if (gameEngine.problemType === 'numbers_game' && currentProblem) {
         // Usamos la solución pre-calculada
-        const solution = currentProblem.solution;
+        let solution = currentProblem.solution;
+
+        // Si por alguna razón no se terminó de calcular (muy raro en 45s), calculamos síncrono ahora
+        if (!solution) {
+            console.warn('Solución no estaba lista al acabar el tiempo. Calculando síncrono...');
+            solution = numbersGameManager.findBestSolution(currentProblem.target, currentProblem.numbers);
+        }
+
         const emoji = solution.diff === 0 ? '✨' : '🤔';
         const msg = solution.diff === 0
             ? `¡Se acabó el tiempo!\nSolución exacta posible:\n${solution.expression} = ${solution.value}`

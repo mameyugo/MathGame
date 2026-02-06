@@ -24,20 +24,20 @@ describe('NumbersGameManager', () => {
         const sorted = [...level.numbers].sort((a, b) => a - b);
         expect(level.numbers).toEqual(sorted);
 
-        // Check solution existence
-        expect(level.solution).toBeDefined();
-        expect(level.solution.value).toBeDefined();
-        expect(level.solution.expression).toBeDefined();
-        // Since it's random, we can't guarantee diff 0 every time, but valid structure
-        expect(typeof level.solution.expression).toBe('string');
+        // Solution should be calculated async now, so it should be undefined here
+        expect(level.solution).toBeUndefined();
     });
 
-    test('generateLevel solution is valid', () => {
+    test('findBestSolutionAsync returns valid solution', async () => {
         const level = manager.generateLevel();
-        if (level.solution.expression) {
-            const check = manager.checkSolution(level.target, level.numbers, level.solution.expression);
-            // The generated solution might not be exact (diff > 0), but if it's exact, it must be valid
-            if (level.solution.diff === 0) {
+        const solution = await manager.findBestSolutionAsync(level.target, level.numbers);
+
+        expect(solution).toBeDefined();
+        expect(solution.value).toBeDefined();
+
+        if (solution.expression) {
+            const check = manager.checkSolution(level.target, level.numbers, solution.expression);
+            if (solution.diff === 0) {
                 expect(check.valid).toBe(true);
                 expect(check.exact).toBe(true);
                 expect(check.value).toBe(level.target);
