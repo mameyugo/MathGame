@@ -16,7 +16,7 @@ class TranslationManager {
      */
     async loadTranslations(lang) {
         try {
-            const response = await fetch(`./lang/${lang}.json`);
+            const response = await fetch(`./lang/${lang}.json?v=${new Date().getTime()}`);
             if (!response.ok) throw new Error(`Failed to load ${lang}.json`);
             this.translations[lang] = await response.json();
         } catch (error) {
