@@ -34,7 +34,9 @@ class OnlineManager {
      * Verifica si hay credenciales guardadas
      */
     hasStoredCredentials() {
-        return !!localStorage.getItem('math_online_username');
+        return !!localStorage.getItem('math_online_username') &&
+            !!localStorage.getItem('math_online_password') &&
+            !!localStorage.getItem('math_online_token');
     }
 
     /**
