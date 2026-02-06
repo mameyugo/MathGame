@@ -370,7 +370,6 @@ gameEngine = new GameEngine(
  */
 function handleGameEnd() {
     // Si estamos en modo Cifras y se acabó el tiempo
-    // Si estamos en modo Cifras y se acabó el tiempo
     if (gameEngine.problemType === 'numbers_game' && currentProblem) {
         // Usamos la solución pre-calculada
         let solution = currentProblem.solution;
@@ -381,16 +380,59 @@ function handleGameEnd() {
             solution = numbersGameManager.findBestSolution(currentProblem.target, currentProblem.numbers);
         }
 
-        const emoji = solution.diff === 0 ? '✨' : '🤔';
-        const msg = solution.diff === 0
-            ? `¡Se acabó el tiempo!\nSolución exacta posible:\n${solution.expression} = ${solution.value}`
-            : `¡Se acabó el tiempo!\nNo encontramos exacto. Lo más cercano (${Math.abs(currentProblem.target - solution.value)} de dif):\n${solution.expression} = ${solution.value}`;
-
-        alert(emoji + " " + msg);
+        showNumbersGameResult(solution);
+        return; // Detener flujo normal para no mostrar modal de usuarios inmediatamente
     }
 
     // Comportamiento default
     showUsers();
+}
+
+/**
+ * Muestra el resultado del juego de cifras con opciones
+ * @param {Object} solution 
+ */
+function showNumbersGameResult(solution) {
+    const isExact = solution.diff === 0;
+    const title = isExact ? '¡Se acabó el tiempo!' : '¡Tiempo agotado!';
+    const subTitle = isExact ? 'Solución exacta encontrada:' : `No se encontró exacto (Dif: ${solution.diff})`;
+
+    // Crear modal dinámicamente
+    const modalId = 'numbers-game-result-modal';
+    let modal = document.getElementById(modalId);
+
+    if (modal) modal.remove();
+
+    modal = document.createElement('div');
+    modal.id = modalId;
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="text-align: center;">
+            <h2>${title}</h2>
+            <p style="font-size: 1.1rem; margin: 10px 0;">${subTitle}</p>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: monospace; font-size: 1.2rem; font-weight: bold; color: #2c3e50;">
+                ${solution.expression} = ${solution.value}
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                <button id="btn-ng-home" class="btn-back">🏠 Inicio</button>
+                <button id="btn-ng-retry" class="main-btn" style="margin:0;">🔄 Nuevo Juego</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Event Listeners
+    document.getElementById('btn-ng-home').onclick = () => {
+        modal.remove();
+        showUsers();
+    };
+
+    document.getElementById('btn-ng-retry').onclick = () => {
+        modal.remove();
+        startNumbersGame();
+    };
 }
 
 // Update managers with gameEngine dependency
