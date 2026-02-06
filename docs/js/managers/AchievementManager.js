@@ -16,6 +16,33 @@ class AchievementManager {
     defineAchievements() {
         return {
             // 🏆 Categoría 1: Progreso y Nivel (El Camino del Héroe)
+
+            // 🔢 Categoría: Cifras y Letras
+            exact_count: {
+                id: 'exact_count',
+                category: 'logic',
+                i18nKey: 'exact_count',
+                icon: '🎯',
+                condition: (stats) => stats.exactSolutions >= 1,
+                secret: false
+            },
+            math_wizard: {
+                id: 'math_wizard',
+                category: 'mastery',
+                i18nKey: 'math_wizard',
+                icon: '🧙‍♂️',
+                condition: (stats) => stats.numbersGameStreak >= 5,
+                secret: false
+            },
+            full_house: {
+                id: 'full_house',
+                category: 'logic',
+                i18nKey: 'full_house',
+                icon: '🃏',
+                condition: (stats) => stats.fullHouseSolutions >= 1,
+                secret: true
+            },
+
             first_steps: {
                 id: 'first_steps',
                 category: 'progress',
@@ -249,7 +276,14 @@ class AchievementManager {
                 logicStreakMax: 0,
                 advancedProblemsCompleted: 0,
                 fastestLogicTime: 0,
+                advancedProblemsCompleted: 0,
+                fastestLogicTime: 0,
                 equationsCompleted: 0,
+
+                // Cifras
+                exactSolutions: 0,
+                numbersGameStreak: 0,
+                fullHouseSolutions: 0,
 
                 // Maestría
                 streakMax: 0,

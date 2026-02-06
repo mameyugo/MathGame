@@ -1,0 +1,126 @@
+/**
+ * NumbersGameManager - Gestión del modo de juego "Cifras"
+ * Genera niveles y valida soluciones para el juego de obtener un número exacto
+ * usando operaciones básicas (+, -, *, /) y un conjunto de números disponibles.
+ */
+class NumbersGameManager {
+    constructor() {
+        this.largeNumbers = [25, 50, 75, 100];
+        this.smallNumbers = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10];
+    }
+
+    /**
+     * Genera un nuevo nivel de Cifras
+     * @returns {Object} { target: number, numbers: number[] }
+     */
+    generateLevel() {
+        // 1. Generar objetivo (101 - 999)
+        const target = Math.floor(Math.random() * 899) + 101;
+
+        // 2. Seleccionar números disponibles
+        // Estrategia clásica: 1-4 grandes, el resto pequeños
+        const numLarge = Math.floor(Math.random() * 5); // 0 a 4 grandes
+        const numSmall = 6 - numLarge;
+
+        const selectedNumbers = [];
+
+        // Mezclar y elegir grandes
+        const shuffledLarge = [...this.largeNumbers].sort(() => Math.random() - 0.5);
+        for (let i = 0; i < numLarge; i++) {
+            selectedNumbers.push(shuffledLarge[i]);
+        }
+
+        // Mezclar y elegir pequeños
+        const shuffledSmall = [...this.smallNumbers].sort(() => Math.random() - 0.5);
+        for (let i = 0; i < numSmall; i++) {
+            selectedNumbers.push(shuffledSmall[i]);
+        }
+
+        return {
+            target: target,
+            numbers: selectedNumbers.sort((a, b) => a - b) // Ordenar para presentación
+        };
+    }
+
+    /**
+     * Valida una solución propuesta por el usuario
+     * @param {number} target - El número objetivo
+     * @param {number[]} availableNumbers - Los números disponibles para jugar
+     * @param {string} expression - La expresión matemática (ej: "25 * 4 + 10")
+     * @returns {Object} { valid: boolean, value: number, exact: boolean, reason: string }
+     */
+    checkSolution(target, availableNumbers, expression) {
+        if (!expression || expression.trim() === '') {
+            return { valid: false, reason: 'Expresión vacía' };
+        }
+
+        // 1. Validar caracteres permitidos (números, +, -, *, /, (, ), espacios)
+        if (!/^[\d\+\-\*\/\(\)\s]+$/.test(expression)) {
+            return { valid: false, reason: 'Caracteres inválidos' };
+        }
+
+        // 2. Extraer todos los números usados en la expresión
+        const usedNumbersMatches = expression.match(/\d+/g);
+        if (!usedNumbersMatches) {
+            return { valid: false, reason: 'No hay números' };
+        }
+
+        const usedNumbers = usedNumbersMatches.map(Number);
+
+        // 3. Verificar que los números usados están disponibles (y contar repeticiones)
+        const availableCount = {};
+        availableNumbers.forEach(n => availableCount[n] = (availableCount[n] || 0) + 1);
+
+        for (const num of usedNumbers) {
+            if (!availableCount[num] || availableCount[num] === 0) {
+                return { valid: false, reason: `Número ${num} no disponible o usado demasiadas veces` };
+            }
+            availableCount[num]--;
+        }
+
+        // 4. Evaluar la expresión de forma segura
+        let result;
+        try {
+            // Usamos Function para evaluar, pero ya hemos sanitizado con regex arriba
+            // Aún así, es mejor un evaluador paso a paso para verificar reglas de "Cifras" 
+            // (no negativos, no fracciones en pasos intermedios), pero para MVP usaremos eval estándar.
+            // NOTA: Para Cifras estricto, cada operación debe dar entero positivo. 
+            // Eval JS estándar permite decimales y negativos.
+
+            // Implementación simple con eval para prototipo
+            result = new Function('return ' + expression)();
+
+            // Verificar si es entero (algunas reglas de Cifras requieren pasos enteros)
+            if (!Number.isInteger(result)) {
+                return { valid: false, value: result, reason: 'El resultado no es un número entero' };
+            }
+
+        } catch (e) {
+            return { valid: false, reason: 'Error de sintaxis en la ecuación' };
+        }
+
+        return {
+            valid: true,
+            value: result,
+            exact: result === target
+        };
+    }
+
+    /**
+     * Intenta encontrar una solución (solver simple)
+     * Utiliza backtrack o fuerza bruta limitada. (Opcional para pistas)
+     * Por ahora placeholder.
+     */
+    findBestSolution(target, numbers) {
+        // TODO: Implementar solver si es necesario para pistas
+        return null;
+    }
+}
+
+// Exportar para Node.js (tests) y browser
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = NumbersGameManager;
+}
+if (typeof window !== 'undefined') {
+    window.NumbersGameManager = NumbersGameManager;
+}
