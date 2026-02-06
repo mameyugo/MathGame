@@ -182,12 +182,77 @@ class NumbersGameManager {
 
         return bestSolution;
     }
+
+    /**
+     * Renderiza la interfaz del juego
+     * @param {Object} level - Nivel generado
+     * @returns {string} HTML del área de juego
+     */
+    renderGame(level) {
+        return `
+            <div class="numbers-game-container">
+                <div class="target-number">${level.target}</div>
+                <div class="available-numbers">
+                    ${level.numbers.map(n => `<div class="number-card">${n}</div>`).join('')}
+                </div>
+                <p data-i18n="numbers_game_instruction">
+                    Escribe una operación exacta usando estos números (+, -, *, /, paréntesis)
+                </p>
+            </div>
+        `;
+    }
+
+    /**
+     * Muestra el modal de resultados
+     * @param {Object} solution - La mejor solución encontrada
+     * @param {Function} onHome - Callback para ir al inicio
+     * @param {Function} onRetry - Callback para intentar de nuevo
+     */
+    showResult(solution, onHome, onRetry) {
+        const isExact = solution.diff === 0;
+        const title = isExact ? '¡Se acabó el tiempo!' : '¡Tiempo agotado!';
+        const subTitle = isExact ? 'Solución exacta encontrada:' : `No se encontró exacto (Dif: ${solution.diff})`;
+
+        const modalId = 'numbers-game-result-modal';
+        let modal = document.getElementById(modalId);
+        if (modal) modal.remove();
+
+        modal = document.createElement('div');
+        modal.id = modalId;
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content result-content">
+                <h2>${title}</h2>
+                <p class="result-subtitle">${subTitle}</p>
+                <div class="result-expression-box">
+                    ${solution.expression} = ${solution.value}
+                </div>
+                <div class="result-actions">
+                    <button id="btn-ng-home" class="btn-back">🏠 Inicio</button>
+                    <button id="btn-ng-retry" class="main-btn">🔄 Nuevo Juego</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        document.getElementById('btn-ng-home').onclick = () => {
+            modal.remove();
+            if (onHome) onHome();
+        };
+
+        document.getElementById('btn-ng-retry').onclick = () => {
+            modal.remove();
+            if (onRetry) onRetry();
+        };
+    }
 }
 
 // Exportar para Node.js (tests) y browser
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = NumbersGameManager;
 }
+
 if (typeof window !== 'undefined') {
     window.NumbersGameManager = NumbersGameManager;
 }

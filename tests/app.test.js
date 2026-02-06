@@ -13,6 +13,7 @@ const problemCategoryManagerCode = fs.readFileSync(path.join(__dirname, '../docs
 const onlineManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/OnlineManager.js'), 'utf8');
 const localDuelManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/LocalDuelManager.js'), 'utf8');
 const onlineGameControllerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/OnlineGameController.js'), 'utf8');
+const numbersGameManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/NumbersGameManager.js'), 'utf8');
 const problemaCode = fs.readFileSync(path.join(__dirname, '../docs/js/problemas.js'), 'utf8');
 const appCode = fs.readFileSync(path.join(__dirname, '../docs/js/app.js'), 'utf8');
 
@@ -79,6 +80,11 @@ beforeAll(() => {
     window.eval(`
         ${onlineGameControllerCode}
         window.OnlineGameController = OnlineGameController;
+    `);
+
+    window.eval(`
+        ${numbersGameManagerCode}
+        window.NumbersGameManager = NumbersGameManager;
     `);
 
     window.eval(problemaCode);

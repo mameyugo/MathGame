@@ -47,3 +47,41 @@
 #numbers-game-input:focus {
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
 }
+
+/* Modal de Resultados */
+#numbers-game-result-modal.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.result-content {
+    text-align: center;
+}
+
+.result-subtitle {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+
+.result-expression-box {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-family: monospace;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.result-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.result-actions .main-btn {
+    margin: 0;
+}

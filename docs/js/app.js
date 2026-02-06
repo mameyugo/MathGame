@@ -101,9 +101,9 @@ function selectUser(name) {
     users = userManager.getUsers();
 
     // Renderizar las tarjetas de categorías de problemas inmediatamente
-    console.log('selectUser: about to render categories');
+    // console.log('selectUser: about to render categories');
     renderProblemCategories();
-    console.log('selectUser: categories rendered');
+    // console.log('selectUser: categories rendered');
 }
 
 function showEditName() {
@@ -200,8 +200,6 @@ function startNumbersGame() {
     gameEngine.initGameSession(gameLevel, gameCoins); // Re-init session logic
 
     // Configurar objeto "problema actual" para compatibilidad
-    // Configurar objeto "problema actual" para compatibilidad
-    // Configurar objeto "problema actual" para compatibilidad
     currentProblem = {
         id: 'numbers_game_' + Date.now(),
         tipoRespuesta: 'numbers_game',
@@ -211,21 +209,9 @@ function startNumbersGame() {
         explicacion: `Objetivo: ${level.target} con [${level.numbers.join(', ')}]`
     };
 
-    // Renderizar UI
+    // Renderizar UI usando el manager
     const questionArea = document.getElementById('question-area');
-    questionArea.innerHTML = `
-        <div class="numbers-game-container">
-            <div class="target-number">
-                ${level.target}
-            </div>
-            <div class="available-numbers">
-                ${level.numbers.map(n => `<div class="number-card">${n}</div>`).join('')}
-            </div>
-            <p data-i18n="numbers_game_instruction">
-                Escribe una operación exacta usando estos números (+, -, *, /, paréntesis)
-            </p>
-        </div>
-    `;
+    questionArea.innerHTML = numbersGameManager.renderGame(level);
 
     // Configurar área de respuesta (reutilizando equation-area pero customizado)
     const equationArea = document.getElementById('equation-area');
@@ -241,7 +227,7 @@ function startNumbersGame() {
     // Ocultar área de opciones
     document.getElementById('answers-area').style.display = 'none';
 
-    // Timer de 45 segundos (User Request)
+    // Timer de 45 segundos
     gameEngine.timeLeft = 45;
     gameEngine.setTimeLeft(45);
 
@@ -253,7 +239,6 @@ function startNumbersGame() {
         .then(solution => {
             if (currentProblem && currentProblem.id) {
                 currentProblem.solution = solution;
-                // console.log('Solución calculada:', solution);
             }
         })
         .catch(err => console.error('Error calculando solución:', err));
@@ -380,59 +365,16 @@ function handleGameEnd() {
             solution = numbersGameManager.findBestSolution(currentProblem.target, currentProblem.numbers);
         }
 
-        showNumbersGameResult(solution);
-        return; // Detener flujo normal para no mostrar modal de usuarios inmediatamente
+        numbersGameManager.showResult(
+            solution,
+            () => showUsers(),           // onHome
+            () => startNumbersGame()     // onRetry
+        );
+        return;
     }
 
     // Comportamiento default
     showUsers();
-}
-
-/**
- * Muestra el resultado del juego de cifras con opciones
- * @param {Object} solution 
- */
-function showNumbersGameResult(solution) {
-    const isExact = solution.diff === 0;
-    const title = isExact ? '¡Se acabó el tiempo!' : '¡Tiempo agotado!';
-    const subTitle = isExact ? 'Solución exacta encontrada:' : `No se encontró exacto (Dif: ${solution.diff})`;
-
-    // Crear modal dinámicamente
-    const modalId = 'numbers-game-result-modal';
-    let modal = document.getElementById(modalId);
-
-    if (modal) modal.remove();
-
-    modal = document.createElement('div');
-    modal.id = modalId;
-    modal.className = 'modal';
-    modal.style.display = 'flex';
-    modal.innerHTML = `
-        <div class="modal-content" style="text-align: center;">
-            <h2>${title}</h2>
-            <p style="font-size: 1.1rem; margin: 10px 0;">${subTitle}</p>
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: monospace; font-size: 1.2rem; font-weight: bold; color: #2c3e50;">
-                ${solution.expression} = ${solution.value}
-            </div>
-            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
-                <button id="btn-ng-home" class="btn-back">🏠 Inicio</button>
-                <button id="btn-ng-retry" class="main-btn" style="margin:0;">🔄 Nuevo Juego</button>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    // Event Listeners
-    document.getElementById('btn-ng-home').onclick = () => {
-        modal.remove();
-        showUsers();
-    };
-
-    document.getElementById('btn-ng-retry').onclick = () => {
-        modal.remove();
-        startNumbersGame();
-    };
 }
 
 // Update managers with gameEngine dependency
