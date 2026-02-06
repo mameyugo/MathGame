@@ -211,21 +211,14 @@ function startNumbersGame() {
     // Renderizar UI
     const questionArea = document.getElementById('question-area');
     questionArea.innerHTML = `
-        <div class="numbers-game-container" style="text-align: center;">
-            <div class="target-number" style="font-size: 3rem; color: var(--primary); font-weight: bold; margin-bottom: 20px;">
+        <div class="numbers-game-container">
+            <div class="target-number">
                 ${level.target}
             </div>
-            <div class="available-numbers" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
-                ${level.numbers.map(n => `<div class="number-card" style="
-                    background: white; 
-                    padding: 15px; 
-                    border-radius: 10px; 
-                    font-size: 1.5rem; 
-                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                    border: 2px solid #ddd;
-                ">${n}</div>`).join('')}
+            <div class="available-numbers">
+                ${level.numbers.map(n => `<div class="number-card">${n}</div>`).join('')}
             </div>
-            <p style="color: #666; margin-bottom: 10px;" data-i18n="numbers_game_instruction">
+            <p data-i18n="numbers_game_instruction">
                 Escribe una operación exacta usando estos números (+, -, *, /, paréntesis)
             </p>
         </div>
@@ -235,16 +228,7 @@ function startNumbersGame() {
     const equationArea = document.getElementById('equation-area');
     equationArea.style.display = 'block';
     equationArea.innerHTML = `
-        <input type="text" id="numbers-game-input" placeholder="Ej: (25 * 4) + 1" 
-        style="
-            width: 100%; 
-            padding: 15px; 
-            font-size: 1.5rem; 
-            text-align: center; 
-            border: 2px solid var(--primary); 
-            border-radius: 10px;
-            margin-bottom: 20px;
-        " autocomplete="off" autocorrect="off">
+        <input type="text" id="numbers-game-input" placeholder="Ej: (25 * 4) + 1" autocomplete="off" autocorrect="off">
     `;
 
     // Mostrar botón de enviar

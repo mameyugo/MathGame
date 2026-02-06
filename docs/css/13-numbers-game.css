@@ -1,0 +1,49 @@
+/* Estilos para el modo de juego "Cifras" */
+
+.numbers-game-container {
+    text-align: center;
+}
+
+.numbers-game-container .target-number {
+    font-size: 3rem;
+    color: var(--primary);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.numbers-game-container .available-numbers {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.numbers-game-container .number-card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: 2px solid #ddd;
+    min-width: 50px;
+}
+
+.numbers-game-container p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+#numbers-game-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.5rem;
+    text-align: center;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    outline: none;
+}
+
+#numbers-game-input:focus {
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
