@@ -38,7 +38,8 @@ class NumbersGameManager {
 
         return {
             target: target,
-            numbers: selectedNumbers.sort((a, b) => a - b) // Ordenar para presentación
+            numbers: selectedNumbers.sort((a, b) => a - b), // Ordenar para presentación
+            solution: this.findBestSolution(target, selectedNumbers)
         };
     }
 

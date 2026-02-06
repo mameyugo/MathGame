@@ -23,6 +23,26 @@ describe('NumbersGameManager', () => {
         // Check sorting
         const sorted = [...level.numbers].sort((a, b) => a - b);
         expect(level.numbers).toEqual(sorted);
+
+        // Check solution existence
+        expect(level.solution).toBeDefined();
+        expect(level.solution.value).toBeDefined();
+        expect(level.solution.expression).toBeDefined();
+        // Since it's random, we can't guarantee diff 0 every time, but valid structure
+        expect(typeof level.solution.expression).toBe('string');
+    });
+
+    test('generateLevel solution is valid', () => {
+        const level = manager.generateLevel();
+        if (level.solution.expression) {
+            const check = manager.checkSolution(level.target, level.numbers, level.solution.expression);
+            // The generated solution might not be exact (diff > 0), but if it's exact, it must be valid
+            if (level.solution.diff === 0) {
+                expect(check.valid).toBe(true);
+                expect(check.exact).toBe(true);
+                expect(check.value).toBe(level.target);
+            }
+        }
     });
 
     test('checkSolution validates correct exact solution', () => {

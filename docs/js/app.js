@@ -200,11 +200,13 @@ function startNumbersGame() {
     gameEngine.initGameSession(gameLevel, gameCoins); // Re-init session logic
 
     // Configurar objeto "problema actual" para compatibilidad
+    // Configurar objeto "problema actual" para compatibilidad
     currentProblem = {
         id: 'numbers_game_' + Date.now(),
         tipoRespuesta: 'numbers_game',
         target: level.target,
         numbers: level.numbers,
+        solution: level.solution,
         explicacion: `Objetivo: ${level.target} con [${level.numbers.join(', ')}]`
     };
 
@@ -238,9 +240,9 @@ function startNumbersGame() {
     // Ocultar área de opciones
     document.getElementById('answers-area').style.display = 'none';
 
-    // Timer un poco más largo para jugar cifras
-    gameEngine.timeLeft = 120; // 2 minutos
-    gameEngine.setTimeLeft(120);
+    // Timer de 45 segundos (User Request)
+    gameEngine.timeLeft = 45;
+    gameEngine.setTimeLeft(45);
 
     // Auto-focus input
     setTimeout(() => document.getElementById('numbers-game-input')?.focus(), 100);
@@ -357,8 +359,10 @@ gameEngine = new GameEngine(
  */
 function handleGameEnd() {
     // Si estamos en modo Cifras y se acabó el tiempo
+    // Si estamos en modo Cifras y se acabó el tiempo
     if (gameEngine.problemType === 'numbers_game' && currentProblem) {
-        const solution = numbersGameManager.findBestSolution(currentProblem.target, currentProblem.numbers);
+        // Usamos la solución pre-calculada
+        const solution = currentProblem.solution;
         const emoji = solution.diff === 0 ? '✨' : '🤔';
         const msg = solution.diff === 0
             ? `¡Se acabó el tiempo!\nSolución exacta posible:\n${solution.expression} = ${solution.value}`
