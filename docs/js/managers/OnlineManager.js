@@ -249,6 +249,7 @@ class OnlineManager {
             if (data.ok) {
                 this.roomToken = data.token;
                 this.roomId = data.roomId;
+                this.peerId = data.peerId; // Fix: Saving peerId from response
                 return data;
             } else {
                 throw new Error(data.error || 'Error al crear sala');
