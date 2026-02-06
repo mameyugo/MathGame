@@ -11,7 +11,7 @@ class OnlineManager {
         this.iceServers = null;
         this.isConnected = false;
         this.apiBaseUrl = 'https://rtc.mathqix.com/api';
-        this.wsUrl = 'ws://rtc.mathqix.com/ws';
+        this.wsUrl = 'wss://rtc.mathqix.com/ws';
         this.roomToken = null;
         this.roomId = null;
         this.peerId = null;
