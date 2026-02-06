@@ -296,8 +296,7 @@ class OnlineGameController {
             </div>
         </div>`;
 
-        const container = document.getElementById('app-container');
-        if (container) container.insertAdjacentHTML('beforeend', html);
+        if (document.body) document.body.insertAdjacentHTML('beforeend', html);
 
         // Bind events
         document.getElementById('btn-close-share-room').onclick = () => this.closeShareRoomModal();
