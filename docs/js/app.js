@@ -227,9 +227,9 @@ function startNumbersGame() {
     // Ocultar área de opciones
     document.getElementById('answers-area').style.display = 'none';
 
-    // Timer de 60 segundos
-    gameEngine.timeLeft = 60;
-    gameEngine.setTimeLeft(60);
+    // Timer de 90 segundos (1.5 minutos)
+    gameEngine.timeLeft = 90;
+    gameEngine.setTimeLeft(90);
 
     // Auto-focus input
     setTimeout(() => document.getElementById('numbers-game-input')?.focus(), 100);
