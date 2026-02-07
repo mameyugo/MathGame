@@ -14,7 +14,8 @@ const onlineManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/manag
 const localDuelManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/LocalDuelManager.js'), 'utf8');
 const onlineGameControllerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/OnlineGameController.js'), 'utf8');
 const numbersGameManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/NumbersGameManager.js'), 'utf8');
-const problemaCode = fs.readFileSync(path.join(__dirname, '../docs/js/problemas.js'), 'utf8');
+const templateManagerCode = fs.readFileSync(path.join(__dirname, '../docs/js/managers/TemplateManager.js'), 'utf8');
+const problemCode = fs.readFileSync(path.join(__dirname, '../docs/js/problemas.js'), 'utf8');
 const appCode = fs.readFileSync(path.join(__dirname, '../docs/js/app.js'), 'utf8');
 
 beforeAll(() => {
@@ -85,6 +86,11 @@ beforeAll(() => {
     window.eval(`
         ${numbersGameManagerCode}
         window.NumbersGameManager = NumbersGameManager;
+    `);
+
+    window.eval(`
+        ${templateManagerCode}
+        window.TemplateManager = TemplateManager;
     `);
 
     window.eval(problemaCode);
@@ -596,7 +602,7 @@ describe('MathQix - Tests Unitarios', () => {
     });
 
     describe('Panel de Logros', () => {
-        test('renderAchievements debe crear filtros y lista de logros', () => {
+        test('renderAchievements debe crear filtros y lista de logros', async () => {
             const userManager = window.__appManagers.userManager;
             const achievementManager = window.__appManagers.achievementManager;
             const dailyChallengeManager = window.__appManagers.dailyChallengeManager;
@@ -624,7 +630,7 @@ describe('MathQix - Tests Unitarios', () => {
 
             document.body.innerHTML = '<div id="achievements-content"></div>';
 
-            achievementManager.renderAchievements(user, dailyChallengeManager);
+            await achievementManager.renderAchievements(user, dailyChallengeManager);
 
             const filters = document.querySelector('.achievement-filters');
             const filterButtons = document.querySelectorAll('.achievement-filter');
@@ -635,7 +641,7 @@ describe('MathQix - Tests Unitarios', () => {
             expect(cards.length).toBeGreaterThan(0);
         });
 
-        test('filtro de categoría debe ocultar tarjetas de otras categorías', () => {
+        test('filtro de categoría debe ocultar tarjetas de otras categorías', async () => {
             const userManager = window.__appManagers.userManager;
             const achievementManager = window.__appManagers.achievementManager;
             const dailyChallengeManager = window.__appManagers.dailyChallengeManager;
@@ -663,7 +669,7 @@ describe('MathQix - Tests Unitarios', () => {
 
             document.body.innerHTML = '<div id="achievements-content"></div>';
 
-            achievementManager.renderAchievements(user, dailyChallengeManager);
+            await achievementManager.renderAchievements(user, dailyChallengeManager);
 
             const logicFilter = document.querySelector('.achievement-filter[data-filter="logic"]');
 

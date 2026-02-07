@@ -1,0 +1,112 @@
+/* Main CSS for logic-bound styles (Refactoring) */
+
+/* Language Buttons */
+.language-btn {
+    border-color: #ddd;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.language-btn.active {
+    border-color: var(--primary);
+    background: #f0f7ff;
+}
+
+/* Problem UI toggling */
+.ui-grid {
+    display: grid;
+}
+
+.ui-block {
+    display: block;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Store Items (moved from inline or ensuring compatibility) */
+.store-item.locked {
+    opacity: 0.7;
+    filter: grayscale(1);
+}
+
+.coin-flash {
+    animation: coinFlash 0.5s ease;
+}
+
+@keyframes coinFlash {
+    0% { transform: scale(1); color: #f1c40f; }
+    50% { transform: scale(1.5); color: #2ecc71; }
+    100% { transform: scale(1); color: #f1c40f; }
+}
+
+/* Achievement card styles (templates) */
+.achievement-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+
+.achievement-card:hover {
+    transform: translateY(-2px);
+}
+
+.achievement-card.locked {
+    opacity: 0.7;
+    background: #f8f9fa;
+}
+
+.achievement-card.unlocked {
+    border-left: 5px solid #2ecc71;
+}
+
+.achievement-icon {
+    font-size: 2rem;
+    margin-right: 15px;
+}
+
+.achievement-info {
+    flex: 1;
+}
+
+.achievement-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.achievement-desc {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.achievement-progress {
+    background: #eee;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 5px;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #3498db;
+    width: 0%;
+}
+
+.achievement-card.unlocked .progress-fill {
+    background: #2ecc71;
+}
+
+.achievement-status {
+    font-size: 1.5rem;
+    margin-left: 10px;
+}

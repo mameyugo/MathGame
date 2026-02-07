@@ -1,0 +1,16 @@
+<div class="daily-challenge-card {{completed_class}}">
+    <div class="daily-challenge-info">
+        <div class="daily-challenge-name">{{name}}</div>
+        <div class="daily-challenge-desc">{{description}}</div>
+        <div class="daily-challenge-reward">{{reward_text}} +{{reward_amount}}</div>
+        <div class="daily-challenge-progress">
+            <div class="daily-challenge-bar">
+                <div class="daily-challenge-fill" style="width: {{progress_percent}}%"></div>
+            </div>
+            <div class="daily-challenge-percent">{{progress_percent}}%</div>
+        </div>
+    </div>
+    <button class="daily-challenge-claim" onclick="claimDailyChallenge('{{id}}')" {{disabled_attr}}>
+        {{button_label}}
+    </button>
+</div>

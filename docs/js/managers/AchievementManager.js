@@ -497,18 +497,21 @@ class AchievementManager {
      * Muestra notificación de logro
      * @param {Object} achievement - Logro desbloqueado
      */
-    showAchievementNotification(achievement) {
+    async showAchievementNotification(achievement) {
+        if (!this.templateManager) {
+            this.templateManager = new TemplateManager();
+        }
+
         // Crear elemento de notificación
         const notification = document.createElement('div');
         notification.className = 'achievement-notification';
-        notification.innerHTML = `
-            <div class="achievement-icon">${achievement.icon}</div>
-            <div class="achievement-content">
-                <div class="achievement-title">🏆 ${this.translationManager.t('achievements_unlocked')}</div>
-                <div class="achievement-name">${this.translationManager.t(`achievements_${achievement.i18nKey}_name`)}</div>
-                <div class="achievement-description">${this.translationManager.t(`achievements_${achievement.i18nKey}_description`)}</div>
-            </div>
-        `;
+
+        notification.innerHTML = await this.templateManager.render('achievement-notification', {
+            icon: achievement.icon,
+            title_text: this.translationManager.t('achievements_unlocked'),
+            name: this.translationManager.t(`achievements_${achievement.i18nKey}_name`),
+            description: this.translationManager.t(`achievements_${achievement.i18nKey}_description`)
+        });
 
         document.body.appendChild(notification);
 
@@ -696,141 +699,110 @@ class AchievementManager {
      * @param {Object} user - Usuario actual
      * @param {DailyChallengeManager} dailyChallengeManager - Manager de desafíos diarios
      */
-    renderAchievements(user, dailyChallengeManager) {
+    async renderAchievements(user, dailyChallengeManager) {
         if (!user) return;
 
         const content = document.getElementById('achievements-content');
         if (!content) return;
 
+        // Ensure TemplateManager is initialized
+        if (!this.templateManager) {
+            this.templateManager = new TemplateManager();
+        }
+
         const progress = this.getTotalProgress(user);
         const achievements = this.getUserAchievements(user, false);
         const dailyChallenges = dailyChallengeManager ? dailyChallengeManager.getDailyChallenges(user) : [];
 
-        // Resumen general
-        let html = `
-            <div class="achievements-summary">
-                <div class="summary-title">Progreso Total</div>
-                <div class="summary-stats">
-                    <div class="summary-stat">
-                        <span class="stat-value">${progress.unlocked}</span>
-                        <span class="stat-label">Desbloqueados</span>
-                    </div>
-                    <div class="summary-stat">
-                        <span class="stat-value">${progress.total}</span>
-                        <span class="stat-label">Total</span>
-                    </div>
-                    <div class="summary-stat">
-                        <span class="stat-value">${progress.percentage}%</span>
-                        <span class="stat-label">Completado</span>
-                    </div>
-                </div>
-            </div>
-        `;
+        // 1. Render Summary
+        let html = await this.templateManager.render('achievements-summary', {
+            summary_title: 'Progreso Total',
+            unlocked_count: progress.unlocked,
+            unlocked_label: 'Desbloqueados',
+            total_count: progress.total,
+            total_label: 'Total',
+            percentage: progress.percentage,
+            completed_label: 'Completado'
+        });
 
-        // Desafíos diarios
+        // 2. Render Daily Challenges
         if (dailyChallenges && dailyChallenges.length > 0) {
-            html += `
-            <div class="daily-challenges">
-                <div class="daily-challenges-header">
-                    <div class="daily-challenges-title">${this.translationManager.t('daily_challenges_title')}</div>
-                </div>
-                <div class="daily-challenges-list">
-            `;
+            let challengesHtml = '';
 
-            dailyChallenges.forEach(challenge => {
+            for (const challenge of dailyChallenges) {
                 const progressPercent = Math.round((challenge.progress / challenge.target) * 100);
                 const text = dailyChallengeManager.formatChallengeText(challenge);
                 const isClaimable = challenge.completed && !challenge.claimed;
+
                 const buttonLabel = challenge.claimed
                     ? this.translationManager.t('daily_challenge_claimed')
                     : (isClaimable ? this.translationManager.t('daily_challenge_claim') : this.translationManager.t('daily_challenge_progress'));
 
-                html += `
-                <div class="daily-challenge-card ${challenge.completed ? 'completed' : ''}">
-                    <div class="daily-challenge-info">
-                        <div class="daily-challenge-name">${text.name}</div>
-                        <div class="daily-challenge-desc">${text.description}</div>
-                        <div class="daily-challenge-reward">${this.translationManager.t('daily_challenge_reward')} +${challenge.reward}</div>
-                        <div class="daily-challenge-progress">
-                            <div class="daily-challenge-bar">
-                                <div class="daily-challenge-fill" style="width: ${progressPercent}%"></div>
-                            </div>
-                            <div class="daily-challenge-percent">${progressPercent}%</div>
-                        </div>
-                    </div>
-                    <button class="daily-challenge-claim" onclick="claimDailyChallenge('${challenge.id}')" ${isClaimable ? '' : 'disabled'}>
-                        ${buttonLabel}
-                    </button>
-                </div>
-            `;
-            });
+                challengesHtml += await this.templateManager.render('daily-challenge-card', {
+                    completed_class: challenge.completed ? 'completed' : '',
+                    name: text.name,
+                    description: text.description,
+                    reward_text: this.translationManager.t('daily_challenge_reward'),
+                    reward_amount: challenge.reward,
+                    progress_percent: progressPercent,
+                    id: challenge.id,
+                    disabled_attr: isClaimable ? '' : 'disabled',
+                    button_label: buttonLabel
+                });
+            }
 
-            html += `
-                </div>
-            </div>
-        `;
+            html += await this.templateManager.render('daily-challenges-section', {
+                title: this.translationManager.t('daily_challenges_title'),
+                challenges_html: challengesHtml
+            });
         }
 
-        // Agrupar logros por categoría
-        const categories = {
-            progress: [],
-            logic: [],
-            mastery: [],
-            economy: [],
-            social: [],
-            secret: []
-        };
-
-        achievements.forEach(achievement => {
-            if (categories[achievement.category]) {
-                categories[achievement.category].push(achievement);
-            }
+        // 3. Render Filters
+        html += await this.templateManager.render('achievement-filters', {
+            filter_all: 'Todas',
+            filter_progress: 'Progreso',
+            filter_logic: 'Lógica',
+            filter_mastery: 'Maestría',
+            filter_economy: 'Economía',
+            filter_social: 'Social',
+            filter_secret: 'Secretos'
         });
-
-        // Filtros por categoría
-        html += `
-            <div class="achievement-filters">
-                <button class="achievement-filter active" data-filter="all">Todas</button>
-                <button class="achievement-filter" data-filter="progress">Progreso</button>
-                <button class="achievement-filter" data-filter="logic">Lógica</button>
-                <button class="achievement-filter" data-filter="mastery">Maestría</button>
-                <button class="achievement-filter" data-filter="economy">Economía</button>
-                <button class="achievement-filter" data-filter="social">Social</button>
-                <button class="achievement-filter" data-filter="secret">Secretos</button>
-            </div>
         `;
 
         // Lista de logros
-        html += '<div class="achievements-list">';
+        html += '<div class="achievements-list"></div>'; // Create an empty div for achievements-list
 
-        // Helper para renderizar tarjeta
-        const renderCard = (achievement) => {
-            const progress = this.getAchievementProgress(achievement, user);
-            const statusClass = achievement.unlocked ? 'unlocked' : 'locked';
+        content.innerHTML = html; // Render everything up to the empty achievements-list div
 
-            return `
-            <div class="achievement-card ${statusClass}" data-category="${achievement.category}">
-                <div class="achievement-icon">${achievement.icon}</div>
-                <div class="achievement-info">
-                    <div class="achievement-name">${achievement.name}</div>
-                    <div class="achievement-desc">${achievement.description}</div>
-                    ${!achievement.unlocked ? `<div class="achievement-progress-hint">${progress.hint}</div>` : ''}
-                </div>
-                ${achievement.unlocked ? '<div class="check-icon">✓</div>' : ''}
-            </div>
-            `;
-        };
+        // Now get the achievements-list element and populate it using templateManager
+        const achievementsListElement = content.querySelector('.achievements-list');
 
-        // Renderizar todos los logros (ordenados: desbloqueados primero)
+        if (!this.templateManager) {
+            this.templateManager = new TemplateManager();
+        }
+
+        // Sort achievements (unlocked first) before rendering
         achievements.sort((a, b) => (b.unlocked ? 1 : 0) - (a.unlocked ? 1 : 0));
 
-        achievements.forEach(achievement => {
-            html += renderCard(achievement);
-        });
+        // Generar HTML de las tarjetas
+        for (const achievement of achievements) {
+            const progressData = this.getAchievementProgress(achievement, user);
+            const userAchievement = user.achievements ? user.achievements[achievement.id] : null;
+            const unlocked = userAchievement ? userAchievement.unlocked : false;
 
-        html += '</div>';
+            const cardHtml = await this.templateManager.render('achievement-card', {
+                unlocked_class: unlocked ? 'unlocked' : 'locked',
+                category: achievement.category,
+                icon: achievement.icon,
+                name: achievement.name,
+                description: achievement.description,
+                percentage: progressData.percentage,
+                hint: unlocked ? '' : progressData.hint, // Only show hint if not unlocked
+                status_icon: unlocked ? '✅' : '🔒'
+            });
 
-        content.innerHTML = html;
+            achievementsListElement.innerHTML += cardHtml;
+        }
 
         // Añadir listeners para filtros
         const filters = content.querySelectorAll('.achievement-filter');

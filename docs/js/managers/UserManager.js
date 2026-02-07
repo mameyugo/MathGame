@@ -103,7 +103,7 @@ class UserManager {
     /**
      * Renderiza la lista de usuarios
      */
-    renderUserList() {
+    async renderUserList() {
         const list = document.getElementById('user-list');
         if (!list) return;
 
@@ -121,26 +121,28 @@ class UserManager {
         }
 
         list.innerHTML = "";
-        for (let name in this.users) {
-            list.innerHTML += `
-            <div class="user-card">
-                <div class="user-info" onclick="userManager.selectUser('${name}')">
-                    <span><strong>${name}</strong> (Lvl ${this.users[name].level})</span>
-                    <span>💰 ${this.users[name].totalCoins}</span>
-                </div>
-                <button class="btn-play-user" onclick="event.stopPropagation(); userManager.selectUser('${name}')" data-i18n="btn_play_user">▶️ Jugar</button>
-            </div>`;
+
+        // Cargar template
+        if (!this.templateManager) {
+            this.templateManager = new TemplateManager();
         }
-        // Actualizar traducciones de los botones recién creados
-        document.querySelectorAll('[data-i18n="btn_play_user"]').forEach(el => {
-            el.innerHTML = this.translationManager.t('btn_play_user');
-        });
+
+        for (let name in this.users) {
+            const user = this.users[name];
+            const html = await this.templateManager.render('user-list-item', {
+                name: name,
+                level: user.level,
+                coins: user.totalCoins,
+                play_btn_text: this.translationManager.t('btn_play_user')
+            });
+            list.innerHTML += html;
+        }
     }
 
     /**
      * Renderiza el salón de la fama (top 3 usuarios)
      */
-    renderLeaderboard() {
+    async renderLeaderboard() {
         const list = document.getElementById('leader-list');
         if (!list) return;
 
@@ -149,10 +151,22 @@ class UserManager {
             .slice(0, 3);
 
         list.innerHTML = sorted.length ? "" : `<small>${this.translationManager.t('hall_of_fame_empty')}</small>`;
-        sorted.forEach((name, i) => {
-            const icons = ['🥇', '🥈', '🥉'];
-            list.innerHTML += `<div class="leader-item"><span>${icons[i]} ${name}</span><strong>${this.users[name].totalCoins}</strong></div>`;
-        });
+
+        if (!this.templateManager) {
+            this.templateManager = new TemplateManager();
+        }
+
+        const icons = ['🥇', '🥈', '🥉'];
+
+        for (let i = 0; i < sorted.length; i++) {
+            const name = sorted[i];
+            const html = await this.templateManager.render('leaderboard-item', {
+                icon: icons[i],
+                name: name,
+                coins: this.users[name].totalCoins
+            });
+            list.innerHTML += html;
+        }
     }
 
     /**

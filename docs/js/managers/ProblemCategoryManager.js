@@ -86,38 +86,32 @@ class ProblemCategoryManager {
      * @param {Array<string>} selectedCategories - Categorías actualmente seleccionadas
      * @param {Function} onToggle - Callback al cambiar selección
      */
-    renderCategoryCards(containerId, selectedCategories = [], onToggle) {
+    async renderCategoryCards(containerId, selectedCategories = [], onToggle) {
         const container = document.getElementById(containerId);
         if (!container) {
             console.error(`Container ${containerId} not found`);
             return;
         }
 
+        if (!this.templateManager) {
+            this.templateManager = new TemplateManager();
+        }
+
         console.log('Rendering problem categories:', selectedCategories);
         container.innerHTML = '';
 
-        this.getCategories().forEach(category => {
+        for (const category of this.getCategories()) {
             const isSelected = selectedCategories.includes(category.id);
             console.log(`Category ${category.id}: ${isSelected ? 'selected' : 'not selected'}`);
 
             const card = document.createElement('div');
             card.className = `category-card difficulty-${category.difficulty} ${isSelected ? 'selected' : ''}`;
 
-            // Estilos inline de respaldo
-            card.style.cssText = `
-                padding: 15px;
-                margin-bottom: 10px;
-                border: 3px solid ${category.difficulty === 'easy' ? '#27ae60' : category.difficulty === 'medium' ? '#f39c12' : '#e74c3c'};
-                border-radius: 12px;
-                background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                min-height: 80px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                ${isSelected ? 'background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); box-shadow: 0 4px 12px rgba(0,0,0,0.15);' : ''}
-            `;
+            // Inline styles backup logic handled by CSS classes ideally, but keeping JS logic minimal if css handles it.
+            // Assuming CSS classes handle the styling now as per refactor goals.
+            // If main.css doesn't have these, we might need to rely on the template or ensure CSS is there.
+            // The template itself doesn't have the wrapper div, so we create it here or move wrapper to template.
+            // The template content is INSIDE the card.
 
             card.onclick = () => {
                 if (onToggle) {
@@ -125,26 +119,16 @@ class ProblemCategoryManager {
                 }
             };
 
-            card.innerHTML = `
-                <div class="category-icon">${category.icon}</div>
-                <div class="category-info">
-                    <div class="category-name" data-i18n="category_${category.id}_name">
-                        ${this.translationManager.t(`category_${category.id}_name`)}
-                    </div>
-                    <p class="category-description" data-i18n="category_${category.id}_desc">
-                        ${this.translationManager.t(`category_${category.id}_desc`)}
-                    </p>
-                </div>
-                <label class="category-switch" onclick="event.stopPropagation()">
-                    <input type="checkbox" 
-                           class="category-switch-input" 
-                           ${isSelected ? 'checked' : ''}>
-                    <span class="category-switch-slider"></span>
-                </label>
-            `;
+            card.innerHTML = await this.templateManager.render('problem-category-card', {
+                icon: category.icon,
+                id: category.id,
+                name: this.translationManager.t(`category_${category.id}_name`),
+                description: this.translationManager.t(`category_${category.id}_desc`),
+                checked_attr: isSelected ? 'checked' : ''
+            });
 
             container.appendChild(card);
-        });
+        }
 
         console.log(`Rendered ${this.getCategories().length} category cards`);
     }

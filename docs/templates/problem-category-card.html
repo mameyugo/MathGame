@@ -1,0 +1,13 @@
+<div class="category-icon">{{icon}}</div>
+<div class="category-info">
+    <div class="category-name" data-i18n="category_{{id}}_name">
+        {{name}}
+    </div>
+    <p class="category-description" data-i18n="category_{{id}}_desc">
+        {{description}}
+    </p>
+</div>
+<label class="category-switch" onclick="event.stopPropagation()">
+    <input type="checkbox" class="category-switch-input" {{checked_attr}}>
+    <span class="category-switch-slider"></span>
+</label>

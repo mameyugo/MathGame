@@ -14,6 +14,9 @@ const numbersGameManager = new NumbersGameManager();
 const onlineManager = new OnlineManager(translationManager);
 const localDuelManager = new LocalDuelManager(null, userManager, t); // GameEngine not ready yet
 
+// Initialize dependencies
+storeManager.setAchievementManager(achievementManager);
+
 // Variables globales
 let currentLanguage = translationManager.getCurrentLanguage();
 let users = userManager.getUsers();
@@ -61,11 +64,11 @@ async function changeLanguage(lang) {
     await translationManager.changeLanguage(lang);
     currentLanguage = translationManager.getCurrentLanguage();
 
-    // Actualizar estilos de botones de idioma
-    document.getElementById('btn-lang-es').style.borderColor = lang === 'es' ? 'var(--primary)' : '#ddd';
-    document.getElementById('btn-lang-es').style.background = lang === 'es' ? '#f0f7ff' : 'white';
-    document.getElementById('btn-lang-gl').style.borderColor = lang === 'gl' ? 'var(--primary)' : '#ddd';
-    document.getElementById('btn-lang-gl').style.background = lang === 'gl' ? '#f0f7ff' : 'white';
+    // Actualizar estilos de botones de idioma usando clases
+    document.querySelectorAll('.language-btn').forEach(btn => btn.classList.remove('active'));
+
+    const activeBtn = document.getElementById(`btn-lang-${lang}`);
+    if (activeBtn) activeBtn.classList.add('active');
 
     // Actualizar título de configuración si hay usuario seleccionado
     if (currentUser) {
@@ -101,9 +104,7 @@ function selectUser(name) {
     users = userManager.getUsers();
 
     // Renderizar las tarjetas de categorías de problemas inmediatamente
-    // console.log('selectUser: about to render categories');
     renderProblemCategories();
-    // console.log('selectUser: categories rendered');
 }
 
 function showEditName() {
@@ -145,13 +146,7 @@ function syncStateFromStorage() {
  * Inicia una partida individual
  */
 function startSingleGame() {
-    const checkboxes = {
-        sum: document.getElementById('cfg-sum').checked,
-        res: document.getElementById('cfg-res').checked,
-        mul: document.getElementById('cfg-mul').checked,
-        div: document.getElementById('cfg-div').checked
-    };
-    gameEngine.startSingleGame(checkboxes);
+    gameEngine.startSingleGame();
 
     // Sincronizar estado global después de iniciar
     users = userManager.getUsers();
@@ -190,58 +185,12 @@ function startProblemGame(type) {
 /**
  * Inicia el modo de juego "Cifras"
  */
-function startNumbersGame() {
-    // Generar nivel
-    const level = numbersGameManager.generateLevel();
-
-    // Configurar entorno de problema
-    gameEngine.problemMode = true;
-    gameEngine.problemType = 'numbers_game';
-    gameEngine.initGameSession(gameLevel, gameCoins); // Re-init session logic
-
-    // Configurar objeto "problema actual" para compatibilidad
-    currentProblem = {
-        id: 'numbers_game_' + Date.now(),
-        tipoRespuesta: 'numbers_game',
-        target: level.target,
-        numbers: level.numbers,
-        solution: null, // Se calculará asíncronamente
-        explicacion: `Objetivo: ${level.target} con [${level.numbers.join(', ')}]`
-    };
-
-    // Renderizar UI usando el manager
-    const questionArea = document.getElementById('question-area');
-    questionArea.innerHTML = numbersGameManager.renderGame(level);
-
-    // Configurar área de respuesta (reutilizando equation-area pero customizado)
-    const equationArea = document.getElementById('equation-area');
-    equationArea.style.display = 'block';
-    equationArea.innerHTML = `
-        <input type="text" id="numbers-game-input" placeholder="Ej: (25 * 4) + 1" autocomplete="off" autocorrect="off">
-    `;
-
-    // Mostrar botón de enviar
-    const submitBtn = document.getElementById('btn-submit-problem');
-    submitBtn.style.display = 'block';
-
-    // Ocultar área de opciones
-    document.getElementById('answers-area').style.display = 'none';
-
-    // Timer de 90 segundos (1.5 minutos)
-    gameEngine.timeLeft = 90;
-    gameEngine.setTimeLeft(90);
-
-    // Auto-focus input
-    setTimeout(() => document.getElementById('numbers-game-input')?.focus(), 100);
-
-    // Calcular solución asíncronamente para no bloquear UI
-    numbersGameManager.findBestSolutionAsync(level.target, level.numbers)
-        .then(solution => {
-            if (currentProblem && currentProblem.id) {
-                currentProblem.solution = solution;
-            }
-        })
-        .catch(err => console.error('Error calculando solución:', err));
+async function startNumbersGame() {
+    try {
+        currentProblem = await numbersGameManager.startGame(gameEngine);
+    } catch (error) {
+        console.error('Error al iniciar Numbers Game:', error);
+    }
 }
 
 /**
@@ -295,40 +244,40 @@ function toggleProblemUI(enabled) {
 
     if (!answersArea || !equationArea || !submitBtn) return;
 
-    answersArea.style.display = enabled ? 'none' : 'grid';
-    equationArea.style.display = enabled ? 'block' : 'none';
-    submitBtn.style.display = enabled ? 'block' : 'none';
+    if (enabled) {
+        answersArea.classList.add('hidden');
+        equationArea.classList.remove('hidden');
+        equationArea.style.display = 'block'; // Ensure block display for visibility
+        submitBtn.classList.remove('hidden');
+        submitBtn.style.display = 'block';
+    } else {
+        answersArea.classList.remove('hidden');
+        equationArea.classList.add('hidden');
+        equationArea.style.display = 'none';
+        submitBtn.classList.add('hidden');
+        submitBtn.style.display = 'none';
+    }
 }
 
 /**
  * Muestra animación de delta de tiempo (+x / -x)
  * @param {number} delta
  */
+/**
+ * Muestra animación de delta de tiempo (+x / -x)
+ * @param {string} text - Texto a mostrar
+ * @param {string} tone - Tono del mensaje ('positive', 'negative', 'neutral')
+ */
 function showTimeEffect(text, tone) {
-    const el = document.getElementById('game-timer-delta');
-    if (!el) return;
-
-    el.textContent = text;
-    el.classList.remove('positive', 'negative', 'neutral', 'show');
-    if (tone) {
-        el.classList.add(tone);
+    if (gameEngine) {
+        gameEngine.showTimeEffect(text, tone);
     }
-
-    requestAnimationFrame(() => {
-        el.classList.add('show');
-    });
-
-    clearTimeout(showTimeEffect._timer);
-    showTimeEffect._timer = setTimeout(() => {
-        el.classList.remove('show');
-        el.textContent = '';
-    }, 1000);
 }
 
 function showTimeDelta(delta) {
-    if (!delta) return;
-    const sign = delta > 0 ? '+' : '';
-    showTimeEffect(`${sign}${delta}`, delta > 0 ? 'positive' : 'negative');
+    if (gameEngine) {
+        gameEngine.showTimeDelta(delta);
+    }
 }
 
 // Hacer disponible para GameEngine
@@ -428,6 +377,11 @@ function generateProblem() {
     questionGenerator.generateProblem();
     currentProblem = questionGenerator.getCurrentProblem();
 
+    // Sync with GameEngine
+    if (gameEngine) {
+        gameEngine.currentProblem = currentProblem;
+    }
+
     // Si no hay problema (todos completados), finalizar la sesión
     if (!currentProblem) {
         endGameSession();
@@ -438,196 +392,30 @@ function generateProblem() {
  * Valida respuesta del problema
  */
 function submitProblem() {
-    if (!currentProblem) return;
+    gameEngine.submitProblem();
 
-    const tipoRespuesta = currentProblem.tipoRespuesta || 'numero';
-    let isCorrect = false;
+    // Sincronizar variables locales
+    gameCoins = gameEngine.gameCoins;
+    gameLevel = gameEngine.gameLevel;
+    timeLeft = gameEngine.timeLeft;
 
-    if (tipoRespuesta === 'numero') {
-        // Validación para respuestas numéricas (comportamiento actual)
-        const equationArea = document.getElementById('equation-area');
-        const inputs = Array.from(equationArea.querySelectorAll('input.eq-input'));
-        const values = inputs.map(i => i.value.trim());
+    // Si se generó nuevo problema, actualizar currentProblem global desde engine
+    // (Asumiendo que generateProblem() actualiza el engine)
+    currentProblem = gameEngine.currentProblem;
 
-        if (values.some(v => v === '')) {
-            alert(t('alert_fill_equation'));
-            return;
-        }
-
-        const parsed = values.map(v => Number(v));
-        const expected = currentProblem.ecuacionValores || [];
-        isCorrect = parsed.length === expected.length && parsed.every((v, i) => v === expected[i]);
-
-    } else if (tipoRespuesta === 'opcion_multiple') {
-        // Validación para opciones múltiples
-        if (!window.selectedChoice) {
-            alert('Por favor, selecciona una opción');
-            return;
-        }
-        isCorrect = window.selectedChoice === currentProblem.respuestaCorrecta;
-
-    } else if (tipoRespuesta === 'texto') {
-        // Validación para entrada de texto
-        const input = document.getElementById('text-answer-input');
-        if (!input || input.value.trim() === '') {
-            alert('Por favor, escribe tu respuesta');
-            return;
-        }
-        let userAnswer = input.value.trim();
-        let correctAnswer = String(currentProblem.respuestaCorrecta);
-
-        if (currentProblem.caseSensitive === false) {
-            userAnswer = userAnswer.toLowerCase();
-            correctAnswer = correctAnswer.toLowerCase();
-        }
-
-        isCorrect = userAnswer === correctAnswer;
-    } else if (tipoRespuesta === 'numbers_game') {
-        // Validación para Cifras (Numbers Game)
-        const input = document.getElementById('numbers-game-input');
-        if (!input || input.value.trim() === '') {
-            showFeedbackMessage('Por favor, escribe una operación');
-            return;
-        }
-
-        const expression = input.value.trim();
-        const result = numbersGameManager.checkSolution(currentProblem.target, currentProblem.numbers, expression);
-
-        if (result.valid && result.exact) {
-            isCorrect = true;
-            // Bonus achievements logic handled in validation result?
-        } else {
-            isCorrect = false;
-            let reason = result.reason || 'Incorrecto';
-            if (result.valid && !result.exact) {
-                reason = `Resultado: ${result.value} (Objetivo: ${currentProblem.target})`;
-            }
-            showFeedbackMessage(reason);
-        }
-
-        // Track specific stats for Cifras
-        const user = userManager.getCurrentUser();
-        if (user && achievementManager) {
-            user.achievementStats = user.achievementStats || {};
-
-            if (isCorrect) {
-                user.achievementStats.exactSolutions = (user.achievementStats.exactSolutions || 0) + 1;
-                user.achievementStats.numbersGameStreak = (user.achievementStats.numbersGameStreak || 0) + 1;
-
-                // Chequear full house (usar todos los números)
-                // Contar números en expresión
-                const usedNumbers = expression.match(/\d+/g);
-                if (usedNumbers && usedNumbers.length === 6) {
-                    user.achievementStats.fullHouseSolutions = (user.achievementStats.fullHouseSolutions || 0) + 1;
-                    showTimeEffect('🃏 Full House!', 'positive');
-                }
-            } else {
-                user.achievementStats.numbersGameStreak = 0;
-            }
-            userManager.saveToStorage();
-        }
-    }
-
-    // Procesar resultado
-    if (isCorrect) {
-        // Marcar problema como resuelto para evitar repetición
-        if (currentProblem.id) {
-            gameEngine.markProblemAsSolved(currentProblem.id);
-        }
-
-        // Resetear selectedChoice para próximo problema
-        window.selectedChoice = null;
-
-        // Actualizar GameEngine
-        gameEngine.gameCoins += 30;
-        gameEngine.timeLeft += 10;
-        showTimeDelta(10);
-
-        // Track achievement stats for problems
-        const user = userManager.getCurrentUser();
-        if (user && achievementManager) {
-            user.achievementStats = user.achievementStats || {};
-            user.achievementStats.problemsSolved = (user.achievementStats.problemsSolved || 0) + 1;
-            user.achievementStats.coins = gameEngine.gameCoins;
-            user.achievementStats.level = gameEngine.gameLevel;
-
-            // Check for new achievements
-            const newAchievements = achievementManager.checkAchievements(user);
-            if (newAchievements && newAchievements.length > 0) {
-                newAchievements.forEach(achievement => {
-                    achievementManager.showAchievementNotification(achievement);
-                });
-                userManager.saveToStorage();
-            }
-        }
-
-        updateDailyChallengeProgress('problem_solved', 1);
-        updateDailyChallengeProgress('coins_earned', 30);
-
-        try {
-            confetti({ particleCount: 30, spread: 50 });
-        } catch (e) {
-            // Confetti library not loaded
-        }
-
-        if (gameEngine.gameCoins % 50 === 0) {
-            gameEngine.gameLevel++;
-        }
-
-        // Sincronizar variables locales
-        gameCoins = gameEngine.gameCoins;
-        gameLevel = gameEngine.gameLevel;
-        timeLeft = gameEngine.timeLeft;
-
-        document.getElementById('game-level').innerText = gameLevel;
-        document.getElementById('game-coins').innerText = gameCoins;
-        document.getElementById('game-timer').innerText = timeLeft + 's';
-
-        updateRecordDisplay();
-        generateProblem();
-    } else {
-        initInventory(users[currentUser]);
-        if (users[currentUser].inventory.shields > 0) {
-            users[currentUser].inventory.shields--;
-            localStorage.setItem('math_users', JSON.stringify(users));
-            updatePowerUpDisplay();
-            showFeedbackMessage(t('alert_shield_used'));
-            showTimeEffect('🛡️', 'neutral');
-            return;
-        }
-
-        document.getElementById('app-container').classList.add('shake');
-        setTimeout(() => document.getElementById('app-container').classList.remove('shake'), 400);
-
-        // Actualizar GameEngine
-        gameEngine.timeLeft -= 4;
-        showTimeDelta(-4);
-        timeLeft = gameEngine.timeLeft;
-        document.getElementById('game-timer').innerText = timeLeft + 's';
-
-        if (currentProblem.explicacion) {
-            showFeedbackMessage(currentProblem.explicacion);
-        }
-    }
+    // La UI ya se actualizó en GameEngine
 }
 
 /**
  * Verifica si la respuesta seleccionada es correcta
  * @param {number} val - Valor seleccionado por el usuario
  */
+/**
+ * Verifica si la respuesta seleccionada es correcta
+ * @param {number} val - Valor seleccionado por el usuario
+ */
 function check(val) {
-    // Sincronizar currentAnswer con gameEngine
-    const prevTime = gameEngine.timeLeft;
-    const isCorrect = val === currentAnswer;
-    gameEngine.currentAnswer = currentAnswer;
     gameEngine.check(val);
-    const delta = gameEngine.timeLeft - prevTime;
-    showTimeDelta(delta);
-
-    if (isCorrect) {
-        updateDailyChallengeProgress('correct_answer', 1);
-        updateDailyChallengeProgress('coins_earned', 10);
-    }
 
     // Sincronizar estado global de vuelta
     gameCoins = gameEngine.gameCoins;
@@ -663,25 +451,7 @@ function renderStore() {
 }
 
 function buyItem(itemId) {
-    const purchased = storeManager.buyItem(itemId);
-    if (purchased) {
-        const user = userManager.getCurrentUser();
-        if (user && achievementManager) {
-            user.achievementStats = user.achievementStats || {};
-            user.achievementStats.itemsBought = (user.achievementStats.itemsBought || 0) + 1;
-            user.achievementStats.totalCoinsSpent = (user.achievementStats.totalCoinsSpent || 0) + 1;
-            user.achievementStats.coins = user.totalCoins;
-
-            const newAchievements = achievementManager.checkAchievements(user);
-            if (newAchievements && newAchievements.length > 0) {
-                newAchievements.forEach(achievement => {
-                    achievementManager.showAchievementNotification(achievement);
-                });
-            }
-        }
-
-        updateDailyChallengeProgress('item_bought', 1);
-    }
+    storeManager.buyItem(itemId);
     users = userManager.getUsers();
 }
 
@@ -770,13 +540,13 @@ async function initApp() {
 /**
  * Renderiza las tarjetas de categorías de problemas en la configuración del usuario
  */
-function renderProblemCategories() {
+async function renderProblemCategories() {
     const container = document.getElementById('problem-categories-area');
     if (!container) return;
 
     const selectedCategories = userManager.getProblemCategories();
 
-    problemCategoryManager.renderCategoryCards(
+    await problemCategoryManager.renderCategoryCards(
         'problem-categories-area',
         selectedCategories,
         (categoryId) => {
@@ -787,6 +557,7 @@ function renderProblemCategories() {
         }
     );
 }
+renderProblemCategories();
 
 // Sincronizar estado cuando el usuario vuelve a la página (después de presionar atrás)
 window.addEventListener('pageshow', function (event) {

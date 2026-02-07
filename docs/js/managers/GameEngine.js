@@ -46,7 +46,12 @@ class GameEngine {
         this.freezeTimeout = null;
         this.currentAnswer = null;
 
-        // Game modes
+        // UI references (can be passed or looked up)
+        this.ui = {
+            answersArea: document.getElementById('answers-area'),
+            equationArea: document.getElementById('equation-area'),
+            submitBtn: document.getElementById('btn-submit-problem')
+        };
         this.duelMode = false;
         this.problemMode = false;
         this.problemType = '';
@@ -56,6 +61,34 @@ class GameEngine {
 
         // Track solved problems to avoid repetition
         this.solvedProblemsInSession = new Set();
+        this.currentProblem = null;
+    }
+
+    /**
+     * Activa/desactiva UI de modo problemas
+     * @param {boolean} enabled
+     */
+    toggleProblemUI(enabled) {
+        // Refresh references in case DOM changed
+        const answersArea = document.getElementById('answers-area');
+        const equationArea = document.getElementById('equation-area');
+        const submitBtn = document.getElementById('btn-submit-problem');
+
+        if (!answersArea || !equationArea || !submitBtn) return;
+
+        if (enabled) {
+            answersArea.classList.add('hidden');
+            equationArea.classList.remove('hidden');
+            equationArea.style.display = 'block';
+            submitBtn.classList.remove('hidden');
+            submitBtn.style.display = 'block';
+        } else {
+            answersArea.classList.remove('hidden');
+            equationArea.classList.add('hidden');
+            equationArea.style.display = 'none';
+            submitBtn.classList.add('hidden');
+            submitBtn.style.display = 'none';
+        }
     }
 
     /**
@@ -67,15 +100,25 @@ class GameEngine {
 
     /**
      * Starts a single-player game
-     * @param {Object} checkboxes - { sum, res, mul } checkbox states
+     * @param {Object} [checkboxes] - Optional { sum, res, mul } checkbox states. If null, reads from DOM.
      * @returns {boolean} Success status
      */
-    startSingleGame(checkboxes) {
+    startSingleGame(checkboxes = null) {
         this.duelMode = false;
         this.problemMode = false;
 
         const user = this.userManager.getCurrentUser();
         if (!user) return false;
+
+        // If no config provided, read from DOM (Encapsulation of UI logic requested)
+        if (!checkboxes) {
+            checkboxes = {
+                sum: document.getElementById('cfg-sum')?.checked || false,
+                res: document.getElementById('cfg-res')?.checked || false,
+                mul: document.getElementById('cfg-mul')?.checked || false,
+                div: document.getElementById('cfg-div')?.checked || false
+            };
+        }
 
         user.ops = [];
         if (checkboxes.sum) user.ops.push('+');
@@ -91,6 +134,42 @@ class GameEngine {
         this.userManager.saveToStorage();
         this.initGameSession(1, 0);
         return true;
+    }
+
+    /**
+     * Muestra animación de delta de tiempo (+x / -x)
+     * @param {string} text - Texto a mostrar
+     * @param {string} tone - Tono del mensaje ('positive', 'negative', 'neutral')
+     */
+    showTimeEffect(text, tone) {
+        const el = document.getElementById('game-timer-delta');
+        if (!el) return;
+
+        el.textContent = text;
+        el.classList.remove('positive', 'negative', 'neutral', 'show');
+        if (tone) {
+            el.classList.add(tone);
+        }
+
+        requestAnimationFrame(() => {
+            el.classList.add('show');
+        });
+
+        clearTimeout(this.effectTimer);
+        this.effectTimer = setTimeout(() => {
+            el.classList.remove('show');
+            el.textContent = '';
+        }, 1000);
+    }
+
+    /**
+     * Helper para mostrar cambios de tiempo
+     * @param {number} delta - Cambio en el tiempo
+     */
+    showTimeDelta(delta) {
+        if (!delta) return;
+        const sign = delta > 0 ? '+' : '';
+        this.showTimeEffect(`${sign}${delta}`, delta > 0 ? 'positive' : 'negative');
     }
 
     /**
@@ -259,6 +338,12 @@ class GameEngine {
             // Correct answer
             this.gameCoins += 10;
             this.timeLeft += 2;
+            this.showTimeDelta(2); // Show +2s effect
+
+            if (this.dailyChallengeManager) {
+                this.dailyChallengeManager.updateProgress(null, 'correct_answer', 1);
+                this.dailyChallengeManager.updateProgress(null, 'coins_earned', 10);
+            }
 
             // Online Sync
             if (this.onlineMode && this.sendOnlineAction) {
@@ -363,6 +448,193 @@ class GameEngine {
         }
 
         this.updateGameDisplay();
+    }
+
+    /**
+     * Valida respuesta del problema
+     */
+    submitProblem() {
+        if (!this.currentProblem) return;
+
+        const tipoRespuesta = this.currentProblem.tipoRespuesta || 'numero';
+        let isCorrect = false;
+
+        const t = (key) => this.translationManager.t(key);
+
+        if (tipoRespuesta === 'numero') {
+            // Validación para respuestas numéricas
+            const equationArea = document.getElementById('equation-area');
+            const inputs = Array.from(equationArea.querySelectorAll('input.eq-input'));
+            const values = inputs.map(i => i.value.trim());
+
+            if (values.some(v => v === '')) {
+                alert(t('alert_fill_equation'));
+                return;
+            }
+
+            const parsed = values.map(v => Number(v));
+            const expected = this.currentProblem.ecuacionValores || [];
+            isCorrect = parsed.length === expected.length && parsed.every((v, i) => v === expected[i]);
+
+        } else if (tipoRespuesta === 'opcion_multiple') {
+            // Validación para opciones múltiples
+            if (!window.selectedChoice) {
+                alert('Por favor, selecciona una opción'); // Should use translation
+                return;
+            }
+            isCorrect = window.selectedChoice === this.currentProblem.respuestaCorrecta;
+
+        } else if (tipoRespuesta === 'texto') {
+            // Validación para entrada de texto
+            const input = document.getElementById('text-answer-input');
+            if (!input || input.value.trim() === '') {
+                alert('Por favor, escribe tu respuesta'); // Should use translation
+                return;
+            }
+            let userAnswer = input.value.trim();
+            let correctAnswer = String(this.currentProblem.respuestaCorrecta);
+
+            if (this.currentProblem.caseSensitive === false) {
+                userAnswer = userAnswer.toLowerCase();
+                correctAnswer = correctAnswer.toLowerCase();
+            }
+
+            isCorrect = userAnswer === correctAnswer;
+        } else if (tipoRespuesta === 'numbers_game') {
+            // Validación para Cifras (Numbers Game)
+            const input = document.getElementById('numbers-game-input');
+            if (!input || input.value.trim() === '') {
+                this.showFeedbackMessage('Por favor, escribe una operación');
+                return;
+            }
+
+            // Need access to numbersGameManager? It's global in app.js.
+            // GameEngine doesn't seem to have valid reference to numbersGameManager explicitly passed.
+            // BUT GameEngine runs in browser scope where `numbersGameManager` is global (window.numbersGameManager).
+            // We can access it via global or pass it.
+            // Best practice: access via global for now since app structure relies on globals, or rely on dependency injection if we want to be pure.
+            // GameEngine constructor didn't take numbersGameManager.
+            // I'll assume global access for now to match current architecture.
+
+            const numbersManager = window.numbersGameManager;
+
+            const expression = input.value.trim();
+            const result = numbersManager.checkSolution(this.currentProblem.target, this.currentProblem.numbers, expression);
+
+            if (result.valid && result.exact) {
+                isCorrect = true;
+            } else {
+                isCorrect = false;
+                let reason = result.reason || 'Incorrecto';
+                if (result.valid && !result.exact) {
+                    reason = `Resultado: ${result.value} (Objetivo: ${this.currentProblem.target})`;
+                }
+                this.showFeedbackMessage(reason);
+            }
+
+            // Track specific stats for Cifras
+            const user = this.userManager.getCurrentUser();
+            if (user && this.achievementManager) {
+                user.achievementStats = user.achievementStats || {};
+
+                if (isCorrect) {
+                    user.achievementStats.exactSolutions = (user.achievementStats.exactSolutions || 0) + 1;
+                    user.achievementStats.numbersGameStreak = (user.achievementStats.numbersGameStreak || 0) + 1;
+
+                    // Chequear full house (usar todos los números)
+                    const usedNumbers = expression.match(/\d+/g);
+                    if (usedNumbers && usedNumbers.length === 6) {
+                        user.achievementStats.fullHouseSolutions = (user.achievementStats.fullHouseSolutions || 0) + 1;
+                        this.showTimeEffect('🃏 Full House!', 'positive');
+                    }
+                } else {
+                    user.achievementStats.numbersGameStreak = 0;
+                }
+                this.userManager.saveToStorage();
+            }
+        }
+
+        // Procesar resultado
+        if (isCorrect) {
+            // Marcar problema como resuelto para evitar repetición
+            if (this.currentProblem.id) {
+                this.markProblemAsSolved(this.currentProblem.id);
+            }
+
+            // Resetear selectedChoice para próximo problema
+            window.selectedChoice = null;
+
+            // Actualizar GameEngine
+            this.gameCoins += 30;
+            this.timeLeft += 10;
+            this.showTimeDelta(10);
+
+            // Track achievement stats for problems
+            const user = this.userManager.getCurrentUser();
+            if (user && this.achievementManager) {
+                user.achievementStats = user.achievementStats || {};
+                user.achievementStats.problemsSolved = (user.achievementStats.problemsSolved || 0) + 1;
+                user.achievementStats.coins = this.gameCoins;
+                user.achievementStats.level = this.gameLevel;
+
+                // Check for new achievements
+                const newAchievements = this.achievementManager.checkAchievements(user);
+                if (newAchievements && newAchievements.length > 0) {
+                    newAchievements.forEach(achievement => {
+                        this.achievementManager.showAchievementNotification(achievement);
+                    });
+                    this.userManager.saveToStorage();
+                }
+            }
+
+            if (this.dailyChallengeManager) {
+                this.dailyChallengeManager.updateProgress(null, 'problem_solved', 1); // null user defaults to current
+                this.dailyChallengeManager.updateProgress(null, 'coins_earned', 30);
+            }
+
+            try {
+                confetti({ particleCount: 30, spread: 50 });
+            } catch (e) {
+                // Confetti library not loaded
+            }
+
+            if (this.gameCoins % 50 === 0) {
+                this.gameLevel++;
+            }
+
+            this.updateGameDisplay();
+            // Call generateProblemFn from constructor properties
+            if (this.generateProblem) {
+                this.generateProblem();
+            }
+        } else {
+            const user = this.userManager.getCurrentUser();
+            this.userManager.initInventory(user);
+            if (user.inventory.shields > 0) {
+                user.inventory.shields--;
+                this.userManager.saveToStorage();
+                this.updatePowerUpDisplay();
+                this.showFeedbackMessage(t('alert_shield_used'));
+                this.showTimeEffect('🛡️', 'neutral');
+                return;
+            }
+
+            const appContainer = document.getElementById('app-container');
+            if (appContainer) {
+                appContainer.classList.add('shake');
+                setTimeout(() => appContainer.classList.remove('shake'), 400);
+            }
+
+            // Actualizar GameEngine
+            this.timeLeft -= 4;
+            this.showTimeDelta(-4);
+
+            this.updateGameDisplay();
+
+            if (this.currentProblem.explicacion) {
+                this.showFeedbackMessage(this.currentProblem.explicacion);
+            }
+        }
     }
 
     /**

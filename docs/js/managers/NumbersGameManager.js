@@ -186,20 +186,28 @@ class NumbersGameManager {
     /**
      * Renderiza la interfaz del juego
      * @param {Object} level - Nivel generado
-     * @returns {string} HTML del área de juego
+     * @returns {Promise<string>} HTML del área de juego
      */
-    renderGame(level) {
-        return `
-            <div class="numbers-game-container">
-                <div class="target-number">${level.target}</div>
-                <div class="available-numbers">
-                    ${level.numbers.map(n => `<div class="number-card">${n}</div>`).join('')}
-                </div>
-                <p data-i18n="numbers_game_instruction">
-                    Escribe una operación exacta usando estos números (+, -, *, /, paréntesis)
-                </p>
-            </div>
-        `;
+    async renderGame(level) {
+        if (!this.templateManager) {
+            this.templateManager = new TemplateManager();
+        }
+
+        const numbersHtml = level.numbers.map(n => `<div class="number-card">${n}</div>`).join('');
+
+        // Note: translation handling might need to be passed in or handled by TemplateManager if userManager/translationManager is available.
+        // For now, hardcoding the fallback text or assuming TemplateManager might handle i18n later if expanded.
+        // But since NumbersGameManager constructor is empty, we don't have translationManager instance here.
+        // We'll leave the data-i18n attribute for the client-side translation logic (if any runs after render).
+        // OR we can pass translationManager to renderGame if we want server-side-like rendering.
+        // Given existing code, it seems translation happens via `data-i18n` replacement in some other pass or just CSS/JS?
+        // Actually app.js has `translationManager`.
+
+        return await this.templateManager.render('numbers-game', {
+            target: level.target,
+            numbers_html: numbersHtml,
+            instruction_text: 'Escribe una operación exacta usando estos números (+, -, *, /, paréntesis)'
+        });
     }
 
     /**
@@ -245,6 +253,76 @@ class NumbersGameManager {
             modal.remove();
             if (onRetry) onRetry();
         };
+    }
+
+    /**
+     * Inicia una partida de Cifras
+     * @param {Object} gameEngine - Referencia al motor del juego
+     * @returns {Promise<Object>} El objeto problema generado
+     */
+    async startGame(gameEngine) {
+        // Generar nivel
+        const level = this.generateLevel();
+
+        // Configurar entorno de problema en GameEngine
+        gameEngine.problemMode = true;
+        gameEngine.problemType = 'numbers_game';
+        gameEngine.initGameSession(gameEngine.gameLevel, gameEngine.gameCoins);
+
+        // Crear objeto problema
+        const problem = {
+            id: 'numbers_game_' + Date.now(),
+            tipoRespuesta: 'numbers_game',
+            target: level.target,
+            numbers: level.numbers,
+            solution: null,
+            explicacion: `Objetivo: ${level.target} con [${level.numbers.join(', ')}]`
+        };
+
+        // Renderizar UI (zona de pregunta)
+        const questionArea = document.getElementById('question-area');
+        if (questionArea) {
+            questionArea.innerHTML = await this.renderGame(level);
+        }
+
+        // Renderizar UI (zona de respuesta)
+        const equationArea = document.getElementById('equation-area');
+        if (equationArea) {
+            equationArea.style.display = 'block';
+
+            if (!this.templateManager) {
+                this.templateManager = new TemplateManager();
+            }
+
+            equationArea.innerHTML = await this.templateManager.render('numbers-game-input', {
+                placeholder: 'Ej: (25 * 4) + 1'
+            });
+        }
+
+        // Gestionar visibilidad de botones
+        const submitBtn = document.getElementById('btn-submit-problem');
+        if (submitBtn) submitBtn.style.display = 'block';
+
+        const answersArea = document.getElementById('answers-area');
+        if (answersArea) answersArea.style.display = 'none';
+
+        // Configurar Timer (90 segundos)
+        gameEngine.timeLeft = 90;
+        gameEngine.setTimeLeft(90);
+
+        // Auto-focus (pequeño delay para asegurar renderizado)
+        setTimeout(() => document.getElementById('numbers-game-input')?.focus(), 100);
+
+        // Calcular solución asíncronamente
+        this.findBestSolutionAsync(level.target, level.numbers)
+            .then(solution => {
+                if (problem && problem.id) {
+                    problem.solution = solution;
+                }
+            })
+            .catch(err => console.error('Error calculando solución:', err));
+
+        return problem;
     }
 }
 
