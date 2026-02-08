@@ -241,6 +241,37 @@ class UserManager {
     }
 
     /**
+     * Activa un usuario (lo establece como actual) sin disparar cambios de pantalla
+     * Útil para login online o procesos automáticos
+     * @param {string} name - Nombre del usuario
+     */
+    activateUser(name) {
+        if (!name) return;
+
+        // Si no existe, crearlo con valores por defecto
+        if (!this.users[name]) {
+            this.users[name] = {
+                level: 1,
+                totalCoins: 0,
+                ops: ['+'],
+                inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                currentTheme: 'default',
+                problemCategories: ['explorador']
+            };
+        }
+
+        this.currentUser = name;
+        this.saveToStorage();
+
+        // Sincronizar variable global de app.js si está disponible
+        if (typeof window !== 'undefined' && typeof window.currentUser !== 'undefined') {
+            window.currentUser = name;
+        }
+
+        console.log(`👤 Usuario activado: ${name}`);
+    }
+
+    /**
      * Muestra el formulario de edición de nombre
      */
     showEditName() {

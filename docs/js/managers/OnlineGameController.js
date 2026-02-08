@@ -259,7 +259,8 @@ class OnlineGameController {
             const result = await this.onlineManager.registerOrLogin(username, password);
 
             if (result.ok) {
-                this.showMessage(messageDiv, this.t('success_connected'), 'success');
+                // Asegurar que el usuario está "activo" en el UserManager
+                this.userManager.activateUser(username);
 
                 // Merge data logic (delegated back to app via callback or direct if manager passed)
                 // We have userManager, so we can do it here
@@ -330,8 +331,9 @@ class OnlineGameController {
         // Maybe just console or toast? For now console.
 
         try {
-            // 1. Ensure Local Auth state matches
+            // 1. Ensure Local Auth state matches and user is active
             this.onlineManager.username = username;
+            this.userManager.activateUser(username);
 
             // 2. Sync
             await this.syncWithServer();
