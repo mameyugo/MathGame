@@ -444,6 +444,7 @@ class OnlineManager {
         this.roomToken = null;
         this.peerId = null;
         this.remotePeerId = null;
+        this.iceCandidateQueue = []; // Queue for candidates received before remote description
     }
 
     /**
@@ -479,6 +480,8 @@ class OnlineManager {
         if (this.peerConnection) {
             this.peerConnection.close();
         }
+
+        this.iceCandidateQueue = []; // Reset queue for new connection
 
         const configuration = {
             iceServers: this.iceServers || [{ urls: 'stun:rtc.mathqix.com:3478' }],
@@ -603,17 +606,44 @@ class OnlineManager {
                 await this.peerConnection.setLocalDescription(answer);
                 this.sendAnswer(answer);
 
+                // Procesar candidatos encolados tras establecer la descripción remota
+                this.processQueuedCandidates();
+
             } else if (data.type === 'answer') {
                 console.log('Procesando Respuesta Remota');
                 await this.peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
 
+                // Procesar candidatos encolados tras establecer la descripción remota
+                this.processQueuedCandidates();
+
             } else if (data.type === 'ice-candidate') {
                 if (data.candidate) {
-                    await this.peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+                    const candidate = new RTCIceCandidate(data.candidate);
+                    if (this.peerConnection.remoteDescription && this.peerConnection.remoteDescription.type) {
+                        await this.peerConnection.addIceCandidate(candidate);
+                    } else {
+                        console.log('Encolando ICE candidate rematado (descripción remota aún no lista)');
+                        this.iceCandidateQueue.push(candidate);
+                    }
                 }
             }
         } catch (e) {
             console.error('Error manejando señalización:', e);
+        }
+    }
+
+    /**
+     * Procesa los candidatos ICE que llegaron antes que la descripción remota
+     */
+    async processQueuedCandidates() {
+        console.log(`Procesando ${this.iceCandidateQueue.length} candidatos ICE encolados`);
+        while (this.iceCandidateQueue.length > 0) {
+            const candidate = this.iceCandidateQueue.shift();
+            try {
+                await this.peerConnection.addIceCandidate(candidate);
+            } catch (e) {
+                console.warn('Error añadiendo candidato encolado:', e);
+            }
         }
     }
 
