@@ -5,7 +5,7 @@
 class TemplateManager {
     constructor() {
         this.cache = {};
-        this.baseUrl = 'docs/templates/'; // Ajustar según estructura de carpetas
+        this.baseUrl = 'templates/'; // Relative to index.html
     }
 
     /**

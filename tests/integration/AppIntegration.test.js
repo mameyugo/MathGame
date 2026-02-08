@@ -28,7 +28,7 @@ beforeAll(() => {
 
     // Mock fetch for TemplateManager
     global.fetch = jest.fn((url) => {
-        if (url && typeof url === 'string' && url.includes('docs/templates/')) {
+        if (url && typeof url === 'string' && url.includes('templates/')) {
             const filename = path.basename(url);
             // Fix path resolution: tests/integration/../../docs/templates
             const templatePath = path.join(__dirname, '../../docs/templates/', filename);
