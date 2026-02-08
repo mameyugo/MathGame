@@ -684,7 +684,7 @@ function createAndShareGameRoom() {
 
 function joinRoomByCode() {
     const roomCode = document.getElementById('join-room-input').value.trim().toUpperCase();
-    onlineGameController.joinRoomByCode(roomCode);
+    onlineGameController.attemptJoinRoom(roomCode);
 }
 
 function prepareOnlineDuel() {
@@ -708,8 +708,7 @@ function showOnlineDuelOptions() {
 }
 
 function startCreateRoom() {
-    onlineGameController.pendingOnlineAction = 'create';
-    openOnlineCredentialsModal();
+    onlineGameController.attemptCreateRoom();
 }
 
 function registerOrLoginOnline() {

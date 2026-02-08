@@ -408,6 +408,79 @@ class OnlineGameController {
         if (modal) modal.style.display = 'none';
     }
 
+    openOnlineCredentialsModal() {
+        const modal = document.getElementById('online-credentials-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            const userInput = document.getElementById('online-username');
+            const passInput = document.getElementById('online-password');
+            if (userInput) userInput.value = '';
+            if (passInput) passInput.value = '';
+            if (userInput) userInput.focus();
+
+            const messageDiv = document.getElementById('online-credentials-message');
+            if (messageDiv) messageDiv.style.display = 'none';
+        }
+    }
+
+    /**
+     * Internal helper to ensure connection exists before action
+     * @returns {Promise<boolean>}
+     */
+    async _ensureConnection() {
+        // 1. Check if already connected
+        if (this.onlineManager.isOnlineConnected() && this.onlineManager.hasStoredCredentials()) {
+            return true;
+        }
+
+        // 2. Try auto-reconnect with stored credentials
+        if (this.onlineManager.hasStoredCredentials()) {
+            const creds = this.onlineManager.getStoredCredentials();
+            try {
+                // Show temporary loading indicator if needed?
+                // For now, rely on fast connection or console logs
+                await this.checkAndSync(creds.username, creds.password);
+                return this.onlineManager.isOnlineConnected();
+            } catch (e) {
+                console.warn('Auto-reconnect failed:', e);
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Public method to attempt creating a room
+     */
+    async attemptCreateRoom() {
+        const connected = await this._ensureConnection();
+        if (connected) {
+            this.createAndShareGameRoom();
+        } else {
+            this.pendingOnlineAction = 'create';
+            this.openOnlineCredentialsModal();
+        }
+    }
+
+    /**
+     * Public method to attempt joining a room
+     */
+    async attemptJoinRoom(roomCode) {
+        if (!roomCode) {
+            // Optional: Show error or alert
+            return;
+        }
+
+        const connected = await this._ensureConnection();
+        if (connected) {
+            this.joinRoomByCode(roomCode);
+        } else {
+            this.pendingOnlineAction = 'join';
+            this.openOnlineCredentialsModal();
+        }
+    }
+
     showMessage(messageDiv, text, type = 'error') {
         if (!messageDiv) return;
         messageDiv.style.display = 'block';
