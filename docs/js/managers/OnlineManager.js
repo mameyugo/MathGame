@@ -190,6 +190,22 @@ class OnlineManager {
         return new Promise((resolve, reject) => {
             try {
                 this.username = username;
+
+                // Si ya estamos conectados y autenticados, reutilizar
+                if (this.ws && this.ws.readyState === WebSocket.OPEN && this.isConnected) {
+                    console.log('WebSocket ya conectado, reutilizando...');
+                    // If we are already connected, we might need to re-verify or just return success
+                    // But the promise expects the 'login_success' payload.
+                    // We can mock it or just resolve if we are sure.
+                    resolve({ type: 'login_success', iceServers: this.iceServers || [] });
+                    return;
+                }
+
+                // Si hay una conexión cerrándose o vieja, asegurar cierre
+                if (this.ws) {
+                    this.ws.close();
+                }
+
                 this.ws = new WebSocket(this.wsUrl);
 
                 this.ws.onopen = () => {

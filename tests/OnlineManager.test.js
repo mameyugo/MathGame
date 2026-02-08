@@ -346,6 +346,26 @@ describe('OnlineManager - Sistema de Duelo Online', () => {
             });
         });
 
+        test('debería reutilizar conexión existente', async () => {
+            const mockWs = {
+                send: jest.fn(),
+                close: jest.fn(),
+                readyState: WebSocket.OPEN
+            };
+            onlineManager.ws = mockWs;
+            onlineManager.isConnected = true;
+            onlineManager.iceServers = [{ urls: 'stun:cached.com' }];
+
+            // No mocking connect needed as we are testing the logic inside
+            // But we need to ensure the promise resolves immediately
+
+            const result = await onlineManager.connect('user', 'pass');
+
+            expect(result.type).toBe('login_success');
+            expect(result.iceServers[0].urls).toBe('stun:cached.com');
+            expect(onlineManager.ws).toBe(mockWs); // Same instance
+        });
+
         test('debería enviar mensaje por WebSocket', () => {
             onlineManager.ws = {
                 readyState: WebSocket.OPEN,
