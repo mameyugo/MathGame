@@ -857,12 +857,6 @@ class GameEngine {
 
         // Use standard init
         this.initGameSession(1, 0);
-
-        // Override timer for specific modes if needed
-        if (this.onlineGameType === 'race') {
-            this.timeLeft = 9999; // Effectively infinite for race mode
-            this.toggleProblemUI(false); // Usually race is rapid calculation? Or problems? Assumed calculation for now.
-        }
     }
 
     /**
