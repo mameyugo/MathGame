@@ -49,7 +49,7 @@ class OnlineGameController {
             setTimeout(() => {
                 const queue = this.questionGenerator.generateMathQuestionBatch(50);
                 const config = {
-                    type: 'race',
+                    type: 'time',
                     targetWins: 10
                 };
 
