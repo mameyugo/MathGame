@@ -61,6 +61,11 @@ class UserManager {
 
             this.initInventory(user);
 
+            if (!user.ops || !Array.isArray(user.ops) || user.ops.length === 0) {
+                user.ops = ['+'];
+                changed = true;
+            }
+
             const afterInventory = JSON.stringify(user.inventory);
             if (beforeInventory !== afterInventory || beforeTheme !== user.currentTheme) {
                 changed = true;
@@ -449,6 +454,11 @@ class UserManager {
         // Logros
         if (remoteData.achievements) {
             user.achievements = remoteData.achievements;
+        }
+
+        // Asegurar que ops nunca esté vacío tras el merge
+        if (!user.ops || !Array.isArray(user.ops) || user.ops.length === 0) {
+            user.ops = ['+'];
         }
 
         // Guardar cambios

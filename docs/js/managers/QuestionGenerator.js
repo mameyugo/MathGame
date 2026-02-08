@@ -38,8 +38,17 @@ class QuestionGenerator {
     generateMathQuestionBatch(count = 50) {
         const batch = [];
         for (let i = 0; i < count; i++) {
-            batch.push(this.generateMathQuestionParams());
+            const params = this.generateMathQuestionParams();
+            if (params) {
+                batch.push(params);
+            }
         }
+
+        if (batch.length === 0) {
+            console.error('CRITICAL: Failed to generate ANY questions for batch. Ops:',
+                this.userManager.getCurrentUser()?.ops);
+        }
+
         return batch;
     }
 
@@ -49,7 +58,9 @@ class QuestionGenerator {
     generateMathQuestionParams() {
         const user = this.userManager.getCurrentUser();
         if (!user || !user.ops || user.ops.length === 0) {
-            return null; // Should handle error
+            console.warn('generateMathQuestionParams: No operations available for user:',
+                this.userManager.getCurrentUserName());
+            return null;
         }
 
         const ops = user.ops;
@@ -82,13 +93,15 @@ class QuestionGenerator {
         // Use queue if available
         if (this.problemQueue && this.currentQueueIndex < this.problemQueue.length) {
             params = this.problemQueue[this.currentQueueIndex++];
+            console.log('Using queued question:', params);
         } else {
             // Fallback to random generation
             params = this.generateMathQuestionParams();
+            console.log('Generated random question:', params);
         }
 
         if (!params) {
-            console.error('No operations or params available');
+            console.error('No operations or params available. User:', this.userManager.getCurrentUser());
             return;
         }
 

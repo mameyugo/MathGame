@@ -841,6 +841,7 @@ class GameEngine {
      * Starts an online game session
      */
     startOnlineGameSession(config) {
+        console.log('🎮 GameEngine: Starting online game session with config:', config);
         this.duelMode = true; // Use existing duel flag for UI purposes
         this.onlineMode = true; // New flag for logic distinction
         this.onlineGameType = config.type || 'time'; // 'time' (Survival) or 'race' (First to X)
