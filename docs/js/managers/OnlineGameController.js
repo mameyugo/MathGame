@@ -96,6 +96,9 @@ class OnlineGameController {
             // Guest sees "Joining..." then this.
             if (!this.isHost) {
                 this.showWaitingOverlay();
+                // Start P2P Handshake now that we are confirmed in the room
+                console.log('🏁 Initiating P2P Handshake...');
+                this.onlineManager.initPeerConnection(true);
             }
         }
     }
@@ -226,9 +229,8 @@ class OnlineGameController {
                     // IMPORTANT: Register WS connection to the room for signaling
                     this.onlineManager.joinRoomWebSocket();
 
-                    // INITIATE P2P CONNECTION AS GUEST (Initiator)
-                    // Important: The joiner initiates the P2P connection in this pattern
-                    this.onlineManager.initPeerConnection(true);
+                    // P2P Connection will be initiated in onServerMessage -> room_joined
+                    // to ensure WebSocket is ready in the room context
                 }, 1000);
             } else {
                 this.showMessage(messageDiv, result.error || 'Error desconocido', 'error');

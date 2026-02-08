@@ -99,8 +99,15 @@ describe('OnlineGameController', () => {
         if (!mockOnlineManager.roomJoined) {
             throw new Error('FAIL: onlineManager.joinRoom not called');
         }
+        if (mockOnlineManager.peerInit === true) {
+            throw new Error('FAIL: Joiner should NOT initiate peer connection immediately (wait for room_joined)');
+        }
+
+        // Simulate Server Message 'room_joined'
+        controller.onServerMessage({ type: 'room_joined', roomId: 'XYZ-789' });
+
         if (mockOnlineManager.peerInit !== true) {
-            throw new Error('FAIL: Joiner should initiate peer connection');
+            throw new Error('FAIL: Joiner should initiate peer connection AFTER room_joined');
         }
 
         window.setTimeout = originalTimeout;
