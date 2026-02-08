@@ -111,6 +111,8 @@ describe('OnlineManager - Sistema de Duelo Online', () => {
             expect(onlineManager.hasStoredCredentials()).toBe(false);
 
             localStorageMock.store['math_online_username'] = 'bob';
+            localStorageMock.store['math_online_password'] = 'secret';
+            localStorageMock.store['math_online_token'] = 'mock_token';
 
             expect(onlineManager.hasStoredCredentials()).toBe(true);
         });

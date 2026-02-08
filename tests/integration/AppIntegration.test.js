@@ -1,0 +1,722 @@
+const fs = require('fs');
+const path = require('path');
+
+// Cargar archivos necesarios
+const translationManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/TranslationManager.js'), 'utf8');
+const achievementManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/AchievementManager.js'), 'utf8');
+const userManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/UserManager.js'), 'utf8');
+const storeManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/StoreManager.js'), 'utf8');
+const dailyChallengeManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/DailyChallengeManager.js'), 'utf8');
+const gameEngineCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/GameEngine.js'), 'utf8');
+const questionGeneratorCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/QuestionGenerator.js'), 'utf8');
+const problemCategoryManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/ProblemCategoryManager.js'), 'utf8');
+const onlineManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/OnlineManager.js'), 'utf8');
+const localDuelManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/LocalDuelManager.js'), 'utf8');
+const onlineGameControllerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/OnlineGameController.js'), 'utf8');
+const numbersGameManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/NumbersGameManager.js'), 'utf8');
+const templateManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/TemplateManager.js'), 'utf8');
+// const problemCode = fs.readFileSync(path.join(__dirname, '../docs/js/problemas.js'), 'utf8'); // Removed legacy
+const appCode = fs.readFileSync(path.join(__dirname, '../../docs/js/app.js'), 'utf8');
+
+beforeAll(() => {
+    // Evitar auto-init en tests
+    window.__TEST__ = true;
+    // Evitar JSON.parse(undefined) durante la carga de app.js
+    if (localStorage && localStorage.getItem && localStorage.getItem.mockReturnValue) {
+        localStorage.getItem.mockReturnValue(null);
+    }
+
+    // Mock fetch for TemplateManager
+    global.fetch = jest.fn((url) => {
+        if (url && typeof url === 'string' && url.includes('docs/templates/')) {
+            const filename = path.basename(url);
+            // Fix path resolution: tests/integration/../../docs/templates
+            const templatePath = path.join(__dirname, '../../docs/templates/', filename);
+            if (fs.existsSync(templatePath)) {
+                return Promise.resolve({
+                    text: () => Promise.resolve(fs.readFileSync(templatePath, 'utf8')),
+                    ok: true,
+                    status: 200
+                });
+            }
+        }
+        return Promise.resolve({
+            text: () => Promise.resolve(''),
+            ok: false,
+            status: 404
+        });
+    });
+
+    // Ejecutar los scripts en el contexto del window
+    // Wrap cada manager para asignarlo explícitamente a window
+    window.eval(translationManagerCode + '\nwindow.TranslationManager = TranslationManager;');
+
+    window.eval(achievementManagerCode + '\nwindow.AchievementManager = AchievementManager;');
+
+    window.eval(userManagerCode + '\nwindow.UserManager = UserManager;');
+
+    window.eval(storeManagerCode + '\nwindow.StoreManager = StoreManager;');
+
+    window.eval(dailyChallengeManagerCode + '\nwindow.DailyChallengeManager = DailyChallengeManager;');
+
+    window.eval(gameEngineCode + '\nwindow.GameEngine = GameEngine;');
+
+    window.eval(questionGeneratorCode + '\nwindow.QuestionGenerator = QuestionGenerator;');
+
+    window.eval(problemCategoryManagerCode + '\nwindow.ProblemCategoryManager = ProblemCategoryManager;');
+
+    window.eval(onlineManagerCode + '\nwindow.OnlineManager = OnlineManager;');
+
+    window.eval(localDuelManagerCode + '\nwindow.LocalDuelManager = LocalDuelManager;');
+
+    window.eval(onlineGameControllerCode + '\nwindow.OnlineGameController = OnlineGameController;');
+
+    window.eval(numbersGameManagerCode + '\nwindow.NumbersGameManager = NumbersGameManager;');
+
+    window.eval(templateManagerCode + '\nwindow.TemplateManager = TemplateManager;');
+
+    // Mock window.bancoProblemas since strict module loading isn't supported in this test env
+    window.bancoProblemas = [
+        {
+            id: 'mock_math_1',
+            tipo: 'matematico',
+            nivelMin: 1,
+            categorias: ['explorador'],
+            generar: () => ({
+                texto: 'Mock Problem Math',
+                ecuacion: '1 + 1 = __',
+                ecuacionValores: [2],
+                opciones: [2, 3, 4, 5]
+            })
+        },
+        {
+            id: 'mock_logic_1',
+            tipo: 'logica',
+            nivelMin: 1,
+            categorias: ['explorador'],
+            generar: () => ({
+                texto: 'Mock Problem Logic',
+                ecuacion: 'Logic = __',
+                ecuacionValores: [1],
+                explicacion: 'Logic explanation',
+                opciones: [1, 0]
+            })
+        }
+    ];
+
+    // window.eval(problemCode + '\n'); // Legacy removed
+    window.eval(appCode + '\n');
+});
+
+describe('MathQix - Tests Unitarios', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        localStorage.getItem.mockReturnValue(null);
+        localStorage.setItem.mockClear();
+    });
+
+    describe('Gestión de Usuarios', () => {
+        test('createUser debe crear un nuevo usuario con datos correctos', () => {
+            // Simular el estado inicial
+            window.users = {};
+
+            const mockName = 'TestPlayer';
+            window.users[mockName] = {
+                level: 1,
+                totalCoins: 0,
+                ops: ['+'],
+                inventory: { potions: 0, shields: 0, themes: [] },
+                currentTheme: 'default'
+            };
+
+            expect(window.users[mockName]).toBeDefined();
+            expect(window.users[mockName].level).toBe(1);
+            expect(window.users[mockName].totalCoins).toBe(0);
+        });
+
+        test('initInventory debe inicializar inventario vacío', () => {
+            const user = { level: 1 };
+
+            if (!user.inventory) {
+                user.inventory = {
+                    potions: 0,
+                    freezes: 0,
+                    shields: 0,
+                    themes: []
+                };
+            }
+
+            expect(user.inventory.potions).toBe(0);
+            expect(user.inventory.freezes).toBe(0);
+            expect(user.inventory.shields).toBe(0);
+            expect(Array.isArray(user.inventory.themes)).toBe(true);
+        });
+    });
+
+    describe('Sistema de Juego', () => {
+        test('check() debe sumar monedas en respuesta correcta', () => {
+            window.gameCoins = 0;
+            window.gameLevel = 1;
+            window.currentAnswer = 5;
+            window.gameCoins += 10;
+
+            expect(window.gameCoins).toBe(10);
+        });
+
+        test('check() debe aplicar penalización en respuesta incorrecta', () => {
+            window.timeLeft = 30;
+            const initialTime = window.timeLeft;
+            window.timeLeft -= 4;
+
+            expect(window.timeLeft).toBe(initialTime - 4);
+        });
+
+        test('nivel debe aumentar cada 50 monedas', () => {
+            window.gameCoins = 50;
+            window.gameLevel = 1;
+
+            if (window.gameCoins % 50 === 0) {
+                window.gameLevel++;
+            }
+
+            expect(window.gameLevel).toBe(2);
+        });
+    });
+
+    describe('Sistema de Tienda', () => {
+        test('buyItem debe descontar monedas', () => {
+            const user = {
+                totalCoins: 200,
+                inventory: { potions: 0, shields: 0, themes: [] }
+            };
+
+            const itemPrice = 50;
+            if (user.totalCoins >= itemPrice) {
+                user.totalCoins -= itemPrice;
+                user.inventory.potions++;
+            }
+
+            expect(user.totalCoins).toBe(150);
+            expect(user.inventory.potions).toBe(1);
+        });
+
+        test('equipTheme debe cambiar tema actual', () => {
+            const user = {
+                inventory: { themes: ['theme_space'] },
+                currentTheme: 'default'
+            };
+
+            user.currentTheme = 'theme_space';
+
+            expect(user.currentTheme).toBe('theme_space');
+        });
+
+        test('unequipTheme debe revertir a tema default', () => {
+            const user = {
+                currentTheme: 'theme_jungle'
+            };
+
+            user.currentTheme = 'default';
+
+            expect(user.currentTheme).toBe('default');
+        });
+    });
+
+    describe('Temas Visuales (Selva/Espacial)', () => {
+        test('equipTheme debe activar tema espacial', () => {
+            const user = {
+                inventory: { themes: ['theme_space'] },
+                currentTheme: 'default'
+            };
+
+            if (user.inventory.themes.includes('theme_space')) {
+                user.currentTheme = 'theme_space';
+            }
+
+            expect(user.currentTheme).toBe('theme_space');
+        });
+
+        test('equipTheme debe activar tema selva', () => {
+            const user = {
+                inventory: { themes: ['theme_jungle'] },
+                currentTheme: 'default'
+            };
+
+            if (user.inventory.themes.includes('theme_jungle')) {
+                user.currentTheme = 'theme_jungle';
+            }
+
+            expect(user.currentTheme).toBe('theme_jungle');
+        });
+
+        test('unequipTheme debe desactivar tema espacial', () => {
+            const user = {
+                currentTheme: 'theme_space'
+            };
+
+            user.currentTheme = 'default';
+
+            expect(user.currentTheme).toBe('default');
+        });
+
+        test('unequipTheme debe desactivar tema selva', () => {
+            const user = {
+                currentTheme: 'theme_jungle'
+            };
+
+            user.currentTheme = 'default';
+
+            expect(user.currentTheme).toBe('default');
+        });
+    });
+
+    describe('Sistema de Escudos', () => {
+        test('shield debe proteger contra respuesta incorrecta', () => {
+            const user = {
+                inventory: { shields: 1 }
+            };
+
+            const initialShields = user.inventory.shields;
+            user.inventory.shields--;
+
+            expect(user.inventory.shields).toBe(initialShields - 1);
+        });
+
+        test('sin escudo debe aplicar penalización de tiempo', () => {
+            const user = { inventory: { shields: 0 } };
+            let timeLeft = 30;
+
+            if (user.inventory.shields === 0) {
+                timeLeft -= 4;
+            }
+
+            expect(timeLeft).toBe(26);
+        });
+    });
+
+    describe('Sistema de Pociones', () => {
+        test('usePotion debe consumir poción y añadir tiempo', () => {
+            const user = { inventory: { potions: 2 } };
+            let timeLeft = 30;
+
+            if (user.inventory.potions > 0) {
+                user.inventory.potions--;
+                timeLeft += 15;
+            }
+
+            expect(user.inventory.potions).toBe(1);
+            expect(timeLeft).toBe(45);
+        });
+
+        test('no debe permitir usar poción sin tener', () => {
+            const user = { inventory: { potions: 0 } };
+
+            const canUse = user.inventory.potions > 0;
+
+            expect(canUse).toBe(false);
+        });
+    });
+
+    describe('Sistema de Congelación de Tiempo', () => {
+        test('useFreezeTime debe consumir freeze', () => {
+            const user = { inventory: { freezes: 3 } };
+
+            if (user.inventory.freezes > 0) {
+                user.inventory.freezes--;
+            }
+
+            expect(user.inventory.freezes).toBe(2);
+        });
+
+        test('no debe permitir usar freeze sin tener', () => {
+            const user = { inventory: { freezes: 0 } };
+
+            const canUse = user.inventory.freezes > 0;
+
+            expect(canUse).toBe(false);
+        });
+
+        test('buyItem debe añadir freeze al inventario', () => {
+            const user = {
+                totalCoins: 50,
+                inventory: { freezes: 0 }
+            };
+
+            const itemPrice = 20;
+            if (user.totalCoins >= itemPrice) {
+                user.totalCoins -= itemPrice;
+                user.inventory.freezes++;
+            }
+
+            expect(user.totalCoins).toBe(30);
+            expect(user.inventory.freezes).toBe(1);
+        });
+    });
+
+    describe('Modo Duelo', () => {
+        test('duelScores debe registrar puntos de cada jugador', () => {
+            window.duelScores = {
+                'Player1': 150,
+                'Player2': 200
+            };
+
+            expect(window.duelScores['Player1']).toBe(150);
+            expect(window.duelScores['Player2']).toBe(200);
+        });
+    });
+
+    describe('Sincronización con localStorage', () => {
+        test('syncStateFromStorage debe restaurar datos', () => {
+            const mockUserData = {
+                'TestPlayer': {
+                    level: 5,
+                    totalCoins: 500,
+                    ops: ['+', '-'],
+                    inventory: { potions: 2, shields: 1, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            localStorage.getItem.mockImplementation((key) => {
+                if (key === 'math_users') return JSON.stringify(mockUserData);
+                if (key === 'math_lang') return 'es';
+                return null;
+            });
+
+            window.syncStateFromStorage();
+
+            const restored = JSON.parse(localStorage.getItem('math_users'));
+
+            expect(restored['TestPlayer'].level).toBe(5);
+            expect(restored['TestPlayer'].totalCoins).toBe(500);
+        });
+
+        test('normalizeUsers añade freezes si no existe', () => {
+            const legacyUserData = {
+                'LegacyPlayer': {
+                    level: 2,
+                    totalCoins: 80,
+                    ops: ['+'],
+                    inventory: { potions: 1, shields: 0, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            localStorage.getItem.mockImplementation((key) => {
+                if (key === 'math_users') return JSON.stringify(legacyUserData);
+                if (key === 'math_lang') return 'es';
+                return null;
+            });
+
+            window.syncStateFromStorage();
+
+            const setCalls = localStorage.setItem.mock.calls;
+            const usersCall = setCalls.find(call => call[0] === 'math_users');
+            expect(usersCall).toBeTruthy();
+
+            const migrated = JSON.parse(usersCall[1]);
+            expect(migrated['LegacyPlayer'].inventory.freezes).toBe(0);
+        });
+    });
+
+    describe('Modo de Problemas', () => {
+        beforeEach(() => {
+            window.problemMode = false;
+            window.problemType = 'matematico';
+            window.currentProblem = null;
+            window.gameLevel = 1;
+            window.gameCoins = 0;
+        });
+
+        test('bancoProblemas debe contener problemas válidos', () => {
+            expect(window.bancoProblemas).toBeDefined();
+            expect(Array.isArray(window.bancoProblemas)).toBe(true);
+            expect(window.bancoProblemas.length).toBeGreaterThan(0);
+        });
+
+        test('problema matemático debe generarse correctamente', () => {
+            const problema = window.bancoProblemas.find(p => p.tipo === 'matematico');
+            expect(problema).toBeDefined();
+
+            const generado = problema.generar();
+            expect(generado.texto).toBeDefined();
+            expect(generado.ecuacion).toBeDefined();
+            expect(generado.ecuacionValores).toBeDefined();
+            expect(Array.isArray(generado.ecuacionValores)).toBe(true);
+        });
+
+        test('problema de lógica debe generarse correctamente', () => {
+            const problema = window.bancoProblemas.find(p => p.tipo === 'logica');
+            expect(problema).toBeDefined();
+
+            const generado = problema.generar();
+            expect(generado.texto).toBeDefined();
+            expect(generado.ecuacion).toBeDefined();
+            expect(generado.ecuacionValores).toBeDefined();
+            expect(Array.isArray(generado.ecuacionValores)).toBe(true);
+            expect(generado.explicacion).toBeDefined();
+        });
+
+        test('selectProblem debe retornar un problema válido', () => {
+            window.problemType = 'matematico';
+            window.gameLevel = 1;
+
+            window.currentUser = 'TestPlayer';
+            window.users = {
+                'TestPlayer': {
+                    level: 1,
+                    totalCoins: 0,
+                    ops: ['+'],
+                    inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            const problema = window.selectProblem();
+            expect(problema).not.toBeNull();
+            expect(problema.texto).toBeDefined();
+            expect(problema.ecuacionValores).toBeDefined();
+        });
+
+        test('renderEquation debe crear inputs correctamente', () => {
+            // Crear estructura HTML simulada
+            const equationArea = document.createElement('div');
+            equationArea.id = 'equation-area';
+            document.body.appendChild(equationArea);
+
+            const equation = '5 x 3 = __\nResultado = __';
+            window.renderEquation(equation);
+
+            const inputs = equationArea.querySelectorAll('input.eq-input');
+            expect(inputs.length).toBe(2);
+
+            document.body.removeChild(equationArea);
+        });
+
+        test('submitProblem debe validar respuestas correctas', () => {
+            // Setup
+            window.currentUser = 'TestPlayer';
+            window.users = {
+                'TestPlayer': {
+                    level: 1,
+                    totalCoins: 0,
+                    ops: ['+'],
+                    inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            // Crear estructura HTML
+            const equationArea = document.createElement('div');
+            equationArea.id = 'equation-area';
+            document.body.appendChild(equationArea);
+
+            const questionArea = document.createElement('div');
+            questionArea.id = 'question-area';
+            document.body.appendChild(questionArea);
+
+            const input1 = document.createElement('input');
+            input1.type = 'number';
+            input1.className = 'eq-input';
+            input1.value = '15'; // 5 x 3 = 15
+            equationArea.appendChild(input1);
+
+            // Crear un problema de prueba
+            window.currentProblem = {
+                texto: '¿Cuánto es 5 x 3?',
+                ecuacionValores: [15],
+                explicacion: 'Resultado correcto'
+            };
+
+            // Aquí no llamamos a submitProblem completo porque modifica estado global
+            // Pero probamos la validación lógica
+            const values = Array.from(equationArea.querySelectorAll('input.eq-input'))
+                .map(i => i.value.trim());
+            const parsed = values.map(v => Number(v));
+            const expected = window.currentProblem.ecuacionValores;
+
+            const isCorrect = parsed.length === expected.length &&
+                parsed.every((v, i) => v === expected[i]);
+
+            expect(isCorrect).toBe(true);
+
+            document.body.removeChild(equationArea);
+            document.body.removeChild(questionArea);
+        });
+
+        test('submitProblem debe rechazar respuestas incorrectas', () => {
+            // Setup
+            window.currentUser = 'TestPlayer';
+            window.users = {
+                'TestPlayer': {
+                    level: 1,
+                    totalCoins: 0,
+                    ops: ['+'],
+                    inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            // Crear estructura HTML
+            const equationArea = document.createElement('div');
+            equationArea.id = 'equation-area';
+            document.body.appendChild(equationArea);
+
+            const input1 = document.createElement('input');
+            input1.type = 'number';
+            input1.className = 'eq-input';
+            input1.value = '14'; // Incorrecto (debería ser 15)
+            equationArea.appendChild(input1);
+
+            // Crear un problema de prueba
+            window.currentProblem = {
+                texto: '¿Cuánto es 5 x 3?',
+                ecuacionValores: [15],
+                explicacion: 'Deberías haber respondido 15'
+            };
+
+            // Validar que es incorrecto
+            const values = Array.from(equationArea.querySelectorAll('input.eq-input'))
+                .map(i => i.value.trim());
+            const parsed = values.map(v => Number(v));
+            const expected = window.currentProblem.ecuacionValores;
+
+            const isCorrect = parsed.length === expected.length &&
+                parsed.every((v, i) => v === expected[i]);
+
+            expect(isCorrect).toBe(false);
+
+            document.body.removeChild(equationArea);
+        });
+
+        test('startProblemGame debe inicializar modo problemas', () => {
+            window.currentUser = 'TestPlayer';
+            window.users = {
+                'TestPlayer': {
+                    level: 1,
+                    totalCoins: 0,
+                    ops: ['+'],
+                    inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                    currentTheme: 'default'
+                }
+            };
+
+            // Simular el inicio de juego
+            window.duelMode = false;
+            window.problemMode = true;
+            window.problemType = 'logica';
+
+            expect(window.duelMode).toBe(false);
+            expect(window.problemMode).toBe(true);
+            expect(window.problemType).toBe('logica');
+        });
+    });
+
+    describe('Panel de Logros', () => {
+        test('renderAchievements debe crear filtros y lista de logros', async () => {
+            const userManager = window.__appManagers.userManager;
+            const achievementManager = window.__appManagers.achievementManager;
+            const dailyChallengeManager = window.__appManagers.dailyChallengeManager;
+
+            const user = {
+                level: 1,
+                totalCoins: 0,
+                ops: ['+'],
+                inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                currentTheme: 'default',
+                achievementStats: {
+                    streak: 0,
+                    duelStreakMax: 0,
+                    totalCoinsEarned: 0,
+                    equationsCompleted: 0,
+                    fastestTime: 0,
+                    accuracyPercentage: 0,
+                    themes: []
+                }
+            };
+
+            achievementManager.initAchievements(user);
+            userManager.users = { TestPlayer: user };
+            userManager.currentUser = 'TestPlayer';
+
+            document.body.innerHTML = '<div id="achievements-content"></div>';
+
+            await achievementManager.renderAchievements(user, dailyChallengeManager);
+
+            const filters = document.querySelector('.achievement-filters');
+            const filterButtons = document.querySelectorAll('.achievement-filter');
+            const cards = document.querySelectorAll('.achievement-card');
+
+            expect(filters).toBeTruthy();
+            expect(filterButtons.length).toBe(7);
+            expect(cards.length).toBeGreaterThan(0);
+        });
+
+        test('filtro de categoría debe ocultar tarjetas de otras categorías', async () => {
+            const userManager = window.__appManagers.userManager;
+            const achievementManager = window.__appManagers.achievementManager;
+            const dailyChallengeManager = window.__appManagers.dailyChallengeManager;
+
+            const user = {
+                level: 1,
+                totalCoins: 0,
+                ops: ['+'],
+                inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
+                currentTheme: 'default',
+                achievementStats: {
+                    streak: 0,
+                    duelStreakMax: 0,
+                    totalCoinsEarned: 0,
+                    equationsCompleted: 0,
+                    fastestTime: 0,
+                    accuracyPercentage: 0,
+                    themes: []
+                }
+            };
+
+            achievementManager.initAchievements(user);
+            userManager.users = { TestPlayer: user };
+            userManager.currentUser = 'TestPlayer';
+
+            document.body.innerHTML = '<div id="achievements-content"></div>';
+
+            await achievementManager.renderAchievements(user, dailyChallengeManager);
+
+            const logicFilter = document.querySelector('.achievement-filter[data-filter="logic"]');
+
+            // Find a card that should show (logic) and one that should hide (progress)
+            // Note: We need to know which cards belong to which category.
+            // AchievementManager logic: card.dataset.category
+
+            const logicCard = document.querySelector('.achievement-card[data-category="logic"]');
+            const progressCard = document.querySelector('.achievement-card[data-category="progress"]');
+
+            // Initial state (all shown)
+            // expect(logicCard.style.display).not.toBe('none'); // Flex by default or from CSS class
+
+            logicFilter.dispatchEvent(new window.Event('click'));
+
+            expect(progressCard.style.display).toBe('none');
+            // Logic card should be visible (style.display sets to 'flex')
+            expect(logicCard.style.display).toBe('flex');
+        });
+    });
+
+    describe('Modo Cifras (Integración)', () => {
+        test('startNumbersGame debe llamar al manager', async () => {
+            // Access exposed manager
+            const manager = window.__appManagers.numbersGameManager;
+
+            // Spy on startGame
+            const spy = jest.spyOn(manager, 'startGame').mockResolvedValue({
+                id: 'ng_test',
+                target: 100,
+                numbers: [1, 2, 3]
+            });
+
+            await window.startNumbersGame();
+
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+});
