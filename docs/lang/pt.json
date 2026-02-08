@@ -218,5 +218,11 @@
     "error_password_min": "A senha deve ter pelo menos 6 caracteres",
     "error_connection": "Erro de conexão com o servidor",
     "error_websocket": "Erro de conexão WebSocket",
-    "success_connected": "✅ Conectado com sucesso"
+    "success_connected": "✅ Conectado com sucesso",
+    "achievements_exact_count_name": "Na Mosca!",
+    "achievements_exact_count_description": "Resolva um número exato",
+    "achievements_math_wizard_name": "Mago da Matemática",
+    "achievements_math_wizard_description": "5 Cifras seguidas sem falhar",
+    "achievements_full_house_name": "Casa Cheia",
+    "achievements_full_house_description": "Use todos os 6 números para atingir o objetivo"
 }

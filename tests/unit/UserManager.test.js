@@ -22,6 +22,11 @@ describe('UserManager', () => {
             t: jest.fn((key) => key)
         };
 
+        // Mock TemplateManager
+        global.TemplateManager = jest.fn(() => ({
+            render: jest.fn((template, data) => Promise.resolve(`<div>${data.name || ''} 💰 ${data.coins || ''} ${data.level ? 'Lvl ' + data.level : ''} ${data.icon || ''}</div>`))
+        }));
+
         manager = new UserManager(mockTranslationManager);
     });
 
@@ -331,7 +336,7 @@ describe('UserManager', () => {
     });
 
     describe('renderUserList', () => {
-        test('should render user cards', () => {
+        test('should render user cards', async () => {
             manager.users = {
                 Alice: { level: 3, totalCoins: 150 },
                 Bob: { level: 5, totalCoins: 250 }
@@ -341,7 +346,7 @@ describe('UserManager', () => {
             global.document.getElementById = jest.fn(() => mockList);
             global.document.querySelectorAll = jest.fn(() => []);
 
-            manager.renderUserList();
+            await manager.renderUserList();
 
             expect(mockList.innerHTML).toContain('Alice');
             expect(mockList.innerHTML).toContain('Bob');
@@ -349,18 +354,18 @@ describe('UserManager', () => {
             expect(mockList.innerHTML).toContain('💰 150');
         });
 
-        test('should handle empty user list', () => {
+        test('should handle empty user list', async () => {
             const mockList = { innerHTML: 'old content' };
             global.document.getElementById = jest.fn(() => mockList);
 
-            manager.renderUserList();
+            await manager.renderUserList();
 
             expect(mockList.innerHTML).toBe('');
         });
     });
 
     describe('renderLeaderboard', () => {
-        test('should render top 3 users sorted by coins', () => {
+        test('should render top 3 users sorted by coins', async () => {
             manager.users = {
                 Alice: { level: 3, totalCoins: 150 },
                 Bob: { level: 5, totalCoins: 300 },
@@ -371,7 +376,7 @@ describe('UserManager', () => {
             const mockList = { innerHTML: '' };
             global.document.getElementById = jest.fn(() => mockList);
 
-            manager.renderLeaderboard();
+            await manager.renderLeaderboard();
 
             expect(mockList.innerHTML).toContain('🥇');
             expect(mockList.innerHTML).toContain('Bob');
@@ -379,11 +384,11 @@ describe('UserManager', () => {
             expect(mockList.innerHTML).not.toContain('Dave');
         });
 
-        test('should show empty message when no users', () => {
+        test('should show empty message when no users', async () => {
             const mockList = { innerHTML: '' };
             global.document.getElementById = jest.fn(() => mockList);
 
-            manager.renderLeaderboard();
+            await manager.renderLeaderboard();
 
             expect(mockTranslationManager.t).toHaveBeenCalledWith('hall_of_fame_empty');
         });

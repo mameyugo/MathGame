@@ -218,5 +218,11 @@
     "error_password_min": "Das Passwort muss mindestens 6 Zeichen lang sein",
     "error_connection": "Fehler bei der Serververbindung",
     "error_websocket": "WebSocket-Verbindungsfehler",
-    "success_connected": "✅ Erfolgreich verbunden"
+    "success_connected": "✅ Erfolgreich verbunden",
+    "achievements_exact_count_name": "Volltreffer!",
+    "achievements_exact_count_description": "Löse eine exakte Zahl",
+    "achievements_math_wizard_name": "Mathe-Zauberer",
+    "achievements_math_wizard_description": "5 Ziffern in Folge ohne Fehler",
+    "achievements_full_house_name": "Full House",
+    "achievements_full_house_description": "Benutze alle 6 Zahlen, um das Ziel zu erreichen"
 }

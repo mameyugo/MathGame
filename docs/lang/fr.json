@@ -218,5 +218,11 @@
     "error_password_min": "Le mot de passe doit comporter au moins 6 caractères",
     "error_connection": "Erreur de connexion au serveur",
     "error_websocket": "Erreur de connexion WebSocket",
-    "success_connected": "✅ Connecté avec succès"
+    "success_connected": "✅ Connecté avec succès",
+    "achievements_exact_count_name": "Dans le mille!",
+    "achievements_exact_count_description": "Résoudre un nombre exact",
+    "achievements_math_wizard_name": "Sorcier des Maths",
+    "achievements_math_wizard_description": "5 chiffres de suite sans faute",
+    "achievements_full_house_name": "Full House",
+    "achievements_full_house_description": "Utiliser les 6 nombres pour atteindre l'objectif"
 }

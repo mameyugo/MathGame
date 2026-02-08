@@ -48,6 +48,11 @@ describe('StoreManager', () => {
         // Mock confetti
         global.confetti = jest.fn();
 
+        // Mock TemplateManager
+        global.TemplateManager = jest.fn(() => ({
+            render: jest.fn(() => Promise.resolve('<div>Item</div>'))
+        }));
+
         manager = new StoreManager(mockUserManager, mockTranslationManager);
     });
 
@@ -118,7 +123,7 @@ describe('StoreManager', () => {
     });
 
     describe('renderStore', () => {
-        test('should render store items', () => {
+        test('should render store items', async () => {
             const mockContainer = { innerHTML: '', appendChild: jest.fn() };
             const mockBalance = { innerText: '' };
             global.document.getElementById = jest.fn((id) => {
@@ -127,10 +132,12 @@ describe('StoreManager', () => {
                 return null;
             });
 
-            manager.renderStore();
+            await manager.renderStore();
 
             expect(mockBalance.innerText).toBe(200);
-            expect(mockContainer.appendChild).toHaveBeenCalledTimes(9);
+            expect(mockContainer.innerHTML).toContain('<div>Item</div>');
+            // Check that it was called 9 times (approx check via length or repetition if needed, but contain is enough for now)
+            expect(mockContainer.innerHTML.match(/<div>Item<\/div>/g).length).toBe(9);
         });
 
         test('should handle missing elements gracefully', () => {

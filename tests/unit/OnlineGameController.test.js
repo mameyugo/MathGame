@@ -23,6 +23,7 @@ class MockOnlineManager {
     async registerOrLogin() { return { ok: true }; }
     initPeerConnection(isInit) { this.peerInit = isInit; }
     async joinRoomWebSocket() { return true; }
+    async syncUserData() { return true; }
 }
 
 class MockGameEngine {

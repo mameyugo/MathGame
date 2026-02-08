@@ -218,5 +218,11 @@
     "error_password_min": "La contrasenya ha de tenir almenys 6 caràcters",
     "error_connection": "Error de connexió amb el servidor",
     "error_websocket": "Error de connexió WebSocket",
-    "success_connected": "✅ Connectat correctament"
+    "success_connected": "✅ Connectat amb èxit",
+    "achievements_exact_count_name": "Diana!",
+    "achievements_exact_count_description": "Resol una xifra exacta",
+    "achievements_math_wizard_name": "Mag Matemàtic",
+    "achievements_math_wizard_description": "5 Xifres seguides sense fallar",
+    "achievements_full_house_name": "Ple",
+    "achievements_full_house_description": "Utilitza els 6 números per arribar a l'objectiu"
 }
