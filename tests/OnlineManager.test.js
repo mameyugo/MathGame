@@ -383,6 +383,8 @@ describe('OnlineManager - Sistema de Duelo Online', () => {
             };
             onlineManager.roomId = 'room_123';
             onlineManager.peerId = 'peer_abc';
+            onlineManager.roomToken = 'ABC123';
+            onlineManager.authToken = 'auth_token_123';
         });
 
         test('debería unirse a sala en WebSocket', () => {
@@ -390,6 +392,9 @@ describe('OnlineManager - Sistema de Duelo Online', () => {
 
             expect(onlineManager.ws.send).toHaveBeenCalledWith(
                 expect.stringContaining('"type":"join_room"')
+            );
+            expect(onlineManager.ws.send).toHaveBeenCalledWith(
+                expect.stringContaining('"token":"ABC123"')
             );
         });
 

@@ -214,8 +214,8 @@ class OnlineManager {
                     reject(new Error(this.t('error_websocket') || 'Error de conexión WebSocket'));
                 };
 
-                this.ws.onclose = () => {
-                    console.log('WebSocket desconectado');
+                this.ws.onclose = (event) => {
+                    console.log('WebSocket desconectado', { code: event.code, reason: event.reason, wasClean: event.wasClean });
                     this.isConnected = false;
                 };
             } catch (error) {
@@ -330,7 +330,9 @@ class OnlineManager {
         this.send({
             type: 'join_room',
             roomId: this.roomId,
-            peerId: this.peerId
+            peerId: this.peerId,
+            token: this.roomToken,
+            authToken: this.authToken
         });
     }
 
