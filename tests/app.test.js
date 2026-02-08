@@ -671,4 +671,22 @@ describe('MathQix - Tests Unitarios', () => {
             expect(logicCard.style.display).toBe('flex');
         });
     });
+
+    describe('Modo Cifras (Integración)', () => {
+        test('startNumbersGame debe llamar al manager', async () => {
+            // Access exposed manager
+            const manager = window.__appManagers.numbersGameManager;
+
+            // Spy on startGame
+            const spy = jest.spyOn(manager, 'startGame').mockResolvedValue({
+                id: 'ng_test',
+                target: 100,
+                numbers: [1, 2, 3]
+            });
+
+            await window.startNumbersGame();
+
+            expect(spy).toHaveBeenCalled();
+        });
+    });
 });

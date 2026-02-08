@@ -783,4 +783,5 @@ if (typeof window !== 'undefined') {
     window.__appManagers.dailyChallengeManager = dailyChallengeManager;
     window.__appManagers.onlineManager = onlineManager;
     window.__appManagers.onlineGameController = onlineGameController;
+    window.__appManagers.numbersGameManager = numbersGameManager;
 }

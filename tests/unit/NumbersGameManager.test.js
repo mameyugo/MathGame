@@ -96,4 +96,61 @@ describe('NumbersGameManager', () => {
         expect(result.valid).toBe(true);
         expect(result.value).toBe(300);
     });
+
+    describe('UI Methods', () => {
+        beforeEach(() => {
+            // Mock TemplateManager
+            manager.templateManager = {
+                render: jest.fn().mockResolvedValue('<div>Mock Template</div>')
+            };
+
+            // Mock DOM
+            document.body.innerHTML = `
+                <div id="question-area"></div>
+                <div id="equation-area"></div>
+                <div id="answers-area"></div>
+                <button id="btn-submit-problem"></button>
+                <input id="numbers-game-input">
+            `;
+
+            // Mock GameEngine
+            manager.gameEngine = {
+                initGameSession: jest.fn(),
+                setTimeLeft: jest.fn(),
+                timeLeft: 0,
+                gameLevel: 1,
+                gameCoins: 0
+            };
+        });
+
+        test('renderGame calls template manager', async () => {
+            const level = { target: 100, numbers: [1, 2, 3] };
+            const html = await manager.renderGame(level);
+
+            expect(manager.templateManager.render).toHaveBeenCalled();
+            expect(html).toBe('<div>Mock Template</div>');
+        });
+
+        test('startGame initializes session and renders UI', async () => {
+            const mockGameEngine = {
+                initGameSession: jest.fn(),
+                setTimeLeft: jest.fn(),
+                gameLevel: 1,
+                gameCoins: 0
+            };
+
+            const problem = await manager.startGame(mockGameEngine);
+
+            expect(mockGameEngine.initGameSession).toHaveBeenCalled();
+            expect(mockGameEngine.problemMode).toBe(true);
+            expect(mockGameEngine.problemType).toBe('numbers_game');
+            expect(mockGameEngine.setTimeLeft).toHaveBeenCalled();
+
+            expect(document.getElementById('question-area').innerHTML).toBe('<div>Mock Template</div>');
+            expect(document.getElementById('equation-area').style.display).toBe('block');
+
+            expect(problem).toBeDefined();
+            expect(problem.target).toBeGreaterThan(0);
+        });
+    });
 });

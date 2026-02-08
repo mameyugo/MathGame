@@ -531,5 +531,148 @@ describe('GameEngine', () => {
             gameEngine.resetSolvedProblems();
             expect(gameEngine.solvedProblemsInSession.size).toBe(0);
         });
+        describe('submitProblem', () => {
+            beforeEach(() => {
+                // Mock DOM elements for submitProblem
+                document.body.innerHTML += `
+                <div id="equation-area">
+                    <input class="eq-input" value="10">
+                </div>
+                <div id="text-answer-input"></div>
+                <div id="numbers-game-input"></div>
+                <div id="answers-area"></div>
+                <button id="btn-submit-problem"></button>
+            `;
+
+                // Mock window.numbersGameManager
+                window.numbersGameManager = {
+                    checkSolution: jest.fn()
+                };
+
+                // Mock showFeedbackMessage
+                gameEngine.showFeedbackMessage = jest.fn();
+
+                // Mock loading confetti
+                window.confetti = jest.fn();
+            });
+
+            test('should validate numeric answer correctly', () => {
+                gameEngine.currentProblem = {
+                    tipoRespuesta: 'numero',
+                    ecuacionValores: [10],
+                    id: 'p1'
+                };
+
+                const input = document.querySelector('.eq-input');
+                input.value = "10";
+
+                gameEngine.submitProblem();
+
+                expect(gameEngine.gameCoins).toBe(30); // 0 + 30
+                expect(gameEngine.solvedProblemsInSession.has('p1')).toBe(true);
+            });
+
+            test('should handle incorrect numeric answer', () => {
+                // Mock user with NO shields to ensure penalty is applied
+                mockUserManager.getCurrentUser.mockReturnValue({
+                    ops: ['+'],
+                    inventory: { shields: 0 },
+                    achievementStats: {}
+                });
+
+                gameEngine.currentProblem = {
+                    tipoRespuesta: 'numero',
+                    ecuacionValores: [10],
+                    id: 'p1'
+                };
+
+                const input = document.querySelector('.eq-input');
+                input.value = "5";
+
+                gameEngine.timeLeft = 30;
+                gameEngine.submitProblem();
+
+                expect(gameEngine.gameCoins).toBe(0);
+                expect(gameEngine.timeLeft).toBe(26); // 30 - 4
+            });
+
+            test('should validate multiple choice correctly', () => {
+                gameEngine.currentProblem = {
+                    tipoRespuesta: 'opcion_multiple',
+                    respuestaCorrecta: 2,
+                    id: 'p2'
+                };
+
+                window.selectedChoice = 2;
+
+                gameEngine.submitProblem();
+
+                expect(gameEngine.gameCoins).toBe(30);
+                expect(window.selectedChoice).toBeNull(); // Should reset
+            });
+
+            test('should validate text answer correctly (case insensitive)', () => {
+                gameEngine.currentProblem = {
+                    tipoRespuesta: 'texto',
+                    respuestaCorrecta: 'Paris',
+                    caseSensitive: false,
+                    id: 'p3'
+                };
+
+                const input = document.getElementById('text-answer-input');
+                input.value = "paris";
+
+                gameEngine.submitProblem();
+
+                expect(gameEngine.gameCoins).toBe(30);
+            });
+
+            test('should validate numbers game exact solution', () => {
+                gameEngine.currentProblem = {
+                    tipoRespuesta: 'numbers_game',
+                    target: 100,
+                    numbers: [50, 2],
+                    id: 'ng1'
+                };
+
+                const input = document.getElementById('numbers-game-input');
+                input.value = "50 * 2";
+
+                window.numbersGameManager.checkSolution.mockReturnValue({
+                    valid: true,
+                    exact: true,
+                    value: 100
+                });
+
+                gameEngine.submitProblem();
+
+                expect(gameEngine.gameCoins).toBe(30);
+                expect(window.numbersGameManager.checkSolution).toHaveBeenCalledWith(100, [50, 2], "50 * 2");
+            });
+
+            test('should handle invalid numbers game solution', () => {
+                gameEngine.currentProblem = {
+                    tipoRespuesta: 'numbers_game',
+                    target: 100,
+                    numbers: [50, 2],
+                    id: 'ng1'
+                };
+
+                const input = document.getElementById('numbers-game-input');
+                input.value = "50 + 2";
+
+                window.numbersGameManager.checkSolution.mockReturnValue({
+                    valid: true,
+                    exact: false,
+                    value: 52,
+                    reason: 'Incorrecto'
+                });
+
+                gameEngine.submitProblem();
+
+                expect(gameEngine.gameCoins).toBe(0);
+                expect(gameEngine.showFeedbackMessage).toHaveBeenCalled();
+            });
+        });
     });
 });
