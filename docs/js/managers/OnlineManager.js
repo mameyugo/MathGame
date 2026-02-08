@@ -481,7 +481,8 @@ class OnlineManager {
         }
 
         const configuration = {
-            iceServers: this.iceServers || [{ urls: 'stun:stun.l.google.com:19302' }]
+            iceServers: this.iceServers || [{ urls: 'stun:rtc.mathqix.com:3478' }],
+            iceCandidatePoolSize: 10 // Pre-gather candidates to speed up connection on mobile
         };
 
         console.log('Iniciando RTCPeerConnection con:', configuration);
