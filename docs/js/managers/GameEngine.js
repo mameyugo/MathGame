@@ -341,8 +341,9 @@ class GameEngine {
             this.showTimeDelta(2); // Show +2s effect
 
             if (this.dailyChallengeManager) {
-                this.dailyChallengeManager.updateProgress(null, 'correct_answer', 1);
-                this.dailyChallengeManager.updateProgress(null, 'coins_earned', 10);
+                const user = this.userManager.getCurrentUser();
+                this.dailyChallengeManager.updateProgress(user, 'correct_answer', 1);
+                this.dailyChallengeManager.updateProgress(user, 'coins_earned', 10);
             }
 
             // Online Sync
@@ -588,8 +589,9 @@ class GameEngine {
             }
 
             if (this.dailyChallengeManager) {
-                this.dailyChallengeManager.updateProgress(null, 'problem_solved', 1); // null user defaults to current
-                this.dailyChallengeManager.updateProgress(null, 'coins_earned', 30);
+                const user = this.userManager.getCurrentUser();
+                this.dailyChallengeManager.updateProgress(user, 'problem_solved', 1);
+                this.dailyChallengeManager.updateProgress(user, 'coins_earned', 30);
             }
 
             try {

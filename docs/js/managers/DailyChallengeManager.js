@@ -20,6 +20,7 @@ class DailyChallengeManager {
     }
 
     initDailyChallenges(user) {
+        if (!user) return; // Safeguard against null user
         if (!user.dailyChallenges || user.dailyChallenges.date !== this.getTodayKey()) {
             user.dailyChallenges = {
                 date: this.getTodayKey(),

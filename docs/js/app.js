@@ -3,9 +3,9 @@
  * Juego educativo de matemáticas multiidioma (ES/GL)
  */
 
-const APP_VERSION = '2026.02.08.1908';
+const APP_VERSION = '2026.02.08.1912';
 console.log(`%c🚀 MathQix v${APP_VERSION}`, 'color: #3498db; font-weight: bold; font-size: 1.2rem;');
-console.log('Build date: 2026-02-08 19:08');
+console.log('Build date: 2026-02-08 19:12');
 
 // Importar managers (se deben cargar antes en el HTML)
 const translationManager = new TranslationManager();
