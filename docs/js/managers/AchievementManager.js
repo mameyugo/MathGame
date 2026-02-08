@@ -767,7 +767,6 @@ class AchievementManager {
             filter_social: 'Social',
             filter_secret: 'Secretos'
         });
-        `;
 
         // Lista de logros
         html += '<div class="achievements-list"></div>'; // Create an empty div for achievements-list

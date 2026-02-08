@@ -26,75 +26,56 @@ beforeAll(() => {
         localStorage.getItem.mockReturnValue(null);
     }
 
+    // Mock fetch for TemplateManager
+    global.fetch = jest.fn((url) => {
+        if (url && typeof url === 'string' && url.includes('docs/templates/')) {
+            const filename = path.basename(url);
+            const templatePath = path.join(__dirname, '../docs/templates/', filename);
+            if (fs.existsSync(templatePath)) {
+                return Promise.resolve({
+                    text: () => Promise.resolve(fs.readFileSync(templatePath, 'utf8')),
+                    ok: true,
+                    status: 200
+                });
+            }
+        }
+        return Promise.resolve({
+            text: () => Promise.resolve(''),
+            ok: false,
+            status: 404
+        });
+    });
+
     // Ejecutar los scripts en el contexto del window
     // Wrap cada manager para asignarlo explícitamente a window
-    window.eval(`
-        ${translationManagerCode}
-        window.TranslationManager = TranslationManager;
-    `);
+    window.eval(translationManagerCode + '\nwindow.TranslationManager = TranslationManager;');
 
-    window.eval(`
-        ${achievementManagerCode}
-        window.AchievementManager = AchievementManager;
-    `);
+    window.eval(achievementManagerCode + '\nwindow.AchievementManager = AchievementManager;');
 
-    window.eval(`
-        ${userManagerCode}
-        window.UserManager = UserManager;
-    `);
+    window.eval(userManagerCode + '\nwindow.UserManager = UserManager;');
 
-    window.eval(`
-        ${storeManagerCode}
-        window.StoreManager = StoreManager;
-    `);
+    window.eval(storeManagerCode + '\nwindow.StoreManager = StoreManager;');
 
-    window.eval(`
-        ${dailyChallengeManagerCode}
-        window.DailyChallengeManager = DailyChallengeManager;
-    `);
+    window.eval(dailyChallengeManagerCode + '\nwindow.DailyChallengeManager = DailyChallengeManager;');
 
-    window.eval(`
-        ${gameEngineCode}
-        window.GameEngine = GameEngine;
-    `);
+    window.eval(gameEngineCode + '\nwindow.GameEngine = GameEngine;');
 
-    window.eval(`
-        ${questionGeneratorCode}
-        window.QuestionGenerator = QuestionGenerator;
-    `);
+    window.eval(questionGeneratorCode + '\nwindow.QuestionGenerator = QuestionGenerator;');
 
-    window.eval(`
-        ${problemCategoryManagerCode}
-        window.ProblemCategoryManager = ProblemCategoryManager;
-    `);
+    window.eval(problemCategoryManagerCode + '\nwindow.ProblemCategoryManager = ProblemCategoryManager;');
 
-    window.eval(`
-        ${onlineManagerCode}
-        window.OnlineManager = OnlineManager;
-    `);
+    window.eval(onlineManagerCode + '\nwindow.OnlineManager = OnlineManager;');
 
-    window.eval(`
-        ${localDuelManagerCode}
-        window.LocalDuelManager = LocalDuelManager;
-    `);
+    window.eval(localDuelManagerCode + '\nwindow.LocalDuelManager = LocalDuelManager;');
 
-    window.eval(`
-        ${onlineGameControllerCode}
-        window.OnlineGameController = OnlineGameController;
-    `);
+    window.eval(onlineGameControllerCode + '\nwindow.OnlineGameController = OnlineGameController;');
 
-    window.eval(`
-        ${numbersGameManagerCode}
-        window.NumbersGameManager = NumbersGameManager;
-    `);
+    window.eval(numbersGameManagerCode + '\nwindow.NumbersGameManager = NumbersGameManager;');
 
-    window.eval(`
-        ${templateManagerCode}
-        window.TemplateManager = TemplateManager;
-    `);
+    window.eval(templateManagerCode + '\nwindow.TemplateManager = TemplateManager;');
 
-    window.eval(problemaCode);
-    window.eval(appCode);
+    window.eval(problemCode + '\n');
+    window.eval(appCode + '\n');
 });
 
 describe('MathQix - Tests Unitarios', () => {
