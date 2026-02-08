@@ -21,7 +21,8 @@ class TemplateManager {
         try {
             // Diferente path si estamos en local/testing vs producción si fuera necesario
             // Asumimos que docs/ templates es accesible via fetch relativo
-            const response = await fetch(`${this.baseUrl}${templateName}.html`);
+            const version = typeof APP_VERSION !== 'undefined' ? APP_VERSION : new Date().getTime();
+            const response = await fetch(`${this.baseUrl}${templateName}.html?v=${version}`);
             if (!response.ok) {
                 throw new Error(`Error loading template ${templateName}: ${response.statusText}`);
             }
