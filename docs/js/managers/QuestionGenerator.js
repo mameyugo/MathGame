@@ -272,8 +272,9 @@ class QuestionGenerator {
             selectedCategories
         );
 
-        // Fallback to all candidates if filtered is empty
-        let pool = filteredByCategory.length ? filteredByCategory : candidates;
+        // Use filtered problems - DO NOT fall back to candidates
+        // If user selected specific categories, respect that choice
+        let pool = filteredByCategory;
 
         // Filter solved problems
         if (this.gameEngine) {
@@ -291,6 +292,7 @@ class QuestionGenerator {
 
         if (pool.length === 0) {
             console.warn('No problems available for selected criteria');
+            this.showCompletionMessage();
             return null;
         }
 
