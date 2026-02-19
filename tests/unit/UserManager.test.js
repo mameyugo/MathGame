@@ -194,6 +194,17 @@ describe('UserManager', () => {
 
             expect(alert).toHaveBeenCalled();
         });
+
+        test('should sanitize username against XSS', () => {
+            mockInput.value = '<script>alert("xss")</script>Alice&';
+            manager.renderUserList = jest.fn();
+
+            manager.createUser();
+
+            // < > " ' & se eliminan
+            expect(manager.users['scriptalert(xss)/scriptAlice']).toBeDefined();
+            expect(manager.users['Alice']).toBeUndefined();
+        });
     });
 
     describe('selectUser', () => {
@@ -322,6 +333,17 @@ describe('UserManager', () => {
 
             expect(alert).toHaveBeenCalled();
             expect(manager.users.Alice).toBeDefined();
+        });
+
+        test('should sanitize new name against XSS', () => {
+            const mockInput = { value: '<b>Alicia</b>' };
+            global.document.getElementById = jest.fn(() => mockInput);
+
+            manager.saveUserName();
+
+            // < > se eliminan
+            expect(manager.users['bAlicia/b']).toBeDefined();
+            expect(manager.currentUser).toBe('bAlicia/b');
         });
 
         test('should cancel if new name equals old name', () => {

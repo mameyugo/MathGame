@@ -93,7 +93,6 @@ describe('GameEngine', () => {
             mockDailyChallengeManager,
             mockGenerateQuestion,
             mockGenerateProblem,
-            mockToggleProblemUI,
             mockUpdatePowerUpDisplay,
             mockApplyTheme,
             mockShowUsers
@@ -234,7 +233,6 @@ describe('GameEngine', () => {
             gameEngine.problemMode = false;
             gameEngine.initGameSession(1, 0);
 
-            expect(mockToggleProblemUI).toHaveBeenCalledWith(false);
             expect(mockGenerateQuestion).toHaveBeenCalled();
             expect(mockGenerateProblem).not.toHaveBeenCalled();
         });
@@ -243,7 +241,6 @@ describe('GameEngine', () => {
             gameEngine.problemMode = true;
             gameEngine.initGameSession(1, 0);
 
-            expect(mockToggleProblemUI).toHaveBeenCalledWith(true);
             expect(mockGenerateProblem).toHaveBeenCalled();
             expect(mockGenerateQuestion).not.toHaveBeenCalled();
         });
@@ -301,7 +298,7 @@ describe('GameEngine', () => {
             expect(mockGenerateQuestion).toHaveBeenCalled();
         });
 
-        test('should level up every 50 coins', () => {
+        test('should level up based on coins / 50', () => {
             gameEngine.currentAnswer = 10;
             gameEngine.gameCoins = 40;
             gameEngine.gameLevel = 1;
@@ -310,6 +307,20 @@ describe('GameEngine', () => {
 
             expect(gameEngine.gameCoins).toBe(50);
             expect(gameEngine.gameLevel).toBe(2);
+
+            gameEngine.gameCoins = 90;
+            gameEngine.check(10);
+            expect(gameEngine.gameLevel).toBe(3); // 100 / 50 + 1
+        });
+
+        test('should increment totalAnswered achievement stat', () => {
+            const user = { achievementStats: { totalAnswered: 5 } };
+            mockUserManager.getCurrentUser.mockReturnValue(user);
+            gameEngine.currentAnswer = 10;
+
+            gameEngine.check(10);
+
+            expect(user.achievementStats.totalAnswered).toBe(6);
         });
 
         test('should use shield on wrong answer if available', () => {
@@ -406,6 +417,31 @@ describe('GameEngine', () => {
             expect(gameEngine.duelScores['Player1']).toBe(40);
             expect(gameEngine.currentDuelIdx).toBe(1);
             expect(gameEngine.startNextDuelTurn).toHaveBeenCalled();
+        });
+
+        test('should prevent duplicate endGameSession calls', () => {
+            gameEngine.sessionEnded = false;
+            const spy = jest.spyOn(global, 'clearInterval');
+
+            gameEngine.endGameSession();
+            expect(gameEngine.sessionEnded).toBe(true);
+            expect(spy).toHaveBeenCalledTimes(1);
+
+            gameEngine.endGameSession();
+            expect(spy).toHaveBeenCalledTimes(1); // No debería llamarse otra vez
+
+            spy.mockRestore();
+        });
+
+        test('should handle null user gracefully in endGameSession', () => {
+            mockUserManager.getCurrentUser.mockReturnValue(null);
+            console.error = jest.fn();
+
+            gameEngine.endGameSession();
+
+            expect(console.error).toHaveBeenCalled();
+            expect(global.alert).toHaveBeenCalled();
+            expect(mockShowUsers).toHaveBeenCalled();
         });
 
         test('should show final results after last duel player', () => {

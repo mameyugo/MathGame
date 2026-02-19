@@ -297,7 +297,6 @@ gameEngine = new GameEngine(
     dailyChallengeManager,
     () => generateQuestion(),
     () => generateProblem(),
-    (enabled) => toggleProblemUI(enabled),
     () => updatePowerUpDisplay(),
     () => applyTheme(),
     () => handleGameEnd()
@@ -489,15 +488,19 @@ function usePotion() {
 }
 
 function useFreezeTime() {
+    // Usar siempre el timerInterval del engine como fuente de verdad
     const newState = storeManager.useFreezeTime({
-        timerInterval: timerInterval,
-        freezeTimeout: freezeTimeout,
+        timerInterval: gameEngine.timerInterval,
+        freezeTimeout: gameEngine.freezeTimeout,
         startTimer: startTimer
     });
+
+    // Sincronizar ambas referencias
     timerInterval = newState.timerInterval;
     freezeTimeout = newState.freezeTimeout;
     gameEngine.timerInterval = newState.timerInterval;
     gameEngine.freezeTimeout = newState.freezeTimeout;
+
     if (newState.used) {
         showTimeEffect('❄️', 'neutral');
     }

@@ -453,10 +453,20 @@ class StoreManager {
         const appContainer = document.getElementById('app-container');
         if (!appContainer) return;
 
-        if (theme === 'theme_space') {
-            appContainer.setAttribute('data-theme', 'space');
-        } else if (theme === 'theme_jungle') {
-            appContainer.setAttribute('data-theme', 'jungle');
+        // Mapeo de IDs de tema a valores de data-theme
+        const themeMap = {
+            'theme_space': 'space',
+            'theme_jungle': 'jungle',
+            'theme_underwater': 'underwater',
+            'theme_forest': 'forest',
+            'theme_desert': 'desert',
+            'theme_arctic': 'arctic'
+        };
+
+        const dataTheme = themeMap[theme];
+
+        if (dataTheme) {
+            appContainer.setAttribute('data-theme', dataTheme);
         } else {
             appContainer.removeAttribute('data-theme');
         }

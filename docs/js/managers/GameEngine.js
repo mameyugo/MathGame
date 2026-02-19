@@ -22,7 +22,6 @@ class GameEngine {
         dailyChallengeManager,
         generateQuestionFn,
         generateProblemFn,
-        toggleProblemUIFn,
         updatePowerUpDisplayFn,
         applyThemeFn,
         showUsersFn
@@ -33,7 +32,6 @@ class GameEngine {
         this.dailyChallengeManager = dailyChallengeManager;
         this.generateQuestion = generateQuestionFn;
         this.generateProblem = generateProblemFn;
-        this.toggleProblemUI = toggleProblemUIFn;
         this.updatePowerUpDisplay = updatePowerUpDisplayFn;
         this.applyTheme = applyThemeFn;
         this.showUsers = showUsersFn;
@@ -44,6 +42,7 @@ class GameEngine {
         this.timeLeft = 30;
         this.timerInterval = null;
         this.freezeTimeout = null;
+        this.sessionEnded = false;
         this.currentAnswer = null;
 
         // UI references (can be passed or looked up)
@@ -224,6 +223,7 @@ class GameEngine {
      * @param {number} coins - Initial coins
      */
     initGameSession(lvl, coins) {
+        this.sessionEnded = false;
         this.gameLevel = lvl;
         this.gameCoins = coins;
         this.timeLeft = this.problemMode ? 60 : 30;
@@ -325,6 +325,7 @@ class GameEngine {
             }
             if (this.timeLeft <= 0) {
                 this.endGameSession();
+                return;
             }
         }, 1000);
     }
@@ -366,6 +367,7 @@ class GameEngine {
             if (user && this.achievementManager) {
                 // Update streak tracking
                 user.achievementStats = user.achievementStats || {};
+                user.achievementStats.totalAnswered = (user.achievementStats.totalAnswered || 0) + 1;
                 user.achievementStats.correctAnswers = (user.achievementStats.correctAnswers || 0) + 1;
                 user.achievementStats.streak = (user.achievementStats.streak || 0) + 1;
                 user.achievementStats.coins = this.gameCoins;
@@ -387,8 +389,9 @@ class GameEngine {
                 // Confetti not loaded
             }
 
-            if (this.gameCoins % 50 === 0) {
-                this.gameLevel++;
+            const expectedLevel = Math.floor(this.gameCoins / 50) + 1;
+            if (expectedLevel > this.gameLevel) {
+                this.gameLevel = expectedLevel;
                 if (user && this.achievementManager) {
                     user.achievementStats.level = this.gameLevel;
                 }
@@ -400,6 +403,7 @@ class GameEngine {
             const user = this.userManager.getCurrentUser();
             if (user && this.achievementManager) {
                 user.achievementStats = user.achievementStats || {};
+                user.achievementStats.totalAnswered = (user.achievementStats.totalAnswered || 0) + 1;
                 // Reset streak on wrong answer
                 user.achievementStats.streak = 0;
 
@@ -480,7 +484,7 @@ class GameEngine {
         } else if (tipoRespuesta === 'opcion_multiple') {
             // Validación para opciones múltiples
             if (!window.selectedChoice) {
-                alert('Por favor, selecciona una opción'); // Should use translation
+                alert(this.t('alert_select_option'));
                 return;
             }
             isCorrect = window.selectedChoice === this.currentProblem.respuestaCorrecta;
@@ -489,7 +493,7 @@ class GameEngine {
             // Validación para entrada de texto
             const input = document.getElementById('text-answer-input');
             if (!input || input.value.trim() === '') {
-                alert('Por favor, escribe tu respuesta'); // Should use translation
+                alert(this.t('alert_write_answer'));
                 return;
             }
             let userAnswer = input.value.trim();
@@ -505,7 +509,7 @@ class GameEngine {
             // Validación para Cifras (Numbers Game)
             const input = document.getElementById('numbers-game-input');
             if (!input || input.value.trim() === '') {
-                this.showFeedbackMessage('Por favor, escribe una operación');
+                this.showFeedbackMessage(this.t('alert_write_operation'));
                 return;
             }
 
@@ -600,8 +604,9 @@ class GameEngine {
                 // Confetti library not loaded
             }
 
-            if (this.gameCoins % 50 === 0) {
-                this.gameLevel++;
+            const expectedLevel = Math.floor(this.gameCoins / 50) + 1;
+            if (expectedLevel > this.gameLevel) {
+                this.gameLevel = expectedLevel;
             }
 
             this.updateGameDisplay();
@@ -661,6 +666,9 @@ class GameEngine {
      * @param {boolean} forceEnd - Force end without checks (used by online logic)
      */
     endGameSession(forceEnd = false) {
+        if (this.sessionEnded) return;
+        this.sessionEnded = true;
+
         clearInterval(this.timerInterval);
 
         if (this.onlineMode) {
@@ -719,28 +727,34 @@ class GameEngine {
         } else {
             // Single-player mode ending
             const user = this.userManager.getCurrentUser();
-            if (user) {
-                user.totalCoins += this.gameCoins;
-                user.level = Math.max(user.level || 1, this.gameLevel);
 
-                // Track achievement stats for single-player
-                if (this.achievementManager) {
-                    user.achievementStats = user.achievementStats || {};
-                    user.achievementStats.coins = user.totalCoins;
-                    user.achievementStats.level = user.level;
-                    user.achievementStats.totalCoinsEarned = (user.achievementStats.totalCoinsEarned || 0) + this.gameCoins;
-
-                    // Check for new achievements
-                    const newAchievements = this.achievementManager.checkAchievements(user);
-                    if (newAchievements && newAchievements.length > 0) {
-                        newAchievements.forEach(achievement => {
-                            this.achievementManager.showAchievementNotification(achievement);
-                        });
-                    }
-                }
-
-                this.userManager.saveToStorage();
+            if (!user) {
+                // Guard: no debería ocurrir, pero registramos el error y salimos limpiamente
+                console.error('[GameEngine] endGameSession: currentUser es null. Los puntos no se pueden guardar. gameCoins:', this.gameCoins);
+                alert(this.t('alert_good_job') + this.gameCoins + this.t('alert_coins'));
+                this.showUsers();
+                return;
             }
+
+            user.totalCoins += this.gameCoins;
+            user.level = Math.max(user.level || 1, this.gameLevel);
+
+            // Track achievement stats for single-player
+            if (this.achievementManager) {
+                user.achievementStats = user.achievementStats || {};
+                user.achievementStats.coins = user.totalCoins;
+                user.achievementStats.level = user.level;
+                user.achievementStats.totalCoinsEarned = (user.achievementStats.totalCoinsEarned || 0) + this.gameCoins;
+
+                const newAchievements = this.achievementManager.checkAchievements(user);
+                if (newAchievements && newAchievements.length > 0) {
+                    newAchievements.forEach(achievement => {
+                        this.achievementManager.showAchievementNotification(achievement);
+                    });
+                }
+            }
+
+            this.userManager.saveToStorage();
 
             alert(this.t('alert_good_job') + this.gameCoins + this.t('alert_coins'));
             this.showUsers();

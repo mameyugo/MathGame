@@ -181,7 +181,10 @@ class UserManager {
         const nameInput = document.getElementById('new-user-name');
         if (!nameInput) return;
 
-        const name = nameInput.value.trim();
+        const rawName = nameInput.value.trim();
+        // Sanitizar: eliminar cualquier carácter < > & " ' que pueda ser HTML/JS
+        const name = rawName.replace(/[<>"'&]/g, '');
+
         if (!name || this.users[name]) {
             return alert(this.translationManager.t('alert_invalid_name'));
         }
@@ -307,7 +310,8 @@ class UserManager {
         const editInput = document.getElementById('edit-user-name');
         if (!editInput) return;
 
-        const newName = editInput.value.trim();
+        const rawName = editInput.value.trim();
+        const newName = rawName.replace(/[<>"'&]/g, '');
         const oldName = this.currentUser;
 
         // Validar que el nombre no esté vacío

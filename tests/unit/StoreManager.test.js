@@ -421,6 +421,48 @@ describe('StoreManager', () => {
             expect(mockContainer.setAttribute).toHaveBeenCalledWith('data-theme', 'jungle');
         });
 
+        test('should apply forest theme', () => {
+            mockUserManager.getCurrentUser.mockReturnValue({
+                inventory: {},
+                currentTheme: 'theme_forest'
+            });
+
+            const mockContainer = { setAttribute: jest.fn(), removeAttribute: jest.fn() };
+            global.document.getElementById = jest.fn(() => mockContainer);
+
+            manager.applyTheme();
+
+            expect(mockContainer.setAttribute).toHaveBeenCalledWith('data-theme', 'forest');
+        });
+
+        test('should apply desert theme', () => {
+            mockUserManager.getCurrentUser.mockReturnValue({
+                inventory: {},
+                currentTheme: 'theme_desert'
+            });
+
+            const mockContainer = { setAttribute: jest.fn(), removeAttribute: jest.fn() };
+            global.document.getElementById = jest.fn(() => mockContainer);
+
+            manager.applyTheme();
+
+            expect(mockContainer.setAttribute).toHaveBeenCalledWith('data-theme', 'desert');
+        });
+
+        test('should apply arctic theme', () => {
+            mockUserManager.getCurrentUser.mockReturnValue({
+                inventory: {},
+                currentTheme: 'theme_arctic'
+            });
+
+            const mockContainer = { setAttribute: jest.fn(), removeAttribute: jest.fn() };
+            global.document.getElementById = jest.fn(() => mockContainer);
+
+            manager.applyTheme();
+
+            expect(mockContainer.setAttribute).toHaveBeenCalledWith('data-theme', 'arctic');
+        });
+
         test('should remove theme when default', () => {
             mockUserManager.getCurrentUser.mockReturnValue({
                 inventory: {},
