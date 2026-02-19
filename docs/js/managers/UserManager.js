@@ -41,6 +41,13 @@ class UserManager {
         if (!user.problemCategories || !Array.isArray(user.problemCategories)) {
             user.problemCategories = ['explorador'];
         }
+        // Inicializar configuración de hints
+        if (typeof user.hintsEnabled !== 'boolean') {
+            user.hintsEnabled = false;
+        }
+        if (typeof user.hintsDelay !== 'number' || isNaN(user.hintsDelay)) {
+            user.hintsDelay = 12;
+        }
     }
 
     /**
@@ -63,6 +70,16 @@ class UserManager {
 
             if (!user.ops || !Array.isArray(user.ops) || user.ops.length === 0) {
                 user.ops = ['+'];
+                changed = true;
+            }
+
+            // Migración: añadir configuración de hints si no existe
+            if (typeof user.hintsEnabled !== 'boolean') {
+                user.hintsEnabled = false;
+                changed = true;
+            }
+            if (typeof user.hintsDelay !== 'number' || isNaN(user.hintsDelay)) {
+                user.hintsDelay = 12;
                 changed = true;
             }
 
@@ -195,7 +212,9 @@ class UserManager {
             ops: ['+'],
             inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
             currentTheme: 'default',
-            problemCategories: ['explorador'] // Por defecto nivel fácil
+            problemCategories: ['explorador'],
+            hintsEnabled: false,
+            hintsDelay: 12
         };
 
         this.saveToStorage();
@@ -259,7 +278,9 @@ class UserManager {
                 ops: ['+'],
                 inventory: { potions: 0, freezes: 0, shields: 0, themes: [] },
                 currentTheme: 'default',
-                problemCategories: ['explorador']
+                problemCategories: ['explorador'],
+                hintsEnabled: false,
+                hintsDelay: 12
             };
         }
 
@@ -499,6 +520,32 @@ class UserManager {
         // Guardar cambios
         this.saveToStorage();
         console.log('Datos de usuario sincronizados con el servidor');
+    }
+    /**
+     * Obtiene la configuración de hints del usuario actual
+     * @returns {{ enabled: boolean, delay: number }}
+     */
+    getHintsConfig() {
+        if (!this.currentUser || !this.users[this.currentUser]) {
+            return { enabled: false, delay: 12 };
+        }
+        const user = this.users[this.currentUser];
+        return {
+            enabled: typeof user.hintsEnabled === 'boolean' ? user.hintsEnabled : false,
+            delay: typeof user.hintsDelay === 'number' ? user.hintsDelay : 12
+        };
+    }
+
+    /**
+     * Guarda la configuración de hints del usuario actual
+     * @param {boolean} enabled
+     * @param {number} delay - Segundos hasta mostrar la pista
+     */
+    setHintsConfig(enabled, delay) {
+        if (!this.currentUser || !this.users[this.currentUser]) return;
+        this.users[this.currentUser].hintsEnabled = !!enabled;
+        this.users[this.currentUser].hintsDelay = Math.max(1, Math.min(30, Number(delay) || 12));
+        this.saveToStorage();
     }
 }
 

@@ -3,9 +3,9 @@
  * Juego educativo de matemáticas multiidioma (ES/GL)
  */
 
-const APP_VERSION = '2026.02.19.0001';
+const APP_VERSION = '2026.02.19.0002';
 console.log(`%c🚀 MathQix v${APP_VERSION}`, 'color: #3498db; font-weight: bold; font-size: 1.2rem;');
-console.log('Build date: 2026-02-19 00:01');
+console.log('Build date: 2026-02-19 23:33');
 
 // Importar managers (se deben cargar antes en el HTML)
 const translationManager = new TranslationManager();
@@ -15,6 +15,7 @@ const storeManager = new StoreManager(userManager, translationManager);
 const problemCategoryManager = new ProblemCategoryManager(translationManager);
 const dailyChallengeManager = new DailyChallengeManager(translationManager);
 const numbersGameManager = new NumbersGameManager();
+const settingsManager = new SettingsManager();
 const onlineManager = new OnlineManager(translationManager);
 const localDuelManager = new LocalDuelManager(null, userManager, t); // GameEngine not ready yet
 
@@ -516,6 +517,53 @@ function applyTheme() {
 }
 
 /**
+ * Abre el modal de configuración del usuario
+ */
+function openSettingsModal() {
+    settingsManager.openSettingsModal(currentUser, userManager, renderProblemCategories);
+}
+
+/**
+ * Cierra el modal de configuración y guarda los cambios
+ */
+function closeSettingsModal() {
+    settingsManager.closeSettingsModal(userManager, () => {
+        users = userManager.getUsers();
+    });
+}
+
+/**
+ * Toggle visibilidad del row de delay cuando se activa/desactiva hints
+ */
+function onHintsEnabledChange() {
+    settingsManager.onHintsEnabledChange();
+}
+
+/**
+ * Ajusta el valor del delay de hints (+1 / -1 segundo)
+ * @param {number} delta - +1 o -1
+ */
+function adjustHintDelay(delta) {
+    settingsManager.adjustHintDelay(delta);
+}
+
+/**
+ * Guarda el nombre de usuario editado desde el modal de settings
+ */
+function settingsSaveUserName() {
+    settingsManager.saveUserName(userManager, t, (newName) => {
+        currentUser = newName;
+        users = userManager.getUsers();
+
+        // Actualizar título de la pantalla de config
+        const configTitle = document.getElementById('config-title');
+        if (configTitle) {
+            configTitle.childNodes[0].textContent = t('config_title_user') + newName + ' ';
+        }
+    });
+}
+
+/**
  * Shows a feedback message on screen
  * @param {string} message - Message to display
  */
@@ -584,6 +632,11 @@ window.addEventListener('pageshow', function (event) {
 window.addEventListener('beforeunload', function () {
     localStorage.setItem('math_users', JSON.stringify(users));
     localStorage.setItem('math_lang', currentLanguage);
+});
+
+// Cerrar modal de settings al hacer click en el overlay
+document.getElementById('settings-modal')?.addEventListener('click', function (e) {
+    if (e.target === this) closeSettingsModal();
 });
 
 /**
@@ -790,4 +843,5 @@ if (typeof window !== 'undefined') {
     window.__appManagers.onlineManager = onlineManager;
     window.__appManagers.onlineGameController = onlineGameController;
     window.__appManagers.numbersGameManager = numbersGameManager;
+    window.__appManagers.settingsManager = settingsManager;
 }

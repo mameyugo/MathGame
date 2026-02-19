@@ -15,6 +15,7 @@ const localDuelManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js
 const onlineGameControllerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/OnlineGameController.js'), 'utf8');
 const numbersGameManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/NumbersGameManager.js'), 'utf8');
 const templateManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/TemplateManager.js'), 'utf8');
+const settingsManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/SettingsManager.js'), 'utf8');
 // const problemCode = fs.readFileSync(path.join(__dirname, '../docs/js/problemas.js'), 'utf8'); // Removed legacy
 const appCode = fs.readFileSync(path.join(__dirname, '../../docs/js/app.js'), 'utf8');
 
@@ -29,7 +30,9 @@ beforeAll(() => {
     // Mock fetch for TemplateManager
     global.fetch = jest.fn((url) => {
         if (url && typeof url === 'string' && url.includes('templates/')) {
-            const filename = path.basename(url);
+            // Eliminar query params (?v=...) para encontrar el archivo real
+            const urlPath = url.split('?')[0];
+            const filename = path.basename(urlPath);
             // Fix path resolution: tests/integration/../../docs/templates
             const templatePath = path.join(__dirname, '../../docs/templates/', filename);
             if (fs.existsSync(templatePath)) {
@@ -74,6 +77,7 @@ beforeAll(() => {
     window.eval(numbersGameManagerCode + '\nwindow.NumbersGameManager = NumbersGameManager;');
 
     window.eval(templateManagerCode + '\nwindow.TemplateManager = TemplateManager;');
+    window.eval(settingsManagerCode + '\nwindow.SettingsManager = SettingsManager;');
 
     // Mock window.bancoProblemas since strict module loading isn't supported in this test env
     window.bancoProblemas = [

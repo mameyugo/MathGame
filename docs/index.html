@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="./favicon.png">
 
     <!-- CSS Modular - Loaded via main.css -->
-    <link rel="stylesheet" href="css/main.css?v=202602190001">
+    <link rel="stylesheet" href="css/main.css?v=202602190002">
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
@@ -50,39 +50,9 @@
         <div id="screen-config" class="screen">
             <h2 id="config-title" data-i18n="config_title">
                 Configuración
-                <button id="btn-edit-username" class="btn-edit-icon" onclick="showEditName()" title="Editar nombre"
-                    aria-label="Edit username">✏️</button>
+                <button id="btn-open-settings" class="btn-settings-icon" onclick="openSettingsModal()"
+                    title="Configuración" aria-label="Abrir configuración">⚙️</button>
             </h2>
-            <div class="config-box">
-                <div id="username-edit-section" style="display: none; margin-bottom: 20px;">
-                    <input type="text" id="edit-user-name" class="edit-name-input" placeholder="Nuevo nombre..."
-                        data-i18n-placeholder="input_edit_name" aria-label="Edit username">
-                    <button class="main-btn" onclick="saveUserName()" data-i18n="btn_save_name"
-                        style="margin: 10px 5px;">💾 Guardar nombre</button>
-                    <button class="btn-back" onclick="cancelEditName()" data-i18n="btn_cancel_edit">❌ Cancelar</button>
-                </div>
-                <p><strong data-i18n="choose_operations">Elige las operaciones:</strong></p>
-                <label class="switch-label">
-                    <input type="checkbox" id="cfg-sum" class="switch-input" checked>
-                    <span class="switch-slider"></span>
-                    <span class="switch-text" data-i18n="op_addition">Sumas</span>
-                </label>
-                <label class="switch-label">
-                    <input type="checkbox" id="cfg-res" class="switch-input">
-                    <span class="switch-slider"></span>
-                    <span class="switch-text" data-i18n="op_subtraction">Restas</span>
-                </label>
-                <label class="switch-label">
-                    <input type="checkbox" id="cfg-mul" class="switch-input">
-                    <span class="switch-slider"></span>
-                    <span class="switch-text" data-i18n="op_multiplication">Multiplicaciones</span>
-                </label>
-                <label class="switch-label">
-                    <input type="checkbox" id="cfg-div" class="switch-input">
-                    <span class="switch-slider"></span>
-                    <span class="switch-text" data-i18n="op_division">Divisiones</span>
-                </label>
-            </div>
 
             <button class="main-btn" onclick="startSingleGame()" data-i18n="btn_play">¡A JUGAR!</button>
             <button class="main-btn btn-problem" onclick="startProblemGame('matematico')"
@@ -92,17 +62,6 @@
             <button class="main-btn btn-numbers" onclick="startNumbersGame()" data-i18n="btn_numbers_game"
                 style="background: linear-gradient(135deg, #e67e22, #d35400);">🔢 Cifras</button>
 
-            <!-- Sección de Sacos de Problemas -->
-            <div class="config-section">
-                <h4 data-i18n="config_problem_bags">🎒 Sacos de Problemas</h4>
-                <p class="hint" data-i18n="config_problem_bags_hint">
-                    Selecciona los tipos de problemas que quieres resolver
-                </p>
-                <div id="problem-categories-area" class="problem-categories">
-                    <!-- Las tarjetas se renderizan dinámicamente -->
-                </div>
-            </div>
-            Problemas de lógica</button>
             <button class="main-btn btn-store" onclick="openStore()" data-i18n="btn_open_store">🏪 TIENDA</button>
             <button class="main-btn btn-achievements" onclick="openAchievements()" data-i18n="btn_open_achievements">🏆
                 LOGROS</button>
@@ -180,6 +139,90 @@
             <div id="answers-area" class="options-grid"></div>
         </div>
 
+    </div>
+
+    <!-- Modal de Configuración del Usuario -->
+    <div id="settings-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+        <div class="modal-content settings-modal-content">
+            <div class="modal-header">
+                <h2 id="settings-modal-title" data-i18n="settings_title">⚙️ Ajustes</h2>
+                <button class="modal-close" onclick="closeSettingsModal()" aria-label="Cerrar">✖</button>
+            </div>
+
+            <!-- Sección: Editar nombre -->
+            <div class="settings-section">
+                <h3 data-i18n="settings_edit_name">✏️ Editar nombre</h3>
+                <label class="settings-label" data-i18n="settings_name_label">Nombre del jugador:</label>
+                <div class="settings-name-row">
+                    <input type="text" id="settings-edit-name" class="edit-name-input" placeholder="Nombre..."
+                        data-i18n-placeholder="input_edit_name" aria-label="Nombre del jugador">
+                    <button class="main-btn settings-save-name-btn" onclick="settingsSaveUserName()"
+                        data-i18n="btn_save_name">💾 Guardar</button>
+                </div>
+            </div>
+
+            <!-- Sección: Juego Estándar -->
+            <div class="settings-section">
+                <h3 data-i18n="settings_standard_game">🎮 Juego Estándar</h3>
+                <p><strong data-i18n="choose_operations">Elige las operaciones:</strong></p>
+                <label class="switch-label">
+                    <input type="checkbox" id="cfg-sum" class="switch-input" checked>
+                    <span class="switch-slider"></span>
+                    <span class="switch-text" data-i18n="op_addition">Sumas</span>
+                </label>
+                <label class="switch-label">
+                    <input type="checkbox" id="cfg-res" class="switch-input">
+                    <span class="switch-slider"></span>
+                    <span class="switch-text" data-i18n="op_subtraction">Restas</span>
+                </label>
+                <label class="switch-label">
+                    <input type="checkbox" id="cfg-mul" class="switch-input">
+                    <span class="switch-slider"></span>
+                    <span class="switch-text" data-i18n="op_multiplication">Multiplicaciones</span>
+                </label>
+                <label class="switch-label">
+                    <input type="checkbox" id="cfg-div" class="switch-input">
+                    <span class="switch-slider"></span>
+                    <span class="switch-text" data-i18n="op_division">Divisiones</span>
+                </label>
+            </div>
+
+            <!-- Sección: Problemas y Lógica -->
+            <div class="settings-section">
+                <h3 data-i18n="settings_problems">🧠 Problemas y Lógica</h3>
+                <p class="hint" data-i18n="config_problem_bags_hint">
+                    Selecciona los tipos de problemas que quieres resolver
+                </p>
+                <div id="problem-categories-area" class="problem-categories">
+                    <!-- Renderizado dinámico por renderProblemCategories() -->
+                </div>
+            </div>
+
+            <!-- Sección: Ayuda en preguntas -->
+            <div class="settings-section">
+                <h3 data-i18n="settings_hints">💡 Ayuda en preguntas</h3>
+                <p class="hint" data-i18n="settings_hints_desc">Mostrar la pista después de unos segundos</p>
+                <label class="switch-label">
+                    <input type="checkbox" id="cfg-hints-enabled" class="switch-input"
+                        onchange="onHintsEnabledChange()">
+                    <span class="switch-slider"></span>
+                    <span class="switch-text" data-i18n="settings_hints">Activar ayuda</span>
+                </label>
+                <div id="hints-delay-row" class="settings-hints-delay" style="display:none;">
+                    <label for="cfg-hints-delay" data-i18n="settings_hints_delay">
+                        Segundos hasta mostrar ayuda:
+                    </label>
+                    <div class="hints-delay-control">
+                        <button class="hints-delay-btn" onclick="adjustHintDelay(-1)">−</button>
+                        <span id="cfg-hints-delay-display">5</span>
+                        <button class="hints-delay-btn" onclick="adjustHintDelay(1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="main-btn settings-close-btn" onclick="closeSettingsModal()" data-i18n="settings_save">💾
+                Guardar y cerrar</button>
+        </div>
     </div>
 
     <!-- Modal de Credenciales para Juego Online -->

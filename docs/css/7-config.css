@@ -351,3 +351,128 @@
     text-align: center;
     border-left: 4px solid #999;
 }
+/* ============================================
+   Settings Modal
+   ============================================ */
+
+.btn-settings-icon {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background 0.2s, transform 0.2s;
+    line-height: 1;
+}
+
+.btn-settings-icon:hover {
+    background: rgba(0, 0, 0, 0.08);
+    transform: rotate(30deg);
+}
+
+.settings-modal-content {
+    max-width: 520px;
+    width: 94%;
+}
+
+.settings-section {
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    background: #fafafa;
+}
+
+.settings-section h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+
+.settings-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.settings-name-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.settings-name-row .edit-name-input {
+    flex: 1;
+    min-width: 140px;
+}
+
+.settings-save-name-btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.settings-hints-delay {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.settings-hints-delay label {
+    font-size: 0.9rem;
+    color: #555;
+    flex: 1;
+    min-width: 160px;
+}
+
+.hints-delay-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hints-delay-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.hints-delay-btn:hover {
+    background: #2980b9;
+    transform: scale(1.1);
+}
+
+#cfg-hints-delay-display {
+    font-size: 1.3rem;
+    font-weight: bold;
+    min-width: 28px;
+    text-align: center;
+    color: var(--dark);
+}
+
+.settings-close-btn {
+    width: 100%;
+    margin-top: 8px;
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+}
+
+.settings-close-btn:hover {
+    background: linear-gradient(135deg, #219a52, #27ae60);
+}

@@ -462,23 +462,32 @@ class QuestionGenerator {
             // Render equation with numeric inputs
             this.renderEquation(problem.ecuacion);
 
-            // Hide only the equation text initially
-            const equationTexts = document.querySelectorAll('#equation-area .eq-text');
-            equationTexts.forEach(text => {
-                text.style.opacity = '0';
-            });
-
             // Focus first input immediately
             const firstInput = document.querySelector('#equation-area .eq-input');
             if (firstInput) firstInput.focus();
 
-            // Show equation text after 10 seconds
-            setTimeout(() => {
+            // Read hints config from user settings
+            const hintsConfig = this.userManager.getHintsConfig
+                ? this.userManager.getHintsConfig()
+                : { enabled: true, delay: 10 };
+
+            if (hintsConfig.enabled) {
+                // Hide equation text initially and reveal after configured delay
+                const equationTexts = document.querySelectorAll('#equation-area .eq-text');
                 equationTexts.forEach(text => {
-                    text.style.transition = 'opacity 0.5s ease';
-                    text.style.opacity = '1';
+                    text.style.opacity = '0';
                 });
-            }, 10000);
+
+                const delayMs = (hintsConfig.delay || 10) * 1000;
+                setTimeout(() => {
+                    const texts = document.querySelectorAll('#equation-area .eq-text');
+                    texts.forEach(text => {
+                        text.style.transition = 'opacity 0.5s ease';
+                        text.style.opacity = '1';
+                    });
+                }, delayMs);
+            }
+            // If hints disabled: equation text is visible immediately (no hiding)
 
         } else if (tipoRespuesta === 'opcion_multiple') {
             this.renderMultipleChoice(problem);
@@ -536,15 +545,8 @@ class QuestionGenerator {
                 });
                 // Select this one
                 btn.classList.add('selected');
-                // Save answer (global for now, but should ideally be passed to checkFn)
+                // Save answer for submitProblem to read
                 window.selectedChoice = value;
-
-                // Auto-submit for better UX? Or wait for check button?
-                // For now, let's keep it consistent with UI flow (user clicks check)
-                // But we can trigger check immediately if desired
-                if (this.check) {
-                    this.check(value);
-                }
             });
 
             container.appendChild(btn);
