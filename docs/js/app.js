@@ -612,7 +612,7 @@ async function renderProblemCategories() {
         }
     );
 }
-renderProblemCategories();
+
 
 // Sincronizar estado cuando el usuario vuelve a la página (después de presionar atrás)
 window.addEventListener('pageshow', function (event) {
