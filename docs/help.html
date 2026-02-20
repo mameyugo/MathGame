@@ -33,28 +33,74 @@
             </section>
 
             <section class="help-section">
-                <h2 data-i18n="help_game_types_title">🎲 Tipos de Juego</h2>
+                <h2 data-i18n="help_game_types_title">🎲 Modos de Juego</h2>
+
                 <div class="help-item">
-                    <h3 data-i18n="help_visual_mode">📦 Modo Visual</h3>
-                    <p data-i18n="help_visual_mode_desc">
-                        En este modo verás representaciones visuales con bloques de decenas (📦x10)
-                        y unidades (🍎) para facilitar el conteo. Ideal para niveles iniciales.
-                    </p>
+                    <h3 data-i18n="help_mode_standard_title">🎮 Juego Estándar</h3>
+                    <p data-i18n="help_mode_standard_desc">Resuelve operaciones de suma, resta, multiplicación y
+                        división. Incluye modos visuales, incógnitas y clásicos.</p>
                 </div>
+
                 <div class="help-item">
-                    <h3 data-i18n="help_unknown_mode">❓ Modo Incógnita</h3>
-                    <p data-i18n="help_unknown_mode_desc">
-                        Debes encontrar el número que falta en la operación. Por ejemplo:
-                        "? × 5 = 20". Este modo desarrolla el pensamiento inverso.
-                    </p>
+                    <h3 data-i18n="help_mode_math_title">🧮 Problemas Matemáticos</h3>
+                    <p data-i18n="help_mode_math_desc">Resuelve problemas de texto completando la ecuación. Tienes 60
+                        segundos.</p>
+                    <p class="help_highlight" data-i18n="help_mode_math_rewards">Premios: +30 monedas y +10 segundos por
+                        acierto.</p>
                 </div>
+
                 <div class="help-item">
-                    <h3 data-i18n="help_standard_mode">➕ Modo Estándar</h3>
-                    <p data-i18n="help_standard_mode_desc">
-                        Operaciones matemáticas clásicas donde calculas el resultado.
-                        Por ejemplo: "7 + 3 = ?"
-                    </p>
+                    <h3 data-i18n="help_mode_logic_title">🧠 Problemas de Lógica</h3>
+                    <p data-i18n="help_mode_logic_desc">Desafía tu mente con acertijos y razonamiento lateral. Preguntas
+                        de selección múltiple o texto. (60s)</p>
                 </div>
+
+                <div class="help-item">
+                    <h3 data-i18n="help_mode_numbers_title">🔢 Modo Cifras</h3>
+                    <p data-i18n="help_mode_numbers_desc">Llegar a un número objetivo combinando los 6 números
+                        disponibles.</p>
+                    <p data-i18n="help_mode_numbers_how">Usa +, -, * y / para crear una expresión que dé el resultado
+                        exacto.</p>
+                    <p data-i18n="help_mode_numbers_tip">No es necesario usar todos los números. ¡Busca la solución
+                        exacta!</p>
+                </div>
+
+                <div class="help-sub-box">
+                    <h4 data-i18n="help_visual_mode">📦 Modo Visual</h4>
+                    <p data-i18n="help_visual_mode_desc">Bloques de decenas (📦x10) y unidades (🍎) para facilitar el
+                        conteo.</p>
+                    <h4 data-i18n="help_unknown_mode">❓ Modo Incógnita</h4>
+                    <p data-i18n="help_unknown_mode_desc">Encuentra el número que falta. Ejemplo: "? × 5 = 20".</p>
+                </div>
+            </section>
+
+            <section class="help-section">
+                <h2 data-i18n="help_categories_title">🎒 Categorías de Problemas</h2>
+                <p data-i18n="help_categories_desc">Divide los problemas por su temática y dificultad. Se eligen en el
+                    modal ⚙️.</p>
+                <ul class="help-list">
+                    <li data-i18n="help_category_explorer">🗺️ <strong>Explorador:</strong> Básico. Medidas y conteo.
+                    </li>
+                    <li data-i18n="help_category_architect">🏗️ <strong>Arquitecto:</strong> Intermedio. Áreas y
+                        fracciones.</li>
+                    <li data-i18n="help_category_scientist">🔬 <strong>Científico:</strong> Avanzado. Álgebra y
+                        probabilidad.</li>
+                </ul>
+            </section>
+
+            <section class="help-section">
+                <h2 data-i18n="help_settings_title">⚙️ Configuración del Jugador</h2>
+                <p data-i18n="help_settings_desc">Pulsa el icono ⚙️ junto a tu nombre para personalizar tu experiencia:
+                </p>
+                <ul class="help-list">
+                    <li data-i18n="help_settings_operations">1. <strong>Operaciones:</strong> Elige qué operaciones
+                        salen en el modo estándar.</li>
+                    <li data-i18n="help_settings_problem_bags">2. <strong>Sacos de Problemas:</strong> Selecciona las
+                        categorías de problemas activas.</li>
+                    <li data-i18n="help_settings_hints">3. <strong>Ayuda:</strong> Activa pistas visuales y configura su
+                        tiempo de aparición (1-30s).</li>
+                    <li data-i18n="help_settings_name">4. <strong>Nombre:</strong> Cambia tu nombre de jugador.</li>
+                </ul>
             </section>
 
             <section class="help-section">
@@ -103,19 +149,39 @@
 
             <section class="help-section">
                 <h2 data-i18n="help_duel_title">🏆 Modo Duelo</h2>
-                <p data-i18n="help_duel_desc">
-                    El <strong>Modo Duelo</strong> permite que varios jugadores compitan entre sí:
+                <div class="help-item">
+                    <h3 data-i18n="help_duel_local_title">🏠 Duelo Local</h3>
+                    <p data-i18n="help_duel_local_desc">Varios jugadores por turnos en el mismo dispositivo. 30 segundos
+                        cada uno.</p>
+                    <ul class="help-list">
+                        <li data-i18n="help_duel_req">Se necesitan al menos <strong>2 jugadores</strong> creados</li>
+                        <li data-i18n="help_duel_score">Las monedas ganadas en el duelo NO se acumulan al perfil</li>
+                        <li data-i18n="help_duel_winner">Al final se muestra quién ganó más monedas durante el duelo
+                        </li>
+                    </ul>
+                </div>
+                <div class="help-item">
+                    <h3 data-i18n="help_duel_online_title">🌐 Duelo Online</h3>
+                    <p data-i18n="help_duel_online_desc">Compite contra amigos en tiempo real por internet. Modo
+                        supervivencia.</p>
+                    <p data-i18n="help_duel_online_flow">Crea una cuenta -> Crea sala -> Comparte el código -> ¡A jugar!
+                    </p>
+                </div>
+            </section>
+
+            <section class="help-section">
+                <h2 data-i18n="help_achievements_title">🏆 Sistema de Logros</h2>
+                <p data-i18n="help_achievements_desc">Desbloquea medallas cumpliendo retos. Hay 26 logros en 6
+                    categorías.</p>
+                <p data-i18n="help_achievements_secret">🤫 Algunos logros son secretos. ¡Investiga cómo conseguirlos!
                 </p>
-                <ul class="help-list">
-                    <li data-i18n="help_duel_req">Se necesitan al menos <strong>2 jugadores</strong> creados</li>
-                    <li data-i18n="help_duel_turns">Cada jugador juega un turno de 30 segundos con su nivel actual</li>
-                    <li data-i18n="help_duel_score">Las monedas ganadas en el duelo NO se acumulan al perfil</li>
-                    <li data-i18n="help_duel_winner">Al final se muestra quién ganó más monedas durante el duelo</li>
-                </ul>
-                <p data-i18n="help_duel_start">
-                    Para iniciar un duelo, simplemente haz clic en el botón <strong>"🏆 MODO DUELO"</strong>
-                    desde la pantalla principal.
-                </p>
+            </section>
+
+            <section class="help-section">
+                <h2 data-i18n="help_daily_title">📅 Desafíos Diarios</h2>
+                <p data-i18n="help_daily_desc">Logra objetivos diarios para ganar monedas extra. Nivel Bronce, Plata y
+                    Oro.</p>
+                <p data-i18n="help_daily_claim">Recuerda pulsar "Reclamar" al completar un desafío.</p>
             </section>
 
             <section class="help-section">
@@ -134,10 +200,18 @@
                             juego, usa el botón ❄️ para congelar el tiempo durante 5 segundos</li>
                         <li data-i18n="help_store_shield">🛡️ <strong>Escudo Protector (100 monedas):</strong> Evita que
                             pierdas tiempo al fallar una respuesta. Usa el botón 🛡️ en el juego</li>
-                        <li data-i18n="help_store_theme_space">🌟 <strong>Tema Espacial (200 monedas):</strong> Cambia
-                            el fondo del juego con un tema de estrellas y espacio</li>
-                        <li data-i18n="help_store_theme_jungle">🍌 <strong>Tema Selva (200 monedas):</strong> Cambia el
-                            fondo del juego con un tema de selva y plátanos</li>
+                        <li data-i18n="help_store_theme_space">🌟 <strong>Tema Espacial (200 monedas):</strong>
+                            Estrellas y espacio</li>
+                        <li data-i18n="help_store_theme_jungle">🍌 <strong>Tema Selva (200 monedas):</strong> Selva y
+                            plátanos</li>
+                        <li data-i18n="help_store_theme_underwater">🐠 <strong>Tema Submarino (200 monedas):</strong>
+                            Peces y coral</li>
+                        <li data-i18n="help_store_theme_forest">🌲 <strong>Tema Bosque (200 monedas):</strong> Árboles y
+                            naturaleza</li>
+                        <li data-i18n="help_store_theme_desert">🏜️ <strong>Tema Desierto (200 monedas):</strong> Arena
+                            y palmeras</li>
+                        <li data-i18n="help_store_theme_arctic">🧊 <strong>Tema Ártico (200 monedas):</strong> Hielo y
+                            nieve</li>
                     </ul>
                 </div>
                 <p data-i18n="help_store_access">
