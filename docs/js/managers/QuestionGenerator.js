@@ -19,6 +19,7 @@ class QuestionGenerator {
         this.problemType = 'matematico';
         this.gameEngine = gameEngine;
         this.initialProblemLevel = null; // Locked level for problem pool during session
+        this.hintTimeout = null;
     }
 
     /**
@@ -168,10 +169,17 @@ class QuestionGenerator {
         const theme = user?.currentTheme || 'default';
         let unitIcon = '🍎';
 
-        if (theme === 'theme_space') {
-            unitIcon = '⭐';
-        } else if (theme === 'theme_jungle') {
-            unitIcon = '🍌';
+        const themeIcons = {
+            'theme_space': '⭐',
+            'theme_jungle': '🍌',
+            'theme_underwater': '🐠',
+            'theme_forest': '🌲',
+            'theme_desert': '🏜️',
+            'theme_arctic': '🧊'
+        };
+
+        if (themeIcons[theme]) {
+            unitIcon = themeIcons[theme];
         }
 
         for (let i = 0; i < tens; i++) {
@@ -272,6 +280,11 @@ class QuestionGenerator {
             selectedCategories
         );
 
+        console.log(`[QuestionGenerator] Candidates: ${candidates.length}, Filtered by Category: ${filteredByCategory.length}`);
+        if (filteredByCategory.length === 0) {
+            console.warn('[QuestionGenerator] No problems matched selected categories:', selectedCategories);
+        }
+
         // Use filtered problems - DO NOT fall back to candidates
         // If user selected specific categories, respect that choice
         let pool = filteredByCategory;
@@ -280,6 +293,9 @@ class QuestionGenerator {
         if (this.gameEngine) {
             const solvedProblems = this.gameEngine.getSolvedProblems();
             const unsolvedProblems = pool.filter(p => !solvedProblems.has(p.id));
+
+            console.log(`[QuestionGenerator] Pool: ${pool.length}, Unsolved: ${unsolvedProblems.length}`);
+            console.log('[QuestionGenerator] Solved IDs:', Array.from(solvedProblems));
 
             if (unsolvedProblems.length > 0) {
                 pool = unsolvedProblems;
@@ -348,11 +364,44 @@ class QuestionGenerator {
     }
 
     /**
+     * Renders equation elements as static text (for hints in non-numeric problems)
+     * @param {string} equation - Equation string
+     */
+    renderStaticEquation(equation) {
+        const equationArea = document.getElementById('equation-area');
+        if (!equationArea) return;
+
+        // Render as text lines, replacing __ with empty space or just removing them
+        const lines = String(equation).split('\n');
+        lines.forEach(line => {
+            const row = document.createElement('div');
+            row.className = 'equation-row static-hint';
+
+            // Replace __ with empty space for static display
+            const cleanLine = line.replace(/__/g, '').replace(/\becuacion\b/g, '').trim();
+            if (!cleanLine) return;
+            const textSpan = document.createElement('span');
+            textSpan.className = 'eq-text';
+            textSpan.textContent = cleanLine;
+            row.appendChild(textSpan);
+
+            equationArea.appendChild(row);
+        });
+    }
+
+    /**
      * Generates a problem
      */
     generateProblem() {
+        // Clear any leftover timeout
+        if (this.hintTimeout) {
+            clearTimeout(this.hintTimeout);
+            this.hintTimeout = null;
+        }
+
         this.currentProblem = this.selectProblem();
         if (!this.currentProblem) {
+            console.warn('[QuestionGenerator] selectProblem() returned null');
             // Show feedback if available
             if (typeof window.showFeedbackMessage === 'function') {
                 window.showFeedbackMessage('No hay problemas disponibles');
@@ -429,6 +478,9 @@ class QuestionGenerator {
         if (args.length > 0 && args[0] === 'explicacion') {
             field = 'explicacion';
             cleanArgs = args.slice(1);
+        } else if (args.length > 0 && args[0] === 'ecuacion') {
+            field = 'ecuacion';
+            cleanArgs = args.slice(1);
         }
 
         try {
@@ -463,46 +515,77 @@ class QuestionGenerator {
         const equationArea = document.getElementById('equation-area');
         if (!equationArea) return;
 
-        const tipoRespuesta = problem.tipoRespuesta || 'numero';
+        // Clear any existing hint timeout to prevent "leaking" hints to next question
+        if (this.hintTimeout) {
+            clearTimeout(this.hintTimeout);
+            this.hintTimeout = null;
+        }
 
-        // Clear area
+        // Auto-detect tipoRespuesta if not specified
+        if (!problem.tipoRespuesta) {
+            if (problem.opciones && problem.opciones.length > 0) {
+                problem.tipoRespuesta = 'opcion_multiple';
+            } else if (problem.placeholder) {
+                problem.tipoRespuesta = 'texto';
+            } else {
+                problem.tipoRespuesta = 'numero';
+            }
+        }
+        const tipoRespuesta = problem.tipoRespuesta;
+
+        // Clear area once
         equationArea.innerHTML = '';
 
-        if (tipoRespuesta === 'numero') {
-            // Render equation with numeric inputs
-            this.renderEquation(problem.ecuacion);
-
-            // Focus first input immediately
-            const firstInput = document.querySelector('#equation-area .eq-input');
-            if (firstInput) firstInput.focus();
-
-            // Read hints config from user settings
-            const hintsConfig = this.userManager.getHintsConfig
-                ? this.userManager.getHintsConfig()
-                : { enabled: true, delay: 10 };
-
-            if (hintsConfig.enabled) {
-                // Hide equation text initially and reveal after configured delay
-                const equationTexts = document.querySelectorAll('#equation-area .eq-text');
-                equationTexts.forEach(text => {
-                    text.style.opacity = '0';
-                });
-
-                const delayMs = (hintsConfig.delay || 10) * 1000;
-                setTimeout(() => {
-                    const texts = document.querySelectorAll('#equation-area .eq-text');
-                    texts.forEach(text => {
-                        text.style.transition = 'opacity 0.5s ease';
-                        text.style.opacity = '1';
-                    });
-                }, delayMs);
+        // 1. Render Equation/Hint if available
+        if (problem.ecuacion) {
+            if (tipoRespuesta === 'numero') {
+                this.renderEquation(problem.ecuacion);
+            } else {
+                this.renderStaticEquation(problem.ecuacion);
             }
-            // If hints disabled: equation text is visible immediately (no hiding)
+        }
 
+        // 2. Render Input UI based on type
+        if (tipoRespuesta === 'numero') {
+            // Focus first input
+            setTimeout(() => {
+                const firstInput = document.querySelector('#equation-area .eq-input');
+                if (firstInput) firstInput.focus();
+            }, 100);
         } else if (tipoRespuesta === 'opcion_multiple') {
             this.renderMultipleChoice(problem);
         } else if (tipoRespuesta === 'texto') {
             this.renderTextInput(problem);
+        }
+
+        // 3. Apply Hint/Delay logic to ANY existing equation text
+        const hintsConfig = this.userManager.getHintsConfig
+            ? this.userManager.getHintsConfig()
+            : { enabled: true, delay: 10 };
+
+        const equationTexts = document.querySelectorAll('#equation-area .eq-text');
+
+        if (hintsConfig.enabled && equationTexts.length > 0) {
+            // Initially hide WITHOUT transition to avoid flickering/fading out
+            equationTexts.forEach(text => {
+                text.style.transition = 'none';
+                text.style.opacity = '0';
+            });
+
+            const delayMs = (hintsConfig.delay || 10) * 1000;
+            this.hintTimeout = setTimeout(() => {
+                const texts = document.querySelectorAll('#equation-area .eq-text');
+                texts.forEach(text => {
+                    text.style.transition = 'opacity 0.5s ease';
+                    text.style.opacity = '1';
+                });
+                this.hintTimeout = null;
+            }, delayMs);
+        } else {
+            // Ensure visible if hints disabled
+            equationTexts.forEach(text => {
+                text.style.opacity = '1';
+            });
         }
     }
 

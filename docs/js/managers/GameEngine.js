@@ -561,60 +561,74 @@ class GameEngine {
 
         // Procesar resultado
         if (isCorrect) {
-            // Marcar problema como resuelto para evitar repetición
-            if (this.currentProblem.id) {
-                this.markProblemAsSolved(this.currentProblem.id);
-            }
-
-            // Resetear selectedChoice para próximo problema
-            window.selectedChoice = null;
-
-            // Actualizar GameEngine
-            this.gameCoins += 30;
-            this.timeLeft += 10;
-            this.showTimeDelta(10);
-
-            // Track achievement stats for problems
-            const user = this.userManager.getCurrentUser();
-            if (user && this.achievementManager) {
-                user.achievementStats = user.achievementStats || {};
-                user.achievementStats.problemsSolved = (user.achievementStats.problemsSolved || 0) + 1;
-                user.achievementStats.coins = this.gameCoins;
-                user.achievementStats.level = this.gameLevel;
-
-                // Check for new achievements
-                const newAchievements = this.achievementManager.checkAchievements(user);
-                if (newAchievements && newAchievements.length > 0) {
-                    newAchievements.forEach(achievement => {
-                        this.achievementManager.showAchievementNotification(achievement);
-                    });
-                    this.userManager.saveToStorage();
-                }
-            }
-
-            if (this.dailyChallengeManager) {
-                const user = this.userManager.getCurrentUser();
-                this.dailyChallengeManager.updateProgress(user, 'problem_solved', 1);
-                this.dailyChallengeManager.updateProgress(user, 'coins_earned', 30);
-            }
-
+            console.log('[GameEngine] Answer is CORRECT. Starting post-correct logic.');
             try {
-                confetti({ particleCount: 30, spread: 50 });
-            } catch (e) {
-                // Confetti library not loaded
-            }
+                // Marcar problema como resuelto para evitar repetición
+                if (this.currentProblem.id) {
+                    this.markProblemAsSolved(this.currentProblem.id);
+                }
 
-            const expectedLevel = Math.floor(this.gameCoins / 50) + 1;
-            if (expectedLevel > this.gameLevel) {
-                this.gameLevel = expectedLevel;
-            }
+                // Resetear selectedChoice para próximo problema
+                window.selectedChoice = null;
 
-            this.updateGameDisplay();
-            // Call generateProblemFn from constructor properties
-            if (this.generateProblem) {
-                this.generateProblem();
+                // Actualizar GameEngine
+                this.gameCoins += 30;
+                this.timeLeft += 10;
+                this.showTimeDelta(10);
+
+                // Track achievement stats for problems
+                const user = this.userManager.getCurrentUser();
+                if (user && this.achievementManager) {
+                    console.log('[GameEngine] Updating achievement stats...');
+                    user.achievementStats = user.achievementStats || {};
+                    user.achievementStats.problemsSolved = (user.achievementStats.problemsSolved || 0) + 1;
+                    user.achievementStats.coins = this.gameCoins;
+                    user.achievementStats.level = this.gameLevel;
+
+                    // Check for new achievements
+                    const newAchievements = this.achievementManager.checkAchievements(user);
+                    if (newAchievements && newAchievements.length > 0) {
+                        newAchievements.forEach(achievement => {
+                            this.achievementManager.showAchievementNotification(achievement);
+                        });
+                        this.userManager.saveToStorage();
+                    }
+                }
+
+                if (this.dailyChallengeManager) {
+                    console.log('[GameEngine] Updating daily challenges...');
+                    const user = this.userManager.getCurrentUser();
+                    this.dailyChallengeManager.updateProgress(user, 'problem_solved', 1);
+                    this.dailyChallengeManager.updateProgress(user, 'coins_earned', 30);
+                }
+
+                try {
+                    if (typeof confetti === 'function') {
+                        confetti({ particleCount: 30, spread: 50 });
+                    }
+                } catch (e) {
+                    // Confetti library not loaded
+                }
+
+                const expectedLevel = Math.floor(this.gameCoins / 50) + 1;
+                if (expectedLevel > this.gameLevel) {
+                    this.gameLevel = expectedLevel;
+                }
+
+                this.updateGameDisplay();
+
+                // Call generateProblemFn from constructor properties
+                if (this.generateProblem) {
+                    console.log('[GameEngine] Triggering next problem generation...');
+                    this.generateProblem();
+                }
+            } catch (error) {
+                console.error('[GameEngine] CRITICAL ERROR in post-correct logic:', error);
+                // Fallback: try to generate next problem anyway if possible, or just log
+                if (this.generateProblem) this.generateProblem();
             }
-        } else {
+        }
+        else {
             const user = this.userManager.getCurrentUser();
             this.userManager.initInventory(user);
             if (user.inventory.shields > 0) {
