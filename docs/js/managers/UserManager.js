@@ -238,7 +238,12 @@ class UserManager {
         const editInput = document.getElementById('edit-user-name');
 
         if (configTitle) {
-            configTitle.innerText = this.translationManager.t('config_title_user') + name;
+            const textNode = configTitle.childNodes[0];
+            if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+                textNode.textContent = this.translationManager.t('config_title_user') + name + ' ';
+            } else {
+                configTitle.prepend(document.createTextNode(this.translationManager.t('config_title_user') + name + ' '));
+            }
         }
 
         if (cfgSum) cfgSum.checked = this.users[name].ops.includes('+');
@@ -366,7 +371,12 @@ class UserManager {
         // Actualizar la interfaz
         const configTitle = document.getElementById('config-title');
         if (configTitle) {
-            configTitle.innerText = this.translationManager.t('config_title_user') + newName;
+            const textNode = configTitle.childNodes[0];
+            if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+                textNode.textContent = this.translationManager.t('config_title_user') + newName + ' ';
+            } else {
+                configTitle.prepend(document.createTextNode(this.translationManager.t('config_title_user') + newName + ' '));
+            }
         }
 
         this.cancelEditName();

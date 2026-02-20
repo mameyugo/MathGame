@@ -77,7 +77,15 @@ async function changeLanguage(lang) {
 
     // Actualizar título de configuración si hay usuario seleccionado
     if (currentUser) {
-        document.getElementById('config-title').innerText = t('config_title_user') + currentUser;
+        const configTitle = document.getElementById('config-title');
+        if (configTitle) {
+            const textNode = configTitle.childNodes[0];
+            if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+                textNode.textContent = t('config_title_user') + currentUser + ' ';
+            } else {
+                configTitle.prepend(document.createTextNode(t('config_title_user') + currentUser + ' '));
+            }
+        }
     }
 
     // Actualizar leaderboard si está visible

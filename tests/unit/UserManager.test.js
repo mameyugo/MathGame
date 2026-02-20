@@ -11,10 +11,16 @@ describe('UserManager', () => {
             setItem: jest.fn()
         };
 
+        // Mock Node constants
+        global.Node = {
+            TEXT_NODE: 3
+        };
+
         // Mock document
         global.document = {
             getElementById: jest.fn(),
-            querySelectorAll: jest.fn(() => [])
+            querySelectorAll: jest.fn(() => []),
+            createTextNode: jest.fn((text) => ({ textContent: text, nodeType: global.Node.TEXT_NODE }))
         };
 
         // Mock translationManager
@@ -214,7 +220,11 @@ describe('UserManager', () => {
             };
 
             const mockElements = {
-                'config-title': { innerText: '' },
+                'config-title': {
+                    childNodes: [],
+                    prepend: jest.fn(),
+                    innerText: ''
+                },
                 'cfg-sum': { checked: false },
                 'cfg-res': { checked: false },
                 'cfg-mul': { checked: false },
@@ -290,6 +300,8 @@ describe('UserManager', () => {
     });
 
     describe('saveUserName', () => {
+        let saveMockElements;
+
         beforeEach(() => {
             manager.users = {
                 Alice: { level: 5, totalCoins: 200, ops: ['+'] }
@@ -300,11 +312,20 @@ describe('UserManager', () => {
             manager.cancelEditName = jest.fn();
             manager.renderUserList = jest.fn();
             manager.renderLeaderboard = jest.fn();
+
+            saveMockElements = {
+                'edit-user-name': { value: '' },
+                'config-title': {
+                    childNodes: [],
+                    prepend: jest.fn(),
+                    innerText: ''
+                }
+            };
+            global.document.getElementById = jest.fn((id) => saveMockElements[id]);
         });
 
         test('should rename user successfully', () => {
-            const mockInput = { value: 'Alicia' };
-            global.document.getElementById = jest.fn(() => mockInput);
+            saveMockElements['edit-user-name'].value = 'Alicia';
 
             manager.saveUserName();
 
@@ -315,8 +336,7 @@ describe('UserManager', () => {
         });
 
         test('should not rename if name is empty', () => {
-            const mockInput = { value: '   ' };
-            global.document.getElementById = jest.fn(() => mockInput);
+            saveMockElements['edit-user-name'].value = '   ';
 
             manager.saveUserName();
 
@@ -326,8 +346,7 @@ describe('UserManager', () => {
 
         test('should not rename if name already exists', () => {
             manager.users.Bob = { level: 1, totalCoins: 0 };
-            const mockInput = { value: 'Bob' };
-            global.document.getElementById = jest.fn(() => mockInput);
+            saveMockElements['edit-user-name'].value = 'Bob';
 
             manager.saveUserName();
 
@@ -336,8 +355,7 @@ describe('UserManager', () => {
         });
 
         test('should sanitize new name against XSS', () => {
-            const mockInput = { value: '<b>Alicia</b>' };
-            global.document.getElementById = jest.fn(() => mockInput);
+            saveMockElements['edit-user-name'].value = '<b>Alicia</b>';
 
             manager.saveUserName();
 
@@ -347,8 +365,7 @@ describe('UserManager', () => {
         });
 
         test('should cancel if new name equals old name', () => {
-            const mockInput = { value: 'Alice' };
-            global.document.getElementById = jest.fn(() => mockInput);
+            saveMockElements['edit-user-name'].value = 'Alice';
 
             manager.saveUserName();
 
