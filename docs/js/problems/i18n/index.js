@@ -43,6 +43,11 @@ export function getTranslation(lang, problemId, field, ...args) {
         return textFn.call(problem, ...args);
     }
 
+    // Si es un array y tenemos argumentos, asumimos que el primero es el índice
+    if (Array.isArray(textFn) && args.length > 0) {
+        return textFn[args[0]] || '';
+    }
+
     return textFn || '';
 }
 

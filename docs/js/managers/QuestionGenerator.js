@@ -376,11 +376,21 @@ class QuestionGenerator {
                 userLanguage,
                 ...serializedParams
             );
-
             // Use translated text if available, otherwise use original
             // Also store the explanation translation for later use if needed
             if (translatedText) {
                 this.currentProblem.texto = translatedText;
+
+                // Try to get translated equation
+                const translatedEquation = this.getTranslatedProblemText(
+                    this.currentProblem.id || '',
+                    userLanguage,
+                    'ecuacion',
+                    ...serializedParams
+                );
+                if (translatedEquation) {
+                    this.currentProblem.ecuacion = translatedEquation;
+                }
 
                 const translatedExplanation = this.getTranslatedProblemText(
                     this.currentProblem.id || '',

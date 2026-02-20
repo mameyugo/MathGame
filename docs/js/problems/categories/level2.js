@@ -22,7 +22,8 @@ export const level2Problems = [
                 explicacion: `¡Trampa desactivada! El problema dice "todas menos ${ovejas_vivas}", así que le quedan exactamente ${ovejas_vivas} ovejas. No es ${ovejas_totales} - ${ovejas_vivas} = ${ovejas_totales - ovejas_vivas}.`,
                 ecuacion: `Le quedan = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, ovejas_totales - ovejas_vivas, ovejas_totales, Math.max(1, ovejas_vivas - 1)]
+                opciones: [respuesta, ovejas_totales - ovejas_vivas, ovejas_totales, Math.max(1, ovejas_vivas - 1)],
+                data: [ovejas_totales, ovejas_vivas]
             };
         }
     },
@@ -63,7 +64,8 @@ export const level2Problems = [
                 explicacion: `Tienes que restar los prestados y sumar los devueltos: ${X} - ${Y} + ${Z} = ${respuesta}.`,
                 ecuacion: `${X} - ${Y} + ${Z} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, X - Y, X + Z - Y, X - Y - Z]
+                opciones: [respuesta, X - Y, X + Z - Y, X - Y - Z],
+                data: [X, Y, Z]
             };
         }
     },
@@ -85,7 +87,8 @@ export const level2Problems = [
                 explicacion: `Desde las ${hora_salida}:00 hasta las ${hora_llegada}:30 hay ${horas_viaje} horas y 30 minutos.`,
                 ecuacion: `${hora_llegada}:30 - ${hora_salida}:00 = __ : __`,
                 ecuacionValores: [horas_viaje, 30],
-                opciones: [respuesta, `${horas_viaje}:00`, `${horas_viaje + 1}:00`, `${horas_viaje}:15`]
+                opciones: [respuesta, `${horas_viaje}:00`, `${horas_viaje + 1}:00`, `${horas_viaje}:15`],
+                data: [hora_salida, hora_llegada]
             };
         }
     },
@@ -124,7 +127,8 @@ export const level2Problems = [
                 explicacion: `¡Pesan lo mismo! Un kilo es un kilo, sin importar el material. La confusión viene de que el hierro es más denso, pero estamos hablando del mismo peso.`,
                 ecuacion: `Diferencia de peso = __`,
                 ecuacionValores: [0],
-                opciones: [0, peso, peso * 2, peso / 2]
+                opciones: [0, peso, peso * 2, peso / 2],
+                data: [peso]
             };
         }
     },
@@ -144,7 +148,8 @@ export const level2Problems = [
                 explicacion: `¡Trampa desactivada! La frase dice "todas menos ${respuesta}", así que la respuesta está literalmente en el problema. Le quedan exactamente ${respuesta} ovejas. No es ${ovejas_total} − 9 = ${ovejas_total - respuesta}.`,
                 ecuacion: `Ovejas restantes = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, ovejas_total - respuesta, ovejas_total, 1]
+                opciones: [respuesta, ovejas_total - respuesta, ovejas_total, 1],
+                data: [ovejas_total, respuesta]
             };
         }
     },
@@ -165,7 +170,8 @@ export const level2Problems = [
                 explicacion: `¡Visualiza el tiempo! El error común es hacer ${pastillas}×${minutos_intervalo}=${pastillas * minutos_intervalo}. Pero: la primera la tomas en el minuto 0, la segunda a los ${minutos_intervalo} min, y la tercera a los ${respuesta} min. Total: ${respuesta} minutos.`,
                 ecuacion: `Tiempo total = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, pastillas * minutos_intervalo, minutos_intervalo, 90]
+                opciones: [respuesta, pastillas * minutos_intervalo, minutos_intervalo, 90],
+                data: [pastillas, minutos_intervalo]
             };
         }
     },
@@ -248,7 +254,8 @@ export const level2Problems = [
                 explicacion: `¡Primero junta todas las galletas: ${chocolate} + ${vainilla} = ${total}. Luego resta las vendidas: ${total} - ${vendidas} = ${respuesta} galletas.`,
                 ecuacion: `${chocolate} + ${vainilla} - ${vendidas} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, total, vendidas, chocolate + vendidas]
+                opciones: [respuesta, total, vendidas, chocolate + vendidas],
+                data: [chocolate, vainilla, vendidas]
             };
         }
     },
@@ -269,7 +276,8 @@ export const level2Problems = [
                 explicacion: `Puedes sumar ${libros_estante} + ${libros_estante}... (${estantes} veces) o usar la multiplicación: ${estantes} × ${libros_estante} = ${respuesta} libros.`,
                 ecuacion: `${estantes} × ${libros_estante} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, estantes + libros_estante, estantes * (libros_estante - 1), estantes * libros_estante + 2]
+                opciones: [respuesta, estantes + libros_estante, estantes * (libros_estante - 1), estantes * libros_estante + 2],
+                data: [estantes, libros_estante]
             };
         }
     },
@@ -290,7 +298,8 @@ export const level2Problems = [
                 explicacion: `¿Qué número multiplicado por ${amigos} nos da ${caramelos_total}? La respuesta es: ${caramelos_total} ÷ ${amigos} = ${respuesta} caramelos para cada amigo.`,
                 ecuacion: `${caramelos_total} ÷ ${amigos} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, caramelos_total - amigos, amigos, caramelos_total / 2]
+                opciones: [respuesta, caramelos_total - amigos, amigos, caramelos_total / 2],
+                data: [caramelos_total, amigos]
             };
         }
     },
@@ -313,7 +322,8 @@ export const level2Problems = [
                 explicacion: `Suma lo que tienes: ${ahorros} + ${regalo} = ${tengo}€. Ahora réstaselo al precio: ${precio} - ${tengo} = ${respuesta}€. Te falta ${respuesta}€.`,
                 ecuacion: `${precio} - (${ahorros} + ${regalo}) = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, precio - ahorros, regalo, tengo]
+                opciones: [respuesta, precio - ahorros, regalo, tengo],
+                data: [precio, ahorros, regalo]
             };
         }
     },
@@ -335,7 +345,8 @@ export const level2Problems = [
                 explicacion: `Cuenta el crecimiento total: ${dias} días × ${crecimiento_dia} cm/día = ${dias * crecimiento_dia} cm de crecimiento. Suma la medida inicial: ${medida_inicial} + ${dias * crecimiento_dia} = ${respuesta} cm.`,
                 ecuacion: `${medida_inicial} + (${crecimiento_dia} × ${dias}) = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, medida_inicial + crecimiento_dia, medida_inicial * dias, dias * crecimiento_dia]
+                opciones: [respuesta, medida_inicial + crecimiento_dia, medida_inicial * dias, dias * crecimiento_dia],
+                data: [medida_inicial, crecimiento_dia, dias]
             };
         }
     },
@@ -357,7 +368,8 @@ export const level2Problems = [
                 explicacion: `Resta lo gastado y suma lo encontrado: ${inicial} - ${gasto} + ${encontrado} = ${respuesta}. 💶`,
                 ecuacion: `${inicial} - ${gasto} + ${encontrado} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, inicial - gasto, inicial + encontrado, respuesta - 10]
+                opciones: [respuesta, inicial - gasto, inicial + encontrado, respuesta - 10],
+                data: [inicial, gasto, encontrado]
             };
         }
     },
@@ -377,7 +389,8 @@ export const level2Problems = [
                 explicacion: `Suma los animales (${perros} + ${gatos} = ${perros + gatos}) y multiplica por 4 patas: ${perros + gatos} x 4 = ${respuesta}. 🐾`,
                 ecuacion: `(${perros} + ${gatos}) x 4 = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, perros * 4, gatos * 4, respuesta + 2]
+                opciones: [respuesta, perros * 4, gatos * 4, respuesta + 2],
+                data: [perros, gatos]
             };
         }
     },
@@ -396,7 +409,8 @@ export const level2Problems = [
                 explicacion: `El doble significa multiplicar por 2: ${tuyos} x 2 = ${respuesta}.`,
                 ecuacion: `${tuyos} x 2 = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, tuyos + 2, tuyos * 3, 10]
+                opciones: [respuesta, tuyos + 2, tuyos * 3, 10],
+                data: [tuyos]
             };
         }
     },
@@ -415,7 +429,8 @@ export const level2Problems = [
                 explicacion: `La mitad es dividir por 2: ${total} / 2 = ${respuesta}. 🍪`,
                 ecuacion: `${total} / 2 = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, total - 1, total * 2, 0]
+                opciones: [respuesta, total - 1, total * 2, 0],
+                data: [total]
             };
         }
     },
@@ -435,7 +450,8 @@ export const level2Problems = [
                 explicacion: `Multiplica bolsas por caramelos: ${bolsas} x ${caramelos} = ${respuesta}. 🍬`,
                 ecuacion: `${bolsas} x ${caramelos} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, bolsas + caramelos, respuesta + 5, 10]
+                opciones: [respuesta, bolsas + caramelos, respuesta + 5, 10],
+                data: [bolsas, caramelos]
             };
         }
     },

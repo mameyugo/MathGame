@@ -15,6 +15,7 @@ export const problemsEN = {
     },
     peces_ahogados: {
         texto: () => `In an aquarium there are 10 fish. If 5 of them drown, how many fish are left in the aquarium?`,
+        ecuacion: () => `Fish remaining = __`,
         explicacion: () => `Trap deactivated! Fish don't drown in water. It's their natural habitat. There are still 10 fish.`
     },
     gallo_huevos: {
@@ -39,10 +40,12 @@ export const problemsEN = {
     },
     naranjas_llevas: {
         texto: (mesa, coges) => `There are ${mesa} oranges on a table. If you go and take ${coges} oranges, how many oranges do you have now?`,
+        ecuacion: () => `Oranges you have = __`,
         explicacion: (coges) => `Pay attention to the question! It's not asking how many are left on the table, but how many DO YOU have. Answer: The ${coges} you just took.`
     },
     paraguas_magico: {
         texto: (ninos) => `${ninos} children try to get under a very small umbrella, but none of them get wet at all. How much does it rain?`,
+        ecuacion: () => `Amount of rain = __`,
         explicacion: () => `Use the context! The brain searches for a complex physical explanation, but the answer is simple: it's not raining. That's why nobody gets wet.`
     },
     patas_pajaro: {
@@ -101,6 +104,7 @@ export const problemsEN = {
     l1_conductor_nombre: {
         opciones: ["Me", "John", "The bus", "Nobody"],
         texto: (pasajeros) => `Imagine you are driving a bus with ${pasajeros} passengers. Who is the driver?`,
+        ecuacion: () => `Driver = __ (0=Me, 1=John, 2=Bus)`,
         explicacion: () => `The driver is YOU! The question says "Imagine you are driving...". 🚌`
     },
     l1_agujero_profundo: {
@@ -177,10 +181,12 @@ export const problemsEN = {
 
     pastor_ovejas: {
         texto: (totales, vivas) => `A shepherd has ${totales} sheep. Lightning strikes and all die except ${vivas}. How many sheep are left?`,
+        ecuacion: () => `Remaining = __`,
         explicacion: (totales, vivas) => `Trap deactivated! The problem says "all except ${vivas}", so he has exactly ${vivas} sheep left. It's not ${totales} - ${vivas} = ${totales - vivas}.`
     },
     meses_ano: {
         texto: () => `If in a year there are months that have 30 days and others that have 31, how many months have 28 days?`,
+        ecuacion: () => `Months with 28+ days = __`,
         explicacion: () => `Trap deactivated! The question is not how many months have ONLY 28 days, but how many months HAVE 28 days (among others). All months of the year have at least 28 days, even February. The answer is 12.`
     },
     biblioteca: {
@@ -193,6 +199,7 @@ export const problemsEN = {
     },
     la_cerilla: {
         texto: () => `You enter a dark and cold room. You only have one match. There is a coal stove, an oil lamp and a candle. What do you light first?`,
+        ecuacion: () => `Light first = __ (1=match, 2=stove, 3=lamp)`,
         explicacion: () => `The match, of course! Without lighting the match you can't light anything else.`
     },
     peso_algodón: {
@@ -209,10 +216,12 @@ export const problemsEN = {
     },
     hermano_tio: {
         texto: () => `My uncle's brother comes to visit me, but it turns out he's not my uncle. Who is he?`,
+        ecuacion: () => `Answer = __`,
         explicacion: () => `Family logic! My uncle's brother is my father. If my father's uncle has a brother, and that brother is not my uncle, then he must be my father. The confusion comes from looking for a "distant" relative.`
     },
     reparto_cesta: {
         texto: () => `In a basket there are 5 apples. You have to distribute them among 5 friends so that each one has an apple, but at the end one apple remains in the basket. How do you do it?`,
+        ecuacion: () => `Answer = __`,
         explicacion: () => `Lateral thinking! The solution is: give the last friend the basket WITH the apple inside. This way each one has an apple, and one remains in the basket. The trap is assuming that "distribute" means taking the object out of the container.`
     },
     pescadores_familia: {
@@ -274,6 +283,7 @@ export const problemsEN = {
     },
     tren_electrico: {
         texto: (velocidad_tren, velocidad_viento) => `An electric train travels North at ${velocidad_tren} km/h. If the wind blows South at ${velocidad_viento} km/h, how much smoke does the train emit?`,
+        ecuacion: () => `Train smoke = __`,
         explicacion: () => `Trap deactivated! It's an ELECTRIC train, not steam or diesel. Electric trains don't emit smoke, they're powered directly by electricity. All those speeds are distractors. The answer is 0.`
     },
     despertador_antiguo: {
@@ -282,10 +292,12 @@ export const problemsEN = {
     },
     padre_rosa: {
         texto: () => `Rosa's father has 5 daughters: Lala, Lele, Lili, Lolo and... what is the name of the fifth daughter?`,
+        ecuacion: () => `Fifth daughter = __`,
         explicacion: () => `Rosa! The pattern of vowels (A, E, I, O) distracts you, but the question already mentioned that the first daughter is Rosa.`
     },
     dias_sin_nombre: {
         texto: () => `Name three consecutive days without using the words Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday.`,
+        ecuacion: () => `Consecutive days = __`,
         explicacion: () => `Yesterday, today and tomorrow! These are consecutive days but don't belong to the traditional week, but rather to relative time references.`
     },
     tarta_horno: {
@@ -407,6 +419,7 @@ export const problemsEN = {
     },
     pajaro_cazador: {
         texto: (inicial) => `There are ${inicial} birds on a branch. A hunter shoots and hits one. How many birds are left on the branch?`,
+        ecuacion: () => `Birds on branch = __`,
         explicacion: (inicial) => `Logical realism! The wounded bird falls to the ground and the other ${inicial - 1} birds fly away scared by the shot. Result: 0 birds on the branch.`
     },
     ladrillo_peso_nivel4: {
@@ -490,7 +503,7 @@ export const problemsEN = {
     },
     vuelo_pajaro: {
         texto: (distancia, velocidad_t, velocidad_p, tiempo) => `Two trains are on opposite tracks ${distancia} km apart and move toward each other at ${velocidad_t} km/h each. A bird leaves Train A at ${velocidad_p} km/h toward Train B, and when it reaches it, it returns to Train A, and so on until the trains collide. What is the total distance traveled by the bird?`,
-        explicacion: (velocidad_p, tiempo, velocidad_t) => `The infinite calculation trap! Many try to calculate each trajectory of the bird (infinite series). The trick is to calculate the time: the trains will take ${tiempo} hour to meet (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h relative speed). If the bird flies at ${velocidad_p} km/h for that hour, it travels exactly ${velocidad_p * tiempo} km.`
+        explicacion: (distancia, velocidad_t, velocidad_p, tiempo) => `The infinite calculation trap! Many try to calculate each trajectory of the bird (infinite series). The trick is to calculate the time: the trains will take ${tiempo} hour to meet (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h relative speed). If the bird flies at ${velocidad_p} km/h for that hour, it travels exactly ${velocidad_p * tiempo} km.`
     },
     cumpleaños_imposible: {
         texto: (edad_anteayer, edad_proximo) => `The day before yesterday I was ${edad_anteayer} years old and next year I will be ${edad_proximo}. How old am I today? (Knowing that today is January 1st)`,
@@ -498,15 +511,15 @@ export const problemsEN = {
     },
     cubo_pintado: {
         texto: (tamano, total, respuesta) => `A wooden cube of ${tamano}×${tamano}×${tamano} cm is painted blue on the outside. Then it is cut into ${total} cubes of 1×1×1 cm. How many of these cubes will have exactly 2 faces painted blue?`,
-        explicacion: (aristas, tamano, respuesta) => `Spatial visualization! The brain tries to count total faces, but the trick is knowing that cubes with 2 painted faces are those on the edges (but not at corners, which have 3). A cube has ${aristas} edges, and in this case there is 1 central cube per edge. Total: ${respuesta} cubes.`
+        explicacion: (tamano, total, respuesta, aristas) => `Spatial visualization! The brain tries to count total faces, but the trick is knowing that cubes with 2 painted faces are those on the edges (but not at corners, which have 3). A cube has ${aristas} edges, and in this case there is 1 central cube per edge. Total: ${respuesta} cubes.`
     },
     carrera_100m: {
         texto: (distancia, ventaja) => `Runner A beats Runner B by ${ventaja} meters. Runner B beats Runner C by ${ventaja} meters. If all three run ${distancia} meters, by how many meters does A beat C?`,
-        explicacion: (ventaja, velocidad_c_porcent, respuesta) => `The addition trap! The intuitive answer is ${ventaja + ventaja} meters (${ventaja}+${ventaja}). But distances are proportional to speed. C runs at ${velocidad_c_porcent}×100=${Math.round(velocidad_c_porcent * 100)}% of A's speed. Real advantage: 100 - (100 × ${velocidad_c_porcent}) ≈ ${respuesta}m`
+        explicacion: (distancia, ventaja, velocidad_c_porcent, respuesta) => `The addition trap! The intuitive answer is ${ventaja + ventaja} meters (${ventaja}+${ventaja}). But distances are proportional to speed. C runs at ${velocidad_c_porcent}×100=${Math.round(velocidad_c_porcent * 100)}% of A's speed. Real advantage: 100 - (100 × ${velocidad_c_porcent}) ≈ ${respuesta}m`
     },
     monos_platanos: {
         texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `If ${monos_ini} monkeys take ${tiempo_ini} minutes to eat ${platanos_ini} bananas, how long will ${monos_fin} monkeys take to eat ${platanos_fin} bananas?`,
-        explicacion: (tiempo_ini) => `The rule of three trap! A direct proportion is attempted. But the rate is 1 monkey per banana every ${tiempo_ini} minutes. If everyone starts eating at the same time, they finish at the same time. The monkeys:bananas ratio is the same (1:1), so time remains constant: ${tiempo_ini} minutes.`
+        explicacion: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `The rule of three trap! A direct proportion is attempted. But the rate is 1 monkey per banana every ${tiempo_ini} minutes. If everyone starts eating at the same time, they finish at the same time. The monkeys:bananas ratio is the same (1:1), so time remains constant: ${tiempo_ini} minutes.`
     },
     // NEW LEVEL 2 PROBLEMS
     horno_galletas: {

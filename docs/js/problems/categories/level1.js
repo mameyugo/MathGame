@@ -20,7 +20,8 @@ export const level1Problems = [
                 respuestaCorrecta: total,
                 ecuacion: `${cantidad} x ${precio} = __`,
                 ecuacionValores: [total],
-                opciones: [total, total + 2, cantidad + precio, total - 1]
+                opciones: [total, total + 2, cantidad + precio, total - 1],
+                data: [cantidad, precio]
             };
         }
     },
@@ -40,7 +41,8 @@ export const level1Problems = [
                 explicacion: `¡Piensa bien! Cada mano tiene 5 dedos. Por lo tanto: 5 × ${manos} = ${respuesta} dedos en total.`,
                 ecuacion: `5 × ${manos} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, manos * manos, manos * 10, respuesta - 5]
+                opciones: [respuesta, manos * manos, manos * 10, respuesta - 5],
+                data: [manos]
             };
         }
     },
@@ -60,7 +62,8 @@ export const level1Problems = [
                 explicacion: `¡Trampa desactivada! Los peces no se ahogan en el agua. Es su hábitat natural. Siguen habiendo ${total_peces} peces.`,
                 ecuacion: `${total_peces} - 0 = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, 5, 15, 0]
+                opciones: [respuesta, 5, 15, 0],
+                data: [total_peces]
             };
         }
     },
@@ -99,7 +102,8 @@ export const level1Problems = [
                 explicacion: `¡Trampa desactivada! Las patas del gato están sobre la mesa, no sobre el suelo. Solo las ${patas_mesa} patas de la mesa tocan el suelo.`,
                 ecuacion: `${patas_mesa} (mesa) + 0 (gato) = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, 8, 4, 4]
+                opciones: [respuesta, 8, 4, 4],
+                data: [patas_mesa]
             };
         }
     },
@@ -120,7 +124,8 @@ export const level1Problems = [
                 explicacion: `Después de dar ${regaladas} peras de tu cesta de ${inicial}, te quedan: ${inicial} - ${regaladas} = ${respuesta} pera(s).`,
                 ecuacion: `${inicial} - ${regaladas} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, respuesta + 1, inicial, inicial + regaladas]
+                opciones: [respuesta, respuesta + 1, inicial, inicial + regaladas],
+                data: [inicial, regaladas]
             };
         }
     },
@@ -141,7 +146,8 @@ export const level1Problems = [
                 explicacion: `¡Permanencia de objetos! Aunque estén apagadas, las velas siguen estando físicamente sobre el pastel. Velas apagadas: ${velas_apagadas}, Velas encendidas: ${velas_iniciales - velas_apagadas}, Total en el pastel: ${respuesta}`,
                 ecuacion: `${velas_apagadas} (apagadas) + ${velas_iniciales - velas_apagadas} (encendidas) = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, velas_iniciales - velas_apagadas, velas_apagadas, 0]
+                opciones: [respuesta, velas_iniciales - velas_apagadas, velas_apagadas, 0],
+                data: [velas_iniciales, velas_apagadas]
             };
         }
     },
@@ -161,7 +167,8 @@ export const level1Problems = [
                 explicacion: `¡Lectura cuidadosa! El texto dice que tienen UN perro "juntos", no que cada uno tenga el suyo. Respuesta: ${respuesta} perro compartido.`,
                 ecuacion: `${hermanos} hermanos × 0 (cada uno) + 1 (compartido) = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, hermanos, hermanos + 1, 0]
+                opciones: [respuesta, hermanos, hermanos + 1, 0],
+                data: [hermanos]
             };
         }
     },
@@ -182,7 +189,8 @@ export const level1Problems = [
                 explicacion: `¡Atención a la pregunta! No pregunta cuántas quedan en la mesa, sino cuántas TIENES TÚ. Respuesta: Las ${naranjas_coges} que acabas de coger.`,
                 ecuacion: `Naranjas que tienes = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, naranjas_mesa - naranjas_coges, naranjas_mesa, 0]
+                opciones: [respuesta, naranjas_mesa - naranjas_coges, naranjas_mesa, 0],
+                data: [naranjas_mesa, naranjas_coges]
             };
         }
     },
@@ -202,7 +210,8 @@ export const level1Problems = [
                 explicacion: `¡Usa el contexto! El cerebro busca una explicación física compleja, pero la respuesta es simple: no está lloviendo. Por eso nadie se moja.`,
                 ecuacion: `Lluvia = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, 1, ninos, 10]
+                opciones: [respuesta, 1, ninos, 10],
+                data: [ninos]
             };
         }
     },
@@ -222,7 +231,8 @@ export const level1Problems = [
                 explicacion: `¡Permanencia de objetos! Aunque no se vea, la pata sigue ahí. El pájaro sigue teniendo ${patas_pajaro} patas. Visible: 1, Escondida: 1, Total: ${respuesta}.`,
                 ecuacion: `1 (visible) + 1 (escondida) = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, 1, 3, 0]
+                opciones: [respuesta, 1, 3, 0],
+                data: [patas_pajaro]
             };
         }
     },
@@ -264,7 +274,8 @@ export const level1Problems = [
                 explicacion: `Tienes que restar el precio del billete: ${billete} - ${precio} = ${respuesta}€.`,
                 ecuacion: `${billete} - ${precio} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, precio, billete, billete + precio]
+                opciones: [respuesta, precio, billete, billete + precio],
+                data: [articulo.toLowerCase(), precio, billete]
             };
         }
     },
@@ -284,7 +295,8 @@ export const level1Problems = [
                 explicacion: "¡Junta todos los sándwiches y cuéntalos! 🥪",
                 ecuacion: `${queso} + ${jamon} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1],
+                data: [queso, jamon]
             };
         }
     },
@@ -304,7 +316,8 @@ export const level1Problems = [
                 explicacion: "¡Recuerda que perder es como restar! 🔵",
                 ecuacion: `${inicial} − ${perdidas} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1],
+                data: [inicial, perdidas]
             };
         }
     },
@@ -324,7 +337,8 @@ export const level1Problems = [
                 explicacion: "¡Suma las estrellas y los corazones! ⭐",
                 ecuacion: `${estrellas} + ${corazones} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1],
+                data: [estrellas, corazones]
             };
         }
     },
@@ -344,7 +358,8 @@ export const level1Problems = [
                 explicacion: "Si salen, hay menos coches dentro. 🏎️",
                 ecuacion: `${coches} − ${salen} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1],
+                data: [coches, salen]
             };
         }
     },
@@ -364,7 +379,8 @@ export const level1Problems = [
                 explicacion: "¡Quita las del gusanito para saber cuántas quedan! 🍎",
                 ecuacion: `${total} − ${gusano} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1],
+                data: [total, gusano]
             };
         }
     },
@@ -385,7 +401,8 @@ export const level1Problems = [
                 explicacion: "Suma los coches y las motos para saber el total. 🚗🏍️",
                 ecuacion: `${coches} + ${motos} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1]
+                opciones: [respuesta, respuesta + 1, respuesta + 2, respuesta - 1],
+                data: [coches, motos]
             };
         }
     },
@@ -405,7 +422,8 @@ export const level1Problems = [
                 explicacion: "Si te los comes, ya no están en la bolsa. Resta los que te comiste. 🍬",
                 ecuacion: `${inicial} - ${comidos} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, inicial, comidos, respuesta - 1]
+                opciones: [respuesta, inicial, comidos, respuesta - 1],
+                data: [inicial, comidos]
             };
         }
     },
@@ -425,7 +443,8 @@ export const level1Problems = [
                 explicacion: `Cuenta 4 patas por cada banco: ${bancos} x 4 = ${respuesta}. 🪑`,
                 ecuacion: `${bancos} x 4 = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, bancos + 4, respuesta - 1, 3]
+                opciones: [respuesta, bancos + 4, respuesta - 1, 3],
+                data: [bancos]
             };
         }
     },
@@ -445,7 +464,8 @@ export const level1Problems = [
                 explicacion: "Resta a las personas que se han bajado. 🚌",
                 ecuacion: `${total} - ${bajan} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, total, total + bajan, 0]
+                opciones: [respuesta, total, total + bajan, 0],
+                data: [total, bajan]
             };
         }
     },
@@ -465,7 +485,8 @@ export const level1Problems = [
                 explicacion: "Junta los libros rojos y azules para saber el total. 📚",
                 ecuacion: `${rojos} + ${azules} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, rojos, azules, 10]
+                opciones: [respuesta, rojos, azules, 10],
+                data: [rojos, azules]
             };
         }
     },
@@ -508,7 +529,8 @@ export const level1Problems = [
                 explicacion: "¡Es un agujero! Si tuviera tierra dentro, no sería un agujero de esa profundidad. Está vacío.",
                 ecuacion: "Cantidad de tierra = __",
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, metros, 10, 1]
+                opciones: [respuesta, metros, 10, 1],
+                data: [metros]
             };
         }
     },
@@ -527,7 +549,8 @@ export const level1Problems = [
                 explicacion: "Solo cabe 1. Después de meter el primero, la caja ya no está vacía. 📦",
                 ecuacion: "Melones = __",
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, 10, 0, 5]
+                opciones: [respuesta, 10, 0, 5],
+                data: [melones]
             };
         }
     },

@@ -26,7 +26,8 @@ export const level4Problems = [
                 explicacion: `¡Trampa! Muchos olvidan contar las patas de los perros. Mesas: ${mesas}×${patas_mesa}=${mesas * patas_mesa}, Sillas: ${sillas}×${patas_silla}=${sillas * patas_silla}, Perros: ${perros}×${patas_perro}=${perros * patas_perro}. Total: ${total}`,
                 ecuacion: `${mesas * patas_mesa} + ${sillas * patas_silla} + ${perros * patas_perro} = __`,
                 ecuacionValores: [total],
-                opciones: [total, trampa_opcion, total - (perros * 2), total + 2]
+                opciones: [total, trampa_opcion, total - (perros * 2), total + 2],
+                data: [mesas, patas_mesa, sillas, patas_silla, perros, patas_perro]
             };
         }
     },
@@ -47,7 +48,8 @@ export const level4Problems = [
                 explicacion: `Tienes que multiplicar el número de filas por los árboles en cada fila: ${F} × ${A} = ${respuesta}.`,
                 ecuacion: `${F} × ${A} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, F + A, (F + A) * 2, F * (A - 1)]
+                opciones: [respuesta, F + A, (F + A) * 2, F * (A - 1)],
+                data: [F, A, respuesta]
             };
         }
     },
@@ -67,7 +69,8 @@ export const level4Problems = [
                 explicacion: `Para convertir horas a minutos multiplicamos por 60: ${horas} × 60 = ${respuesta} minutos.`,
                 ecuacion: `${horas} × 60 = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, horas * 30, horas * 100, respuesta + 60]
+                opciones: [respuesta, horas * 30, horas * 100, respuesta + 60],
+                data: [horas]
             };
         }
     },
@@ -87,7 +90,8 @@ export const level4Problems = [
                 explicacion: `El espejo invierte horizontalmente. La posición del 9 se convierte en la del 3. La hora real es las ${respuesta} en punto.`,
                 ecuacion: `12 - ${hora_espejo} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, hora_espejo, 6, 12]
+                opciones: [respuesta, hora_espejo, 6, 12],
+                data: [hora_espejo]
             };
         }
     },
@@ -168,7 +172,8 @@ export const level4Problems = [
                 explicacion: `¡Trampa del lenguaje! ¡A los supervivientes NO se les entierra! El problema menciona "frontera" para distraerte, pero la clave es que son supervivientes.`,
                 ecuacion: `Entierros = __`,
                 ecuacionValores: [0],
-                opciones: [0, 1, 2, -1]
+                opciones: [0, 1, 2, -1],
+                data: [loc.pais1, loc.pais2]
             };
         }
     },
@@ -190,7 +195,8 @@ export const level4Problems = [
                 explicacion: `¡Pensamiento temporal! Las ${velas_encendidas} velas que se quedaron encendidas se consumirán completamente durante la noche. Solo quedarán las ${velas_apagadas} velas apagadas, que se mantienen intactas.`,
                 ecuacion: `Velas restantes = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, velas_encendidas, velas_iniciales, velas_encendidas + velas_apagadas]
+                opciones: [respuesta, velas_encendidas, velas_iniciales, velas_encendidas + velas_apagadas],
+                data: [velas_iniciales, velas_apagadas, velas_encendidas]
             };
         }
     },
@@ -213,7 +219,8 @@ export const level4Problems = [
                 explicacion: `Paso 1: Peso de las manzanas = ${peso_llena} - ${peso_caja} = ${peso_manzanas} kg. Paso 2: Mitad de manzanas = ${peso_manzanas} ÷ 2 = ${peso_manzanas_mitad} kg. Paso 3: Caja + manzanas restantes = ${peso_caja} + ${peso_manzanas_mitad} = ${respuesta} kg`,
                 ecuacion: `((${peso_llena} - ${peso_caja}) ÷ 2) + ${peso_caja} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, peso_manzanas_mitad, peso_llena / 2, peso_manzanas]
+                opciones: [respuesta, peso_manzanas_mitad, peso_llena / 2, peso_manzanas],
+                data: [peso_llena, peso_caja, peso_manzanas, peso_manzanas_mitad, respuesta]
             };
         }
     },
@@ -234,7 +241,8 @@ export const level4Problems = [
                 explicacion: `¡Realismo lógico! El pájaro herido cae al suelo y los otros ${pajaro_inicial - pajaro_herido} pájaros salen volando asustados por el disparo. Resultado: 0 pájaros en la rama.`,
                 ecuacion: `Pájaros en rama = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, pajaro_inicial - pajaro_herido, pajaro_herido, pajaro_inicial]
+                opciones: [respuesta, pajaro_inicial - pajaro_herido, pajaro_herido, pajaro_inicial],
+                data: [pajaro_inicial]
             };
         }
     },
@@ -243,7 +251,7 @@ export const level4Problems = [
         tipo: "matematico",
         nivelMin: 4,
         categorias: ['arquitecto', 'cientifico'],
-        i18n: "ladrillo_peso",
+        i18n: "ladrillo_peso_nivel4",
         generar: () => {
             const peso_ladrillo = 2;
             const respuesta = 3;
@@ -279,7 +287,8 @@ export const level4Problems = [
                 tipoRespuesta: 'opcion_multiple',
                 ecuacion: `${num} × 1/4 = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, mitad, num - cuarto, 4].sort(() => Math.random() - 0.5)
+                opciones: [respuesta, mitad, num - cuarto, 4].sort(() => Math.random() - 0.5),
+                data: [num]
             };
         }
     },
@@ -300,7 +309,8 @@ export const level4Problems = [
                 tipoRespuesta: 'opcion_multiple',
                 ecuacion: `${precio1} + ${precio2} = __`,
                 ecuacionValores: [total],
-                opciones: [total, Math.round((precio1 + precio2 + 0.5) * 10) / 10, Math.round((total - 1) * 10) / 10, Math.round((precio1 * 2) * 10) / 10].sort(() => Math.random() - 0.5)
+                opciones: [total, Math.round((precio1 + precio2 + 0.5) * 10) / 10, Math.round((total - 1) * 10) / 10, Math.round((precio1 * 2) * 10) / 10].sort(() => Math.random() - 0.5),
+                data: [precio1, precio2]
             };
         }
     },
@@ -321,7 +331,8 @@ export const level4Problems = [
                 tipoRespuesta: 'opcion_multiple',
                 ecuacion: `x + ${suma} = ${total} → x = __`,
                 ecuacionValores: [x],
-                opciones: [x, total + suma, total, x + 1].sort(() => Math.random() - 0.5)
+                opciones: [x, total + suma, total, x + 1].sort(() => Math.random() - 0.5),
+                data: [suma, total]
             };
         }
     },
@@ -343,7 +354,8 @@ export const level4Problems = [
                 tipoRespuesta: 'opcion_multiple',
                 ecuacion: `${ancho}m × ${alto}m = __ m²`,
                 ecuacionValores: [area],
-                opciones: [area, perimetro, ancho + alto, area * 2].sort(() => Math.random() - 0.5)
+                opciones: [area, perimetro, ancho + alto, area * 2].sort(() => Math.random() - 0.5),
+                data: [ancho, alto]
             };
         }
     },
@@ -363,7 +375,8 @@ export const level4Problems = [
                 tipoRespuesta: 'opcion_multiple',
                 ecuacion: `(${num} × 2) ÷ 2 = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, num * 2, num / 2, 0].sort(() => Math.random() - 0.5)
+                opciones: [respuesta, num * 2, num / 2, 0].sort(() => Math.random() - 0.5),
+                data: [num]
             };
         }
     },

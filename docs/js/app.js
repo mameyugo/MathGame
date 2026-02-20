@@ -69,6 +69,11 @@ async function changeLanguage(lang) {
     await translationManager.changeLanguage(lang);
     currentLanguage = translationManager.getCurrentLanguage();
 
+    // Sincronizar con el usuario actual si existe
+    if (currentUser) {
+        userManager.setUserLanguage(lang, currentUser);
+    }
+
     // Actualizar estilos de botones de idioma usando clases
     document.querySelectorAll('.language-btn').forEach(btn => btn.classList.remove('active'));
 

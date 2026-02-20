@@ -22,7 +22,8 @@ export const level5Problems = [
                 explicacion: `¡Reto desactivado! Si X = peso de un ladrillo, entonces X = ${peso_extra} + X/2, así que X = ${peso_ladrillo}kg. Un ladrillo y medio pesa ${peso_ladrillo} + ${peso_ladrillo / 2} = ${respuesta}kg.`,
                 ecuacion: `Un ladrillo y medio pesa = __ kg`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, peso_ladrillo, opcion_trampa, respuesta + 1.5]
+                opciones: [respuesta, peso_ladrillo, opcion_trampa, respuesta + 1.5],
+                data: [peso_extra, peso_ladrillo, respuesta]
             };
         }
     },
@@ -62,7 +63,8 @@ export const level5Problems = [
                 explicacion: `El espejo invierte la posición horizontal del reloj. La fórmula es: hora real = 12 - hora en espejo. Entonces: 12 - ${hora} = ${respuesta}:00.`,
                 ecuacion: `12 - ${hora} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, hora, 12 - hora + 6, 6]
+                opciones: [respuesta, hora, 12 - hora + 6, 6],
+                data: [hora, respuesta]
             };
         }
     },
@@ -84,7 +86,8 @@ export const level5Problems = [
                 explicacion: `¡Lógica secuencial! El cálculo instintivo es ${profundidad}/${sube_dia - resbala_noche}=${profundidad / (sube_dia - resbala_noche)} días. Pero en el día ${dias}, el caracol comienza a ${profundidad - sube_dia}m, sube ${sube_dia}m y llega a ${profundidad}m, ¡por lo que sale y no resbala esa noche!`,
                 ecuacion: `Día ${dias}: ${profundidad - sube_dia}m + ${sube_dia}m = ${profundidad}m (¡SALIDA!)`,
                 ecuacionValores: [dias],
-                opciones: [dias, 10, 9, 7]
+                opciones: [dias, 10, 9, 7],
+                data: [profundidad, sube_dia, resbala_noche, dias]
             };
         }
     },
@@ -107,7 +110,8 @@ export const level5Problems = [
                 explicacion: `¡Relación variable constante! La mente busca la proporción "mitad" (${edad_actual}/2=${edad_actual / 2}), pero la diferencia de edad es constante. Si hace tiempo había ${diferencia_edad} años de diferencia, ahora sigue habiendo ${diferencia_edad} años. Respuesta: ${edad_actual} - ${diferencia_edad} = ${respuesta} años.`,
                 ecuacion: `Diferencia de edad = ${edad_pasada} - ${hermana_edad_pasada} = ${diferencia_edad}; Edad hermana = ${edad_actual} - ${diferencia_edad} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, Math.floor(edad_actual / 2), edad_actual - 3, edad_actual - 5]
+                opciones: [respuesta, Math.floor(edad_actual / 2), edad_actual - 3, edad_actual - 5],
+                data: [edad_pasada, edad_actual, diferencia_edad, respuesta]
             };
         }
     },
@@ -127,7 +131,8 @@ export const level5Problems = [
                 explicacion: `¡Patrones numéricos! Muchos solo cuentan los 7s en unidades (7,17,27...97) = 10. Pero olvidan los 7s en la decena 70-79 (10 más). El número 77 tiene dos 7s. Total: 10 + 10 = ${respuesta} veces.`,
                 ecuacion: `Unidades: 7,17,27...97 = __; Decenas: 70-79 = __; Total = __`,
                 ecuacionValores: [10, 10, respuesta],
-                opciones: [respuesta, 10, 11, 19]
+                opciones: [respuesta, 10, 11, 19],
+                data: [total_paginas]
             };
         }
     },
@@ -149,7 +154,8 @@ export const level5Problems = [
                 explicacion: `¡Ecuación de diferencia! La respuesta automática es 0.10€, pero si la pelota costara 0.10€, el bate costaría 1.10€, y el total sería 1.20€. Correctamente: Si pelota = x, entonces bate = x + 1. x + (x + 1) = 1.10 → 2x = 0.10 → x = 0.05€`,
                 ecuacion: `x + (x + 1) = ${total_costo.toFixed(2)} → x = __€`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, 0.10, 0.55, 1.05]
+                opciones: [respuesta, 0.10, 0.55, 1.05],
+                data: [total_costo, diferencia]
             };
         }
     },
@@ -172,7 +178,8 @@ export const level5Problems = [
                 explicacion: `¡La trampa del cálculo infinito! Muchos intentan calcular cada trayecto del pájaro (serie infinita). El truco es calcular el tiempo: los trenes tardarán ${tiempo_encuentro} hora en encontrarse (${velocidad_trenes}+${velocidad_trenes}=${velocidad_trenes * 2} km/h de velocidad relativa). Si el pájaro vuela a ${velocidad_pajaro} km/h durante esa hora, recorre exactamente ${respuesta} km.`,
                 ecuacion: `d = v × t = ${velocidad_pajaro} × ${tiempo_encuentro} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, distancia_inicial / 2, 50, 150]
+                opciones: [respuesta, distancia_inicial / 2, 50, 150],
+                data: [distancia_inicial, velocidad_trenes, velocidad_pajaro, tiempo_encuentro]
             };
         }
     },
@@ -194,7 +201,8 @@ export const level5Problems = [
                 explicacion: `¡Lógica temporal! Parece imposible pasar de ${edad_anteayer} a ${edad_proximo_ano} en poco tiempo. La solución: 1. Ayer (31 de diciembre) cumplí ${edad_hoy}. 2. Anteayer (30 de diciembre) aún tenía ${edad_anteayer}. 3. Este año cumpliré ${edad_hoy + 1} en diciembre. 4. El año que viene cumpliré ${edad_proximo_ano}. Hoy: ${respuesta} años.`,
                 ecuacion: `Edad hoy = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, edad_anteayer, edad_proximo_ano - 2, 25]
+                opciones: [respuesta, edad_anteayer, edad_proximo_ano - 2, 25],
+                data: [edad_anteayer, respuesta, edad_proximo_ano]
             };
         }
     },
@@ -216,7 +224,8 @@ export const level5Problems = [
                 explicacion: `¡Visualización espacial! El cerebro intenta contar caras totales, pero el truco es saber que los cubos con 2 caras pintadas son los que están en las aristas (pero no en las esquinas, que tienen 3). Un cubo tiene ${aristas} aristas, y en este caso hay 1 cubito central por arista. Total: ${respuesta} cubitos.`,
                 ecuacion: `Aristas × (n - 2) = ${aristas} × (${tamano_cubo} - 2) = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, 8, 20, 6]
+                opciones: [respuesta, 8, 20, 6],
+                data: [tamano_cubo, total_cubitos, respuesta, aristas]
             };
         }
     },
@@ -239,7 +248,8 @@ export const level5Problems = [
                 explicacion: `¡La trampa de la suma! La respuesta intuitiva es ${ventaja + ventaja} metros (${ventaja}+${ventaja}). Pero las distancias son proporcionales a la velocidad. Cuando A llega a los ${distancia}m, B está en los ${distancia - ventaja}m (B corre al ${ventaja === 10 ? 90 : 'X'}% de A). Cuando B llega a los ${distancia}m, C está en los ${distancia - ventaja}m (C corre al ${ventaja === 10 ? 90 : 'X'}% de B). Por tanto, C corre al ${velocidad_c_porcent}×100=${velocidad_c_porcent * 100}% de la velocidad de A. Ventaja real: ${distancia} - (${distancia}×${velocidad_c_porcent}) ≈ ${respuesta}m`,
                 ecuacion: `${distancia} - (${distancia} × ${velocidad_c_porcent}) = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, 20, 15, 18]
+                opciones: [respuesta, 20, 15, 18],
+                data: [distancia, ventaja, velocidad_c_porcent, respuesta]
             };
         }
     },
@@ -263,7 +273,8 @@ export const level5Problems = [
                 explicacion: `¡La trampa de la regla de tres! Se intenta aplicar proporción directa (${(monos_finales * tiempo_inicial) / monos_iniciales} minutos). Pero el ritmo es de 1 mono por plátano cada ${tiempo_inicial} minutos. Si todos empiezan a comer a la vez, terminan a la vez. La relación monos:plátanos es la misma (1:1), así que el tiempo permanece constante: ${respuesta} minutos.`,
                 ecuacion: `Tiempo = constante si ratio_monos = ratio_plátanos = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, 100, 300, 10]
+                opciones: [respuesta, 100, 300, 10],
+                data: [monos_iniciales, platanos_iniciales, tiempo_inicial, monos_finales, platanos_finales]
             };
         }
     },

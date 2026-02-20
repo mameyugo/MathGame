@@ -48,6 +48,10 @@ class UserManager {
         if (typeof user.hintsDelay !== 'number' || isNaN(user.hintsDelay)) {
             user.hintsDelay = 12;
         }
+        // Inicializar idioma (por defecto español)
+        if (!user.idioma) {
+            user.idioma = 'es';
+        }
     }
 
     /**
@@ -214,7 +218,8 @@ class UserManager {
             currentTheme: 'default',
             problemCategories: ['explorador'],
             hintsEnabled: false,
-            hintsDelay: 12
+            hintsDelay: 12,
+            idioma: localStorage.getItem('math_lang') || 'es'
         };
 
         this.saveToStorage();
@@ -285,7 +290,8 @@ class UserManager {
                 currentTheme: 'default',
                 problemCategories: ['explorador'],
                 hintsEnabled: false,
-                hintsDelay: 12
+                hintsDelay: 12,
+                idioma: localStorage.getItem('math_lang') || 'es'
             };
         }
 
@@ -507,6 +513,11 @@ class UserManager {
             user.problemCategories = remoteData.problemCategories;
         }
 
+        // Idioma
+        if (remoteData.idioma) {
+            user.idioma = remoteData.idioma;
+        }
+
         // Tema
         if (remoteData.currentTheme) {
             user.currentTheme = remoteData.currentTheme;
@@ -556,6 +567,20 @@ class UserManager {
         this.users[this.currentUser].hintsEnabled = !!enabled;
         this.users[this.currentUser].hintsDelay = Math.max(1, Math.min(30, Number(delay) || 12));
         this.saveToStorage();
+    }
+
+    /**
+     * Establece el idioma para un usuario específico o el actual
+     * @param {string} lang - Código de idioma (es/gl/en/etc)
+     * @param {string} [name] - Nombre opcional del usuario (si no se pasa usa el actual)
+     */
+    setUserLanguage(lang, name = null) {
+        const targetName = name || this.currentUser;
+        if (!targetName || !this.users[targetName]) return;
+
+        this.users[targetName].idioma = lang;
+        this.saveToStorage();
+        console.log(`🌐 Idioma de ${targetName} actualizado a: ${lang}`);
     }
 }
 

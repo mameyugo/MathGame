@@ -16,6 +16,7 @@ import { level2Problems } from './categories/level2.js';
 import { level3Problems } from './categories/level3.js';
 import { level4Problems } from './categories/level4.js';
 import { level5Problems } from './categories/level5.js';
+import './i18n/index.js'; // Asegurar que las traducciones se inicializan
 import { PROBLEM_LEVELS, PROBLEM_CATEGORIES, PROBLEM_TYPES, RESPONSE_TYPES } from './config.js';
 
 // Combinar todos los problemas

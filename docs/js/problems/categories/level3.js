@@ -25,7 +25,8 @@ export const level3Problems = [
                 explicacion: `¡Cuidado! Las manzanas son de ${p1}. Es ${p2} quien debería pagarle ${n2 * precio}€ a ${p1}.`,
                 ecuacion: `${n2} x ${precio} = __`,
                 ecuacionValores: [n2 * precio],
-                opciones: [0, n2 * precio, n1 * precio, (n1 - n2) * precio]
+                opciones: [0, n2 * precio, n1 * precio, (n1 - n2) * precio],
+                data: [p1, n1, p2, n2, precio]
             };
         }
     },
@@ -46,7 +47,8 @@ export const level3Problems = [
                 explicacion: `¡Trampa desactivada! Es un tren ELÉCTRICO, no a vapor o diesel. Los trenes eléctricos no echan humo, alimentados directamente por electricidad. Todas esas velocidades son distractores. La respuesta es 0.`,
                 ecuacion: `Humo del tren = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, velocidad_tren, velocidad_viento, velocidad_tren - velocidad_viento]
+                opciones: [respuesta, velocidad_tren, velocidad_viento, velocidad_tren - velocidad_viento],
+                data: [velocidad_tren, velocidad_viento]
             };
         }
     },
@@ -130,7 +132,8 @@ export const level3Problems = [
                 ecuacionValores: minutos_fin === 0 ? [hora_fin] : [hora_fin, minutos_fin],
                 opciones: minutos_fin === 0
                     ? [hora_fin, hora_fin + 1, hora_inicio, hora_fin - 1]
-                    : [respuesta, `${hora_fin + 1}:00`, `${hora_inicio}:${duracion}`, `${hora_fin}:00`]
+                    : [respuesta, `${hora_fin + 1}:00`, `${hora_inicio}:${duracion}`, `${hora_fin}:00`],
+                data: [hora_inicio, duracion]
             };
         }
     },
@@ -153,7 +156,8 @@ export const level3Problems = [
                 explicacion: `¡Ejercicio de memoria secuencial! Debes seguir los movimientos: piso ${inicio} + ${sube1} - ${baja} + ${sube2} = ${respuesta}. El error común es olvidar el piso de origen.`,
                 ecuacion: `${inicio} + ${sube1} - ${baja} + ${sube2} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, inicio + sube1, inicio + sube1 + sube2, 12]
+                opciones: [respuesta, inicio + sube1, inicio + sube1 + sube2, 12],
+                data: [inicio, sube1, baja, sube2]
             };
         }
     },
@@ -174,7 +178,8 @@ export const level3Problems = [
                 explicacion: `¡Atención al truco! El cerebro tiende a sumar ${hermanas} + ${hermanas} = ${hermanas * 2}. Pero el hermano varón es el MISMO para las tres niñas. Total: ${hermanas} hermanas + ${hermanos} hermano = ${respuesta} personas.`,
                 ecuacion: `${hermanas} hermanas + ${hermanos} hermano = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, hermanas * 2, hermanas, hermanas + 2]
+                opciones: [respuesta, hermanas * 2, hermanas, hermanas + 2],
+                data: [hermanas, hermanos]
             };
         }
     },
@@ -199,7 +204,8 @@ export const level3Problems = [
                 explicacion: `Calcula los días: ${paginas_totales} / ${paginas_diarias} = ${dias} días. Luego cuenta desde el ${diasSemana[diaInicio]}: el día ${dias} es un ${diasSemana[diaFin]}${semana > 0 ? ` de la semana siguiente` : ''}.`,
                 ecuacion: `${paginas_totales} / ${paginas_diarias} = __`,
                 ecuacionValores: [dias],
-                opciones: [diasSemana[diaFin], diasSemana[(diaFin + 1) % 7], diasSemana[(diaFin - 1 + 7) % 7], diasSemana[(diaFin + 2) % 7]]
+                opciones: [diasSemana[diaFin], diasSemana[(diaFin + 1) % 7], diasSemana[(diaFin - 1 + 7) % 7], diasSemana[(diaFin + 2) % 7]],
+                data: [paginas_totales, paginas_diarias, diasSemana[diaInicio]]
             };
         }
     },
@@ -223,7 +229,8 @@ export const level3Problems = [
                 explicacion: `El cálculo base es ${distancia} / ${velocidad} = ${tiempoSinDescanso} horas. Pero no olvides el tiempo de descanso: ${tiempoSinDescanso} + ${descanso} = ${tiempoTotal} horas (${minutos} minutos).`,
                 ecuacion: `(${distancia} / ${velocidad}) + ${descanso} = __`,
                 ecuacionValores: [tiempoTotal, minutos],
-                opciones: [`${tiempoTotal} horas`, `${tiempoSinDescanso} horas`, `${tiempoTotal + 1} horas`, `${tiempoSinDescanso + 1} horas`]
+                opciones: [`${tiempoTotal} horas`, `${tiempoSinDescanso} horas`, `${tiempoTotal + 1} horas`, `${tiempoSinDescanso + 1} horas`],
+                data: [velocidad, distancia, descanso]
             };
         }
     },
@@ -246,7 +253,8 @@ export const level3Problems = [
                 explicacion: `Es un problema de sustitución. Primero halla el peso de la piña: ${pinasParaManzanas} × ${pesoDeManzana} = ${pesoDePina} gramos. Luego multiplica por ${numeroDePinas} piñas: ${pesoDePina} × ${numeroDePinas} = ${pesoTotal} gramos.`,
                 ecuacion: `(${pinasParaManzanas} × ${pesoDeManzana}) × ${numeroDePinas} = __`,
                 ecuacionValores: [pesoTotal],
-                opciones: [pesoTotal, pesoDePina, pesoDeManzana * numeroDePinas, pesoDeManzana * pinasParaManzanas]
+                opciones: [pesoTotal, pesoDePina, pesoDeManzana * numeroDePinas, pesoDeManzana * pinasParaManzanas],
+                data: [pinasParaManzanas, pesoDeManzana, numeroDePinas]
             };
         }
     },
@@ -272,7 +280,8 @@ export const level3Problems = [
                 i18nOptions: false,
                 ecuacion: `${a} + ${b} × ${c} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, (a + b) * c, a * b + c, respuesta + 2].sort(() => Math.random() - 0.5)
+                opciones: [respuesta, (a + b) * c, a * b + c, respuesta + 2].sort(() => Math.random() - 0.5),
+                data: [a, b, c]
             };
         }
     },
@@ -295,7 +304,8 @@ export const level3Problems = [
                 i18nOptions: false,
                 ecuacion: `${horas}h ${minutosExtra}min -> __ min`,
                 ecuacionValores: [totalMinutos],
-                opciones: [totalMinutos, (horas * 100) + minutosExtra, totalMinutos - 10, 100].sort(() => Math.random() - 0.5)
+                opciones: [totalMinutos, (horas * 100) + minutosExtra, totalMinutos - 10, 100].sort(() => Math.random() - 0.5),
+                data: [horas, minutosExtra]
             };
         }
     },
@@ -318,7 +328,8 @@ export const level3Problems = [
                 i18nOptions: false,
                 ecuacion: `${kilos}kg ${gramosExtra}g = __ g`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, (kilos * 100) + gramosExtra, 1000 + gramosExtra, respuesta / 10].sort(() => Math.random() - 0.5)
+                opciones: [respuesta, (kilos * 100) + gramosExtra, 1000 + gramosExtra, respuesta / 10].sort(() => Math.random() - 0.5),
+                data: [kilos, gramosExtra]
             };
         }
     },
@@ -341,7 +352,8 @@ export const level3Problems = [
                 i18nOptions: false,
                 ecuacion: `(${base} x 3) + ${base} = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, base * 3, base * 2, base * 5].sort(() => Math.random() - 0.5)
+                opciones: [respuesta, base * 3, base * 2, base * 5].sort(() => Math.random() - 0.5),
+                data: [base]
             };
         }
     },
@@ -363,7 +375,8 @@ export const level3Problems = [
                 i18nOptions: false,
                 ecuacion: `${semanas} sem + ${diasExtra} días = __`,
                 ecuacionValores: [respuesta],
-                opciones: [respuesta, semanas * 10 + diasExtra, respuesta + 7, semanas + diasExtra].sort(() => Math.random() - 0.5)
+                opciones: [respuesta, semanas * 10 + diasExtra, respuesta + 7, semanas + diasExtra].sort(() => Math.random() - 0.5),
+                data: [semanas, diasExtra]
             };
         }
     },

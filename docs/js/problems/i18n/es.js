@@ -14,8 +14,9 @@ export const problemsES = {
         explicacion: (manos) => `¡Piensa bien! Cada mano tiene 5 dedos. Por lo tanto: 5 × ${manos} = ${manos * 5} dedos en total.`
     },
     peces_ahogados: {
-        texto: () => `En una pecera hay 10 peces. Si 5 de ellos se ahogan, ¿cuántos peces quedan en la pecera?`,
-        explicacion: () => `¡Trampa desactivada! Los peces no se ahogan en el agua. Es su hábitat natural. Siguen habiendo 10 peces.`
+        texto: () => `En un acuario hay 10 peces. Si 5 de ellos se ahogan, ¿cuántos peces quedan en el acuario?`,
+        ecuacion: () => `Peces restantes = __`,
+        explicacion: () => `¡Trampa desactivada! Los peces no se ahogan en el agua. Es su medio natural. Siguen quedando 10 peces.`
     },
     gallo_huevos: {
         texto: () => `Un gallo pone un huevo justo en la punta del tejado de un granero. Si el viento sopla hacia la derecha, ¿hacia qué lado caerá el huevo?`,
@@ -38,11 +39,13 @@ export const problemsES = {
         explicacion: () => `¡Lectura cuidadosa! El texto dice que tienen UN perro "juntos", no que cada uno tenga el suyo. Respuesta: 1 perro compartido.`
     },
     naranjas_llevas: {
-        texto: (mesa, coges) => `Hay ${mesa} naranjas en una mesa. Si tú vas y quitas ${coges} naranjas, ¿cuántas naranjas tienes tú ahora?`,
-        explicacion: (coges) => `¡Atención a la pregunta! No pregunta cuántas quedan en la mesa, sino cuántas TIENES TÚ. Respuesta: Las ${coges} que acabas de coger.`
+        texto: (mesa, coges) => `Hay ${mesa} naranjas en una mesa. Si vas y coges ${coges} naranjas, ¿cuántas naranjas tienes ahora?`,
+        ecuacion: () => `Naranjas que tienes = __`,
+        explicacion: (coges) => `¡Fíjate en la pregunta! No pregunta cuántas quedan en la mesa, sino cuántas TIENES TÚ. Respuesta: Las ${coges} que acabas de coger.`
     },
     paraguas_magico: {
-        texto: (ninos) => `${ninos} niños intentan entrar bajo un paraguas muy pequeño, pero ninguno se moja nada de nada. ¿Cuánta agua llueve?`,
+        texto: (ninos) => `${ninos} niños intentan meterse debajo de un paraguas muy pequeño, pero ninguno se moja nada de nada. ¿Cuánto llueve?`,
+        ecuacion: () => `Cantidad de lluvia = __`,
         explicacion: () => `¡Usa el contexto! El cerebro busca una explicación física compleja, pero la respuesta es simple: no está lloviendo. Por eso nadie se moja.`
     },
     patas_pajaro: {
@@ -99,9 +102,10 @@ export const problemsES = {
         explicacion: (rojos, azules) => `Junta los libros rojos y azules para saber el total: ${rojos} + ${azules} = ${rojos + azules}. 📚`
     },
     l1_conductor_nombre: {
-        opciones: ["Yo", "Pepe", "El autobús", "Nadie"],
-        texto: (pasajeros) => `Imagina que vas conduciendo un autobús con ${pasajeros} pasajeros. ¿Quién es el conductor?`,
-        explicacion: () => `¡El conductor eres TÚ! La pregunta dice "Imagina que vas conduciendo...". 🚌`
+        opciones: ["Yo", "Juan", "El autobús", "Nadie"],
+        texto: (pasajeros) => `Imagina que conduces un autobús con ${pasajeros} pasajeros. ¿Quién es el conductor?`,
+        ecuacion: () => `Conductor = __ (0=Yo, 1=Juan, 2=Autobús)`,
+        explicacion: () => `¡El conductor eres TÚ! El problema dice "Imagina que conduces...". 🚌`
     },
     l1_agujero_profundo: {
         texto: (metros) => `Haces un agujero de ${metros} metros de profundidad en la arena. ¿Cuánta tierra hay dentro del agujero?`,
@@ -177,10 +181,12 @@ export const problemsES = {
 
     pastor_ovejas: {
         texto: (totales, vivas) => `Un pastor tiene ${totales} ovejas. Un rayo cae y mueren todas menos ${vivas}. ¿Cuántas ovejas le quedan?`,
+        ecuacion: () => `Le quedan = __`,
         explicacion: (totales, vivas) => `¡Trampa desactivada! El problema dice "todas menos ${vivas}", así que le quedan exactamente ${vivas} ovejas. No es ${totales} - ${vivas} = ${totales - vivas}.`
     },
     meses_ano: {
         texto: () => `Si en un año hay meses que tienen 30 días y otros tienen 31, ¿cuántos meses tienen 28 días?`,
+        ecuacion: () => `Meses con 28+ días = __`,
         explicacion: () => `¡Trampa desactivada! La pregunta no es cuántos meses tienen SOLO 28 días, sino cuántos meses TIENEN 28 días (entre otros). Todos los meses del año tienen al menos 28 días, incluso febrero. La respuesta es 12.`
     },
     biblioteca: {
@@ -193,6 +199,7 @@ export const problemsES = {
     },
     la_cerilla: {
         texto: () => `Entras en una habitación oscura y fría. Solo tienes una cerilla. Hay una estufa de carbón, una lámpara de aceite y una vela. ¿Qué enciendes primero?`,
+        ecuacion: () => `Primero enciendes = __ (1=cerilla, 2=estufa, 3=lámpara)`,
         explicacion: () => `¡La cerilla, por supuesto! Sin encender la cerilla no puedes encender nada más.`
     },
     peso_algodón: {
@@ -254,6 +261,7 @@ export const problemsES = {
     },
     tren_electrico: {
         texto: (velocidad_tren, velocidad_viento) => `Un tren eléctrico viaja hacia el Norte a ${velocidad_tren} km/h. Si el viento sopla hacia el Sur a ${velocidad_viento} km/h, ¿cuánto humo echa el tren?`,
+        ecuacion: () => `Humo del tren = __`,
         explicacion: () => `¡Trampa desactivada! Es un tren ELÉCTRICO, no a vapor o diesel. Los trenes eléctricos no echan humo, alimentados directamente por electricidad. Todas esas velocidades son distractores. La respuesta es 0.`
     },
     despertador_antiguo: {
@@ -262,10 +270,12 @@ export const problemsES = {
     },
     padre_rosa: {
         texto: () => `El padre de Rosa tiene 5 hijas: Lala, Lele, Lili, Lolo y... ¿cuál es el nombre de la quinta hija?`,
+        ecuacion: () => `Quinta hija = __`,
         explicacion: () => `¡Rosa! El patrón de vocales (A, E, I, O) te distrae, pero la pregunta ya mencionó que la primera hija es Rosa.`
     },
     dias_sin_nombre: {
         texto: () => `Nombra tres días consecutivos sin usar las palabras Lunes, Martes, Miércoles, Jueves, Viernes, Sábado o Domingo.`,
+        ecuacion: () => `Días consecutivos = __`,
         explicacion: () => `¡Ayer, hoy y mañana! Estos son días consecutivos pero no pertenecen a la semana tradicional, sino a referencias temporales relativas.`
     },
     tarta_horno: {
@@ -385,14 +395,17 @@ export const problemsES = {
     },
     peso_manzanas: {
         texto: (llena, caja, mitad) => `Una caja llena de manzanas pesa ${llena} kg. La caja vacía pesa ${caja} kg. Si te comes la mitad de las manzanas, ¿cuánto pesa la caja ahora?`,
+        ecuacion: (llena, caja) => `(${llena} - ${caja}) / 2 + ${caja} = __`,
         explicacion: (llena, caja, manzanas, mitad, resultado) => `Paso 1: Peso de las manzanas = ${llena} - ${caja} = ${manzanas} kg. Paso 2: Mitad de manzanas = ${manzanas} ÷ 2 = ${mitad} kg. Paso 3: Caja + manzanas restantes = ${caja} + ${mitad} = ${resultado} kg`
     },
     pajaro_cazador: {
         texto: (inicial) => `Hay ${inicial} pájaros en una rama. Un cazador dispara y acierta a uno. ¿Cuántos pájaros quedan en la rama?`,
+        ecuacion: () => `Pájaros en la rama = __`,
         explicacion: (inicial) => `¡Realismo lógico! El pájaro herido cae al suelo y los otros ${inicial - 1} pájaros salen volando asustados por el disparo. Resultado: 0 pájaros en la rama.`
     },
     ladrillo_peso_nivel4: {
         texto: () => `Un ladrillo pesa 1 kg más medio ladrillo. ¿Cuánto pesan un ladrillo y medio?`,
+        ecuacion: () => `Peso = __`,
         explicacion: () => `Álgebra: Si un ladrillo (x) = 1 + x/2, entonces x/2 = 1, por lo tanto x = 2 kg. Un ladrillo y medio = 2 + 1 = 3 kg. La trampa común es responder 1.5 kg sin resolver la ecuación.`
     },
 
@@ -474,7 +487,7 @@ export const problemsES = {
     },
     vuelo_pajaro: {
         texto: (distancia, velocidad_t, velocidad_p, tiempo) => `Dos trenes están en vías opuestas a ${distancia} km de distancia y avanzan el uno hacia el otro a ${velocidad_t} km/h cada uno. Un pájaro sale del Tren A a ${velocidad_p} km/h hacia el Tren B, y cuando llega a este, vuelve al Tren A, y así sucesivamente hasta que los trenes chocan. ¿Qué distancia total habrá recorrido el pájaro?`,
-        explicacion: (velocidad_p, tiempo, velocidad_t) => `¡La trampa del cálculo infinito! Muchos intentan calcular cada trayecto del pájaro (serie infinita). El truco es calcular el tiempo: los trenes tardarán ${tiempo} hora en encontrarse (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h de velocidad relativa). Si el pájaro vuela a ${velocidad_p} km/h durante esa hora, recorre exactamente ${velocidad_p * tiempo} km.`
+        explicacion: (distancia, velocidad_t, velocidad_p, tiempo) => `¡La trampa del cálculo infinito! Muchos intentan calcular cada trayecto del pájaro (serie infinita). El truco es calcular el tiempo: los trenes tardarán ${tiempo} hora en encontrarse (${velocidad_t}+${velocidad_t}=${velocidad_t * 2} km/h de velocidad relativa). Si el pájaro vuela a ${velocidad_p} km/h durante esa hora, recorre exactamente ${velocidad_p * tiempo} km.`
     },
     cumpleaños_imposible: {
         texto: (edad_anteayer, edad_proximo) => `Anteayer tenía ${edad_anteayer} años y el año que viene tendré ${edad_proximo}. ¿Cuántos años tengo hoy? (Sabiendo que hoy es 1 de enero)`,
@@ -482,15 +495,15 @@ export const problemsES = {
     },
     cubo_pintado: {
         texto: (tamano, total, respuesta) => `Un cubo de madera de ${tamano}×${tamano}×${tamano} cm se pinta de azul por fuera. Luego se corta en ${total} cubitos de 1×1×1 cm. ¿Cuántos de esos cubitos tendrán exactamente 2 caras pintadas de azul?`,
-        explicacion: (aristas, tamano, respuesta) => `¡Visualización espacial! El cerebro intenta contar caras totales, pero el truco es saber que los cubos con 2 caras pintadas son los que están en las aristas (pero no en las esquinas, que tienen 3). Un cubo tiene ${aristas} aristas, y en este caso hay 1 cubito central por arista. Total: ${respuesta} cubitos.`
+        explicacion: (tamano, total, respuesta, aristas) => `¡Visualización espacial! El cerebro intenta contar caras totales, pero el truco es saber que los cubos con 2 caras pintadas son los que están en las aristas (pero no en las esquinas, que tienen 3). Un cubo tiene ${aristas} aristas, y en este caso hay 1 cubito central por arista. Total: ${respuesta} cubitos.`
     },
     carrera_100m: {
         texto: (distancia, ventaja) => `El corredor A vence al corredor B por ${ventaja} metros. El corredor B vence al corredor C por ${ventaja} metros. Si los tres corren ${distancia} metros, ¿por cuántos metros vence A a C?`,
-        explicacion: (ventaja, velocidad_c_porcent, respuesta) => `¡La trampa de la suma! La respuesta intuitiva es ${ventaja + ventaja} metros (${ventaja}+${ventaja}). Pero las distancias son proporcionales a la velocidad. C corre al ${velocidad_c_porcent}×100=${Math.round(velocidad_c_porcent * 100)}% de la velocidad de A. Ventaja real: 100 - (100 × ${velocidad_c_porcent}) ≈ ${respuesta}m`
+        explicacion: (distancia, ventaja, velocidad_c_porcent, respuesta) => `¡La trampa de la suma! La respuesta intuitiva es ${ventaja + ventaja} metros (${ventaja}+${ventaja}). Pero las distancias son proporcionales a la velocidad. C corre al ${velocidad_c_porcent}×100=${Math.round(velocidad_c_porcent * 100)}% de la velocidad de A. Ventaja real: 100 - (100 × ${velocidad_c_porcent}) ≈ ${respuesta}m`
     },
     monos_platanos: {
         texto: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `Si ${monos_ini} monos tardan ${tiempo_ini} minutos en comerse ${platanos_ini} plátanos, ¿cuánto tiempo tardarán ${monos_fin} monos en comerse ${platanos_fin} plátanos?`,
-        explicacion: (tiempo_ini) => `¡La trampa de la regla de tres! Se intenta aplicar proporción directa. Pero el ritmo es de 1 mono por plátano cada ${tiempo_ini} minutos. Si todos empiezan a comer a la vez, terminan a la vez. La relación monos:plátanos es la misma (1:1), así que el tiempo permanece constante: ${tiempo_ini} minutos.`
+        explicacion: (monos_ini, platanos_ini, tiempo_ini, monos_fin, platanos_fin) => `¡La trampa de la regla de tres! Se intenta aplicar proporción directa. Pero el ritmo es de 1 mono por plátano cada ${tiempo_ini} minutos. Si todos empiezan a comer a la vez, terminan a la vez. La relación monos:plátanos es la misma (1:1), así que el tiempo permanece constante: ${tiempo_ini} minutos.`
     },
     ovejas_granjero: {
         texto: (total, quedan) => `Un granjero tiene ${total} ovejas. Un día viene un lobo y se escapan todas menos ${quedan}. ¿Cuántas ovejas le quedan al granjero?`,
@@ -502,15 +515,13 @@ export const problemsES = {
     },
     hermano_tio: {
         texto: () => `El hermano de mi tío ha venido a visitarme, pero resulta que no es mi tío. ¿Quién es?`,
+        ecuacion: () => `Respuesta = __`,
         explicacion: () => `¡Lógica familiar! El hermano de mi tío es mi padre. Si el tío de mi padre tiene un hermano, y ese hermano no es mi tío, entonces debe ser mi padre. La confusión viene de buscar un pariente "lejano".`
     },
     reparto_cesta: {
         texto: () => `En una cesta hay 5 manzanas. Tienes que repartirlas entre 5 amigos de modo que cada uno tenga una manzana, pero que al final quede una manzana en la cesta. ¿Cómo lo haces?`,
+        ecuacion: () => `Respuesta = __`,
         explicacion: () => `¡Pensamiento lateral! La solución es: al último amigo le das la cesta CON la manzana dentro. Así cada uno tiene una manzana, y una sigue en la cesta. La trampa es asumir que "repartir" significa sacar el objeto del recipiente.`
-    },
-    pescadores_familia: {
-        texto: () => `Dos padres y dos hijos van de pesca. Pescan 3 peces y se reparten uno para cada uno sin que sobre ninguno. ¿Cuántas personas hay en total?`,
-        explicacion: () => `¡Solo hay 3 personas! El abuelo y el padre son "dos padres", y el padre y el hijo son "dos hijos". En total: abuelo + padre + hijo = 3 personas. El error común es sumar 2+2=4 personas.`
     },
     pescadores_familia: {
         texto: () => `Dos padres y dos hijos van de pesca. Pescan 3 peces y se reparten uno para cada uno sin que sobre ninguno. ¿Cuántas personas hay en total?`,
@@ -538,3 +549,6 @@ export const problemsES = {
         explicacion: (medida_inicial, crecimiento_dia, dias) => `Cuenta el crecimiento total: ${dias} días × ${crecimiento_dia} cm/día = ${dias * crecimiento_dia} cm de crecimiento. Suma la medida inicial: ${medida_inicial} + ${dias * crecimiento_dia} = ${medida_inicial + dias * crecimiento_dia} cm.`
     }
 };
+
+export default problemsES;
+
