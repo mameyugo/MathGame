@@ -40,7 +40,7 @@ export function getTranslation(lang, problemId, field, ...args) {
 
     const textFn = problem[field];
     if (typeof textFn === 'function') {
-        return textFn(...args);
+        return textFn.call(problem, ...args);
     }
 
     return textFn || '';

@@ -528,9 +528,15 @@ class QuestionGenerator {
 
             // If the problem requests translated options, try to translate
             if (problem.i18nOptions) {
-                const translatedLabel = window.getTranslation(userLanguage, problem.id, 'opciones', value);
-                if (translatedLabel) {
-                    label = translatedLabel;
+                try {
+                    const translatedLabel = window.getTranslation
+                        ? window.getTranslation(userLanguage, problem.id, 'opciones', value)
+                        : null;
+                    if (translatedLabel) {
+                        label = translatedLabel;
+                    }
+                } catch (e) {
+                    console.warn('[QuestionGenerator] Error traduciendo opción:', problem.id, value, e.message);
                 }
             } else if (typeof opcion === 'object') {
                 label = `<span class="choice-icon">${opcion.icon || ''}</span> ${opcion.texto}`;
