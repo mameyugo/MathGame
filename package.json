@@ -1,6 +1,6 @@
 {
     "name": "mathgame",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "MathQix - Juego educativo de matemáticas",
     "main": "docs/js/app.js",
     "scripts": {
