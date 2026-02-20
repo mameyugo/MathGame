@@ -76,7 +76,19 @@ class TranslationManager {
         // Actualizar todos los textos
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            el.innerHTML = this.t(key);
+            const translation = this.t(key);
+
+            if (el.hasAttribute('data-i18n-safe')) {
+                // Actualización segura: modificar solo el primer nodo si es texto, para no destruir hijos
+                const textNode = el.childNodes[0];
+                if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+                    textNode.textContent = translation + ' ';
+                } else {
+                    el.prepend(document.createTextNode(translation + ' '));
+                }
+            } else {
+                el.innerHTML = translation;
+            }
         });
 
         // Actualizar placeholders

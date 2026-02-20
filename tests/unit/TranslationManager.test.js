@@ -180,24 +180,38 @@ describe('TranslationManager', () => {
     });
 
     describe('updateTranslatedElements', () => {
-        test('should update elements with data-i18n attribute', () => {
-            const mockElements = [
-                { getAttribute: jest.fn(() => 'hello'), innerHTML: '' },
-                { getAttribute: jest.fn(() => 'goodbye'), innerHTML: '' }
-            ];
+        test('should update elements with data-i18n attribute safely', () => {
+            const mockTextNode = { nodeType: 3, textContent: 'Old Text' };
+            const mockSafeElement = {
+                getAttribute: jest.fn(() => 'hello'),
+                hasAttribute: jest.fn((attr) => attr === 'data-i18n-safe'),
+                childNodes: [mockTextNode],
+                innerHTML: '',
+                prepend: jest.fn()
+            };
+
+            const mockUnsafeElement = {
+                getAttribute: jest.fn(() => 'goodbye'),
+                hasAttribute: jest.fn(() => false),
+                innerHTML: ''
+            };
+
+            const mockElements = [mockSafeElement, mockUnsafeElement];
 
             global.document.querySelectorAll = jest.fn((selector) => {
                 if (selector === '[data-i18n]') return mockElements;
                 return [];
             });
 
+            global.Node = { TEXT_NODE: 3 };
+
             manager.translations = { es: { hello: 'Hola', goodbye: 'Adiós' } };
             manager.currentLanguage = 'es';
 
             manager.updateTranslatedElements();
 
-            expect(mockElements[0].innerHTML).toBe('Hola');
-            expect(mockElements[1].innerHTML).toBe('Adiós');
+            expect(mockTextNode.textContent).toBe('Hola ');
+            expect(mockUnsafeElement.innerHTML).toBe('Adiós');
         });
 
         test('should update placeholders with data-i18n-placeholder attribute', () => {
