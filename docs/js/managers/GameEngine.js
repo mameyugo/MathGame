@@ -483,7 +483,7 @@ class GameEngine {
 
         } else if (tipoRespuesta === 'opcion_multiple') {
             // Validación para opciones múltiples
-            if (!window.selectedChoice) {
+            if (window.selectedChoice === null || window.selectedChoice === undefined) {
                 alert(this.t('alert_select_option'));
                 return;
             }
