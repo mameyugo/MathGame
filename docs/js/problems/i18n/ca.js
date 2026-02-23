@@ -18,6 +18,7 @@ export const problemsCA = {
         explicacion: () => `Trampa desactivada! Els peixos no es neguen a l'aigua. És el seu hàbitat natural. Segueixen havent-hi 10 peixos.`
     },
     gallo_huevos: {
+        opciones: ["Cap costat", "Esquerra", "Dreta", "Enrere"],
         texto: () => `Un gall posa un ou just a la vora de la teulada d'un graner. Si el vent buffa cap a la dreta, cap a on caurà l'ou?`,
         explicacion: () => `Trampa desactivada! Els galls no ponen ous, són les gallines les que ponen ous. Per tant, no hi ha ou que caigui.`
     },
@@ -192,10 +193,12 @@ export const problemsCA = {
         explicacion: (salida, llegada) => `Des de les ${salida}:00 fins a les ${llegada}:30 hi ha ${llegada - salida} hores i 30 minuts.`
     },
     la_cerilla: {
+        opciones: ["El llumí", "L'estufa", "La llàntia", "L'espelma"],
         texto: () => `Entres en una habitació fosca i freda. Només tens una cerilla. Hi ha una estufa de carbó, una llanterna d'oli i una vela. Què encens primer?`,
         explicacion: () => `La cerilla, per suposat! Sense encendre la cerilla no pots encendre res més.`
     },
     peso_algodón: {
+        opciones: ["Pesen el mateix", "El ferro", "El cotó", "Depèn del dia"],
         texto: () => `Qué pesa més? Un quilogra de ferro o un quilogra de cotó?`,
         explicacion: () => `Pesen el mateix! Un quilogra és un quilogra, sigui quin sigui el material. La confusió ve del fet que el ferro és més dens, però estem parlant del mateix pes.`
     },
@@ -208,10 +211,12 @@ export const problemsCA = {
         explicacion: (pastillas, intervalo) => `Visualitza el temps! L'error comú és fer ${pastillas}×${intervalo}=${pastillas * intervalo}. Però: la primera la prens en el minut 0, la segona als ${intervalo} minuts, i la tercera als ${intervalo * (pastillas - 1)} minuts. Total: ${intervalo * (pastillas - 1)} minuts.`
     },
     hermano_tio: {
+        opciones: ["El meu pare", "El meu cosí", "El meu oncle", "El meu avi"],
         texto: () => `El germà del meu oncle ve a visitar-me, però resulta que no és meu oncle. Qui és?`,
         explicacion: () => `Lógica familiar! El germà del meu oncle és meu pare. Si l'oncle del meu pare té un germà, i aquest germà no és meu oncle, llavors ha de ser meu pare. La confusió ve de buscar un parent "distant".`
     },
     reparto_cesta: {
+        opciones: ["Donar la cistella amb la poma", "Partir les pomes", "Cadascú comparteix", "És impossible"],
         texto: () => `En una cesta hi ha 5 pomes. Has de repartir-les entre 5 amics de manera que cadascun en tingui una, però que al final en quedi una a la cesta. Com ho fas?`,
         explicacion: () => `Pensament lateral! La solució és: al últim amic li dónes la cesta AMB la poma dins. Així cadascun té una poma, i una segueix a la cesta. La trampa és suposar que "repartir" significa treure l'objecte del recipient.`
     },
@@ -281,6 +286,7 @@ export const problemsCA = {
         explicacion: () => `Trampa! Els despertadors analógics no distingeixen entre AM i PM. Quan la maneta arribi al 9, sonarà a les 9 de la nit (1 hora més tard), no a les 9 del matí.`
     },
     padre_rosa: {
+        opciones: ["Rosa", "Lulu", "Lela", "Lili"],
         texto: () => `El pare de Rosa té 5 filles: Lala, Lele, Lili, Lolo i... quin és el nom de la cinquena filla?`,
         explicacion: () => `Rosa! El patró de vocals (A, E, I, O) et distreu, però la pregunta ja mencionava que la primera filla és Rosa.`
     },
@@ -394,6 +400,7 @@ export const problemsCA = {
         explicacion: () => `Trampa activada! El cervell vol sumar, però la resposta és 0. L'"únic germà" de totes les seves germanes és el propi Joan. Joan no té més germans.`
     },
     avion_frontera: {
+        opciones: (pais1, pais2) => ["Als supervivents no se'ls enterra", `A ${pais1}`, `A ${pais2}`, "En cap dels dos"],
         texto: (pais1, pais2) => `Un avió s'estrellen just a la frontera entre ${pais1} i ${pais2}. En quin país enterren als supervivents?`,
         explicacion: () => `Trampa del llenguatge! Els supervivents NO s'enterren! El problema esmentada "frontera" per distreure't, però la clau és que hi ha supervivents.`
     },

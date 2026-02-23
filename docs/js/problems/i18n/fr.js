@@ -18,6 +18,7 @@ export const problemsFR = {
         explicacion: () => `Piège désactivé! Les poissons ne se noient pas dans l'eau. C'est leur habitat naturel. Il y a toujours 10 poissons.`
     },
     gallo_huevos: {
+        opciones: ["Nulle part", "À gauche", "À droite", "En arrière"],
         texto: () => `Un coq pond un œuf juste au bord du toit d'une grange. Si le vent souffle vers la droite, de quel côté l'œuf tombera-t-il?`,
         explicacion: () => `Piège désactivé! Les coqs ne pondent pas d'œufs, ce sont les poules. Par conséquent, il n'y a pas d'œuf qui tombe.`
     },
@@ -192,10 +193,12 @@ export const problemsFR = {
         explicacion: (salida, llegada) => `De ${salida}:00 à ${llegada}:30 il y a ${llegada - salida} heures et 30 minutes.`
     },
     la_cerilla: {
+        opciones: ["L'allumette", "Le poêle", "La lampe", "La bougie"],
         texto: () => `Tu entres dans une pièce sombre et froide. Tu n'as qu'une allumette. Il y a un poêle à charbon, une lampe à huile et une bougie. Que allumes-tu d'abord?`,
         explicacion: () => `L'allumette, bien sûr! Sans allumer l'allumette tu ne peux allumer rien d'autre.`
     },
     peso_algodón: {
+        opciones: ["Ils pèsent la même chose", "Le fer", "Le coton", "Cela dépend du jour"],
         texto: () => `Qu'est-ce qui pèse plus? Un kilogramme de fer ou un kilogramme de coton?`,
         explicacion: () => `Ils pèsent la même chose! Un kilogramme est un kilogramme, peu importe le matériau. La confusion vient du fait que le fer est plus dense, mais nous parlons du même poids.`
     },
@@ -208,10 +211,12 @@ export const problemsFR = {
         explicacion: (pastillas, intervalo) => `Visualise le temps! L'erreur commune est de faire ${pastillas}×${intervalo}=${pastillas * intervalo}. Mais: tu prends le premier à la minute 0, le second à ${intervalo} minutes, et le troisième à ${intervalo * (pastillas - 1)} minutes. Total: ${intervalo * (pastillas - 1)} minutes.`
     },
     hermano_tio: {
+        opciones: ["Mon père", "Mon cousin", "Mon oncle", "Mon grand-père"],
         texto: () => `Le frère de mon oncle vient me visiter, mais il s'avère que ce n'est pas mon oncle. Qui est-ce?`,
         explicacion: () => `Logique familiale! Le frère de mon oncle est mon père. Si l'oncle de mon père a un frère, et ce frère n'est pas mon oncle, alors c'est mon père. La confusion vient de chercher un parent "éloigné".`
     },
     reparto_cesta: {
+        opciones: ["Donner le panier avec la pomme", "Partager les pommes", "Chacun partage", "C'est impossible"],
         texto: () => `Il y a 5 pommes dans un panier. Tu dois les distribuer parmi 5 amis afin que chacun en ait une, mais à la fin il en reste une dans le panier. Comment fais-tu?`,
         explicacion: () => `Pensée latérale! La solution est: tu donnes le panier AU dernier ami AVEC la pomme dedans. Ainsi chacun a une pomme, et une reste dans le panier. Le piège est de supposer que "distribuer" signifie sortir l'objet du récipient.`
     },
@@ -281,6 +286,7 @@ export const problemsFR = {
         explicacion: () => `Piège! Les réveils analogiques ne distinguent pas entre AM et PM. Quand la main atteint le 9, il sonnera à 21h (1 heure plus tard), pas à 9h du matin.`
     },
     padre_rosa: {
+        opciones: ["Rose", "Lulu", "Lela", "Lili"],
         texto: () => `Le père de Rose a 5 filles: Lala, Lele, Lili, Lolo et... quel est le nom de la cinquième fille?`,
         explicacion: () => `Rose! Le motif des voyelles (A, E, I, O) te distrait, mais la question mentionnait déjà que la première fille s'appelle Rose.`
     },
@@ -394,6 +400,7 @@ export const problemsFR = {
         explicacion: () => `Piège activé! Le cerveau veut additionner, mais la réponse est 0. L'"unique frère" de toutes ses sœurs est Jean lui-même. Jean n'a pas d'autre frère.`
     },
     avion_frontera: {
+        opciones: (pais1, pais2) => ["On n'enterre pas les survivants", `En ${pais1}`, `En ${pais2}`, "Dans aucun des deux"],
         texto: (pais1, pais2) => `Un avion s'écrase juste à la frontière entre ${pais1} et ${pais2}. Dans quel pays enterre-t-on les survivants?`,
         explicacion: () => `Piège linguistique! On n'enterre PAS les survivants! Le problème mentionne "frontière" pour te distraire, mais la clé est qu'il y a des survivants.`
     },

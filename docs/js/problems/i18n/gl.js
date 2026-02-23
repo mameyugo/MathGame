@@ -18,6 +18,7 @@ export const problemsGL = {
         explicacion: () => `¡Trampa desactivada! Os peixes non se afoguian na auga. É o seu hábitat natural. Seguen habendo 10 peixes.`
     },
     gallo_huevos: {
+        opciones: ["Ningún lado", "Esquerda", "Dereita", "Atrás"],
         texto: () => `Un galo pon un ovo xusto na punta do tellado dunha granxa. Se o vento sopla cara a dereita, ¿cara a que lado caerá o ovo?`,
         explicacion: () => `¡Trampa desactivada! Os galos non pon ovos, son as galas as que pon ovos. Por o tanto, non hai ovo que caía.`
     },
@@ -192,10 +193,12 @@ export const problemsGL = {
         explicacion: (salida, llegada) => `Desde as ${salida}:00 ata as ${llegada}:30 hai ${llegada - salida} horas e 30 minutos.`
     },
     la_cerilla: {
+        opciones: ["A cerilla", "A estufa", "A lámpada", "A vela"],
         texto: () => `Entras nunha habitación escura e fría. Só tes unha cerilla. Hai unha estufa de carbón, unha lámpara de aceite e unha vela. ¿Que encendes primeiro?`,
         explicacion: () => `¡A cerilla, por suposto! Sen encender a cerilla non podes encender nada máis.`
     },
     peso_algodón: {
+        opciones: ["Pesan o mesmo", "O ferro", "O algodón", "Depende do día"],
         texto: () => `¿Que pesa máis? ¿Un kilo de ferro ou un kilo de algodón?`,
         explicacion: () => `¡Pesan o mesmo! Un kilo é un kilo, sen importar o material. A confusión vén de que o ferro é máis denso, pero estamos a falar do mesmo peso.`
     },
@@ -208,10 +211,12 @@ export const problemsGL = {
         explicacion: (pastillas, intervalo) => `¡Visualiza o tempo! O erro común é facer ${pastillas}×${intervalo}=${pastillas * intervalo}. Pero: a primeira a tomas no minuto 0, a segunda aos ${intervalo} min, e a terceira aos ${intervalo * (pastillas - 1)} min. Total: ${intervalo * (pastillas - 1)} minutos.`
     },
     hermano_tio: {
+        opciones: ["Meu pai", "Meu primo", "Meu tío", "Meu avó"],
         texto: () => `O irmán do meu tío ven a visitarme, pero resulta que non é meu tío. ¿Quen é?`,
         explicacion: () => `¡Lóxica familiar! O irmán do meu tío é meu pai. Se o tío do meu pai ten un irmán, e ese irmán non é meu tío, entón debe ser meu pai. A confusión vén de buscar un parente "afastado".`
     },
     reparto_cesta: {
+        opciones: ["Dar a cesta coa mazá", "Partir as mazás", "Cada un comparte", "É imposible"],
         texto: () => `Nunha cesta hai 5 mazás. Tes que repartilas entre 5 amigos de forma que cada un teña unha mazá, pero que ao final quede unha mazá na cesta. ¿Como o fas?`,
         explicacion: () => `¡Pensamento lateral! A solución é: ao último amigo che das a cesta CO mazá dentro. Así cada un ten unha mazá, e unha segue na cesta. A trampa é asumir que "repartir" significa sacar o obxeto do recipiente.`
     },
@@ -281,6 +286,7 @@ export const problemsGL = {
         explicacion: () => `¡Trampa! Os despertadores analóxicos non distinguen entre AM e PM. Cando a agulla chegue o 9, soará ás 9 da noite (1 hora despois), non ás 9 da mañá.`
     },
     padre_rosa: {
+        opciones: ["Rosa", "Lulu", "Lela", "Lili"],
         texto: () => `O pai de Rosa ten 5 fillas: Lala, Lele, Lili, Lolo e... ¿cal é o nome da quinta filla?`,
         explicacion: () => `¡Rosa! O patrón de vocais (A, E, I, O) te distrae, pero a pregunta xa mencionou que a primeira filla é Rosa.`
     },
@@ -396,6 +402,7 @@ export const problemsGL = {
         explicacion: () => `¡Truco activado! O cerebro quere sumar, pero a resposta é 0. O "único irmán varón" de todas as súas irmás é Xuan mesmo. Xuan non ten máis irmáns varóns.`
     },
     avion_frontera: {
+        opciones: (pais1, pais2) => ["Aos superviventes non se lles enterra", `En ${pais1}`, `En ${pais2}`, "En ningún dos dous"],
         texto: (pais1, pais2) => `Un avión se estrela xusto na frontera entre ${pais1} e ${pais2}. ¿En que país entierran aos superviventes?`,
         explicacion: () => `¡Trampa da linguaxe! ¡Aos superviventes NON se lles entierra! O problema menciona "frontera" para te distraer, pero a chave é que son superviventes.`
     },

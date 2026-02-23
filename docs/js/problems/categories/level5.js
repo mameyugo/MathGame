@@ -13,8 +13,9 @@ export const level5Problems = [
         generar: () => {
             const peso_extra = Math.floor(Math.random() * 3) + 1;
             const peso_ladrillo = peso_extra * 2;
-            const respuesta = peso_ladrillo + peso_ladrillo / 2;
-            const opcion_trampa = peso_ladrillo + peso_extra;
+            const respuesta = peso_ladrillo + (peso_ladrillo / 2);
+            // Evitar duplicado con respuesta: respuesta(3) vs trampa(3) si peso_extra=1
+            const opcion_trampa = peso_ladrillo + peso_extra + 1;
 
             return {
                 texto: `Si un ladrillo pesa ${peso_extra}kg más medio ladrillo, ¿cuánto pesa un ladrillo y medio?`,
@@ -352,7 +353,7 @@ export const level5Problems = [
                 tipoRespuesta: 'opcion_multiple',
                 ecuacion: `${dist} / (${v1}+${v2}) = __ h`,
                 ecuacionValores: [t],
-                opciones: [t, t + 0.5, t * 2, dist / 100].sort(() => Math.random() - 0.5)
+                opciones: [t, t + 0.5, t * 2, t + 1.5].sort(() => Math.random() - 0.5)
             };
         }
     },
@@ -365,6 +366,8 @@ export const level5Problems = [
         generar: () => {
             const personas = Math.floor(Math.random() * 3) + 4; // 4, 5, 6
             const saludos = (personas * (personas - 1)) / 2;
+            const opcion3 = (personas * 2 === saludos) ? personas * 3 : personas * 2;
+            const opcion4 = (saludos + 2 === opcion3) ? saludos + 3 : saludos + 2;
             return {
                 texto: `${personas} amigos se reúnen y todos se estrechan la mano entre sí una vez. ¿Cuántos apretones de manos hay en total?`,
                 respuestaCorrecta: saludos,
@@ -372,7 +375,7 @@ export const level5Problems = [
                 tipoRespuesta: 'opcion_multiple',
                 ecuacion: `(${personas} × ${personas - 1}) / 2 = __`,
                 ecuacionValores: [saludos],
-                opciones: [saludos, personas * (personas - 1), personas * 2, saludos + 2].sort(() => Math.random() - 0.5)
+                opciones: [saludos, personas * (personas - 1), opcion3, opcion4].sort(() => Math.random() - 0.5)
             };
         }
     },

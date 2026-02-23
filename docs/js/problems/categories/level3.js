@@ -78,15 +78,15 @@ export const level3Problems = [
         categorias: ['arquitecto'],
         i18n: "padre_rosa",
         generar: () => {
-            const respuesta = 2;
-
             return {
                 texto: `El padre de Rosa tiene 5 hijas: Lala, Lele, Lili, Lolo y... ¿cuál es el nombre de la quinta hija?`,
-                respuestaCorrecta: respuesta,
+                respuestaCorrecta: 0,
                 explicacion: `¡Rosa! El patrón de vocales (A, E, I, O) te distrae, pero la pregunta ya mencionó que la primera hija es Rosa.`,
-                ecuacion: `Quinta hija = __`,
-                ecuacionValores: [respuesta],
-                opciones: [respuesta, 1, 3, 4]
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: ``,
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
             };
         }
     },
@@ -296,6 +296,7 @@ export const level3Problems = [
             const minutosExtra = Math.floor(Math.random() * 20) + 10;
             const totalMinutos = (horas * 60) + minutosExtra;
             // Convertir a minutos
+            const opcionFija = (totalMinutos - 10 === 100) ? 90 : 100;
             return {
                 texto: `Una película dura ${horas} hora(s) y ${minutosExtra} minutos. ¿Cuántos minutos dura en total?`,
                 respuestaCorrecta: totalMinutos,
@@ -304,7 +305,7 @@ export const level3Problems = [
                 i18nOptions: false,
                 ecuacion: `${horas}h ${minutosExtra}min -> __ min`,
                 ecuacionValores: [totalMinutos],
-                opciones: [totalMinutos, (horas * 100) + minutosExtra, totalMinutos - 10, 100].sort(() => Math.random() - 0.5),
+                opciones: [totalMinutos, (horas * 100) + minutosExtra, totalMinutos - 10, opcionFija].sort(() => Math.random() - 0.5),
                 data: [horas, minutosExtra]
             };
         }

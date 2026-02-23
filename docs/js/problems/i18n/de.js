@@ -18,6 +18,7 @@ export const problemsDE = {
         explicacion: () => `Falle entschärft! Fische ertrinken nicht im Wasser. Es ist ihr natürlicher Lebensraum. Es sind noch 10 Fische da.`
     },
     gallo_huevos: {
+        opciones: ["Nirgends", "Nach links", "Nach rechts", "Nach hinten"],
         texto: () => `Ein Hahn legt ein Ei direkt auf die Kante eines Scheunenddaches. Wenn der Wind nach rechts bläst, auf welche Seite fällt das Ei?`,
         explicacion: () => `Falle entschärft! Hähne legen keine Eier, das tun Hennen. Also gibt es kein Ei, das fallen kann.`
     },
@@ -192,10 +193,12 @@ export const problemsDE = {
         explicacion: (salida, llegada) => `Von ${salida}:00 Uhr bis ${llegada}:30 Uhr sind ${llegada - salida} Stunden und 30 Minuten.`
     },
     la_cerilla: {
+        opciones: ["Das Streichholz", "Der Ofen", "Die Lampe", "Die Kerze"],
         texto: () => `Du betrittst ein dunkles und kaltes Zimmer. Du hast nur ein Streichholz. Es gibt einen Kohleofen, eine Öllampe und eine Kerze. Was zündest du zuerst an?`,
         explicacion: () => `Das Streichholz, natürlich! Ohne das Streichholz anzuzünden kannst du nichts anderes anzünden.`
     },
     peso_algodón: {
+        opciones: ["Sie wiegen das Gleiche", "Das Eisen", "Die Baumwolle", "Hängt vom Tag ab"],
         texto: () => `Was wiegt mehr? Ein Kilogramm Eisen oder ein Kilogramm Baumwolle?`,
         explicacion: () => `Sie wiegen das Gleiche! Ein Kilogramm ist ein Kilogramm, unabhängig vom Material. Die Verwirrung kommt daher, dass Eisen dichter ist, aber wir sprechen vom gleichen Gewicht.`
     },
@@ -208,10 +211,12 @@ export const problemsDE = {
         explicacion: (pastillas, intervalo) => `Visualisiere die Zeit! Der häufige Fehler ist ${pastillas}×${intervalo}=${pastillas * intervalo}. Aber: Die erste nimmst du in Minute 0, die zweite nach ${intervalo} Minuten, und die dritte nach ${intervalo * (pastillas - 1)} Minuten. Gesamt: ${intervalo * (pastillas - 1)} Minuten.`
     },
     hermano_tio: {
+        opciones: ["Mein Vater", "Mein Cousin", "Mein Onkel", "Mein Großvater"],
         texto: () => `Der Bruder meines Onkels kommt mich besuchen, aber es stellt sich heraus, dass er nicht mein Onkel ist. Wer ist er?`,
         explicacion: () => `Familienlogik! Der Bruder meines Onkels ist mein Vater. Wenn der Onkel meines Vaters einen Bruder hat, und dieser Bruder ist nicht mein Onkel, dann muss es mein Vater sein. Die Verwirrung kommt daher, dass man nach einem "entfernten" Verwandten sucht.`
     },
     reparto_cesta: {
+        opciones: ["Den Korb mit dem Apfel geben", "Die Äpfel teilen", "Jeder teilt", "Es ist unmöglich"],
         texto: () => `In einem Korb sind 5 Äpfel. Du musst sie unter 5 Freunden so verteilen, dass jeder einen Apfel hat, aber am Ende bleibt ein Apfel im Korb. Wie machst du das?`,
         explicacion: () => `Laterales Denken! Die Lösung ist: Du gibst dem letzten Freund den Korb MIT dem Apfel darin. So hat jeder einen Apfel, und einer bleibt im Korb. Die Falle ist anzunehmen, dass "verteilen" bedeutet, das Objekt aus dem Behälter zu nehmen.`
     },
@@ -281,6 +286,7 @@ export const problemsDE = {
         explicacion: () => `Falle! Analoge Wecker unterscheiden nicht zwischen AM und PM. Wenn der Zeiger auf 9 trifft, klingelt er um 21 Uhr (1 Stunde später), nicht um 9 Uhr morgens.`
     },
     padre_rosa: {
+        opciones: ["Rosa", "Lulu", "Lela", "Lili"],
         texto: () => `Rosas Vater hat 5 Töchter: Lala, Lele, Lili, Lolo und... wie heißt die fünfte Tochter?`,
         explicacion: () => `Rosa! Das Vokalmuster (A, E, I, O) lenkt dich ab, aber die Frage erwähnte bereits, dass die erste Tochter Rosa heißt.`
     },
@@ -396,6 +402,7 @@ export const problemsDE = {
         explicacion: () => `Falle aktiviert! Das Gehirn will addieren, aber die Antwort ist 0. Der "einzige Bruder" aller seiner Schwestern ist Hans selbst. Hans hat keine anderen Brüder.`
     },
     avion_frontera: {
+        opciones: (pais1, pais2) => ["Man begräbt Überlebende nicht", `In ${pais1}`, `In ${pais2}`, "In keinem von beiden"],
         texto: (pais1, pais2) => `Ein Flugzeug stürzt genau an der Grenze zwischen ${pais1} und ${pais2} ab. In welchem Land werden die Überlebenden begraben?`,
         explicacion: () => `Sprachfalle! Die Überlebenden werden NICHT begraben! Das Problem erwähnt "Grenze", um dich abzulenken, aber der Schlüssel ist, dass es Überlebende gibt.`
     },

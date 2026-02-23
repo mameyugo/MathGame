@@ -74,15 +74,15 @@ export const level1Problems = [
         categorias: ['explorador'],
         i18n: "gallo_huevos",
         generar: () => {
-            const respuesta = 0;
-
             return {
                 texto: `Un gallo pone un huevo justo en la punta del tejado de un granero. Si el viento sopla hacia la derecha, ¿hacia qué lado caerá el huevo?`,
-                respuestaCorrecta: respuesta,
+                respuestaCorrecta: 0,
                 explicacion: `¡Trampa desactivada! Los gallos no ponen huevos, son las gallinas las que ponen huevos. Por lo tanto, no hay huevo que caiga.`,
-                ecuacion: `Huevos del gallo = __`,
-                ecuacionValores: [respuesta],
-                opciones: [respuesta, 1, 2, -1]
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: ``,
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
             };
         }
     },
@@ -597,7 +597,6 @@ export const level1Problems = [
         categorias: ['explorador'],
         i18n: "l1_hijo_padre",
         generar: () => {
-            const respuesta = 1;
             return {
                 texto: `Tomás es hijo de mi padre, pero no es mi hermano. ¿Cuántos hermanos tengo?`,
                 respuestaCorrecta: 0,

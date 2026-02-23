@@ -19,6 +19,7 @@ export const problemsEN = {
         explicacion: () => `Trap deactivated! Fish don't drown in water. It's their natural habitat. There are still 10 fish.`
     },
     gallo_huevos: {
+        opciones: ["Nowhere", "Left", "Right", "Back"],
         texto: () => `A rooster lays an egg right on the edge of a barn roof. If the wind blows to the right, which way will the egg fall?`,
         explicacion: () => `Trap deactivated! Roosters don't lay eggs, hens do. Therefore, there is no egg to fall.`
     },
@@ -198,11 +199,13 @@ export const problemsEN = {
         explicacion: (salida, llegada) => `From ${salida}:00 to ${llegada}:30 there are ${llegada - salida} hours and 30 minutes.`
     },
     la_cerilla: {
+        opciones: ["The match", "The stove", "The lamp", "The candle"],
         texto: () => `You enter a dark and cold room. You only have one match. There is a coal stove, an oil lamp and a candle. What do you light first?`,
-        ecuacion: () => `Light first = __ (1=match, 2=stove, 3=lamp)`,
+        ecuacion: () => `Light first = __`,
         explicacion: () => `The match, of course! Without lighting the match you can't light anything else.`
     },
     peso_algodón: {
+        opciones: ["They weigh the same", "Iron", "Cotton", "Depends on the day"],
         texto: () => `What weighs more? A kilogram of iron or a kilogram of cotton?`,
         explicacion: () => `They weigh the same! A kilogram is a kilogram, regardless of the material. The confusion comes from iron being denser, but we're talking about the same weight.`
     },
@@ -215,11 +218,13 @@ export const problemsEN = {
         explicacion: (pastillas, intervalo) => `Visualize the time! The common error is doing ${pastillas}×${intervalo}=${pastillas * intervalo}. But: you take the first at minute 0, the second at ${intervalo} minutes, and the third at ${intervalo * (pastillas - 1)} minutes. Total: ${intervalo * (pastillas - 1)} minutes.`
     },
     hermano_tio: {
+        opciones: ["My father", "My cousin", "My uncle", "My grandfather"],
         texto: () => `My uncle's brother comes to visit me, but it turns out he's not my uncle. Who is he?`,
         ecuacion: () => `Answer = __`,
         explicacion: () => `Family logic! My uncle's brother is my father. If my father's uncle has a brother, and that brother is not my uncle, then he must be my father. The confusion comes from looking for a "distant" relative.`
     },
     reparto_cesta: {
+        opciones: ["Give the basket with the apple", "Split the apples", "Everyone shares", "It's impossible"],
         texto: () => `In a basket there are 5 apples. You have to distribute them among 5 friends so that each one has an apple, but at the end one apple remains in the basket. How do you do it?`,
         ecuacion: () => `Answer = __`,
         explicacion: () => `Lateral thinking! The solution is: give the last friend the basket WITH the apple inside. This way each one has an apple, and one remains in the basket. The trap is assuming that "distribute" means taking the object out of the container.`
@@ -291,6 +296,7 @@ export const problemsEN = {
         explicacion: () => `Trap! Analog alarm clocks don't distinguish between AM and PM. When the hand reaches 9, it will go off at 9 PM (1 hour later), not 9 AM.`
     },
     padre_rosa: {
+        opciones: ["Rosa", "Lulu", "Lela", "Lili"],
         texto: () => `Rosa's father has 5 daughters: Lala, Lele, Lili, Lolo and... what is the name of the fifth daughter?`,
         ecuacion: () => `Fifth daughter = __`,
         explicacion: () => `Rosa! The pattern of vowels (A, E, I, O) distracts you, but the question already mentioned that the first daughter is Rosa.`
@@ -406,6 +412,7 @@ export const problemsEN = {
         explicacion: () => `Trick activated! The brain wants to add, but the answer is 0. The "only brother" of all his sisters is John himself. John has no other brothers.`
     },
     avion_frontera: {
+        opciones: (pais1, pais2) => ["Survivors are not buried", `In ${pais1}`, `In ${pais2}`, "In neither"],
         texto: (pais1, pais2) => `A plane crashes right on the border between ${pais1} and ${pais2}. In which country do they bury the survivors?`,
         explicacion: () => `Language trick! Survivors are NOT buried! The problem mentions "border" to distract you, but the key is that they are survivors.`
     },

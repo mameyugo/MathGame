@@ -99,15 +99,15 @@ export const level2Problems = [
         categorias: ['explorador', 'arquitecto'],
         i18n: "la_cerilla",
         generar: () => {
-            const respuesta = 1;
-
             return {
                 texto: `Entras en una habitación oscura y fría. Solo tienes una cerilla. Hay una estufa de carbón, una lámpara de aceite y una vela. ¿Qué enciendes primero?`,
-                respuestaCorrecta: respuesta,
+                respuestaCorrecta: 0,
                 explicacion: `¡La cerilla, por supuesto! Sin encender la cerilla no puedes encender nada más.`,
-                ecuacion: `Primero enciendes = __ (1=cerilla, 2=estufa, 3=lámpara)`,
-                ecuacionValores: [respuesta],
-                opciones: [respuesta, 2, 3, 0]
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: ``,
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
             };
         }
     },
@@ -118,17 +118,15 @@ export const level2Problems = [
         categorias: ['explorador'],
         i18n: "peso_algodón",
         generar: () => {
-            const peso = Math.floor(Math.random() * 3) + 1;
-            const respuesta = 0;
-
             return {
                 texto: `¿Qué pesa más? ¿Un kilo de hierro o un kilo de algodón?`,
-                respuestaCorrecta: respuesta,
+                respuestaCorrecta: 0,
                 explicacion: `¡Pesan lo mismo! Un kilo es un kilo, sin importar el material. La confusión viene de que el hierro es más denso, pero estamos hablando del mismo peso.`,
-                ecuacion: `Diferencia de peso = __`,
-                ecuacionValores: [0],
-                opciones: [0, peso, peso * 2, peso / 2],
-                data: [peso]
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: ``,
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
             };
         }
     },
@@ -182,15 +180,15 @@ export const level2Problems = [
         categorias: ['explorador'],
         i18n: "hermano_tio",
         generar: () => {
-            const respuesta = 1; // 1=padre, 2=primo, 3=tío, 4=abuelo
-
             return {
-                texto: `El hermano de mi tío ha venido a visitarme, pero resulta que no es mi tío. ¿Quién es? (1=Padre, 2=Primo, 3=Tío, 4=Abuelo)`,
-                respuestaCorrecta: respuesta,
+                texto: `El hermano de mi tío ha venido a visitarme, pero resulta que no es mi tío. ¿Quién es?`,
+                respuestaCorrecta: 0,
                 explicacion: `¡Lógica familiar! El hermano de mi tío es mi padre. Si el tío de mi padre tiene un hermano, y ese hermano no es mi tío, entonces debe ser mi padre. La confusión viene de buscar un pariente "lejano".`,
-                ecuacion: `Respuesta = __`,
-                ecuacionValores: [respuesta],
-                opciones: [respuesta, 2, 3, 4]
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: ``,
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
             };
         }
     },
@@ -201,15 +199,15 @@ export const level2Problems = [
         categorias: ['explorador'],
         i18n: "reparto_cesta",
         generar: () => {
-            const respuesta = 1; // 1=Con cesta, 2=Partir manzanas, 3=Compartir, 4=Imposible
-
             return {
-                texto: `En una cesta hay 5 manzanas. Tienes que repartirlas entre 5 amigos de modo que cada uno tenga una manzana, pero que al final quede una manzana en la cesta. ¿Cómo lo haces? (1=Al último le das la cesta con la manzana, 2=Partir las manzanas, 3=Cada uno comparte, 4=Es imposible)`,
-                respuestaCorrecta: respuesta,
+                texto: `En una cesta hay 5 manzanas. Tienes que repartirlas entre 5 amigos de modo que cada uno tenga una manzana, pero que al final quede una manzana en la cesta. ¿Cómo lo haces?`,
+                respuestaCorrecta: 0,
                 explicacion: `¡Pensamiento lateral! La solución es: al último amigo le das la cesta CON la manzana dentro. Así cada uno tiene una manzana, y una sigue en la cesta. La trampa es asumir que "repartir" significa sacar el objeto del recipiente.`,
-                ecuacion: `Respuesta = __`,
-                ecuacionValores: [respuesta],
-                opciones: [respuesta, 2, 3, 4]
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: ``,
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5)
             };
         }
     },

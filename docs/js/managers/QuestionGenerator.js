@@ -622,8 +622,11 @@ class QuestionGenerator {
             // If the problem requests translated options, try to translate
             if (problem.i18nOptions) {
                 try {
+                    const params = problem.data || [];
+                    const serializedParams = Array.isArray(params) ? params : [params];
+
                     const translatedLabel = window.getTranslation
-                        ? window.getTranslation(userLanguage, problem.id, 'opciones', value)
+                        ? window.getTranslation(userLanguage, problem.id, 'opciones', value, ...serializedParams)
                         : null;
                     if (translatedLabel) {
                         label = translatedLabel;

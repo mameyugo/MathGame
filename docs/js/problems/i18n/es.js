@@ -19,6 +19,7 @@ export const problemsES = {
         explicacion: () => `¡Trampa desactivada! Los peces no se ahogan en el agua. Es su medio natural. Siguen quedando 10 peces.`
     },
     gallo_huevos: {
+        opciones: ["Ningún lado", "Izquierda", "Derecha", "Atrás"],
         texto: () => `Un gallo pone un huevo justo en la punta del tejado de un granero. Si el viento sopla hacia la derecha, ¿hacia qué lado caerá el huevo?`,
         explicacion: () => `¡Trampa desactivada! Los gallos no ponen huevos, son las gallinas las que ponen huevos. Por lo tanto, no hay huevo que caiga.`
     },
@@ -198,11 +199,13 @@ export const problemsES = {
         explicacion: (salida, llegada) => `Desde las ${salida}:00 hasta las ${llegada}:30 hay ${llegada - salida} horas y 30 minutos.`
     },
     la_cerilla: {
+        opciones: ["La cerilla", "La estufa", "La lámpara", "La vela"],
         texto: () => `Entras en una habitación oscura y fría. Solo tienes una cerilla. Hay una estufa de carbón, una lámpara de aceite y una vela. ¿Qué enciendes primero?`,
-        ecuacion: () => `Primero enciendes = __ (1=cerilla, 2=estufa, 3=lámpara)`,
+        ecuacion: () => `Primero enciendes = __`,
         explicacion: () => `¡La cerilla, por supuesto! Sin encender la cerilla no puedes encender nada más.`
     },
     peso_algodón: {
+        opciones: ["Pesan lo mismo", "El hierro", "El algodón", "Depende del día"],
         texto: () => `¿Qué pesa más? ¿Un kilo de hierro o un kilo de algodón?`,
         explicacion: () => `¡Pesan lo mismo! Un kilo es un kilo, sin importar el material. La confusión viene de que el hierro es más denso, pero estamos hablando del mismo peso.`
     },
@@ -269,6 +272,7 @@ export const problemsES = {
         explicacion: () => `¡Trampa! Los despertadores analógicos no distinguen entre AM y PM. Cuando la aguja llegue al 9, sonará a las 9 de la noche (1 hora después), no a las 9 de la mañana.`
     },
     padre_rosa: {
+        opciones: ["Rosa", "Lulu", "Lela", "Lili"],
         texto: () => `El padre de Rosa tiene 5 hijas: Lala, Lele, Lili, Lolo y... ¿cuál es el nombre de la quinta hija?`,
         ecuacion: () => `Quinta hija = __`,
         explicacion: () => `¡Rosa! El patrón de vocales (A, E, I, O) te distrae, pero la pregunta ya mencionó que la primera hija es Rosa.`
@@ -386,6 +390,7 @@ export const problemsES = {
         explicacion: () => `¡Truco activado! El cerebro quiere sumar, pero la respuesta es 0. El "único hermano varón" de todas sus hermanas es Juan mismo. Juan no tiene más hermanos varones.`
     },
     avion_frontera: {
+        opciones: (pais1, pais2) => ["A los supervivientes no se les entierra", `En ${pais1}`, `En ${pais2}`, "En ninguno de los dos"],
         texto: (pais1, pais2) => `Un avión se estrella justo en la frontera entre ${pais1} y ${pais2}. ¿En qué país entierran a los supervivientes?`,
         explicacion: () => `¡Trampa del lenguaje! ¡A los supervivientes NO se les entierra! El problema menciona "frontera" para distraerte, pero la clave es que son supervivientes.`
     },
@@ -514,11 +519,13 @@ export const problemsES = {
         explicacion: (pastillas, intervalo) => `¡Visualiza el tiempo! El error común es hacer ${pastillas}×${intervalo}=${pastillas * intervalo}. Pero: la primera la tomas en el minuto 0, la segunda a los ${intervalo} min, y la tercera a los ${intervalo * (pastillas - 1)} min. Total: ${intervalo * (pastillas - 1)} minutos.`
     },
     hermano_tio: {
+        opciones: ["Mi padre", "Mi primo", "Mi tío", "Mi abuelo"],
         texto: () => `El hermano de mi tío ha venido a visitarme, pero resulta que no es mi tío. ¿Quién es?`,
         ecuacion: () => `Respuesta = __`,
         explicacion: () => `¡Lógica familiar! El hermano de mi tío es mi padre. Si el tío de mi padre tiene un hermano, y ese hermano no es mi tío, entonces debe ser mi padre. La confusión viene de buscar un pariente "lejano".`
     },
     reparto_cesta: {
+        opciones: ["Dar la cesta con la manzana", "Partir las manzanas", "Cada uno comparte", "Es imposible"],
         texto: () => `En una cesta hay 5 manzanas. Tienes que repartirlas entre 5 amigos de modo que cada uno tenga una manzana, pero que al final quede una manzana en la cesta. ¿Cómo lo haces?`,
         ecuacion: () => `Respuesta = __`,
         explicacion: () => `¡Pensamiento lateral! La solución es: al último amigo le das la cesta CON la manzana dentro. Así cada uno tiene una manzana, y una sigue en la cesta. La trampa es asumir que "repartir" significa sacar el objeto del recipiente.`

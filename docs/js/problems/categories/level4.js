@@ -170,9 +170,11 @@ export const level4Problems = [
                 texto: `Un avión se estrella justo en la frontera entre ${loc.pais1} y ${loc.pais2}. ¿En qué país entierran a los supervivientes?`,
                 respuestaCorrecta: 0,
                 explicacion: `¡Trampa del lenguaje! ¡A los supervivientes NO se les entierra! El problema menciona "frontera" para distraerte, pero la clave es que son supervivientes.`,
-                ecuacion: `Entierros = __`,
-                ecuacionValores: [0],
-                opciones: [0, 1, 2, -1],
+                tipoRespuesta: 'opcion_multiple',
+                i18nOptions: true,
+                ecuacion: ``,
+                ecuacionValores: [],
+                opciones: [0, 1, 2, 3].sort(() => Math.random() - 0.5),
                 data: [loc.pais1, loc.pais2]
             };
         }

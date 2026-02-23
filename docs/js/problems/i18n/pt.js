@@ -18,6 +18,7 @@ export const problemsPT = {
         explicacion: () => `Armadilha desativada! Os peixes não se afogam na água. É seu habitat natural. Ainda há 10 peixes.`
     },
     gallo_huevos: {
+        opciones: ["Nenhum lado", "Esquerda", "Direita", "Para trás"],
         texto: () => `Um galo coloca um ovo bem na beira do telhado de um celeiro. Se o vento sopra para a direita, para que lado o ovo cai?`,
         explicacion: () => `Armadilha desativada! Os galos não colocam ovos, as galinhas colocam. Portanto, não há ovo que caia.`
     },
@@ -192,10 +193,12 @@ export const problemsPT = {
         explicacion: (salida, llegada) => `Das ${salida}:00 até as ${llegada}:30 há ${llegada - salida} horas e 30 minutos.`
     },
     la_cerilla: {
+        opciones: ["O fósforo", "O fogão", "A lâmpada", "A vela"],
         texto: () => `Você entra em um quarto escuro e frio. Você tem apenas um fósforo. Há um fogão de carvão, uma lâmpada de óleo e uma vela. O que você acende primeiro?`,
         explicacion: () => `O fósforo, claro! Sem acender o fósforo você não pode acender mais nada.`
     },
     peso_algodón: {
+        opciones: ["Pesam a mesma coisa", "O ferro", "O algodão", "Depende do dia"],
         texto: () => `O que pesa mais? Um quilo de ferro ou um quilo de algodão?`,
         explicacion: () => `Pesam a mesma coisa! Um quilo é um quilo, independentemente do material. A confusão vem do ferro ser mais denso, mas estamos falando do mesmo peso.`
     },
@@ -208,10 +211,12 @@ export const problemsPT = {
         explicacion: (pastillas, intervalo) => `Visualize o tempo! O erro comum é fazer ${pastillas}×${intervalo}=${pastillas * intervalo}. Mas: você toma o primeiro no minuto 0, o segundo aos ${intervalo} minutos, e o terceiro aos ${intervalo * (pastillas - 1)} minutos. Total: ${intervalo * (pastillas - 1)} minutos.`
     },
     hermano_tio: {
+        opciones: ["Meu pai", "Meu primo", "Meu tio", "Meu avô"],
         texto: () => `O irmão do meu tio vem me visitar, mas é descoberto que não é meu tio. Quem é?`,
         explicacion: () => `Lógica familiar! O irmão do meu tio é meu pai. Se o tio do meu pai tem um irmão, e esse irmão não é meu tio, então deve ser meu pai. A confusão vem de procurar um parente "distante".`
     },
     reparto_cesta: {
+        opciones: ["Dar o cesto com a maçã", "Partir as maçãs", "Cada um compartilha", "É impossível"],
         texto: () => `Em um cesto há 5 maçãs. Você deve distribuí-las entre 5 amigos para que cada um tenha uma maçã, mas no final uma maçã fica no cesto. Como você faz?`,
         explicacion: () => `Pensamento lateral! A solução é: você dá ao último amigo o cesto COM a maçã dentro. Assim cada um tem uma maçã, e uma permanece no cesto. A armadilha é assumir que "distribuir" significa tirar o objeto do recipiente.`
     },
@@ -281,6 +286,7 @@ export const problemsPT = {
         explicacion: () => `Armadilha! Os despertadores analógicos não distinguem entre AM e PM. Quando o ponteiro chegar a 9, tocará às 21h (1 hora depois), não às 9 da manhã.`
     },
     padre_rosa: {
+        opciones: ["Rosa", "Lulu", "Lela", "Lili"],
         texto: () => `O pai de Rosa tem 5 filhas: Lala, Lele, Lili, Lolo e... qual é o nome da quinta filha?`,
         explicacion: () => `Rosa! O padrão de vogais (A, E, I, O) te distrai, mas a pergunta já mencionava que a primeira filha é Rosa.`
     },
@@ -394,6 +400,7 @@ export const problemsPT = {
         explicacion: () => `Armadilha ativada! O cérebro quer somar, mas a resposta é 0. O "único irmão" de todas as suas irmãs é João mesmo. João não tem outros irmãos.`
     },
     avion_frontera: {
+        opciones: (pais1, pais2) => ["Não se enterram os sobreviventes", `Em ${pais1}`, `Em ${pais2}`, "Em nenhum dos dois"],
         texto: (pais1, pais2) => `Um avião cai bem na fronteira entre ${pais1} e ${pais2}. Em que país enterram os sobreviventes?`,
         explicacion: () => `Armadilha de linguagem! Os sobreviventes NÃO são enterrados! O problema menciona "fronteira" para te distrair, mas a chave é que são sobreviventes.`
     },
