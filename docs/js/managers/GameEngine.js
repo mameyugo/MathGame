@@ -198,7 +198,7 @@ class GameEngine {
         this.duelMode = true;
         this.currentDuelIdx = 0;
         this.duelScores = {};
-        this.startNextDuelTurn();
+        this.showDuelHandover();   // Primer turno también pasa por la pantalla de handover
         return true;
     }
 
@@ -215,6 +215,27 @@ class GameEngine {
         }
 
         this.initGameSession(1, 0);
+    }
+
+    /**
+     * Muestra la pantalla de transición entre turnos del duelo local.
+     * El jugador siguiente debe pulsar el botón para empezar su turno.
+     */
+    showDuelHandover() {
+        const nextPlayer = this.duelPlayers[this.currentDuelIdx];
+
+        // Actualizar el nombre del siguiente jugador en la pantalla
+        const nameEl = document.getElementById('handover-player-name');
+        if (nameEl) {
+            nameEl.textContent = nextPlayer;
+        }
+
+        // Mostrar la pantalla de handover y ocultar el resto
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const handoverScreen = document.getElementById('screen-duel-handover');
+        if (handoverScreen) {
+            handoverScreen.classList.add('active');
+        }
     }
 
     /**
@@ -703,7 +724,7 @@ class GameEngine {
             this.currentDuelIdx++;
 
             if (this.currentDuelIdx < this.duelPlayers.length) {
-                this.startNextDuelTurn();
+                this.showDuelHandover();
             } else {
                 // Determine winner and track achievement stats
                 const winner = Object.entries(this.duelScores)

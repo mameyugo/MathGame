@@ -18,8 +18,10 @@ describe('GameEngine', () => {
         document.body.innerHTML = `
             <div id="screen-game" class="screen"></div>
             <div id="screen-users" class="screen"></div>
+            <div id="screen-duel-handover" class="screen"></div>
             <div id="app-container"></div>
             <div id="turn-indicator"></div>
+            <div id="handover-player-name"></div>
             <div id="game-timer">30s</div>
             <div id="game-level">1</div>
             <div id="game-coins">0</div>
@@ -175,12 +177,14 @@ describe('GameEngine', () => {
 
     describe('setupDuel', () => {
         test('should setup duel with multiple users', () => {
+            gameEngine.showDuelHandover = jest.fn();
             const result = gameEngine.setupDuel();
 
             expect(result).toBe(true);
             expect(gameEngine.duelMode).toBe(true);
             expect(gameEngine.currentDuelIdx).toBe(0);
             expect(gameEngine.duelPlayers.length).toBe(2);
+            expect(gameEngine.showDuelHandover).toHaveBeenCalled();
         });
 
         test('should alert and return false if less than 2 users', () => {
@@ -202,6 +206,27 @@ describe('GameEngine', () => {
 
             expect(mockUserManager.selectUser).toHaveBeenCalledWith('Player1');
             expect(document.getElementById('turn-indicator').innerText).toBe('Turn of Player1');
+        });
+    });
+
+    describe('showDuelHandover', () => {
+        test('should show handover screen and set next player name', () => {
+            const gameScreen = document.getElementById('screen-game');
+            const usersScreen = document.getElementById('screen-users');
+            const handoverScreen = document.getElementById('screen-duel-handover');
+
+            gameScreen.classList.add('active');
+            usersScreen.classList.add('active');
+
+            gameEngine.duelPlayers = ['Player1', 'Player2'];
+            gameEngine.currentDuelIdx = 1;
+
+            gameEngine.showDuelHandover();
+
+            expect(document.getElementById('handover-player-name').textContent).toBe('Player2');
+            expect(gameScreen.classList.contains('active')).toBe(false);
+            expect(usersScreen.classList.contains('active')).toBe(false);
+            expect(handoverScreen.classList.contains('active')).toBe(true);
         });
     });
 
@@ -410,13 +435,13 @@ describe('GameEngine', () => {
             gameEngine.duelPlayers = ['Player1', 'Player2'];
             gameEngine.currentDuelIdx = 0;
             gameEngine.gameCoins = 40;
-            gameEngine.startNextDuelTurn = jest.fn();
+            gameEngine.showDuelHandover = jest.fn();
 
             gameEngine.endGameSession();
 
             expect(gameEngine.duelScores['Player1']).toBe(40);
             expect(gameEngine.currentDuelIdx).toBe(1);
-            expect(gameEngine.startNextDuelTurn).toHaveBeenCalled();
+            expect(gameEngine.showDuelHandover).toHaveBeenCalled();
         });
 
         test('should prevent duplicate endGameSession calls', () => {

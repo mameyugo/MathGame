@@ -86,6 +86,25 @@
             </div>
         </div>
 
+        <!-- Pantalla de transición entre turnos en Duelo Local -->
+        <div id="screen-duel-handover" class="screen">
+            <div
+                style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 30px; padding: 40px; text-align: center;">
+                <div style="font-size: 3rem;">🏆</div>
+                <h2 id="handover-title" style="font-size: 1.8rem; font-weight: bold; margin: 0;"
+                    data-i18n="duel_handover_title">¡Turno siguiente!</h2>
+                <p id="handover-player-name"
+                    style="font-size: 2rem; font-weight: bold; color: var(--primary-color, #4a90d9); margin: 0;"></p>
+                <p style="font-size: 1rem; color: #666; max-width: 320px;" data-i18n="duel_handover_hint">Pasa el
+                    dispositivo y pulsa cuando estés listo</p>
+                <button id="btn-handover-start" class="main-btn" onclick="confirmDuelHandover()"
+                    style="padding: 20px 40px; font-size: 1.3rem; height: auto; min-width: 220px; margin-top: 10px;"
+                    data-i18n="duel_handover_btn">
+                    ¡A jugar! 🚀
+                </button>
+            </div>
+        </div>
+
         <!-- Pantalla de Opciones de Duelo Online -->
         <div id="screen-online-options" class="screen">
             <h2 style="text-align: center; margin-bottom: 30px;">🌐 Duelo Online</h2>

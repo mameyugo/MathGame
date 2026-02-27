@@ -749,6 +749,15 @@ function startLocalDuel() {
 }
 
 /**
+ * Confirma el handover entre turnos del duelo local y arranca el turno del siguiente jugador.
+ * Se llama desde el botón de la pantalla screen-duel-handover.
+ */
+function confirmDuelHandover() {
+    gameEngine.startNextDuelTurn();
+    currentUser = userManager.getCurrentUserName();
+}
+
+/**
  * Delegated Methods for Online Play
  */
 function createAndShareGameRoom() {
