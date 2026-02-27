@@ -135,8 +135,11 @@ describe('NumbersGameManager', () => {
             const mockGameEngine = {
                 initGameSession: jest.fn(),
                 setTimeLeft: jest.fn(),
+                startTimer: jest.fn(),
                 gameLevel: 1,
-                gameCoins: 0
+                gameCoins: 0,
+                sessionEnded: true,
+                timerInterval: null
             };
 
             const problem = await manager.startGame(mockGameEngine);
@@ -151,6 +154,50 @@ describe('NumbersGameManager', () => {
 
             expect(problem).toBeDefined();
             expect(problem.target).toBeGreaterThan(0);
+        });
+
+        test('startGame in active session does not reinitialize and restarts timer at 90s', async () => {
+            const mockGameEngine = {
+                initGameSession: jest.fn(),
+                setTimeLeft: jest.fn(),
+                startTimer: jest.fn(),
+                gameLevel: 3,
+                gameCoins: 120,
+                sessionEnded: false,
+                timerInterval: 999,
+                timeLeft: 40,
+                problemMode: false,
+                problemType: null
+            };
+
+            await manager.startGame(mockGameEngine);
+
+            expect(mockGameEngine.initGameSession).not.toHaveBeenCalled();
+            expect(mockGameEngine.problemMode).toBe(true);
+            expect(mockGameEngine.problemType).toBe('numbers_game');
+            expect(mockGameEngine.timeLeft).toBe(90);
+            expect(mockGameEngine.setTimeLeft).toHaveBeenCalledWith(90);
+            expect(mockGameEngine.startTimer).toHaveBeenCalledTimes(1);
+        });
+
+        test('startGame in new session initializes session and sets timer to 90s', async () => {
+            const mockGameEngine = {
+                initGameSession: jest.fn(),
+                setTimeLeft: jest.fn(),
+                startTimer: jest.fn(),
+                gameLevel: 2,
+                gameCoins: 50,
+                sessionEnded: true,
+                timerInterval: null,
+                timeLeft: 0
+            };
+
+            await manager.startGame(mockGameEngine);
+
+            expect(mockGameEngine.initGameSession).toHaveBeenCalledWith(2, 50);
+            expect(mockGameEngine.timeLeft).toBe(90);
+            expect(mockGameEngine.setTimeLeft).toHaveBeenCalledWith(90);
+            expect(mockGameEngine.startTimer).not.toHaveBeenCalled();
         });
     });
 });

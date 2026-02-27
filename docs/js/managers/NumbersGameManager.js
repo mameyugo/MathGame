@@ -267,7 +267,24 @@ class NumbersGameManager {
         // Configurar entorno de problema en GameEngine
         gameEngine.problemMode = true;
         gameEngine.problemType = 'numbers_game';
-        gameEngine.initGameSession(gameEngine.gameLevel, gameEngine.gameCoins);
+
+        // initGameSession solo se llama al iniciar una sesión nueva (primera vez o retry).
+        // Si ya hay una sesión activa (el jugador acaba de acertar), solo reiniciamos el timer
+        // sin tocar monedas, nivel ni sessionEnded.
+        const isNewSession = gameEngine.sessionEnded || !gameEngine.timerInterval;
+
+        if (isNewSession) {
+            gameEngine.initGameSession(gameEngine.gameLevel, gameEngine.gameCoins);
+            // initGameSession ya configura el timer a 60s y llama startTimer().
+            // Sobreescribimos a 90s específicos para Cifras.
+            gameEngine.timeLeft = 90;
+            gameEngine.setTimeLeft(90);
+        } else {
+            // Ronda siguiente dentro de la misma sesión: solo reiniciar el timer a 90s.
+            gameEngine.timeLeft = 90;
+            gameEngine.setTimeLeft(90);
+            gameEngine.startTimer();
+        }
 
         // Crear objeto problema
         const problem = {
@@ -305,10 +322,6 @@ class NumbersGameManager {
 
         const answersArea = document.getElementById('answers-area');
         if (answersArea) answersArea.style.display = 'none';
-
-        // Configurar Timer (90 segundos)
-        gameEngine.timeLeft = 90;
-        gameEngine.setTimeLeft(90);
 
         // Auto-focus (pequeño delay para asegurar renderizado)
         setTimeout(() => document.getElementById('numbers-game-input')?.focus(), 100);
