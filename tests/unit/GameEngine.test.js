@@ -711,6 +711,34 @@ describe('GameEngine', () => {
                 expect(window.numbersGameManager.checkSolution).toHaveBeenCalledWith(100, [50, 2], "50 * 2");
             });
 
+            test('should validate numbers game using __appManagers fallback', () => {
+                gameEngine.currentProblem = {
+                    tipoRespuesta: 'numbers_game',
+                    target: 100,
+                    numbers: [50, 2],
+                    id: 'ng_fallback'
+                };
+
+                const input = document.getElementById('numbers-game-input');
+                input.value = "50 * 2";
+
+                window.numbersGameManager = undefined;
+                window.__appManagers = {
+                    numbersGameManager: {
+                        checkSolution: jest.fn().mockReturnValue({
+                            valid: true,
+                            exact: true,
+                            value: 100
+                        })
+                    }
+                };
+
+                gameEngine.submitProblem();
+
+                expect(gameEngine.gameCoins).toBe(30);
+                expect(window.__appManagers.numbersGameManager.checkSolution).toHaveBeenCalledWith(100, [50, 2], "50 * 2");
+            });
+
             test('should handle invalid numbers game solution', () => {
                 gameEngine.currentProblem = {
                     tipoRespuesta: 'numbers_game',

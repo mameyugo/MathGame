@@ -860,6 +860,7 @@ if (typeof window !== 'undefined' && !window.__TEST__) {
 // Exponer managers para tests
 if (typeof window !== 'undefined') {
     window.__appManagers = window.__appManagers || {};
+    window.numbersGameManager = numbersGameManager;
     window.__appManagers.userManager = userManager;
     window.__appManagers.achievementManager = achievementManager;
     window.__appManagers.dailyChallengeManager = dailyChallengeManager;

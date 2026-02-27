@@ -542,7 +542,13 @@ class GameEngine {
             // GameEngine constructor didn't take numbersGameManager.
             // I'll assume global access for now to match current architecture.
 
-            const numbersManager = window.numbersGameManager;
+            const numbersManager = window.numbersGameManager || window.__appManagers?.numbersGameManager;
+
+            if (!numbersManager || typeof numbersManager.checkSolution !== 'function') {
+                console.error('[GameEngine] numbersGameManager no disponible para validar Cifras.');
+                this.showFeedbackMessage(this.t('error_connection'));
+                return;
+            }
 
             const expression = input.value.trim();
             const result = numbersManager.checkSolution(this.currentProblem.target, this.currentProblem.numbers, expression);
