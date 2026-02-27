@@ -206,6 +206,7 @@ function startProblemGame(type) {
 async function startNumbersGame() {
     try {
         currentProblem = await numbersGameManager.startGame(gameEngine);
+        gameEngine.currentProblem = currentProblem; // Sync con GameEngine
     } catch (error) {
         console.error('Error al iniciar Numbers Game:', error);
     }
