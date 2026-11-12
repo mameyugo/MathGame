@@ -128,6 +128,7 @@ class QuestionGenerator {
         if (!area) return;
 
         area.innerHTML = "";
+        area.classList.remove('is-problem');
 
         // Use stored gameLevel if available in params, otherwise current
         // Accessing this.gameLevel is fine for visual determination logic below
@@ -289,13 +290,10 @@ class QuestionGenerator {
         // If user selected specific categories, respect that choice
         let pool = filteredByCategory;
 
-        // Filter solved problems
+        // Filter solved problems (the generated ones may repeat: their text changes every time)
         if (this.gameEngine) {
             const solvedProblems = this.gameEngine.getSolvedProblems();
-            const unsolvedProblems = pool.filter(p => !solvedProblems.has(p.id));
-
-            console.log(`[QuestionGenerator] Pool: ${pool.length}, Unsolved: ${unsolvedProblems.length}`);
-            console.log('[QuestionGenerator] Solved IDs:', Array.from(solvedProblems));
+            const unsolvedProblems = pool.filter(p => p.variable || !solvedProblems.has(p.id));
 
             if (unsolvedProblems.length > 0) {
                 pool = unsolvedProblems;
@@ -312,7 +310,8 @@ class QuestionGenerator {
             return null;
         }
 
-        const pick = pool[Math.floor(Math.random() * pool.length)];
+        const pick = this.pickLeastRecent(pool);
+        if (pick) this.recordProblemSeen(pick.id);
         const generated = pick?.generar ? pick.generar() : null;
 
         // Add the problem ID to the generated problem so it can be tracked
@@ -411,6 +410,8 @@ class QuestionGenerator {
 
         const area = document.getElementById('question-area');
         if (area) {
+            // Texto largo: letra de lectura, no de operación
+            area.classList.add('is-problem');
             // Get current user language
             const user = this.userManager.getCurrentUser();
             const userLanguage = user?.idioma || 'es';
@@ -754,6 +755,73 @@ class QuestionGenerator {
      */
     resetProblemSession() {
         this.initialProblemLevel = null;
+    }
+
+    // ==========================================
+    // Historial de problemas vistos (entre partidas)
+    // ==========================================
+
+    /** Clave de localStorage del historial del jugador actual. */
+    problemHistoryKey() {
+        const um = this.userManager || {};
+        // Los jugadores se guardan por nombre (clave de math_users), no tienen campo name
+        let name = typeof um.getCurrentUserName === 'function' ? um.getCurrentUserName() : null;
+        if (!name && typeof um.getCurrentUser === 'function') {
+            const user = um.getCurrentUser();
+            name = user && user.name;
+        }
+        return 'mathqix_problem_history_' + (name || 'anon');
+    }
+
+    /** @returns {Object<string, number>} id del problema → última vez que salió (ms) */
+    loadProblemHistory() {
+        try {
+            const raw = typeof localStorage !== 'undefined' ? localStorage.getItem(this.problemHistoryKey()) : null;
+            const parsed = raw ? JSON.parse(raw) : {};
+            return parsed && typeof parsed === 'object' ? parsed : {};
+        } catch (e) {
+            return {};
+        }
+    }
+
+    recordProblemSeen(problemId) {
+        if (!problemId) return;
+        this.lastProblemId = problemId;
+        try {
+            const history = this.loadProblemHistory();
+            history[problemId] = Date.now();
+            localStorage.setItem(this.problemHistoryKey(), JSON.stringify(history));
+        } catch (e) {
+            // Sin localStorage (modo privado): solo se evita repetir el último
+        }
+    }
+
+    /**
+     * Elige al azar entre los problemas que hace más tiempo que no salen
+     * (mientras queden problemas sin ver, solo entre esos). A los generados se les adelanta tres días:
+     * su enunciado cambia, así que pueden volver antes que un acertijo fijo.
+     * @param {Array} pool
+     * @returns {Object|null}
+     */
+    pickLeastRecent(pool) {
+        if (!pool || pool.length === 0) return null;
+        if (pool.length === 1) return pool[0];
+
+        const history = this.loadProblemHistory();
+        const TRES_DIAS = 3 * 24 * 3600 * 1000;
+        let candidatos = pool.filter(p => p.id !== this.lastProblemId);
+        if (candidatos.length === 0) candidatos = pool;
+
+        const puntuados = candidatos
+            .map(p => {
+                const visto = history[p.id] || 0;
+                return { p, peso: visto === 0 ? 0 : (p.variable ? visto - TRES_DIAS : visto), r: Math.random() };
+            })
+            .sort((a, b) => (a.peso - b.peso) || (a.r - b.r));
+
+        const nuevos = puntuados.filter(x => x.peso === 0).length;
+        const tope = nuevos > 0 ? nuevos : Math.max(1, Math.ceil(puntuados.length / 3));
+        return puntuados[Math.floor(Math.random() * tope)].p;
     }
 }
 

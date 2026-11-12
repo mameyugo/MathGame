@@ -10,6 +10,7 @@ import problemsFR from './fr.js';
 import problemsCA from './ca.js';
 import problemsPT from './pt.js';
 import problemsDE from './de.js';
+import generatedTranslations from './generated.js';
 
 export const translations = {
     es: problemsES,
@@ -20,6 +21,11 @@ export const translations = {
     pt: problemsPT,
     de: problemsDE
 };
+
+// Textos de los problemas generados (categories/generated.js)
+for (const lang of Object.keys(translations)) {
+    Object.assign(translations[lang], generatedTranslations[lang] || {});
+}
 
 /**
  * Obtener texto traducido de un problema

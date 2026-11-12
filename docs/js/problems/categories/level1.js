@@ -456,7 +456,7 @@ export const level1Problems = [
         i18n: "l1_autobus_bajan",
         generar: () => {
             const total = Math.floor(Math.random() * 6) + 4; // 4-9
-            const bajan = Math.floor(Math.random() * 3) + 1; // 1-3
+            const bajan = Math.floor(Math.random() * 2) + 2; // 2-3 (con 1 el texto quedaría «bajan 1 personas»)
             const respuesta = total - bajan;
             return {
                 texto: `En un autobús van ${total} personas. En la parada bajan ${bajan} personas. ¿Cuántas personas quedan en el autobús?`,

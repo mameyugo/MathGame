@@ -8,7 +8,7 @@
  * - Level 3: Intermedios Avanzados (6 problemas)
  * - Level 4: Avanzados (12 problemas)
  * - Level 5: Expertos (9 problemas)
- * Total: 52 problemas
+ * - Generados: plantillas con nombres, objetos y números al azar (categories/generated.js)
  */
 
 import { level1Problems } from './categories/level1.js';
@@ -16,6 +16,7 @@ import { level2Problems } from './categories/level2.js';
 import { level3Problems } from './categories/level3.js';
 import { level4Problems } from './categories/level4.js';
 import { level5Problems } from './categories/level5.js';
+import { generatedProblems } from './categories/generated.js';
 import './i18n/index.js'; // Asegurar que las traducciones se inicializan
 import { PROBLEM_LEVELS, PROBLEM_CATEGORIES, PROBLEM_TYPES, RESPONSE_TYPES } from './config.js';
 
@@ -25,7 +26,8 @@ const allProblems = [
     ...level2Problems,
     ...level3Problems,
     ...level4Problems,
-    ...level5Problems
+    ...level5Problems,
+    ...generatedProblems
 ];
 
 /**
