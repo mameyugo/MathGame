@@ -3,7 +3,10 @@
  * Prueba la lógica de compartir salas con tokens
  */
 
-describe('Integración de Duelo Online', () => {
+// Usa el servidor real (rtc.mathqix.com) y crea cuentas en él: solo con MATHQIX_SERVIDOR_REAL=1.
+const describeServidorReal = process.env.MATHQIX_SERVIDOR_REAL === '1' ? describe : describe.skip;
+
+describeServidorReal('Integración de Duelo Online', () => {
     let mockFetch;
     let mockWebSocket;
 

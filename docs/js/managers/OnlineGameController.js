@@ -32,7 +32,7 @@ class OnlineGameController {
     }
 
     /**
-     * Handles successful P2P connection
+     * Both players are in the room (host: peer_joined; guest: room_joined)
      */
     onPeerConnected() {
         console.log('🔗 Peer Connected! Starting exchange...');
@@ -95,10 +95,10 @@ class OnlineGameController {
             // But actually, we want to show it for both, but host usually sees "Share Code" modal.
             // Guest sees "Joining..." then this.
             if (!this.isHost) {
+                // El anfitrión ya está en la sala: el servidor le avisa (peer_joined)
+                // y él envía la partida. El invitado solo prepara la pantalla.
                 this.showWaitingOverlay();
-                // Start P2P Handshake now that we are confirmed in the room
-                console.log('🏁 Initiating P2P Handshake...');
-                this.onlineManager.initPeerConnection(true);
+                this.onPeerConnected();
             }
         }
     }

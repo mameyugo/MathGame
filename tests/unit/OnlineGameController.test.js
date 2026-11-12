@@ -21,7 +21,6 @@ class MockOnlineManager {
         return { ok: true };
     }
     async registerOrLogin() { return { ok: true }; }
-    initPeerConnection(isInit) { this.peerInit = isInit; }
     async joinRoomWebSocket() { return true; }
     async syncUserData() { return true; }
 }
@@ -99,15 +98,14 @@ describe('OnlineGameController', () => {
         if (!mockOnlineManager.roomJoined) {
             throw new Error('FAIL: onlineManager.joinRoom not called');
         }
-        if (mockOnlineManager.peerInit === true) {
-            throw new Error('FAIL: Joiner should NOT initiate peer connection immediately (wait for room_joined)');
-        }
-
-        // Simulate Server Message 'room_joined'
+        // Ya no hay conexión P2P: el invitado queda listo al confirmar la sala
+        // y espera a que el anfitrión le mande la partida por el servidor.
+        let listo = false;
+        controller.onPeerConnected = () => { listo = true; };
         controller.onServerMessage({ type: 'room_joined', roomId: 'XYZ-789' });
 
-        if (mockOnlineManager.peerInit !== true) {
-            throw new Error('FAIL: Joiner should initiate peer connection AFTER room_joined');
+        if (!listo) {
+            throw new Error('FAIL: Joiner should be ready AFTER room_joined');
         }
 
         window.setTimeout = originalTimeout;

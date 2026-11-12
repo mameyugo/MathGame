@@ -354,15 +354,12 @@ describe('OnlineManager - Sistema de Duelo Online', () => {
             };
             onlineManager.ws = mockWs;
             onlineManager.isConnected = true;
-            onlineManager.iceServers = [{ urls: 'stun:cached.com' }];
-
             // No mocking connect needed as we are testing the logic inside
             // But we need to ensure the promise resolves immediately
 
             const result = await onlineManager.connect('user', 'pass');
 
             expect(result.type).toBe('login_success');
-            expect(result.iceServers[0].urls).toBe('stun:cached.com');
             expect(onlineManager.ws).toBe(mockWs); // Same instance
         });
 
@@ -418,34 +415,33 @@ describe('OnlineManager - Sistema de Duelo Online', () => {
             );
         });
 
-        test('debería enviar oferta WebRTC', () => {
-            const mockOffer = { type: 'offer', sdp: 'mock_sdp' };
+        test('debería enviar acciones de la partida por el WebSocket (reenvío del servidor)', () => {
+            const enviado = onlineManager.sendGameAction('answer', { correct: true });
 
-            onlineManager.sendOffer(mockOffer);
-
-            expect(onlineManager.ws.send).toHaveBeenCalledWith(
-                expect.stringContaining('"type":"offer"')
-            );
+            expect(enviado).toBe(true);
+            const mensaje = JSON.parse(onlineManager.ws.send.mock.calls.pop()[0]);
+            expect(mensaje.type).toBe('game');
+            expect(mensaje.action).toBe('answer');
+            expect(mensaje.payload).toEqual({ correct: true });
         });
 
-        test('debería enviar respuesta WebRTC', () => {
-            const mockAnswer = { type: 'answer', sdp: 'mock_sdp' };
-
-            onlineManager.sendAnswer(mockAnswer);
-
-            expect(onlineManager.ws.send).toHaveBeenCalledWith(
-                expect.stringContaining('"type":"answer"')
-            );
+        test('no debería enviar acciones sin sala', () => {
+            onlineManager.roomId = null;
+            expect(onlineManager.sendGameAction('answer', {})).toBe(false);
         });
 
-        test('debería enviar candidato ICE', () => {
-            const mockCandidate = { candidate: 'mock_candidate' };
+        test('debería entregar las acciones recibidas y avisar de la llegada del rival', () => {
+            const eventos = [];
+            const llegadas = [];
+            onlineManager.onGameEvent = (d) => eventos.push(d);
+            onlineManager.onPeerConnected = (d) => llegadas.push(d);
 
-            onlineManager.sendIceCandidate(mockCandidate);
+            onlineManager._handleMessage({ type: 'peer_joined', peerId: 'p2' }, () => {}, () => {});
+            onlineManager._handleMessage({ type: 'game', action: 'initial_sync', payload: { queue: [1] }, timestamp: 5 }, () => {}, () => {});
 
-            expect(onlineManager.ws.send).toHaveBeenCalledWith(
-                expect.stringContaining('"type":"ice-candidate"')
-            );
+            expect(llegadas.length).toBe(1);
+            expect(onlineManager.remotePeerId).toBe('p2');
+            expect(eventos).toEqual([{ action: 'initial_sync', payload: { queue: [1] }, timestamp: 5 }]);
         });
 
         test('debería salir de la sala', () => {
@@ -460,23 +456,6 @@ describe('OnlineManager - Sistema de Duelo Online', () => {
     });
 
     describe('Obtención de Estados', () => {
-        test('debería obtener ICE servers', () => {
-            const mockServers = [{ urls: 'stun:server.com' }];
-            onlineManager.iceServers = mockServers;
-
-            const servers = onlineManager.getIceServers();
-
-            expect(servers).toEqual(mockServers);
-        });
-
-        test('debería retornar array vacío si no hay ICE servers', () => {
-            onlineManager.iceServers = null;
-
-            const servers = onlineManager.getIceServers();
-
-            expect(servers).toEqual([]);
-        });
-
         test('debería verificar si está conectado', () => {
             onlineManager.isConnected = false;
             expect(onlineManager.isOnlineConnected()).toBe(false);

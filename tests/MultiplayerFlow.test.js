@@ -16,7 +16,10 @@ if (!global.fetch) {
     }
 }
 
-describe('Multiplayer Flow Integration Test', () => {
+// Usa el servidor real (rtc.mathqix.com) y crea cuentas en él: solo con MATHQIX_SERVIDOR_REAL=1.
+const describeServidorReal = process.env.MATHQIX_SERVIDOR_REAL === '1' ? describe : describe.skip;
+
+describeServidorReal('Multiplayer Flow Integration Test', () => {
     // Configuración
     const API_URL = 'https://rtc.mathqix.com/api';
     const WS_URL = 'wss://rtc.mathqix.com/ws';

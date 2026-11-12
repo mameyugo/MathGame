@@ -43,7 +43,10 @@ const onlineManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/ma
 eval(translationManagerCode + '; global.TranslationManager = TranslationManager;');
 eval(onlineManagerCode + '; global.OnlineManager = OnlineManager;');
 
-describe('Real Environment Integration - OnlineManager', () => {
+// Usa el servidor real (rtc.mathqix.com) y crea cuentas en él: solo con MATHQIX_SERVIDOR_REAL=1.
+const describeServidorReal = process.env.MATHQIX_SERVIDOR_REAL === '1' ? describe : describe.skip;
+
+describeServidorReal('Real Environment Integration - OnlineManager', () => {
     let onlineManager;
     let translationManager;
 

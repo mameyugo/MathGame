@@ -8,7 +8,6 @@ class OnlineManager {
         this.translationManager = translationManager;
         this.ws = null;
         this.username = null;
-        this.iceServers = null;
         this.isConnected = false;
         this.apiBaseUrl = 'https://rtc.mathqix.com/api';
         this.wsUrl = 'wss://rtc.mathqix.com/ws';
@@ -197,7 +196,7 @@ class OnlineManager {
                     // If we are already connected, we might need to re-verify or just return success
                     // But the promise expects the 'login_success' payload.
                     // We can mock it or just resolve if we are sure.
-                    resolve({ type: 'login_success', iceServers: this.iceServers || [] });
+                    resolve({ type: 'login_success' });
                     return;
                 }
 
@@ -353,60 +352,6 @@ class OnlineManager {
     }
 
     /**
-     * Envía una oferta WebRTC al otro jugador
-     */
-    sendOffer(offer) {
-        this.send({
-            type: 'offer',
-            offer: offer
-        });
-    }
-
-    /**
-     * Envía una respuesta WebRTC al otro jugador
-     */
-    sendAnswer(answer) {
-        this.send({
-            type: 'answer',
-            answer: answer
-        });
-    }
-
-    /**
-     * Envía un candidato ICE
-     */
-    sendIceCandidate(candidate) {
-        this.send({
-            type: 'ice-candidate',
-            candidate: candidate
-        });
-    }
-
-    /**
-     * Maneja mensajes del WebSocket
-     */
-    _handleMessage(data, resolve, reject) {
-        console.log('📥 RECV WS:', data);
-        if (data.type === 'login_success') {
-            console.log('Login exitoso en WebSocket', data.iceServers);
-            this.isConnected = true;
-            this.iceServers = data.iceServers;
-            resolve(data);
-        } else if (data.type === 'error') {
-            console.error('Error en WebSocket:', data.message);
-            this.isConnected = false;
-            reject(new Error(data.message || 'Error de autenticación'));
-        } else if (['offer', 'answer', 'ice-candidate'].includes(data.type)) {
-            this.handleSignalingMessage(data);
-        } else {
-            // Procesar otros tipos de mensajes
-            if (this.onMessage) {
-                this.onMessage(data);
-            }
-        }
-    }
-
-    /**
      * Envía mensaje a través del WebSocket
      */
     send(message) {
@@ -444,14 +389,6 @@ class OnlineManager {
         this.roomToken = null;
         this.peerId = null;
         this.remotePeerId = null;
-        this.iceCandidateQueue = []; // Queue for candidates received before remote description
-    }
-
-    /**
-     * Obtiene los ICE servers disponibles
-     */
-    getIceServers() {
-        return this.iceServers || [];
     }
 
     /**
@@ -469,201 +406,46 @@ class OnlineManager {
     }
 
     // ==========================================
-    // WebRTC Implementation
+    // Partida: los mensajes viajan por el WebSocket y el servidor (PHP) los
+    // reenvía al otro jugador de la sala. Antes iban por WebRTC entre los
+    // dispositivos, que en móvil fallaba sin un servidor TURN.
     // ==========================================
 
     /**
-     * Inicializa la conexión Peer-to-Peer
-     * @param {boolean} isInitiator - Si este cliente inicia la conexión (creador de sala)
-     */
-    initPeerConnection(isInitiator) {
-        if (this.peerConnection) {
-            this.peerConnection.close();
-        }
-
-        this.iceCandidateQueue = []; // Reset queue for new connection
-
-        const configuration = {
-            iceServers: this.iceServers || [{ urls: 'stun:rtc.mathqix.com:3478' }],
-            iceCandidatePoolSize: 10 // Pre-gather candidates to speed up connection on mobile
-        };
-
-        console.log('Iniciando RTCPeerConnection con:', configuration);
-        this.peerConnection = new RTCPeerConnection(configuration);
-
-        // Handler para candidatos ICE locales
-        this.peerConnection.onicecandidate = (event) => {
-            if (event.candidate) {
-                this.sendIceCandidate(event.candidate);
-            }
-        };
-
-        // Handler para cambio de estado de conexión
-        this.peerConnection.onconnectionstatechange = () => {
-            console.log('Connection State:', this.peerConnection.connectionState);
-            if (this.peerConnection.connectionState === 'connected') {
-                if (this.onPeerConnected) this.onPeerConnected();
-            } else if (this.peerConnection.connectionState === 'disconnected' ||
-                this.peerConnection.connectionState === 'failed') {
-                if (this.onPeerDisconnected) this.onPeerDisconnected();
-            }
-        };
-
-        if (isInitiator) {
-            // El iniciador crea el Data Channel
-            this.createDataChannel();
-            this.createOffer();
-        } else {
-            // El receptor espera el Data Channel
-            this.peerConnection.ondatachannel = (event) => {
-                console.log('Data Channel recibido del remoto');
-                this.setupDataChannel(event.channel);
-            };
-        }
-    }
-
-    /**
-     * Crea el canal de datos para el juego
-     */
-    createDataChannel() {
-        console.log('Creando Data Channel local');
-        const dataChannel = this.peerConnection.createDataChannel("game-events");
-        this.setupDataChannel(dataChannel);
-    }
-
-    /**
-     * Configura event listeners para el canal de datos
-     */
-    setupDataChannel(channel) {
-        this.dataChannel = channel;
-
-        this.dataChannel.onopen = () => {
-            console.log('Data Channel ABIERTO');
-            // Notificar que estamos listos
-        };
-
-        this.dataChannel.onmessage = (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                // console.log('Recibido por Data Channel:', data);
-                if (this.onGameEvent) {
-                    this.onGameEvent(data);
-                }
-            } catch (e) {
-                console.error('Error parseando mensaje Data Channel:', e);
-            }
-        };
-
-        this.dataChannel.onerror = (error) => {
-            console.error('Error Data Channel:', error);
-        };
-    }
-
-    /**
-     * Envía datos por el canal P2P
+     * Envía una acción de la partida al otro jugador
+     * @returns {boolean} si se pudo enviar
      */
     sendGameAction(action, payload) {
-        if (this.dataChannel && this.dataChannel.readyState === 'open') {
-            const message = JSON.stringify({ action, payload, timestamp: Date.now() });
-            this.dataChannel.send(message);
+        if (this.ws && this.ws.readyState === WebSocket.OPEN && this.roomId) {
+            this.send({ type: 'game', action, payload, timestamp: Date.now() });
             return true;
         }
-        // console.warn('Data Channel no está abierto. Estado:', this.dataChannel ? this.dataChannel.readyState : 'null');
         return false;
     }
 
     /**
-     * Crea y envía una oferta SDP
-     */
-    async createOffer() {
-        try {
-            const offer = await this.peerConnection.createOffer();
-            await this.peerConnection.setLocalDescription(offer);
-            this.sendOffer(offer);
-        } catch (e) {
-            console.error('Error creando oferta:', e);
-        }
-    }
-
-    /**
-     * Maneja mensajes de señalización recibidos por WebSocket
-     */
-    async handleSignalingMessage(data) {
-        if (!this.peerConnection) {
-            // Si recibimos oferta y no tenemos PC, inicializar como receptor
-            if (data.type === 'offer') {
-                this.initPeerConnection(false);
-            } else {
-                return;
-            }
-        }
-
-        try {
-            if (data.type === 'offer') {
-                console.log('Procesando Oferta Remota');
-                await this.peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
-                const answer = await this.peerConnection.createAnswer();
-                await this.peerConnection.setLocalDescription(answer);
-                this.sendAnswer(answer);
-
-                // Procesar candidatos encolados tras establecer la descripción remota
-                this.processQueuedCandidates();
-
-            } else if (data.type === 'answer') {
-                console.log('Procesando Respuesta Remota');
-                await this.peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
-
-                // Procesar candidatos encolados tras establecer la descripción remota
-                this.processQueuedCandidates();
-
-            } else if (data.type === 'ice-candidate') {
-                if (data.candidate) {
-                    const candidate = new RTCIceCandidate(data.candidate);
-                    if (this.peerConnection.remoteDescription && this.peerConnection.remoteDescription.type) {
-                        await this.peerConnection.addIceCandidate(candidate);
-                    } else {
-                        console.log('Encolando ICE candidate rematado (descripción remota aún no lista)');
-                        this.iceCandidateQueue.push(candidate);
-                    }
-                }
-            }
-        } catch (e) {
-            console.error('Error manejando señalización:', e);
-        }
-    }
-
-    /**
-     * Procesa los candidatos ICE que llegaron antes que la descripción remota
-     */
-    async processQueuedCandidates() {
-        console.log(`Procesando ${this.iceCandidateQueue.length} candidatos ICE encolados`);
-        while (this.iceCandidateQueue.length > 0) {
-            const candidate = this.iceCandidateQueue.shift();
-            try {
-                await this.peerConnection.addIceCandidate(candidate);
-            } catch (e) {
-                console.warn('Error añadiendo candidato encolado:', e);
-            }
-        }
-    }
-
-    /**
-     * Override del _handleMessage para interceptar señalización P2P
+     * Mensajes del servidor
      */
     _handleMessage(data, resolve, reject) {
         if (data.type === 'login_success') {
-            console.log('Login exitoso en WebSocket', data.iceServers);
             this.isConnected = true;
-            this.iceServers = data.iceServers;
             resolve(data);
         } else if (data.type === 'error') {
             console.error('Error en WebSocket:', data.message);
             this.isConnected = false;
             reject(new Error(data.message || 'Error de autenticación'));
-        } else if (['offer', 'answer', 'ice-candidate'].includes(data.type)) {
-            this.handleSignalingMessage(data);
+        } else if (data.type === 'game') {
+            if (this.onGameEvent) {
+                this.onGameEvent({ action: data.action, payload: data.payload, timestamp: data.timestamp });
+            }
         } else {
-            // Procesar otros tipos de mensajes
+            if (data.type === 'peer_joined') {
+                this.remotePeerId = data.peerId;
+                if (this.onPeerConnected) this.onPeerConnected(data);
+            } else if (data.type === 'peer_left') {
+                this.remotePeerId = null;
+                if (this.onPeerDisconnected) this.onPeerDisconnected(data);
+            }
             if (this.onMessage) {
                 this.onMessage(data);
             }
