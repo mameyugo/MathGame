@@ -299,6 +299,7 @@ class NumbersGameManager {
         // Renderizar UI (zona de pregunta)
         const questionArea = document.getElementById('question-area');
         if (questionArea) {
+            questionArea.classList.remove('is-problem');
             questionArea.innerHTML = await this.renderGame(level);
         }
 

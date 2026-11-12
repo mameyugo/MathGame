@@ -1,17 +1,18 @@
 /* Main CSS for logic-bound styles (Refactoring) */
-@import url('1-variables.css');
-@import url('2-base.css');
-@import url('3-buttons.css');
-@import url('4-users.css');
-@import url('5-game.css');
-@import url('6-problems.css');
-@import url('7-config.css');
-@import url('8-store.css');
-@import url('9-help.css');
-@import url('10-responsive.css');
-@import url('11-animations.css');
-@import url('12-achievements.css');
-@import url('13-numbers-game.css');
+@import url('1-variables.css?v=202611121852');
+@import url('2-base.css?v=202611121852');
+@import url('3-buttons.css?v=202611121852');
+@import url('4-users.css?v=202611121852');
+@import url('5-game.css?v=202611121852');
+@import url('6-problems.css?v=202611121852');
+@import url('7-config.css?v=202611121852');
+@import url('8-store.css?v=202611121852');
+@import url('9-help.css?v=202611121852');
+@import url('10-responsive.css?v=202611121852');
+@import url('11-animations.css?v=202611121852');
+@import url('12-achievements.css?v=202611121852');
+@import url('13-numbers-game.css?v=202611121852');
+@import url('14-diseno.css?v=202611121852');
 
 
 /* Language Buttons */

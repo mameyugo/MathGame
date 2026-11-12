@@ -60,3 +60,38 @@
     padding: 5px 10px;
     border-bottom: 1px solid #eee;
 }
+
+/* Presentación del juego en la pantalla de inicio (texto que leen los buscadores) */
+.about-section {
+    margin-top: 24px;
+    padding: 16px 18px;
+    border-radius: 15px;
+    background: #f4f9fd;
+    border: 1px solid #d6e9f8;
+    text-align: left;
+    color: var(--dark);
+}
+
+.about-section h2 {
+    margin: 0 0 8px;
+    font-size: 1.15rem;
+    color: var(--primary);
+}
+
+.about-section p {
+    margin: 0 0 10px;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.about-section ul {
+    margin: 0 0 10px;
+    padding-left: 20px;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.about-section a {
+    color: var(--primary);
+    font-weight: bold;
+}

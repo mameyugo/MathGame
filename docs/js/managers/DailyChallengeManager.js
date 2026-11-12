@@ -8,15 +8,16 @@ class DailyChallengeManager {
         this.challengePool = [
             { id: 'correct_answers', i18nKey: 'daily_challenge_correct', type: 'correct_answer', targets: [10, 20, 30], rewards: [50, 100, 150] },
             { id: 'problems_solved', i18nKey: 'daily_challenge_problems', type: 'problem_solved', targets: [3, 5, 8], rewards: [60, 120, 180] },
-            { id: 'items_bought', i18nKey: 'daily_challenge_items', type: 'item_bought', targets: [1, 2, 3], rewards: [40, 80, 120] },
-            { id: 'duels_won', i18nKey: 'daily_challenge_duels', type: 'duel_won', targets: [1, 2, 3], rewards: [80, 140, 200] },
+            { id: 'items_bought', i18nKey: 'daily_challenge_items', type: 'item_bought', targets: [2, 3], rewards: [80, 120] },
+            { id: 'duels_won', i18nKey: 'daily_challenge_duels', type: 'duel_won', targets: [2, 3], rewards: [140, 200] },
             { id: 'coins_earned', i18nKey: 'daily_challenge_coins', type: 'coins_earned', targets: [200, 500, 800], rewards: [50, 120, 200] }
         ];
     }
 
     getTodayKey() {
+        // Día local (con toISOString cambiaba a la 1 o a las 2 de la madrugada en España)
         const now = new Date();
-        return now.toISOString().slice(0, 10);
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     }
 
     initDailyChallenges(user) {
@@ -30,12 +31,17 @@ class DailyChallengeManager {
     }
 
     generateDailyChallenges() {
-        const pool = [...this.challengePool];
+        // Siempre uno de cálculo y otro de problemas (se cumplen jugando solo);
+        // el tercero, al azar entre el resto
+        const fijos = ['correct_answers', 'problems_solved'];
+        const resto = this.challengePool.filter(c => !fijos.includes(c.id));
+        const elegidos = fijos
+            .map(id => this.challengePool.find(c => c.id === id))
+            .filter(Boolean)
+            .concat(resto.length ? [resto[Math.floor(Math.random() * resto.length)]] : []);
         const challenges = [];
 
-        while (challenges.length < 3 && pool.length > 0) {
-            const idx = Math.floor(Math.random() * pool.length);
-            const base = pool.splice(idx, 1)[0];
+        for (const base of elegidos.slice(0, 3)) {
             const difficultyIdx = Math.floor(Math.random() * base.targets.length);
 
             challenges.push({

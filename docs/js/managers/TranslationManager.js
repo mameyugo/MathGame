@@ -6,7 +6,63 @@
 class TranslationManager {
     constructor() {
         this.translations = {};
-        this.currentLanguage = localStorage.getItem('math_lang') || 'es';
+        this.currentLanguage = TranslationManager.detectLanguage();
+    }
+
+    /**
+     * Idioma inicial: el de la URL (?lang=en, enlazable e indexable por los buscadores),
+     * el último elegido o español. No se mira el idioma del navegador: Googlebot navega
+     * en inglés y vería en inglés la portada que hreflang declara en español.
+     * @returns {string}
+     */
+    static detectLanguage() {
+        const supported = TranslationManager.SUPPORTED;
+        let lang = null;
+        try {
+            const fromUrl = new URLSearchParams(window.location.search).get('lang');
+            if (fromUrl && supported.includes(fromUrl)) {
+                lang = fromUrl;
+                localStorage.setItem('math_lang', lang);
+            }
+        } catch (e) { /* sin window (tests) */ }
+        if (!lang) {
+            const stored = localStorage.getItem('math_lang');
+            if (stored && supported.includes(stored)) lang = stored;
+        }
+        return lang || 'es';
+    }
+
+    /**
+     * Pone el idioma en la URL (sin recargar) y actualiza título, descripción,
+     * canónica e idioma de Open Graph, para que cada idioma sea una página propia.
+     * @param {string} lang
+     */
+    updatePageMeta(lang) {
+        if (typeof window === 'undefined' || !window.history) return;
+        try {
+            const url = new URL(window.location.href);
+            if (lang === 'es') url.searchParams.delete('lang'); else url.searchParams.set('lang', lang);
+            window.history.replaceState(window.history.state, '', url.pathname + url.search + url.hash);
+            // La canónica solo lleva el idioma, no otros parámetros (campañas, pruebas…)
+            const path = url.pathname.replace(/index\.html$/, '');
+            const pageUrl = url.origin + path + (lang === 'es' ? '' : `?lang=${lang}`);
+            const canonical = document.querySelector('link[rel="canonical"]');
+            if (canonical) canonical.href = pageUrl;
+            const ogUrl = document.querySelector('meta[property="og:url"]');
+            if (ogUrl) ogUrl.content = pageUrl;
+        } catch (e) { /* URL no disponible */ }
+        const locales = { es: 'es_ES', gl: 'gl_ES', en: 'en_GB', fr: 'fr_FR', ca: 'ca_ES', pt: 'pt_PT', de: 'de_DE' };
+        const ogLocale = document.querySelector('meta[property="og:locale"]');
+        if (ogLocale) ogLocale.content = locales[lang] || 'es_ES';
+        // Enlaces entre páginas del juego: conservan el idioma
+        document.querySelectorAll('a[data-lang-link]').forEach(a => {
+            const base = a.getAttribute('href').split('?')[0];
+            a.setAttribute('href', lang === 'es' ? base : `${base}?lang=${lang}`);
+        });
+        document.querySelectorAll('[data-i18n-content]').forEach(el => {
+            const text = this.t(el.getAttribute('data-i18n-content'));
+            if (text) el.setAttribute('content', text);
+        });
     }
 
     /**
@@ -53,15 +109,16 @@ class TranslationManager {
         this.currentLanguage = lang;
         localStorage.setItem('math_lang', lang);
         document.getElementById('html-root')?.setAttribute('lang', lang);
+        this.updatePageMeta(lang);
 
         // Actualizar estilos de botones de idioma
         const languages = ['es', 'gl', 'en', 'fr', 'ca', 'pt', 'de'];
         languages.forEach(l => {
             const btn = document.getElementById(`btn-lang-${l}`);
-            if (btn) {
-                btn.style.borderColor = lang === l ? 'var(--primary)' : '#ddd';
-                btn.style.background = lang === l ? '#f0f7ff' : 'white';
-                btn.style.fontWeight = lang === l ? 'bold' : 'normal';
+            if (btn && btn.classList) {
+                // El aspecto lo pone la clase .active (css/14-diseno.css)
+                btn.classList.toggle('active', lang === l);
+                if (btn.setAttribute) btn.setAttribute('aria-pressed', lang === l ? 'true' : 'false');
             }
         });
 
@@ -115,6 +172,8 @@ class TranslationManager {
         return !!this.translations[lang];
     }
 }
+
+TranslationManager.SUPPORTED = ['es', 'gl', 'en', 'fr', 'ca', 'pt', 'de'];
 
 // Exportar para uso en Node.js (tests)
 if (typeof module !== 'undefined' && module.exports) {

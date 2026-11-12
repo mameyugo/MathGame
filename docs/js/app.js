@@ -86,9 +86,9 @@ async function changeLanguage(lang) {
         if (configTitle) {
             const textNode = configTitle.childNodes[0];
             if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-                textNode.textContent = t('config_title_user') + currentUser + ' ';
+                textNode.textContent = userManager.configTitleText(currentUser);
             } else {
-                configTitle.prepend(document.createTextNode(t('config_title_user') + currentUser + ' '));
+                configTitle.prepend(document.createTextNode(userManager.configTitleText(currentUser)));
             }
         }
     }
@@ -123,6 +123,7 @@ function selectUser(name) {
 
     // Renderizar las tarjetas de categorías de problemas inmediatamente
     renderProblemCategories();
+    renderTodayPanel();
 }
 
 function showEditName() {
@@ -164,6 +165,7 @@ function syncStateFromStorage() {
  * Inicia una partida individual
  */
 function startSingleGame() {
+    registerDailyPlay();
     gameEngine.startSingleGame();
 
     // Sincronizar estado global después de iniciar
@@ -189,6 +191,7 @@ function startProblemGame(type) {
         return;
     }
 
+    registerDailyPlay();
     problemType = type;
     gameEngine.problemType = type;
     gameEngine.startProblemGame(type);
@@ -204,6 +207,7 @@ function startProblemGame(type) {
  * Inicia el modo de juego "Cifras"
  */
 async function startNumbersGame() {
+    registerDailyPlay();
     try {
         currentProblem = await numbersGameManager.startGame(gameEngine);
         gameEngine.currentProblem = currentProblem; // Sync con GameEngine
@@ -572,7 +576,7 @@ function settingsSaveUserName() {
         // Actualizar título de la pantalla de config
         const configTitle = document.getElementById('config-title');
         if (configTitle) {
-            configTitle.childNodes[0].textContent = t('config_title_user') + newName + ' ';
+            configTitle.childNodes[0].textContent = userManager.configTitleText(newName);
         }
     });
 }
@@ -852,6 +856,232 @@ window.addEventListener('online-game-start', () => {
     startTimer();
 });
 
+// ==========================================
+// Volver cada día: racha, panel «Hoy», guardar progreso e instalar la app
+// ==========================================
+
+const streakManager = new StreakManager();
+
+/** Aviso breve en la parte baja de la pantalla. */
+function showToast(text) {
+    let toast = document.getElementById('mq-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'mq-toast';
+        toast.className = 'mq-toast';
+        toast.setAttribute('role', 'status');
+        document.body.appendChild(toast);
+    }
+    toast.textContent = text;
+    toast.classList.add('visible');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove('visible'), 3500);
+}
+
+/** Apunta la partida de hoy en la racha y da el premio diario la primera vez. */
+function registerDailyPlay() {
+    const user = userManager.getCurrentUser();
+    if (!user) return;
+    const result = streakManager.registerPlay(user);
+    if (result.isNew) {
+        userManager.saveToStorage();
+        users = userManager.getUsers();
+        const clave = result.count === 1 ? 'streak_bonus_toast_first' : 'streak_bonus_toast';
+        showToast(t(clave).replace('{n}', result.count).replace('{coins}', result.bonus));
+    }
+}
+
+/** Texto corto de la racha para las tarjetas de jugador. */
+function streakBadge(user) {
+    const s = streakManager.getStatus(user);
+    return s.count > 0 ? `<span class="streak-badge${s.atRisk ? ' at-risk' : ''}" title="${t('streak_title')}">🔥 ${s.count}</span>` : '';
+}
+
+/** Panel «Hoy» de la pantalla del jugador: racha y desafíos del día. */
+function renderTodayPanel() {
+    const panel = document.getElementById('today-panel');
+    const user = userManager.getCurrentUser();
+    if (!panel || !user) return;
+
+    const s = streakManager.getStatus(user);
+    const challenges = dailyChallengeManager.getDailyChallenges(user);
+    userManager.saveToStorage();
+
+    let estado;
+    if (s.playedToday) estado = t('streak_done_today');
+    else if (s.count > 0) estado = t('streak_at_risk').replace('{coins}', s.nextBonus);
+    else estado = t('streak_start').replace('{coins}', s.nextBonus);
+
+    const dias = s.count === 1 ? t('streak_one_day') : t('streak_days').replace('{n}', s.count);
+
+    const filas = challenges.map(c => {
+        const txt = dailyChallengeManager.formatChallengeText(c);
+        const pct = Math.round((c.progress / c.target) * 100);
+        let accion = `<span class="today-reward">+${c.reward} 💰</span>`;
+        if (c.claimed) accion = `<span class="today-reward done">✔</span>`;
+        else if (c.completed) accion = `<button class="today-claim" onclick="claimTodayChallenge('${c.id}')">${t('daily_challenge_claim')} +${c.reward}</button>`;
+        return `<li class="today-challenge${c.completed ? ' completed' : ''}">
+            <div class="today-challenge-text"><strong>${txt.name}</strong><small>${txt.description}</small></div>
+            <div class="today-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${c.target}" aria-valuenow="${c.progress}"><span style="width:${pct}%"></span></div>
+            <div class="today-challenge-meta"><small>${c.progress}/${c.target}</small>${accion}</div>
+        </li>`;
+    }).join('');
+
+    panel.innerHTML = `
+        <div class="today-streak${s.playedToday ? ' lit' : ''}">
+            <div class="today-flame" aria-hidden="true">🔥</div>
+            <div>
+                <div class="today-streak-count">${s.count > 0 ? dias : t('streak_none')}</div>
+                <div class="today-streak-state">${estado}</div>
+                ${s.best > 1 ? `<div class="today-streak-best">${t('streak_best').replace('{n}', s.best)}</div>` : ''}
+            </div>
+        </div>
+        <h3 class="today-title">${t('today_challenges_title')}</h3>
+        <ul class="today-challenges">${filas}</ul>`;
+}
+
+function claimTodayChallenge(challengeId) {
+    const user = userManager.getCurrentUser();
+    if (!user) return;
+    if (dailyChallengeManager.claimReward(user, challengeId)) {
+        userManager.saveToStorage();
+        users = userManager.getUsers();
+        renderTodayPanel();
+        showToast('💰 +' + (user.dailyChallenges.challenges.find(c => c.id === challengeId) || {}).reward);
+    }
+}
+
+// ---------- Guardar y recuperar el progreso con la cuenta online ----------
+
+let progressMode = 'save';
+
+function openProgressModal(mode) {
+    progressMode = mode;
+    const modal = document.getElementById('progress-modal');
+    if (!modal) return;
+    const userInput = document.getElementById('progress-username');
+    const passInput = document.getElementById('progress-password');
+    const msg = document.getElementById('progress-message');
+    document.getElementById('progress-title').textContent = t(mode === 'save' ? 'progress_save_title' : 'progress_restore_title');
+    document.getElementById('progress-desc').textContent = t(mode === 'save' ? 'progress_save_desc' : 'progress_restore_desc');
+    document.getElementById('progress-submit').textContent = t(mode === 'save' ? 'btn_save_progress' : 'btn_restore_progress');
+    msg.style.display = 'none';
+    passInput.value = '';
+    if (mode === 'save') {
+        userInput.value = userManager.getCurrentUserName() || '';
+        userInput.readOnly = true;
+    } else {
+        userInput.value = '';
+        userInput.readOnly = false;
+    }
+    modal.style.display = 'flex';
+    (mode === 'save' ? passInput : userInput).focus();
+}
+
+function closeProgressModal() {
+    const modal = document.getElementById('progress-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+async function submitProgress() {
+    const username = document.getElementById('progress-username').value.trim().replace(/[<>"'&]/g, '');
+    const password = document.getElementById('progress-password').value;
+    const msg = document.getElementById('progress-message');
+    const say = (text, type) => {
+        msg.textContent = text;
+        msg.className = 'message ' + type;
+        msg.style.display = 'block';
+    };
+
+    if (!username || password.length < 4) {
+        say(t('progress_need_credentials'), 'error');
+        return;
+    }
+    say(t('progress_connecting'), 'loading');
+
+    try {
+        // Recuperar no debe crear cuentas nuevas: solo inicia sesión
+        const result = progressMode === 'save'
+            ? await onlineManager.registerOrLogin(username, password)
+            : await onlineManager.login(username, password);
+
+        if (!result.ok) {
+            say(progressMode === 'save' ? t('progress_name_taken') : t('progress_wrong_credentials'), 'error');
+            return;
+        }
+        if (progressMode === 'restore') {
+            onlineManager.saveCredentials(username, password);
+            onlineManager.username = username;
+            if (result.token) {
+                onlineManager.authToken = result.token;
+                localStorage.setItem('math_online_token', result.token);
+            }
+        }
+
+        userManager.activateUser(username);
+        if (result.game_data) userManager.mergeUserData(result.game_data);
+        const sync = await onlineManager.syncUserData(userManager.getCurrentUser());
+        if (sync && sync.ok && sync.game_data) userManager.mergeUserData(sync.game_data);
+        userManager.saveToStorage();
+        users = userManager.getUsers();
+        currentUser = userManager.getCurrentUserName();
+
+        closeProgressModal();
+        showToast(t(progressMode === 'save' ? 'progress_saved' : 'progress_restored'));
+        selectUser(username);
+    } catch (e) {
+        say(t('error_connection'), 'error');
+    }
+}
+
+/** Si el jugador ya tiene cuenta, sube su progreso al acabar cada partida. */
+async function autoSyncProgress() {
+    const name = userManager.getCurrentUserName();
+    if (!name || !onlineManager.hasStoredCredentials()) return;
+    const creds = onlineManager.getStoredCredentials();
+    if (creds.username !== name) return;
+    try {
+        onlineManager.username = name;
+        const sync = await onlineManager.syncUserData(userManager.getCurrentUser());
+        if (sync && sync.ok && sync.game_data) {
+            userManager.mergeUserData(sync.game_data);
+            userManager.saveToStorage();
+        }
+    } catch (e) {
+        // Sin conexión: se sube la próxima vez
+    }
+}
+
+// ---------- App instalable y sin conexión ----------
+
+let deferredInstallPrompt = null;
+
+if (typeof window !== 'undefined' && 'serviceWorker' in navigator && !window.__TEST__) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service worker:', err));
+    });
+}
+
+if (typeof window !== 'undefined') {
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        document.querySelectorAll('.btn-install').forEach(b => b.classList.remove('hidden'));
+    });
+    window.addEventListener('appinstalled', () => {
+        deferredInstallPrompt = null;
+        document.querySelectorAll('.btn-install').forEach(b => b.classList.add('hidden'));
+    });
+}
+
+async function installApp() {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    document.querySelectorAll('.btn-install').forEach(b => b.classList.add('hidden'));
+}
+
 // Inicializar la aplicación (evitar auto-init en tests)
 if (typeof window !== 'undefined' && !window.__TEST__) {
     initApp();
@@ -868,4 +1098,5 @@ if (typeof window !== 'undefined') {
     window.__appManagers.onlineGameController = onlineGameController;
     window.__appManagers.numbersGameManager = numbersGameManager;
     window.__appManagers.settingsManager = settingsManager;
+    window.__appManagers.streakManager = streakManager;
 }

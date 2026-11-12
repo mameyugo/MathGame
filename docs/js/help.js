@@ -31,8 +31,7 @@ async function changeLanguage(lang) {
     languages.forEach(l => {
         const btn = document.getElementById(`btn-lang-${l}`);
         if (btn) {
-            btn.style.borderColor = lang === l ? 'var(--primary)' : '#ddd';
-            btn.style.background = lang === l ? '#f0f7ff' : 'white';
+            btn.classList.toggle('active', lang === l);
         }
     });
 }
@@ -41,7 +40,7 @@ async function changeLanguage(lang) {
  * Vuelve a la página principal
  */
 function goBack() {
-    window.location.href = 'index.html';
+    window.location.href = './' + window.location.search;
 }
 
 /**

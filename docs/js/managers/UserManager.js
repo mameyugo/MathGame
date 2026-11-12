@@ -124,6 +124,8 @@ class UserManager {
         document.getElementById('screen-users').classList.add('active');
         this.renderUserList();
         this.renderLeaderboard();
+        // Al volver de una partida: subir el progreso si el jugador tiene cuenta
+        if (typeof autoSyncProgress === 'function') autoSyncProgress();
     }
 
     /**
@@ -159,6 +161,7 @@ class UserManager {
                 name: name,
                 level: user.level,
                 coins: user.totalCoins,
+                streak: typeof streakBadge === 'function' ? streakBadge(user) : '',
                 play_btn_text: this.translationManager.t('btn_play_user')
             });
             list.innerHTML += html;
@@ -243,11 +246,12 @@ class UserManager {
         const editInput = document.getElementById('edit-user-name');
 
         if (configTitle) {
+            const titulo = this.configTitleText(name);
             const textNode = configTitle.childNodes[0];
             if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-                textNode.textContent = this.translationManager.t('config_title_user') + name + ' ';
+                textNode.textContent = titulo;
             } else {
-                configTitle.prepend(document.createTextNode(this.translationManager.t('config_title_user') + name + ' '));
+                configTitle.prepend(document.createTextNode(titulo));
             }
         }
 
@@ -270,6 +274,19 @@ class UserManager {
         if (typeof renderProblemCategories === 'function') {
             setTimeout(() => renderProblemCategories(), 0);
         }
+        if (typeof renderTodayPanel === 'function') {
+            setTimeout(() => renderTodayPanel(), 0);
+        }
+    }
+
+    /**
+     * Título de la pantalla del jugador: «¡Hola, {name}!» (si la traducción no
+     * lleva {name}, el nombre va detrás). Termina en espacio por el botón ⚙️.
+     * @param {string} name
+     */
+    configTitleText(name) {
+        const plantilla = this.translationManager.t('config_title_user');
+        return (plantilla.includes('{name}') ? plantilla.replace('{name}', name) : plantilla + name) + ' ';
     }
 
     /**
@@ -379,9 +396,9 @@ class UserManager {
         if (configTitle) {
             const textNode = configTitle.childNodes[0];
             if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-                textNode.textContent = this.translationManager.t('config_title_user') + newName + ' ';
+                textNode.textContent = this.configTitleText(newName);
             } else {
-                configTitle.prepend(document.createTextNode(this.translationManager.t('config_title_user') + newName + ' '));
+                configTitle.prepend(document.createTextNode(this.configTitleText(newName)));
             }
         }
 
@@ -521,6 +538,11 @@ class UserManager {
         // Tema
         if (remoteData.currentTheme) {
             user.currentTheme = remoteData.currentTheme;
+        }
+
+        // Racha: la del servidor ya viene combinada (la más reciente)
+        if (remoteData.streak && typeof remoteData.streak === 'object') {
+            user.streak = remoteData.streak;
         }
 
         // Estadísticas

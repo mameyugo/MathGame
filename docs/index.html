@@ -4,17 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathQix — Juego de Matemáticas y Lógica 🧮</title>
+    <title data-i18n="meta_title">MathQix — Juego de matemáticas gratis para niños de primaria</title>
+    <meta name="description" data-i18n-content="meta_description"
+        content="Juego gratuito y libre para practicar cálculo mental: sumas, restas, multiplicaciones, divisiones y problemas de lógica, con niveles que se adaptan, retos diarios y duelos.">
+    <link rel="canonical" href="https://mathqix.com/">
+    <link rel="alternate" hreflang="es" href="https://mathqix.com/">
+    <link rel="alternate" hreflang="gl" href="https://mathqix.com/?lang=gl">
+    <link rel="alternate" hreflang="en" href="https://mathqix.com/?lang=en">
+    <link rel="alternate" hreflang="fr" href="https://mathqix.com/?lang=fr">
+    <link rel="alternate" hreflang="ca" href="https://mathqix.com/?lang=ca">
+    <link rel="alternate" hreflang="pt" href="https://mathqix.com/?lang=pt">
+    <link rel="alternate" hreflang="de" href="https://mathqix.com/?lang=de">
+    <link rel="alternate" hreflang="x-default" href="https://mathqix.com/">
+    <meta name="theme-color" content="#3498db">
+    <link rel="preload" href="fonts/fredoka-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="apple-touch-icon" href="./app-icons/icon-192.png">
+    <meta property="og:site_name" content="MathQix" />
+    <meta property="og:locale" content="es_ES" />
     <meta property="og:title" content="¿Serás capaz de llegar al Salón de la Fama? 🏆" />
     <meta property="og:description"
         content="Juego software libre de matemáticas y lógica. Compite contra otros y demuestra que eres el mejor 🧠" />
     <meta property="og:image" content="https://mathqix.com/images/captura.png" />
     <meta property="og:url" content="https://mathqix.com/" />
     <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "MathQix",
+        "url": "https://mathqix.com/",
+        "description": "Juego educativo gratuito y de software libre para practicar cálculo mental y lógica en primaria.",
+        "applicationCategory": "EducationalApplication",
+        "genre": "Juego educativo de matemáticas",
+        "operatingSystem": "Web",
+        "inLanguage": ["es", "gl", "en", "fr", "ca", "pt", "de"],
+        "isAccessibleForFree": true,
+        "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+        "audience": { "@type": "EducationalAudience", "educationalRole": "student" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+    }
+    </script>
     <link rel="icon" type="image/png" href="./favicon.png">
 
     <!-- CSS Modular - Loaded via main.css -->
-    <link rel="stylesheet" href="css/main.css?v=202602271301">
+    <link rel="stylesheet" href="css/main.css?v=202611121852">
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
@@ -34,7 +69,13 @@
         </div>
 
         <div id="screen-users" class="screen active">
-            <h1 data-i18n="app_title">🚀 MathQix</h1>
+            <header class="hero">
+                <img src="app-icons/icon-192.png" class="hero-logo" alt="" width="64" height="64">
+                <div>
+                    <h1 data-i18n="app_title">🚀 MathQix</h1>
+                    <p class="hero-tagline" data-i18n="hero_tagline">Cálculo mental y problemas, jugando cada día</p>
+                </div>
+            </header>
             <div id="user-list"></div>
             <p class="intro-text" data-i18n="intro_create_player"
                 style="margin: 20px 0; font-size: 1.1rem; font-weight: bold; color: #3498db;">👋 Crea tu primer jugador:
@@ -45,12 +86,26 @@
                 <button onclick="createUser()" class="btn-add" data-i18n="btn_add">+ Añadir</button>
             </div>
             <button class="main-btn btn-duel" onclick="setupDuel()" data-i18n="btn_duel_mode">🏆 MODO DUELO</button>
-            <button class="btn-help" onclick="window.location.href='help.html'" data-i18n="btn_help">📚 Ayuda</button>
+            <button class="btn-help" onclick="window.location.href='help.html' + window.location.search" data-i18n="btn_help">📚 Ayuda</button>
+            <button class="btn-install hidden" onclick="installApp()" data-i18n="btn_install_app">📲 Instalar MathQix</button>
+            <button class="btn-link" onclick="openProgressModal('restore')" data-i18n="btn_restore_progress_link">☁️ ¿Ya jugabas en otro dispositivo? Recupera tu progreso</button>
 
             <div class="leaderboard" id="hall-of-fame">
                 <h3 class="leaderboard-title" data-i18n="hall_of_fame_title">👑 Salón de la Fama</h3>
                 <div id="leader-list"></div>
             </div>
+
+            <section class="about-section" aria-labelledby="about-title">
+                <h2 id="about-title" data-i18n="about_title">Matemáticas jugando, a tu ritmo</h2>
+                <p data-i18n="about_text">MathQix es un juego educativo gratuito y de software libre para que los niños y niñas de primaria practiquen cálculo mental jugando. La dificultad se adapta a cada jugador y el progreso se guarda en el propio dispositivo.</p>
+                <ul>
+                    <li data-i18n="about_point_1">Sumas, restas, multiplicaciones y divisiones que crecen con cada nivel.</li>
+                    <li data-i18n="about_point_2">Problemas de lógica, fracciones, áreas y probabilidad para los más avanzados.</li>
+                    <li data-i18n="about_point_3">Desafíos diarios, logros y una tienda para gastar las monedas ganadas.</li>
+                    <li data-i18n="about_point_4">Modo duelo para jugar con amigos o en familia.</li>
+                </ul>
+                <p><a href="help.html" data-lang-link data-i18n="btn_help">📚 Ayuda</a></p>
+            </section>
         </div>
 
         <div id="screen-config" class="screen">
@@ -60,17 +115,36 @@
                     title="Configuración" aria-label="Abrir configuración">⚙️</button>
             </h2>
 
-            <button class="main-btn" onclick="startSingleGame()" data-i18n="btn_play">¡A JUGAR!</button>
-            <button class="main-btn btn-problem" onclick="startProblemGame('matematico')"
-                data-i18n="btn_problem_math">🧮 Problemas matemáticos</button>
-            <button class="main-btn btn-problem" onclick="startProblemGame('logica')" data-i18n="btn_problem_logic">🧠
-                Problemas de lógica</button>
-            <button class="main-btn btn-numbers" onclick="startNumbersGame()" data-i18n="btn_numbers_game"
-                style="background: linear-gradient(135deg, #e67e22, #d35400);">🔢 Cifras</button>
+            <section id="today-panel" class="today-panel" aria-live="polite"></section>
 
-            <button class="main-btn btn-store" onclick="openStore()" data-i18n="btn_open_store">🏪 TIENDA</button>
-            <button class="main-btn btn-achievements" onclick="openAchievements()" data-i18n="btn_open_achievements">🏆
-                LOGROS</button>
+            <div class="mode-grid">
+                <button class="mode-tile mode-play" onclick="startSingleGame()">
+                    <span class="mode-icon" aria-hidden="true">⚡</span>
+                    <span class="mode-name" data-i18n="mode_play_name">Cálculo rápido</span>
+                    <span class="mode-desc" data-i18n="mode_play_desc">Operaciones contra el reloj</span>
+                </button>
+                <button class="mode-tile mode-math" onclick="startProblemGame('matematico')">
+                    <span class="mode-icon" aria-hidden="true">🧮</span>
+                    <span class="mode-name" data-i18n="mode_math_name">Problemas</span>
+                    <span class="mode-desc" data-i18n="mode_math_desc">Historias con números</span>
+                </button>
+                <button class="mode-tile mode-logic" onclick="startProblemGame('logica')">
+                    <span class="mode-icon" aria-hidden="true">🧠</span>
+                    <span class="mode-name" data-i18n="mode_logic_name">Lógica</span>
+                    <span class="mode-desc" data-i18n="mode_logic_desc">Acertijos y series</span>
+                </button>
+                <button class="mode-tile mode-numbers" onclick="startNumbersGame()">
+                    <span class="mode-icon" aria-hidden="true">🔢</span>
+                    <span class="mode-name" data-i18n="mode_numbers_name">Cifras</span>
+                    <span class="mode-desc" data-i18n="mode_numbers_desc">Llega al número exacto</span>
+                </button>
+            </div>
+
+            <div class="secondary-actions">
+                <button class="pill-btn pill-store" onclick="openStore()" data-i18n="btn_open_store">🏪 TIENDA</button>
+                <button class="pill-btn pill-achievements" onclick="openAchievements()" data-i18n="btn_open_achievements">🏆 LOGROS</button>
+            </div>
+            <button class="btn-link" onclick="openProgressModal('save')" data-i18n="btn_save_progress_link">☁️ Guarda tu progreso para no perderlo</button>
             <button class="btn-back" onclick="showUsers()" data-i18n="btn_change_user">⬅ Cambiar de usuario</button>
         </div>
 
@@ -278,6 +352,27 @@
         </div>
     </div>
 
+    <!-- Guardar / recuperar el progreso con la cuenta online -->
+    <div id="progress-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="progress-title">
+        <div class="modal-content progress-modal-content">
+            <div class="modal-header">
+                <h2 id="progress-title">☁️</h2>
+                <button class="modal-close" onclick="closeProgressModal()" aria-label="Cerrar">✖</button>
+            </div>
+            <div class="progress-body">
+                <p id="progress-desc"></p>
+                <label class="settings-label" for="progress-username" data-i18n="input_username">Usuario</label>
+                <input type="text" id="progress-username" class="user-input" autocomplete="username">
+                <label class="settings-label" for="progress-password" data-i18n="input_password">Contraseña</label>
+                <input type="password" id="progress-password" class="user-input" autocomplete="current-password"
+                    onkeydown="if (event.key === 'Enter') submitProgress()">
+                <div id="progress-message" class="message" style="display: none;"></div>
+                <button id="progress-submit" class="main-btn" onclick="submitProgress()">☁️</button>
+                <p class="progress-note" data-i18n="progress_note">Pide ayuda a un adulto para elegir la contraseña y apuntadla en un sitio seguro.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Store Modal -->
     <div id="store-modal" class="modal">
         <div class="modal-content">
@@ -332,22 +427,23 @@
         </div>
     </footer>
 
-    <script src="./js/managers/TranslationManager.js?v=202602271301"></script>
-    <script src="./js/managers/TemplateManager.js?v=202602271301"></script>
-    <script src="./js/managers/AchievementManager.js?v=202602271301"></script>
-    <script src="./js/managers/UserManager.js?v=202602271301"></script>
-    <script src="./js/managers/StoreManager.js?v=202602271301"></script>
-    <script src="./js/managers/NumbersGameManager.js?v=202602271301"></script>
-    <script src="./js/managers/GameEngine.js?v=202602271301"></script>
-    <script src="./js/managers/QuestionGenerator.js?v=202602271301"></script>
-    <script src="./js/managers/ProblemCategoryManager.js?v=202602271301"></script>
-    <script src="./js/managers/DailyChallengeManager.js?v=202602271301"></script>
-    <script src="./js/managers/LocalDuelManager.js?v=202602271301"></script>
-    <script src="./js/managers/OnlineGameController.js?v=202602271301"></script>
-    <script src="./js/managers/OnlineManager.js?v=202602271301"></script>
-    <script type="module" src="./js/problems/index.js?v=202602271301"></script>
-    <script src="./js/managers/SettingsManager.js?v=202602271301"></script>
-    <script src="./js/app.js?v=202602271301"></script>
+    <script src="./js/managers/TranslationManager.js?v=202611121852"></script>
+    <script src="./js/managers/TemplateManager.js?v=202611121852"></script>
+    <script src="./js/managers/AchievementManager.js?v=202611121852"></script>
+    <script src="./js/managers/UserManager.js?v=202611121852"></script>
+    <script src="./js/managers/StoreManager.js?v=202611121852"></script>
+    <script src="./js/managers/NumbersGameManager.js?v=202611121852"></script>
+    <script src="./js/managers/GameEngine.js?v=202611121852"></script>
+    <script src="./js/managers/QuestionGenerator.js?v=202611121852"></script>
+    <script src="./js/managers/ProblemCategoryManager.js?v=202611121852"></script>
+    <script src="./js/managers/DailyChallengeManager.js?v=202611121852"></script>
+    <script src="./js/managers/StreakManager.js?v=202611121852"></script>
+    <script src="./js/managers/LocalDuelManager.js?v=202611121852"></script>
+    <script src="./js/managers/OnlineGameController.js?v=202611121852"></script>
+    <script src="./js/managers/OnlineManager.js?v=202611121852"></script>
+    <script type="module" src="./js/problems/index.js?v=202611121852"></script>
+    <script src="./js/managers/SettingsManager.js?v=202611121852"></script>
+    <script src="./js/app.js?v=202611121852"></script>
 </body>
 
 </html>

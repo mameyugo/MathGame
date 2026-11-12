@@ -7,6 +7,7 @@ const achievementManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/
 const userManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/UserManager.js'), 'utf8');
 const storeManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/StoreManager.js'), 'utf8');
 const dailyChallengeManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/DailyChallengeManager.js'), 'utf8');
+const streakManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/StreakManager.js'), 'utf8');
 const gameEngineCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/GameEngine.js'), 'utf8');
 const questionGeneratorCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/QuestionGenerator.js'), 'utf8');
 const problemCategoryManagerCode = fs.readFileSync(path.join(__dirname, '../../docs/js/managers/ProblemCategoryManager.js'), 'utf8');
@@ -61,6 +62,7 @@ beforeAll(() => {
     window.eval(storeManagerCode + '\nwindow.StoreManager = StoreManager;');
 
     window.eval(dailyChallengeManagerCode + '\nwindow.DailyChallengeManager = DailyChallengeManager;');
+    window.eval(streakManagerCode + '\nwindow.StreakManager = StreakManager;');
 
     window.eval(gameEngineCode + '\nwindow.GameEngine = GameEngine;');
 
